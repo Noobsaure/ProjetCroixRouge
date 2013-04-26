@@ -1,5 +1,6 @@
 package controllers;
 
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class EntityController implements Subject {
 	private String _infos;
 	private int _id;
 	private java.sql.Timestamp _dateArriveeLocalisation;
+	private String _color;
 
 	private boolean _available;
 	private String _state;
@@ -55,6 +57,7 @@ public class EntityController implements Subject {
 		_available = true;
 		_posCurrentId = operation.getIdPcm();
 		_operation = operation;
+		_color = color;
 
 		int idOperation = operation.getId();
 		java.util.Date date = new java.util.Date();
@@ -104,7 +107,7 @@ public class EntityController implements Subject {
 	 * @param type The type of the entity in the database
 	 * @param infos The informations about the entity in database
 	 */
-	public EntityController(OperationController operation, DatabaseManager dbm, int id, int stateId, int positionId, java.sql.Timestamp dateArriveeLocalisation, String name, String type, String infos){
+	public EntityController(OperationController operation, DatabaseManager dbm, int id, int stateId, int positionId, java.sql.Timestamp dateArriveeLocalisation, String name, String type, String infos, String color){
 		System.out.println("Creation instance Entite deja existante (id = "+id+" ).");
 
 		_operation = operation;
@@ -116,6 +119,7 @@ public class EntityController implements Subject {
 		_type = type;
 		_infos = infos;
 		_dateArriveeLocalisation = dateArriveeLocalisation;
+		_color = color;
 
 		ResultSet result;
 
@@ -236,9 +240,24 @@ public class EntityController implements Subject {
 	public boolean getStatut(){
 		return _available;
 	}
+	
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return Color.getColor(_color);
+	}
 
 	public java.sql.Timestamp getDateArriveeLocalisation(){
 		return _dateArriveeLocalisation;
+	}
+	
+	public void setColor(String newColor){
+		try{
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "couleur='"+newColor+"'","id ="+_id));
+		}catch(MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite \n"+_name);
+		}
+
+		_color = newColor;
 	}
 
 	public void setLocation(LocationController location) {	
@@ -296,7 +315,7 @@ public class EntityController implements Subject {
 		String message =  _name+" a quitté \""+_operation.getLocation(lastPosCurrentId).getName()+"\" pour \""+_operation.getLocation(_posCurrentId).getName()+"\".";
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,'-1','-1','-1','-1',"+_operation.getIdOperateur()+", NULL, "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+message+"','0')"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", NULL, "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+message+"','0')"));
 		} catch (MalformedQueryException e) {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante \n"+
 					"Message : "+message);
@@ -322,7 +341,7 @@ public class EntityController implements Subject {
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,'-1','-1','-1','-1',"+_operation.getIdOperateur()+",NULL,"+id+",NULL,NULL,'"+datetime+"','"+message+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",NULL,"+id+",NULL,NULL,'"+datetime+"','"+message+"',0)"));
 		} catch (MalformedQueryException e) {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante \n"+
 					"Message : "+message);
@@ -402,5 +421,6 @@ public class EntityController implements Subject {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "TRY Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
 		}
 	}
+
 }
 

@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -20,6 +19,7 @@ import javax.swing.ScrollPaneConstants;
 
 import views.buttons.SubMenuMapButton;
 import views.listeners.AddMapButtonListener;
+import views.listeners.SubMenuMapToggleButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
 import controllers.OperationController;
@@ -29,11 +29,12 @@ public class SubMenuMapPanel extends SubMenuPanel
 {
 	private Map<JToggleButton, MapController> _map;
 	private JPanel _thumbnailsPanel;
+	private MapPanel _mapPanel;
 	
 	public SubMenuMapPanel(MapPanel mapPanel, SubMenuMapButton button, OperationController operationController, DatabaseManager databaseManager)
 	{
 		super(mapPanel, operationController, databaseManager);
-		
+		_mapPanel = mapPanel;
 		_map = super.getMapMap();
 		_thumbnailsPanel = super.getThumbnailPanel();
 		displayThumbnail(operationController, databaseManager);
@@ -68,6 +69,7 @@ public class SubMenuMapPanel extends SubMenuPanel
 			toggleButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 			toggleButton.setIcon(iconScaled);
 			group.add(toggleButton);
+			toggleButton.addActionListener(new SubMenuMapToggleButtonListener(listMapsName.get(i), _mapPanel, operationController));
 			_thumbnailsPanel.add(toggleButton);
 			
 			System.out.println("i : " + i + " id : " + id + ", Name image : " + listMapsName.get(i).getName());
@@ -95,7 +97,6 @@ public class SubMenuMapPanel extends SubMenuPanel
 			if(id == currentMapId)
 			{
 				toggleButton.setSelected(true);
-//				toggleButton.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, Color.RED, Color.RED, Color.RED, Color.RED));
 			}
 			
 			_map.put(toggleButton, listMapsName.get(i));

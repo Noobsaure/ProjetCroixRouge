@@ -52,13 +52,7 @@ public class SwitchMapButtonListener implements ActionListener
 		ImageIcon image = mapController.getImage();
 		BufferedImage newMap = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_RGB);
 		_mapPanel.setMap(newMap);
-		_mapPanel.getMap().getGraphics().drawImage(
-				image.getImage(),
-				0, 
-				0,
-				image.getIconWidth(), 
-				image.getIconHeight(), 
-				null);
+		_mapPanel.getMap().getGraphics().drawImage(image.getImage(), 0,	0, image.getIconWidth(), image.getIconHeight(), null);
 		_operationController.setCurrentMap(mapController);
 		_button.setEnabled(true);
 		_mapPanel.remove(_subMenuPanel);
