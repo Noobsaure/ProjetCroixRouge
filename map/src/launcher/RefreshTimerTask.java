@@ -113,8 +113,9 @@ public class RefreshTimerTask extends TimerTask
 							String type = result2.getString("type");
 							String infos = result2.getString("infos");
 							java.sql.Timestamp date = result2.getTimestamp("date_depart");
-
-							EntityController entite = new EntityController(_operation, _dbm, id, statut_id, position_id, date, nom, type, infos);
+							String color = result2.getString("couleur");
+							
+							EntityController entite = new EntityController(_operation, _dbm, id, statut_id, position_id, date, nom, type, infos, color);
 							_operation.addEntite(entite);
 						}
 
