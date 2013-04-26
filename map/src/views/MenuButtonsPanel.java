@@ -2,22 +2,16 @@ package views;
 
 import java.awt.Color;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import views.buttons.AddLocationButton;
-import views.buttons.AddVictimButton;
-import views.buttons.EditVictimButton;
 import views.buttons.SubMenuMapButton;
 import views.buttons.SubMenuVictimButton;
-import views.listeners.MapComboBoxListener;
 import controllers.MapController;
 import controllers.OperationController;
 
