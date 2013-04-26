@@ -71,7 +71,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	private JComboBox<String> _typeComboBox;
 	public ButtonGroup JradioBoutonGroup = new ButtonGroup();
 	private JPanel _colorChooserPanel;
-	private Color colorEntity;
+	private String colorEntity;
 	private JPanel _listeEquipierPanel;
 	
 	private TeamMemberController _teamController; 
@@ -311,11 +311,11 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_colorChooserPanel.setPreferredSize(new Dimension(10, 1));
 		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
 		
-		colorEntity = Color.getColor(_entityController.getColor());
+		colorEntity = _entityController.getColor();
 		
 		System.out.println("couleur de l'entité :"+_entityController.getColor());
 		
-		//_colorChooserPanel.setBackground(_entityController.getColor());
+		//_colorChooserPanel.setForeground(_entityController.getColor());
 		
 		System.out.println("couleur cadre :"+Color.BLACK);
 		
