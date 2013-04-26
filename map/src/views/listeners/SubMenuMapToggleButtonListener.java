@@ -1,5 +1,7 @@
 package views.listeners;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -25,9 +27,27 @@ public class SubMenuMapToggleButtonListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		ImageIcon image = _mapController.getImage();
-		BufferedImage newMap = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+		
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		double ratio = 1;
+		
+		if(image.getIconHeight() > height && image.getIconWidth() > width) {
+			if(image.getIconHeight() > image.getIconWidth()) {
+				ratio = width/image.getIconWidth();
+			} else {
+				ratio = height/image.getIconHeight();
+			}
+		} else if(image.getIconHeight() > height) {
+			ratio = height/image.getIconHeight();
+		} else if(image.getIconWidth() > width) {
+			ratio = width/image.getIconWidth();
+		}
+		
+		BufferedImage newMap = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
+		newMap.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
 		_mapPanel.setMap(newMap);
-		_mapPanel.getMap().getGraphics().drawImage(image.getImage(), 0,	0, image.getIconWidth(), image.getIconHeight(), null);
 		_operationController.setCurrentMap(_mapController);
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
