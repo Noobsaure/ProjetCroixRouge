@@ -46,7 +46,7 @@ import javax.swing.JSplitPane;
 import observer.Observer;
 
 
-
+// cool
 public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 {
 	private static final long serialVersionUID = 1L;
