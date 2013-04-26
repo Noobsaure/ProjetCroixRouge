@@ -26,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 
 import views.buttons.CustomButton;
 import views.listeners.ColorChooserListener;
+import views.listeners.EditEntityColorListener;
 import views.listeners.EditEntityNameLocalisationButtonListener;
 import views.listeners.EditStatusEntityButtonListener;
 import views.listeners.MapPanelMouseListener;
@@ -148,8 +149,12 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
 				RowSpec.decode("27px"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				FormFactory.DEFAULT_ROWSPEC,
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,}));
 
@@ -302,16 +307,31 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		JLabel lblCouleur = new JLabel("Couleur :");
 		formPanel.add(lblCouleur, "1, 28");
 		
-		JPanel panel = new JPanel();
+		_colorChooserPanel = new JPanel();
+		_colorChooserPanel.setMinimumSize(new Dimension(10, 1));
+		_colorChooserPanel.setPreferredSize(new Dimension(10, 1));
+		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
+		
 		colorEntity = _entityController.getColor();
-		panel.setBackground(colorEntity);
-		formPanel.add(panel, "2, 28, fill, fill");
+		
+		System.out.println("couleur de l'entité :"+_entityController.getColor());
+		
+		_colorChooserPanel.setBackground(Color.BLACK);
+		
+		System.out.println("couleur cadre :"+Color.BLACK);
+		
+		formPanel.add(_colorChooserPanel, "2, 28, fill, fill");
 		
 		CustomButton ModifColorButton = new CustomButton("Modifier couleur");
-		formPanel.add(ModifColorButton, "2, 29");
+		//ModifColorButton.addActionListener(new EditEntityColorListener(_parent,_operationController, _entityController, this, (MapPanel)_parent));
+		formPanel.add(ModifColorButton, "2, 30");
 		
 		JSeparator separator_3 = new JSeparator();
 		formPanel.add(separator_3, "1, 31, 2, 1");
+		
+		/**************************************************************\
+		 * 						Button retour
+		\**************************************************************/
 		
 		JPanel buttonPanel = new JPanel();
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);

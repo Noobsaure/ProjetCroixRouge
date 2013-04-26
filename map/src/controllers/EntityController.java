@@ -107,7 +107,7 @@ public class EntityController implements Subject {
 	 * @param type The type of the entity in the database
 	 * @param infos The informations about the entity in database
 	 */
-	public EntityController(OperationController operation, DatabaseManager dbm, int id, int stateId, int positionId, java.sql.Timestamp dateArriveeLocalisation, String name, String type, String infos){
+	public EntityController(OperationController operation, DatabaseManager dbm, int id, int stateId, int positionId, java.sql.Timestamp dateArriveeLocalisation, String name, String type, String infos, String color){
 		System.out.println("Creation instance Entite deja existante (id = "+id+" ).");
 
 		_operation = operation;
@@ -119,6 +119,7 @@ public class EntityController implements Subject {
 		_type = type;
 		_infos = infos;
 		_dateArriveeLocalisation = dateArriveeLocalisation;
+		_color = color;
 
 		ResultSet result;
 
@@ -247,6 +248,16 @@ public class EntityController implements Subject {
 
 	public java.sql.Timestamp getDateArriveeLocalisation(){
 		return _dateArriveeLocalisation;
+	}
+	
+	public void setColor(String newColor){
+		try{
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "couleur='"+newColor+"'","id ="+_id));
+		}catch(MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite \n"+_name);
+		}
+
+		_color = newColor;
 	}
 
 	public void setLocation(LocationController location) {	
