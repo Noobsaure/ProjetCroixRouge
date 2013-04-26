@@ -18,6 +18,7 @@ import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
 public class EntityController implements Subject {
+	//Ceci est un test
 	private OperationController _operation;	
 	private DatabaseManager _dbm;
 

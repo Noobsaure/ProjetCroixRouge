@@ -7,9 +7,11 @@ import java.util.List;
 
 import observer.Observer;
 import observer.Subject;
+import views.ErrorMessage;
 import views.GlobalPanel;
 import database.DatabaseManager;
 import database.MalformedQueryException;
+import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 
 
@@ -127,8 +129,11 @@ public class OperationController implements Subject
 			}
 		}
 		
-		LocationController PCM = new LocationController(this, _dbm, 0, 0);
-		_idPcm = PCM.getId();
+		try {
+			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par défaut toutes les entités se trouvent à cette endroit.',0,0)"));
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entités.");
+		}
 	}
 
 	public void loadMaps(){
@@ -302,32 +307,16 @@ public class OperationController implements Subject
 	}
 
 	public List<EntityController> getEntityList(){
-		List<EntityController> listEntity = new ArrayList<EntityController>(_entityList);
-
-		return listEntity;
-	}
-
-	public List<EntityController> getEntityListInLocation(){
 		List<EntityController> listEntity = new ArrayList<EntityController>();
 
 		for(EntityController entity : _entityList){
-			if(entity.getIdPosCurrent() != _idPcm)
+			if( entity.isTypeInterne()  )
 				listEntity.add(entity);
 		}
 
 		return listEntity;
 	}
 
-	public List<EntityController> getEntityListAtPCM(){
-		List<EntityController> listEntity = new ArrayList<EntityController>();
-
-		for(EntityController entity : _entityList){
-			if( (entity.getIdPosCurrent() == _idPcm) && ( entity.isTypeInterne() ) )
-				listEntity.add(entity);
-		}
-
-		return listEntity;
-	}
 
 	public List<TeamMemberController> getTeamMemberList(){
 		List<TeamMemberController> listTeamMember = new ArrayList<TeamMemberController>(_teamMemberList);
@@ -338,10 +327,10 @@ public class OperationController implements Subject
 	public List<TeamMemberController> getTeamMemberAvailableList(){
 		List<TeamMemberController> listTeamMember = new ArrayList<TeamMemberController>();
 
-//		for(TeamMemberController teamMember : _teamMemberList){
-//			if(!teamMember.isActive())
-//				listTeamMember.add(teamMember);
-//		}
+		for(TeamMemberController teamMember : _teamMemberList){
+			if(!teamMember.isActive())
+				listTeamMember.add(teamMember);
+		}
 
 		return listTeamMember;
 	}
@@ -359,6 +348,7 @@ public class OperationController implements Subject
 	public List<LocationController> getLocationList(){
 		List<LocationController> listLocation = new ArrayList<LocationController>(_locationList);
 
+		
 		return listLocation;
 	}
 

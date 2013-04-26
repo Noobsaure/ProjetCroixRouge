@@ -48,11 +48,11 @@ public class LocationController implements Subject {
 		_dbm = dbm;
 		_idMap = operation.getCurrentMap().getId();
 				
-//		if(name.compareTo("LocalisationBaseDesEntites") == 0){
-//			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation \n" +
-//			"de départ pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");	
-//			return;
-//		}
+		if(name.compareTo("LocalisationBaseDesEntites") == 0){
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation \n" +
+			"de départ pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");	
+			return;
+		}
 		
 		try {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+name+"','"+description+"',"+x+","+y+")"));
@@ -98,49 +98,7 @@ public class LocationController implements Subject {
 		
 		_observers = new ArrayList<Observer>();
 	}
-	/* Constructeur relatif au PCM */
-	public LocationController(OperationController operation, DatabaseManager dbm, int x, int y) {
-		String nom = "LocalisationBaseDesEntites";
-		String desc = "Poste de commandement mobile. Par défaut toutes les entités se trouvent à cette endroit.";
-		_dbm = dbm;
-		ResultSet result;
-		int requete;
-		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation", "operation_id="+this.getId()+" AND nom='"+nom+"'"));
-			// Si le PCM n'existe pas : il faut le créer
-			if (!result.next()) {
-				_coordX = x;
-				_coordY = y;
-				_name = nom;
-				_description = desc;
-				_operation = operation;
-				_idOperation = operation.getId();
-				_idMap = operation.getCurrentMap().getId();
-				try {
-					requete = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+nom+"','"+desc+"',"+x+","+y+")"));
-					_id = requete;
-				} catch (MalformedQueryException e) {
-					e.printStackTrace();
-				}
-				
-			}
-			// Si le PCM existe déjà, on récupère ses infos
-			else {
-				_coordX = result.getInt("x");
-				_coordY = result.getInt("y");
-				_name = result.getString("nom");
-				_description = result.getString("desc");
-				_operation = operation;
-				_idOperation = operation.getId();
-				_idMap = operation.getCurrentMap().getId();
-			}
-		} catch (MalformedQueryException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-	}
+	
 
 	/**
 	 * Add the entity in parameter to the current location and create a history of this entity for this location.
