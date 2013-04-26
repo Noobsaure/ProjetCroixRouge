@@ -80,8 +80,8 @@ public class ConfirmAddVictimListener implements ActionListener
 			String adress = _addVictimPanel.getAdressTextField().getText();
 			String codePostal = _addVictimPanel.getCodePostaleTextField().getText();
 			String ville = _addVictimPanel.getVilleTextField().getText();
-			String dateDeNaissance = _addVictimPanel.getDateDeNaissanceTextField().getText();
-			String dateArrivee = _addVictimPanel.getDateArriveeTextField().getText();
+			String dateDeNaissance = _addVictimPanel.getDateDeNaissanceTextField().getDateFormatString();
+			String dateArrivee = _addVictimPanel.getDateArriveeTextField().getDateFormatString();
 
 			if(name.equals("")) name = "NULL";
 			if(prenom.equals("")) prenom = "NULL";

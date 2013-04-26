@@ -24,6 +24,8 @@ import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
+import com.toedter.calendar.JCalendar;
+import com.toedter.calendar.JDateChooser;
 
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -58,8 +60,8 @@ public class AddVictimPanel extends JLayeredPane
 	private JTextField _adressTextField;
 	private JTextField _codePostaleTextField;
 	private JTextField _villeTextField;
-	private JTextField _dateDeNaissanceTextField;
-	private JTextField _dateArriveeTextField;
+	private JDateChooser _dateDeNaissanceTextField;
+	private JDateChooser _dateArriveeTextField;
 	private JTextField _idAnonymat;
 	
 	
@@ -206,13 +208,13 @@ public class AddVictimPanel extends JLayeredPane
 
 		JLabel dateDeNaissanceLabel = new JLabel("Date de naissance :");
 		
-		_dateDeNaissanceTextField = new JTextField();
-		_dateDeNaissanceTextField.setColumns(10);
+		_dateDeNaissanceTextField = new JDateChooser();
+//		_dateDeNaissanceTextField.setColumns(10);
 		
 		JLabel dateArriveeLabel = new JLabel("Date d'arrivée :");
 		
-		_dateArriveeTextField = new JTextField();
-		_dateArriveeTextField.setColumns(10);
+		_dateArriveeTextField = new JDateChooser();
+//		_dateArriveeTextField.setColumns(10);
 		
 		int anchor = GridBagConstraints.WEST;
 		GridBagConstraints gbc_nameLabel = new GridBagConstraints();
@@ -353,11 +355,11 @@ public class AddVictimPanel extends JLayeredPane
 	{
 		return _villeTextField;
 	}
-	public JTextField getDateDeNaissanceTextField()
+	public JDateChooser getDateDeNaissanceTextField()
 	{
 		return _dateDeNaissanceTextField;
 	}
-	public JTextField getDateArriveeTextField()
+	public JDateChooser getDateArriveeTextField()
 	{
 		return _dateArriveeTextField;
 	}
