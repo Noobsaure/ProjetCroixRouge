@@ -55,7 +55,6 @@ public class SubMenuPanel extends JPanel
 		add(panelAddButton, BorderLayout.NORTH);
 
 		JPanel _panelOkButton = new JPanel();
-//		panelOkButton.setLayout(new BorderLayout());
 		_panelOkButton.setBackground(COLOR_BACKGROUND);
 		_panelOkButton.setBorder(new EmptyBorder(2, 30, 2, 30));
 		_okButton = new CustomButton("  Ok  ");
