@@ -94,7 +94,8 @@ public class LocationController implements Subject {
 		_idMap = idMap;
 		_idOperation = _operation.getId();
 
-		operation.getMap(_idMap).addLocation(this);
+		if(_name.compareTo("LocalisationBaseDesEntites") != 0)
+			operation.getMap(_idMap).addLocation(this);
 		
 		_observers = new ArrayList<Observer>();
 	}
