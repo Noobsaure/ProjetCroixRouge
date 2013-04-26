@@ -1,12 +1,13 @@
 package views;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.Dimension;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -15,7 +16,6 @@ import launcher.Launcher;
 import observer.Observer;
 import views.listeners.EditLocationButtonListener;
 import views.listeners.MapPanelMouseListener;
-import controllers.EntityController;
 import controllers.LocationController;
 import controllers.MapController;
 import controllers.OperationController;
@@ -157,15 +157,27 @@ public class MapPanel extends JPanel implements Observer
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
 		if(mapController != null && _map == null) {
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			double width = screenSize.getWidth();
+			double height = screenSize.getHeight();
+			double ratio = 1;
 			ImageIcon image = mapController.getImage();
-			_map = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-			_map.getGraphics().drawImage(
-					image.getImage(),
-					0, 
-					0,
-					image.getIconWidth(), 
-					image.getIconHeight(), 
-					null);
+			
+			if(image.getIconHeight() > height && image.getIconWidth() > width) {
+				if(image.getIconHeight() > image.getIconWidth()) {
+					ratio = width/image.getIconWidth();
+				} else {
+					ratio = height/image.getIconHeight();
+				}
+			} else if(image.getIconHeight() > height) {
+				ratio = height/image.getIconHeight();
+			} else if(image.getIconWidth() > width) {
+				ratio = width/image.getIconWidth();
+			}
+			
+			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
+			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
+			System.out.println("TAILLE MAP = "+_map.getHeight() + "    " + _map.getWidth());
 		}
 		updateLocations();
 
