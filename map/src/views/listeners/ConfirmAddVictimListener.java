@@ -3,10 +3,10 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.swing.JPanel;
-
-import com.sun.org.apache.xerces.internal.impl.dv.xs.DateDV;
 
 import views.AddVictimPanel;
 import views.ErrorMessage;
@@ -80,20 +80,26 @@ public class ConfirmAddVictimListener implements ActionListener
 			String adress = _addVictimPanel.getAdressTextField().getText();
 			String codePostal = _addVictimPanel.getCodePostaleTextField().getText();
 			String ville = _addVictimPanel.getVilleTextField().getText();
-			String dateDeNaissance = _addVictimPanel.getDateDeNaissanceTextField().getDateFormatString();
-			String dateArrivee = _addVictimPanel.getDateArriveeTextField().getDateFormatString();
+			
+			Date dateDeNaissanceDate = (Date) _addVictimPanel.getDateDeNaissanceDatePicker().getDate();
+			Timestamp dateDeNaissance = null;
+			if(dateDeNaissanceDate != null)
+				dateDeNaissance = new Timestamp(dateDeNaissanceDate.getDay(), dateDeNaissanceDate.getMonth(), dateDeNaissanceDate.getYear(), dateDeNaissanceDate.getHours(), dateDeNaissanceDate.getMinutes(), dateDeNaissanceDate.getSeconds(), 0);
+			
+			Date datePriseEnChargeDate = (Date) _addVictimPanel.getDatePriseEnChargeDatePicker().getDate();
+			Timestamp datePriseEnCharge = null;
+			if(datePriseEnChargeDate != null)
+				datePriseEnCharge = new Timestamp(datePriseEnChargeDate.getDay(), datePriseEnChargeDate.getMonth(), datePriseEnChargeDate.getYear(), datePriseEnChargeDate.getHours(), datePriseEnChargeDate.getMinutes(), datePriseEnChargeDate.getSeconds(), 0);
 
-			if(name.equals("")) name = "NULL";
-			if(prenom.equals("")) prenom = "NULL";
+			Timestamp dateSortie = null;
+			
 			if(adress.equals("")) adress = "NULL";
 			if(codePostal.equals("")) codePostal = "NULL";
 			if(ville.equals("")) ville = "NULL";
-			if(dateDeNaissance.equals("")) dateDeNaissance = "NULL";
-			if(dateArrivee.equals("")) dateArrivee = "NULL";
 			
 			try
 			{
-				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, codePostal, ville, dateDeNaissance, "", soins, idAnonymat);
+				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, codePostal, ville, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat);
 			}
 			catch(ParseException e1)
 			{

@@ -20,19 +20,19 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
+import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import observer.Observer;
 import views.buttons.CustomButton;
+import views.listeners.AddEquipierButtonListener;
 import views.listeners.ColorChooserListener;
-import views.listeners.EditEntityColorListener;
 import views.listeners.EditEntityNameLocalisationButtonListener;
 import views.listeners.EditStatusEntityButtonListener;
-import views.listeners.MapPanelMouseListener;
 import views.listeners.RemoveEquipierListener;
 import views.listeners.RetourEquipierEntityListener;
-import views.listeners.AddEquipierButtonListener;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -43,9 +43,6 @@ import controllers.EntityController;
 import controllers.LocationController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
-import javax.swing.JSplitPane;
-
-import observer.Observer;
 
 
 // cool

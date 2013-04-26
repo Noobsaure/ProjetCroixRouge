@@ -60,8 +60,8 @@ public class AddVictimPanel extends JLayeredPane
 	private JTextField _adressTextField;
 	private JTextField _codePostaleTextField;
 	private JTextField _villeTextField;
-	private JDateChooser _dateDeNaissanceTextField;
-	private JDateChooser _dateArriveeTextField;
+	private JDateChooser _dateDeNaissanceDatePicker;
+	private JDateChooser _dateArriveeDatePicker;
 	private JTextField _idAnonymat;
 	
 	
@@ -208,12 +208,7 @@ public class AddVictimPanel extends JLayeredPane
 
 		JLabel dateDeNaissanceLabel = new JLabel("Date de naissance :");
 		
-		_dateDeNaissanceTextField = new JDateChooser();
-//		_dateDeNaissanceTextField.setColumns(10);
-		
-		JLabel dateArriveeLabel = new JLabel("Date d'arrivée :");
-		
-		_dateArriveeTextField = new JDateChooser();
+		_dateDeNaissanceDatePicker = new JDateChooser();
 //		_dateArriveeTextField.setColumns(10);
 		
 		int anchor = GridBagConstraints.WEST;
@@ -279,27 +274,33 @@ public class AddVictimPanel extends JLayeredPane
 		identityPanel.add(_villeTextField, gbc_villeTextField);
 		GridBagConstraints gbc_dateDeNaissanceLabel = new GridBagConstraints();
 		gbc_dateDeNaissanceLabel.anchor = anchor;
-		gbc_dateDeNaissanceLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_dateDeNaissanceLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_dateDeNaissanceLabel.gridx = 0;
 		gbc_dateDeNaissanceLabel.gridy = 3;
 		identityPanel.add(dateDeNaissanceLabel, gbc_dateDeNaissanceLabel);
 		GridBagConstraints gbc_dateDeNaissanceTextField = new GridBagConstraints();
-		gbc_dateDeNaissanceTextField.insets = new Insets(0, 0, 0, 5);
+		gbc_dateDeNaissanceTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_dateDeNaissanceTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_dateDeNaissanceTextField.gridx = 1;
 		gbc_dateDeNaissanceTextField.gridy = 3;
-		identityPanel.add(_dateDeNaissanceTextField, gbc_dateDeNaissanceTextField);
-		GridBagConstraints gbc_dateArriveeLabel = new GridBagConstraints();
-		gbc_dateArriveeLabel.anchor = anchor;
-		gbc_dateArriveeLabel.insets = new Insets(0, 0, 0, 5);
-		gbc_dateArriveeLabel.gridx = 2;
-		gbc_dateArriveeLabel.gridy = 3;
-		identityPanel.add(dateArriveeLabel, gbc_dateArriveeLabel);
-		GridBagConstraints gbc_dateArriveeTextField = new GridBagConstraints();
-		gbc_dateArriveeTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_dateArriveeTextField.gridx = 3;
-		gbc_dateArriveeTextField.gridy = 3;
-		identityPanel.add(_dateArriveeTextField, gbc_dateArriveeTextField);
+		identityPanel.add(_dateDeNaissanceDatePicker, gbc_dateDeNaissanceTextField);
+								//		_dateDeNaissanceTextField.setColumns(10);
+										
+										JLabel dateArriveeLabel = new JLabel("Date de prise en charge :");
+										GridBagConstraints gbc_dateArriveeLabel = new GridBagConstraints();
+										gbc_dateArriveeLabel.anchor = anchor;
+										gbc_dateArriveeLabel.insets = new Insets(0, 0, 5, 5);
+										gbc_dateArriveeLabel.gridx = 2;
+										gbc_dateArriveeLabel.gridy = 3;
+										identityPanel.add(dateArriveeLabel, gbc_dateArriveeLabel);
+								
+								_dateArriveeDatePicker = new JDateChooser();
+								GridBagConstraints gbc_dateArriveeTextField = new GridBagConstraints();
+								gbc_dateArriveeTextField.insets = new Insets(0, 0, 5, 0);
+								gbc_dateArriveeTextField.fill = GridBagConstraints.HORIZONTAL;
+								gbc_dateArriveeTextField.gridx = 3;
+								gbc_dateArriveeTextField.gridy = 3;
+								identityPanel.add(_dateArriveeDatePicker, gbc_dateArriveeTextField);
 		/**************************************************************/
 
 		
@@ -355,13 +356,13 @@ public class AddVictimPanel extends JLayeredPane
 	{
 		return _villeTextField;
 	}
-	public JDateChooser getDateDeNaissanceTextField()
+	public JDateChooser getDateDeNaissanceDatePicker()
 	{
-		return _dateDeNaissanceTextField;
+		return _dateDeNaissanceDatePicker;
 	}
-	public JDateChooser getDateArriveeTextField()
+	public JDateChooser getDatePriseEnChargeDatePicker()
 	{
-		return _dateArriveeTextField;
+		return _dateArriveeDatePicker;
 	}
 	public JTextField getIdANonymat()
 	{
