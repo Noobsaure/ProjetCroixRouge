@@ -113,11 +113,10 @@ public class OperationController implements Subject
 				float x = result.getFloat("x");
 				float y = result.getFloat("y");
 
-				if(getMap(id_carte) != null){
-					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
-					_locationList.add(location);
-					location.addObserver(_globalPanel);
-				}
+				LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
+				_locationList.add(location);
+				location.addObserver(_globalPanel);
+				
 			}
 		}catch(MalformedQueryException e1){e1.printStackTrace();}
 		catch(SQLException e2){e2.printStackTrace();}
@@ -130,9 +129,9 @@ public class OperationController implements Subject
 		}
 		
 		try {
-			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par défaut toutes les entités se trouvent à cette endroit.',0,0)"));
+			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par d��faut toutes les entit��s se trouvent �� cette endroit.',0,0)"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entités.");
+			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entit��s.");
 		}
 	}
 
@@ -356,8 +355,10 @@ public class OperationController implements Subject
 		List<LocationController> listLocation = new ArrayList<LocationController>();
 
 		for(LocationController location : _locationList){
-			if( (location.getIdMap() == _currentMap.getId()) && (location.getId() != _idPcm) )
-				listLocation.add(location);
+			if(location.getId() != _idPcm){
+				if(location.getIdMap() == _currentMap.getId())
+					listLocation.add(location);
+			}
 		}
 
 		return listLocation;
