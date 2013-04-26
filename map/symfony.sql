@@ -1,20 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 3.5.6
+-- version 3.5.7
 -- http://www.phpmyadmin.net
 --
--- Host: 127.0.0.1
--- Generation Time: Apr 25, 2013 at 09:41 AM
--- Server version: 5.5.29-log
--- PHP Version: 5.4.11
+-- Host: localhost
+-- Generation Time: Apr 26, 2013 at 03:50 PM
+-- Server version: 5.5.29
+-- PHP Version: 5.4.10
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
 
 --
 -- Database: `symfony`
@@ -26,7 +20,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `Carte`
 --
 
-CREATE TABLE IF NOT EXISTS `Carte` (
+CREATE TABLE `Carte` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `operation_id` int(11) DEFAULT NULL,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -34,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `Carte` (
   `image` longblob,
   PRIMARY KEY (`id`),
   KEY `IDX_7B15D0F944AC3583` (`operation_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -42,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `Carte` (
 -- Table structure for table `Categorie`
 --
 
-CREATE TABLE IF NOT EXISTS `Categorie` (
+CREATE TABLE `Categorie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
@@ -51,18 +45,27 @@ CREATE TABLE IF NOT EXISTS `Categorie` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `DemandeSuppression`
+-- Table structure for table `demandesuppression`
 --
 
-CREATE TABLE IF NOT EXISTS `DemandeSuppression` (
+CREATE TABLE `demandesuppression` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `utilisateur_id` int(11) DEFAULT NULL,
   `message_id` int(11) DEFAULT NULL,
   `date_demande` datetime NOT NULL,
+  `operation_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_E5D655A7FB88E14F` (`utilisateur_id`),
-  KEY `IDX_E5D655A7537A1329` (`message_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+  KEY `IDX_E5D655A7537A1329` (`message_id`),
+  KEY `IDX_E5D655A744AC3583` (`operation_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `demandesuppression`
+--
+
+INSERT INTO `demandesuppression` (`id`, `utilisateur_id`, `message_id`, `date_demande`, `operation_id`) VALUES
+(1, 1, 2, '2013-04-26 15:12:44', NULL);
 
 -- --------------------------------------------------------
 
@@ -70,7 +73,7 @@ CREATE TABLE IF NOT EXISTS `DemandeSuppression` (
 -- Table structure for table `Entite`
 --
 
-CREATE TABLE IF NOT EXISTS `Entite` (
+CREATE TABLE `Entite` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `statut_id` int(11) DEFAULT NULL,
   `pos_courante_id` int(11) DEFAULT NULL,
@@ -88,16 +91,13 @@ CREATE TABLE IF NOT EXISTS `Entite` (
   KEY `IDX_1D851D1144AC3583` (`operation_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
-INSERT INTO `Entite` (`id`, `statut_id`, `pos_courante_id`, `operateur_id`, `operation_id`, `nom`, `date_depart`, `type`, `couleur`, `infos`) VALUES
-(-1, NULL, NULL, NULL, NULL, 'JApplet', '0000-00-00 00:00:00', '', NULL, '');
-
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `EntiteHistorique`
 --
 
-CREATE TABLE IF NOT EXISTS `EntiteHistorique` (
+CREATE TABLE `EntiteHistorique` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `equipier_id` int(11) DEFAULT NULL,
   `entite_id` int(11) DEFAULT NULL,
@@ -114,7 +114,7 @@ CREATE TABLE IF NOT EXISTS `EntiteHistorique` (
 -- Table structure for table `Equipier`
 --
 
-CREATE TABLE IF NOT EXISTS `Equipier` (
+CREATE TABLE `Equipier` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `operation_id` int(11) DEFAULT NULL,
   `entite_id` int(11) DEFAULT NULL,
@@ -127,15 +127,7 @@ CREATE TABLE IF NOT EXISTS `Equipier` (
   PRIMARY KEY (`id`),
   KEY `IDX_B359EF044AC3583` (`operation_id`),
   KEY `IDX_B359EF09BEA957A` (`entite_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `Equipier`
---
-
-INSERT INTO `Equipier` (`id`, `operation_id`, `entite_id`, `nom`, `prenom`, `tel`, `enActivite`, `motifRupture`, `autres`) VALUES
-(1, NULL, NULL, 'Sidhoum', 'Fouad', '0102030405', 1, NULL, 'x'),
-(2, NULL, NULL, 'Leroy', 'Dorian', '0102030406', 1, NULL, 'x');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -143,7 +135,7 @@ INSERT INTO `Equipier` (`id`, `operation_id`, `entite_id`, `nom`, `prenom`, `tel
 -- Table structure for table `Localisation`
 --
 
-CREATE TABLE IF NOT EXISTS `Localisation` (
+CREATE TABLE `Localisation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `operation_id` int(11) DEFAULT NULL,
   `carte_id` int(11) DEFAULT NULL,
@@ -162,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `Localisation` (
 -- Table structure for table `LocalisationHistorique`
 --
 
-CREATE TABLE IF NOT EXISTS `LocalisationHistorique` (
+CREATE TABLE `LocalisationHistorique` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `depuis_id` int(11) DEFAULT NULL,
   `vers_id` int(11) DEFAULT NULL,
@@ -181,7 +173,7 @@ CREATE TABLE IF NOT EXISTS `LocalisationHistorique` (
 -- Table structure for table `Message`
 --
 
-CREATE TABLE IF NOT EXISTS `Message` (
+CREATE TABLE `Message` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `emetteur_entite_id` int(11) DEFAULT NULL,
   `destinataire_entite_id` int(11) DEFAULT NULL,
@@ -205,7 +197,15 @@ CREATE TABLE IF NOT EXISTS `Message` (
   KEY `IDX_790009E344AC3583` (`operation_id`),
   KEY `IDX_790009E3727ACA70` (`parent_id`),
   KEY `IDX_790009E3355B84A` (`deplacement_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `Message`
+--
+
+INSERT INTO `Message` (`id`, `emetteur_entite_id`, `destinataire_entite_id`, `emetteur_utilisateur_id`, `destinataire_utilisateur_id`, `operateur_id`, `categorie_id`, `operation_id`, `parent_id`, `deplacement_id`, `date_heure`, `contenu`, `erreur`) VALUES
+(1, NULL, NULL, 1, 2, 1, NULL, 1, NULL, NULL, '2013-04-26 15:11:22', 'Salut Steven :D', 0),
+(2, NULL, NULL, 2, 1, 1, NULL, 1, NULL, NULL, '2013-04-26 15:12:05', 'tada', 0);
 
 -- --------------------------------------------------------
 
@@ -213,7 +213,7 @@ CREATE TABLE IF NOT EXISTS `Message` (
 -- Table structure for table `Operation`
 --
 
-CREATE TABLE IF NOT EXISTS `Operation` (
+CREATE TABLE `Operation` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `etat` tinyint(1) NOT NULL,
@@ -233,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `Operation` (
 --
 
 INSERT INTO `Operation` (`id`, `nom`, `etat`, `entreeUtilisateurs`, `nature`, `lieu`, `date_debut`, `date_fin`, `date_debut_prevue`, `date_fin_prevue`, `commentaire`) VALUES
-(1, 'Op1', 1, 'Elouan Rolland', 'x', 'x', '2013-04-25 11:39:59', '0000-00-00 00:00:00', '2013-04-25 11:39:00', '2013-04-30 11:39:00', 'x');
+(1, 'Opération1', 1, 'Elouan Rolland', 'test', 'test', '2013-04-26 15:02:53', '0000-00-00 00:00:00', '2013-04-26 03:02:00', '2013-04-30 03:02:00', 'test');
 
 -- --------------------------------------------------------
 
@@ -241,7 +241,7 @@ INSERT INTO `Operation` (`id`, `nom`, `etat`, `entreeUtilisateurs`, `nature`, `l
 -- Table structure for table `operations_utilisateurs`
 --
 
-CREATE TABLE IF NOT EXISTS `operations_utilisateurs` (
+CREATE TABLE `operations_utilisateurs` (
   `operation_id` int(11) NOT NULL,
   `utilisateur_id` int(11) NOT NULL,
   PRIMARY KEY (`operation_id`,`utilisateur_id`),
@@ -254,7 +254,8 @@ CREATE TABLE IF NOT EXISTS `operations_utilisateurs` (
 --
 
 INSERT INTO `operations_utilisateurs` (`operation_id`, `utilisateur_id`) VALUES
-(1, 1);
+(1, 1),
+(1, 2);
 
 -- --------------------------------------------------------
 
@@ -262,7 +263,7 @@ INSERT INTO `operations_utilisateurs` (`operation_id`, `utilisateur_id`) VALUES
 -- Table structure for table `Statut`
 --
 
-CREATE TABLE IF NOT EXISTS `Statut` (
+CREATE TABLE `Statut` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `entite_id` int(11) DEFAULT NULL,
   `dispo` tinyint(1) NOT NULL,
@@ -278,7 +279,7 @@ CREATE TABLE IF NOT EXISTS `Statut` (
 -- Table structure for table `Utilisateur`
 --
 
-CREATE TABLE IF NOT EXISTS `Utilisateur` (
+CREATE TABLE `Utilisateur` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `operation_id` int(11) DEFAULT NULL,
   `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -300,9 +301,9 @@ CREATE TABLE IF NOT EXISTS `Utilisateur` (
 --
 
 INSERT INTO `Utilisateur` (`id`, `operation_id`, `username`, `nom`, `prenom`, `tel`, `couleur`, `password`, `salt`, `roles`, `enActivite`) VALUES
-(-1, NULL, 'JApplet', '', '', NULL, NULL, '', '', '', 1),
-(1, NULL, 'admin', 'Rolland', 'Elouan', '0102030405', NULL, 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
-(2, NULL, 'bobby', 'Hallier', 'Steven', '0102030405', NULL, 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:9:"ROLE_USER";}', 1);
+(-1, NULL, 'JApplet', 'JApplet', 'JApplet', NULL, NULL, '', '', 'a:1:{i:0;s:9:"ROLE_SPEC";}', 1),
+(1, NULL, 'admin', 'Rolland', 'Elouan', '0102030405', '#20B2AA', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(2, NULL, 'bobby', 'Hallier', 'Steven', '0102030405', '#4B0082', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:9:"ROLE_USER";}', 1);
 
 -- --------------------------------------------------------
 
@@ -310,7 +311,7 @@ INSERT INTO `Utilisateur` (`id`, `operation_id`, `username`, `nom`, `prenom`, `t
 -- Table structure for table `Victime`
 --
 
-CREATE TABLE IF NOT EXISTS `Victime` (
+CREATE TABLE `Victime` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `categorie_id` int(11) DEFAULT NULL,
   `operation_id` int(11) DEFAULT NULL,
@@ -344,7 +345,7 @@ CREATE TABLE IF NOT EXISTS `Victime` (
 -- Table structure for table `VictimeCat`
 --
 
-CREATE TABLE IF NOT EXISTS `VictimeCat` (
+CREATE TABLE `VictimeCat` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
@@ -356,7 +357,7 @@ CREATE TABLE IF NOT EXISTS `VictimeCat` (
 -- Table structure for table `victimes_messages`
 --
 
-CREATE TABLE IF NOT EXISTS `victimes_messages` (
+CREATE TABLE `victimes_messages` (
   `message_id` int(11) NOT NULL,
   `victime_id` int(11) NOT NULL,
   PRIMARY KEY (`message_id`,`victime_id`),
@@ -375,9 +376,10 @@ ALTER TABLE `Carte`
   ADD CONSTRAINT `FK_7B15D0F944AC3583` FOREIGN KEY (`operation_id`) REFERENCES `Operation` (`id`);
 
 --
--- Constraints for table `DemandeSuppression`
+-- Constraints for table `demandesuppression`
 --
-ALTER TABLE `DemandeSuppression`
+ALTER TABLE `demandesuppression`
+  ADD CONSTRAINT `FK_E5D655A744AC3583` FOREIGN KEY (`operation_id`) REFERENCES `Operation` (`id`),
   ADD CONSTRAINT `FK_E5D655A7537A1329` FOREIGN KEY (`message_id`) REFERENCES `Message` (`id`),
   ADD CONSTRAINT `FK_E5D655A7FB88E14F` FOREIGN KEY (`utilisateur_id`) REFERENCES `Utilisateur` (`id`);
 
@@ -465,7 +467,3 @@ ALTER TABLE `Victime`
 ALTER TABLE `victimes_messages`
   ADD CONSTRAINT `FK_5E78EEB275FF0F4B` FOREIGN KEY (`victime_id`) REFERENCES `Victime` (`id`),
   ADD CONSTRAINT `FK_5E78EEB2537A1329` FOREIGN KEY (`message_id`) REFERENCES `Message` (`id`);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
