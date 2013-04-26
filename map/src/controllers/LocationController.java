@@ -151,7 +151,7 @@ public class LocationController implements Subject {
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,'-1','-1','-1','-1',"+_operation.getIdOperateur()+", NULL, "+_operation.getId()+",NULL, NULL,'"+datetime+"','"+message+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", NULL, "+_operation.getId()+",NULL, NULL,'"+datetime+"','"+message+"',0)"));
 		} catch (MalformedQueryException e) {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante \n"+
 					"Message : "+message);
