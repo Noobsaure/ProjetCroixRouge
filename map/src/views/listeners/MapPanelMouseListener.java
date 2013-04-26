@@ -56,7 +56,7 @@ public class MapPanelMouseListener extends MouseAdapter {
 		}
 	}
 
-	public void mousPressed(MouseEvent e) {
+	public void mousePressed(MouseEvent e) {
 		if(_enabled) {
 			_x = e.getX();
 			_y = e.getY();
