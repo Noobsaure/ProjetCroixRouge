@@ -77,7 +77,7 @@ public class EntityController implements Subject {
 
 		try {
 			System.out.println("here");
-			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+name+"','"+datetime+"','"+type+"','"+infos+"','"+color+"')"));
+			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+name+"','"+datetime+"','"+type+"','"+color+"','"+infos+"')"));
 			System.out.println("here2");
 			_id = result2;
 			System.out.println("ID de l'entite qui vient d'être créé :"+_id);
