@@ -87,7 +87,7 @@ public class AddEquipierPanel extends JLayeredPane
 		
 		TITLE = _entityController.getName();
 		
-		JLabel title = new JLabel("Ajout d'un equipier à l'entite "+_entityController.getName());
+		JLabel title = new JLabel("Ajout d'un equipier \u00E0\u00A0 l'entite <dynamic>");
 		_internalPanel.add(title, BorderLayout.NORTH);
 		
 		JPanel formPanel = new JPanel();
@@ -119,15 +119,18 @@ public class AddEquipierPanel extends JLayeredPane
 		
 		listEquipiers= _operationController.getTeamMemberAvailableList();	
 		 
+		System.out.println("Taille list : "+listEquipiers.size());
+		
 		 for (TeamMemberController team : listEquipiers){
 			comboBoxItems.add(team.getFirstName() +" "+team.getName());
-		}
+			System.out.println("AJOUT");
+		 }
 		
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 2, left, default");
 		
-		CustomButton ajoutButton = new CustomButton("Ajouter l'equipier à l'entité");	
+		CustomButton ajoutButton = new CustomButton("Ajouter l'equipier \u00E0\u00A0 l'entit\u00E9");	
 		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_parent, _operationController, _entityController, this));
 		
 		formPanel.add(ajoutButton, "2, 4");

@@ -35,11 +35,10 @@ public class RemoveEquipierListener implements ActionListener{
 	public void actionPerformed(ActionEvent e)
 	{
 		// on supprime l'équipier de l'entité
-		_entityController.removeTeamMember(_equipier);
 		
-		//ne met pas à jour la liste d'équipier dans l'entity
-		System.out.println("dans Remove : "+_entityController.getTeamMemberList().toString());
-		System.out.println("equipier supprimé : "+_equipier.getFirstName());
+		_equipier.leaveEntity();
+		_entityController.removeTeamMember(_equipier);
+				
 		MapPanel mapPanel = (MapPanel)_parent;
 		mapPanel.addMapPanelListener();
 		
