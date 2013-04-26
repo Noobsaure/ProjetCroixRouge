@@ -311,11 +311,11 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_colorChooserPanel.setPreferredSize(new Dimension(10, 1));
 		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
 		
-		colorEntity = _entityController.getColor();
+		colorEntity = Color.getColor(_entityController.getColor());
 		
 		System.out.println("couleur de l'entité :"+_entityController.getColor());
 		
-		_colorChooserPanel.setBackground(Color.BLACK);
+		//_colorChooserPanel.setBackground(_entityController.getColor());
 		
 		System.out.println("couleur cadre :"+Color.BLACK);
 		

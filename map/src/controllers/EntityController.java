@@ -241,11 +241,9 @@ public class EntityController implements Subject {
 		return _available;
 	}
 	
-	public Color getColor() {
+	public String getColor() {
 		// TODO Auto-generated method stub
-		System.out.println("couleur dans EntityController : "+_color);
-		System.out.println("");
-		return Color.getColor(_color);
+		return _color;
 	}
 
 	public java.sql.Timestamp getDateArriveeLocalisation(){

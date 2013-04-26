@@ -183,7 +183,7 @@ public class TeamMemberController {
 	}
 
 	public boolean isActive() {
-		return _available;
+		return ! _available;
 	}
 
 	public void set_disponible(boolean _disponible) {
