@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,8 +89,9 @@ public class OperationController implements Subject
 						String type = result2.getString("type");
 						String infos = result2.getString("infos");
 						java.sql.Timestamp date = result2.getTimestamp("date_depart");
+						String color = result2.getString("couleur");
 
-						EntityController entite = new EntityController(this, _dbm, id, statut_id, position_id, date, nom, type, infos);
+						EntityController entite = new EntityController(this, _dbm, id, statut_id, position_id, date, nom, type, infos, color);
 						_entityList.add(entite);
 						entite.addObserver(_globalPanel);
 					}
@@ -176,9 +178,12 @@ public class OperationController implements Subject
 					boolean arretCardiaque = result.getBoolean("arret_cardiaque");
 					String atteinteDetails = result.getString("atteinte_details");
 					String soin = result.getString("soin");
-					VictimController victim = new VictimController(this, _dbm, id_victim, statut, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
-					_victimList.add(victim);
-
+					java.sql.Timestamp dateSortiePriseEnCharge = result.getTimestamp("date_sortie");
+					
+					if(dateSortiePriseEnCharge == null);{
+						VictimController victim = new VictimController(this, _dbm, id_victim, statut, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
+						_victimList.add(victim);
+					}
 				}
 			}
 		}catch(MalformedQueryException e1){ e1.printStackTrace(); }
