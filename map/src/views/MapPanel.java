@@ -108,6 +108,8 @@ public class MapPanel extends JPanel implements Observer
 
 
 	public GlobalPanel getGlobalPanel() {return _gPanel;}
+	public BufferedImage getMap() {return _map;}
+	public void setMap(BufferedImage map) {_map = map;}
 
 	public void updateLocations() {
 		List<LocationController> listLocations = _operation.getMapLocationList();
@@ -154,7 +156,7 @@ public class MapPanel extends JPanel implements Observer
 		Launcher launcher = _gPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
-		if(mapController != null) {
+		if(mapController != null && _map == null) {
 			ImageIcon image = mapController.getImage();
 			_map = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(
@@ -164,9 +166,9 @@ public class MapPanel extends JPanel implements Observer
 					image.getIconWidth(), 
 					image.getIconHeight(), 
 					null);
-			setMaximumSize(new Dimension(_map.getWidth(), getHeight()));
+			/*setMaximumSize(new Dimension(_map.getWidth(), getHeight()));
 			setMinimumSize(new Dimension(_map.getWidth(), getHeight()));
-			setPreferredSize(new Dimension(_map.getWidth(), getHeight()));
+			setPreferredSize(new Dimension(_map.getWidth(), getHeight()));*/
 		}
 		updateLocations();
 

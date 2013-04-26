@@ -2,10 +2,14 @@ package views.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.Map;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+
+import launcher.Launcher;
 
 import views.buttons.SubMenuMapButton;
 import views.MapPanel;
@@ -43,9 +47,18 @@ public class SwitchMapButtonListener implements ActionListener
 				buttonSelected = toggleButton;
 		}
 		
-		
 		Map<JToggleButton, MapController> map = _subMenuPanel.getMapMap();
 		MapController mapController = map.get(buttonSelected);
+		ImageIcon image = mapController.getImage();
+		BufferedImage newMap = new BufferedImage(image.getIconWidth(), image.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+		_mapPanel.setMap(newMap);
+		_mapPanel.getMap().getGraphics().drawImage(
+				image.getImage(),
+				0, 
+				0,
+				image.getIconWidth(), 
+				image.getIconHeight(), 
+				null);
 		_operationController.setCurrentMap(mapController);
 		_button.setEnabled(true);
 		_mapPanel.remove(_subMenuPanel);
