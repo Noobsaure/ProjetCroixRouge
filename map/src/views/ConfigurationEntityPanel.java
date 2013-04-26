@@ -25,6 +25,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import views.buttons.CustomButton;
+import views.listeners.ColorChooserListener;
 import views.listeners.EditEntityNameLocalisationButtonListener;
 import views.listeners.EditStatusEntityButtonListener;
 import views.listeners.MapPanelMouseListener;
@@ -62,13 +63,14 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	private EntityController _entityController;
 	private OperationController _operationController;
 	
-	
 	private JPanel _background;
 	private RoundedPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
 	private JComboBox<String> _typeComboBox;
 	public ButtonGroup JradioBoutonGroup = new ButtonGroup();
+	private JPanel _colorChooserPanel;
+	private Color colorEntity;
 	
 	private TeamMemberController _teamController; 
 	private static List<TeamMemberController> listEquipiers;
@@ -87,7 +89,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	{
 		_parent = parent;
 		_operationController = operationController;
-		_entityController=entityController;
+		_entityController = entityController;
 		_entityController.addObserver(this);
 		initGui();
 	}
@@ -102,15 +104,15 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		setOpaque(false);
 	
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(new Dimension(400, 600));	
+		_internalPanel.setSize(new Dimension(400, 700));	
 		centrer();
 		add(_internalPanel, 1);
 		
-		JLabel title = new JLabel(AddEntityPanel.TITLE);
+		JLabel title = new JLabel("Ajouter une entité");
 		_internalPanel.add(title, BorderLayout.NORTH);
 		
 		JPanel formPanel = new JPanel();
-		formPanel.setPreferredSize(new Dimension(380, 500));
+		formPanel.setPreferredSize(new Dimension(380, 600));
 		_internalPanel.add(formPanel, BorderLayout.CENTER);
 
 		formPanel.setLayout(new FormLayout(new ColumnSpec[] {
@@ -145,7 +147,11 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
-				RowSpec.decode("27px"),}));
+				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
+				RowSpec.decode("27px"),
+				FormFactory.RELATED_GAP_ROWSPEC,
+				FormFactory.DEFAULT_ROWSPEC,}));
 
 		/**************************************************************\
 		 * 							Nom
@@ -167,28 +173,19 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		Vector<String> comboBoxItems = new Vector<String>();
 		listLocation=_operationController.getLocationList();
 		
-		System.out.println("taille liste location "+listLocation.size());
-		// problème car il y a des localisations en double
-		// les noms sont répétés. Que rend exactement listLocation 
-		// problème au niveau du getLocationList ou du controller operationController
-		// car il conserve les localisations sélectionnées et déselectionnées.
-
+		//System.out.println("taille liste location "+listLocation.size());
 		
 		 for (LocationController location : listLocation){
 				comboBoxItems.add(location.getName());
 		}
-		 
-		 
+		  
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 		
-
 		System.out.println("entity "+_entityController.getName()+"  get position  current : "+(_entityController.getIdPosCurrent()));
 		System.out.println("entity "+_entityController.getName()+"  op getLocation : "+_operationController.getLocation(_entityController.getIdPosCurrent()));
 		
 		// problème pour mettre par défaut le nom de la localisation
 		//model.setSelectedItem(_operationController.getLocation(_entityController.getIdPosCurrent()+1).getName());
-		
-		
 		
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 4, fill, default");
@@ -210,8 +207,6 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		formPanel.add(separator, "1, 8, 2, 1");
 		JLabel listeEquipierLabel = new JLabel("Liste Equipiers:");
 		formPanel.add(listeEquipierLabel, "1, 10, left, top");
-		
-		
 		
 		JPanel _listeEquipierPanel = new JPanel();
 		_listeEquipierPanel.setPreferredSize(new Dimension(270, 140));
@@ -245,6 +240,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
+		
 		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
 		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_parent,_operationController, _entityController, this));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -258,28 +254,29 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		
 		JSplitPane splitPane = new JSplitPane();
 		formPanel.add(splitPane, "2, 15, fill, fill");
+		_disponibleStatutRadioButton.setPreferredSize(new Dimension(73, 14));
 		
 		_disponibleStatutRadioButton.setSize(new Dimension(50, 23));
 		splitPane.setLeftComponent(_disponibleStatutRadioButton);
 		JradioBoutonGroup.add(_disponibleStatutRadioButton);
+		_indisponibleStatutRadioButton.setPreferredSize(new Dimension(83, 14));
 		
 		_indisponibleStatutRadioButton.setSize(new Dimension(50, 23));
 		splitPane.setRightComponent(_indisponibleStatutRadioButton);
 		JradioBoutonGroup.add(_indisponibleStatutRadioButton);
 		
 		/**************************************************************\
-		 * 						Radios Buttons
+		 * 					Buttons radio Dispo/Indispo
 		\**************************************************************/
 		
-		System.out.println("récupère status de l'entity : "+_entityController.getStatut());
+		System.out.println("récupération de l'entity : "+_entityController.getStatut());
 		if (_entityController.getStatut()) {_disponibleStatutRadioButton.setSelected(true);
 											_indisponibleStatutRadioButton.setSelected(false);}
 		else {_disponibleStatutRadioButton.setSelected(false);
 			  _indisponibleStatutRadioButton.setSelected(true);}
-		
 			
 		/**************************************************************\
-		 * 						Buttons
+		 * 					Localisation et Information
 		\**************************************************************/
 		
 		JLabel lblInformations = new JLabel("Informations :");
@@ -296,7 +293,25 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		formPanel.add(modifStatusButton, "2, 24");
 		
 		JSeparator separator_2 = new JSeparator();
-		formPanel.add(separator_2, "1, 27, 2, 1");
+		formPanel.add(separator_2, "1, 26, 2, 1");
+		
+		/**************************************************************\
+		 * 						Couleur
+		\**************************************************************/
+		
+		JLabel lblCouleur = new JLabel("Couleur :");
+		formPanel.add(lblCouleur, "1, 28");
+		
+		JPanel panel = new JPanel();
+		colorEntity = _entityController.getColor();
+		panel.setBackground(colorEntity);
+		formPanel.add(panel, "2, 28, fill, fill");
+		
+		CustomButton ModifColorButton = new CustomButton("Modifier couleur");
+		formPanel.add(ModifColorButton, "2, 29");
+		
+		JSeparator separator_3 = new JSeparator();
+		formPanel.add(separator_3, "1, 31, 2, 1");
 		
 		JPanel buttonPanel = new JPanel();
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
