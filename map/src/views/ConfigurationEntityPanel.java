@@ -68,7 +68,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	private JComboBox<String> _typeComboBox;
 	public ButtonGroup JradioBoutonGroup = new ButtonGroup();
 	private JPanel _colorChooserPanel;
-	private String colorEntity;
+	private Color colorEntity;
 	private JPanel _listeEquipierPanel;
 	
 	private TeamMemberController _teamController; 
@@ -308,14 +308,10 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_colorChooserPanel.setPreferredSize(new Dimension(10, 1));
 		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
 		
-		colorEntity = _entityController.getColor();
-		
-		System.out.println("couleur de l'entité :"+_entityController.getColor());
-		
-		//_colorChooserPanel.setForeground(_entityController.getColor());
-		
-		System.out.println("couleur cadre :"+Color.BLACK);
-		
+		colorEntity = stringToColor(_entityController.getColor());
+
+		_colorChooserPanel.setBackground(colorEntity);
+				
 		formPanel.add(_colorChooserPanel, "2, 28, fill, fill");
 		
 		CustomButton ModifColorButton = new CustomButton("Modifier couleur");
@@ -339,6 +335,10 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		/**************************************************************/
 	}
 	
+	private Color stringToColor(String couleur){
+		Color coulor = new Color(Integer.parseInt(couleur.substring(1, 3)), Integer.parseInt(couleur.substring(3, 5)), Integer.parseInt(couleur.substring(5, 7)));
+		return coulor;
+	}
 	
 	private void centrer()
 	{
