@@ -34,7 +34,7 @@ public class MenuPanel extends JPanel
 	private Color right = Color.gray;
 
 	private GradientPaint _gradient = new GradientPaint(0,0, left,0,0,right,false);
-	
+
 	public MenuPanel(GlobalPanel globalPanel, MapPanel mapPanel)
 	{
 		super(true);
@@ -45,18 +45,18 @@ public class MenuPanel extends JPanel
 		setLayout(new BorderLayout());
 		//_entitiesPanel = new MenuEntitiesPanel(operation,_gPanel);
 		//_buttonsPanel = new MenuButtonsPanel(mapPanel);
-		
+
 		/*JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBorder(null);
 		scrollPane.setViewportView(_entitiesPanel);
 		add(scrollPane, BorderLayout.CENTER);
-		
+
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);*/
-		
+
 		//add(_buttonsPanel, BorderLayout.SOUTH);
 	}
-	
+
 	public void setOperation(OperationController operation) {
 		_entitiesPanel = new MenuEntitiesPanel(operation,_globalPanel);
 		JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
@@ -64,9 +64,9 @@ public class MenuPanel extends JPanel
 		scrollPane.setBorder(null);
 		scrollPane.setViewportView(_entitiesPanel);
 		add(scrollPane, BorderLayout.CENTER);
-		
+
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		
+
 		_buttonsPanel = new MenuButtonsPanel(_mapPanel);
 		add(_buttonsPanel, BorderLayout.SOUTH);
 	}
@@ -77,11 +77,13 @@ public class MenuPanel extends JPanel
 	public void enableListeners(boolean enable) {
 		((MenuEntitiesPanel)_entitiesPanel).enableListeners(enable);
 	}
-	
+
 	public synchronized void update() {
-		((MenuEntitiesPanel)_entitiesPanel).update();
+		if(_entitiesPanel != null) {
+			((MenuEntitiesPanel)_entitiesPanel).update();
+		}
 	}
-	
+
 	@Override 
 	public void paintComponent(Graphics g)
 	{
