@@ -166,9 +166,6 @@ public class MapPanel extends JPanel implements Observer
 					image.getIconWidth(), 
 					image.getIconHeight(), 
 					null);
-			/*setMaximumSize(new Dimension(_map.getWidth(), getHeight()));
-			setMinimumSize(new Dimension(_map.getWidth(), getHeight()));
-			setPreferredSize(new Dimension(_map.getWidth(), getHeight()));*/
 		}
 		updateLocations();
 
