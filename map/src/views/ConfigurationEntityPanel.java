@@ -191,7 +191,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 4, fill, default");
 		
-		CustomButton editEntityButton = new CustomButton("Modifier le Nom et la Localisation");
+		CustomButton editEntityButton = new CustomButton("Valider Modifier le Nom et la Localisation");
 		editEntityButton.setAlignmentX(0.5f);
 		editEntityButton.addActionListener(new EditEntityNameLocalisationButtonListener(_parent,_operationController, _entityController, this, (MapPanel)_parent));
 		formPanel.add(editEntityButton, "2, 6");
@@ -242,7 +242,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 		
-		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
+		CustomButton AjoutEquipierButton = new CustomButton("Valider Ajouter un equipier");
 		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_parent,_operationController, _entityController, this));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		formPanel.add(AjoutEquipierButton, "2, 12, fill, fill");
@@ -289,7 +289,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_informationsTextArea = new JTextArea();
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 		
-		CustomButton modifStatusButton = new CustomButton("Modifier status");
+		CustomButton modifStatusButton = new CustomButton("Valider Modifier status");
 		modifStatusButton.addActionListener(new EditStatusEntityButtonListener(_operationController, _entityController, this));
 		formPanel.add(modifStatusButton, "2, 24");
 		
@@ -307,15 +307,18 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_colorChooserPanel.setMinimumSize(new Dimension(10, 1));
 		_colorChooserPanel.setPreferredSize(new Dimension(10, 1));
 		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
+		String stringColor = _entityController.getColor();
 		
-		colorEntity = stringToColor(_entityController.getColor());
+		//System.out.println("couleur : "+ Integer.parseInt(stringColor.substring(3, 5),16));
+		
+		colorEntity = stringToColor(stringColor);
 
 		_colorChooserPanel.setBackground(colorEntity);
 				
 		formPanel.add(_colorChooserPanel, "2, 28, fill, fill");
 		
-		CustomButton ModifColorButton = new CustomButton("Modifier couleur");
-		//ModifColorButton.addActionListener(new EditEntityColorListener(_parent,_operationController, _entityController, this, (MapPanel)_parent));
+		CustomButton ModifColorButton = new CustomButton("Valider Modifier couleur");
+		ModifColorButton.addActionListener(new EditEntityColorListener(_parent,_operationController, _entityController, this, (MapPanel)_parent));
 		formPanel.add(ModifColorButton, "2, 30");
 		
 		JSeparator separator_3 = new JSeparator();
@@ -334,11 +337,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		
 		/**************************************************************/
 	}
-	
-	private Color stringToColor(String couleur){
-		Color coulor = new Color(Integer.parseInt(couleur.substring(1, 3)), Integer.parseInt(couleur.substring(3, 5)), Integer.parseInt(couleur.substring(5, 7)));
-		return coulor;
-	}
+
 	
 	private void centrer()
 	{
@@ -358,6 +357,12 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		return _localisation.getSelectedIndex();
 	}*/
 	
+	
+	private Color stringToColor(String couleur){
+		Color coulor = new Color(Integer.parseInt(couleur.substring(1, 3),16), Integer.parseInt(couleur.substring(3, 5),16), Integer.parseInt(couleur.substring(5, 7),16));
+		return coulor;
+	}
+	
 	public boolean getStatutDispo()
 	{
 		return _disponibleStatutRadioButton.isSelected();
@@ -372,8 +377,11 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	{
 		return _typeComboBox.getSelectedIndex();
 	}
-	
-	
+
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	public void paintComponent(Graphics g)
 	{
@@ -409,6 +417,8 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 	}
+
+
 }
 
 
