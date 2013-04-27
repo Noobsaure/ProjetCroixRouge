@@ -175,9 +175,8 @@ public class EntityController implements Subject {
 	public boolean isAvailable(){
 		return _available;
 	}
-
-	// modifier le champ statut_id dans la table entite pour qu'il prenne le dernier id de Statut
-	// le genererMessageStatut() pose problème.
+	
+	
 	public void setAvailable(boolean state, String infos){
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
