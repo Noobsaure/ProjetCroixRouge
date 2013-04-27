@@ -211,7 +211,6 @@ public class AddEntityPanel extends JLayeredPane
 		return _colorChooserPanel.getBackground();
 	}
 	
-	
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);

@@ -29,6 +29,7 @@ import observer.Observer;
 import views.buttons.CustomButton;
 import views.listeners.AddEquipierButtonListener;
 import views.listeners.ColorChooserListener;
+import views.listeners.EditEntityColorListener;
 import views.listeners.EditEntityNameLocalisationButtonListener;
 import views.listeners.EditStatusEntityButtonListener;
 import views.listeners.RemoveEquipierListener;
@@ -309,8 +310,6 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
 		String stringColor = _entityController.getColor();
 		
-		//System.out.println("couleur : "+ Integer.parseInt(stringColor.substring(3, 5),16));
-		
 		colorEntity = stringToColor(stringColor);
 
 		_colorChooserPanel.setBackground(colorEntity);
@@ -318,7 +317,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		formPanel.add(_colorChooserPanel, "2, 28, fill, fill");
 		
 		CustomButton ModifColorButton = new CustomButton("Valider Modifier couleur");
-		ModifColorButton.addActionListener(new EditEntityColorListener(_parent,_operationController, _entityController, this, (MapPanel)_parent));
+		ModifColorButton.addActionListener(new EditEntityColorListener(_parent,_operationController, this, _entityController));
 		formPanel.add(ModifColorButton, "2, 30");
 		
 		JSeparator separator_3 = new JSeparator();

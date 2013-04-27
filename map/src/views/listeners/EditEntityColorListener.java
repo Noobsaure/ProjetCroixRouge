@@ -8,6 +8,9 @@ import javax.swing.JPanel;
 
 import views.AddEntityPanel;
 import views.ConfigurationEntityPanel;
+import views.ErrorMessage;
+import views.MapPanel;
+import controllers.EntityController;
 import controllers.OperationController;
 import database.DatabaseManager;
 
@@ -15,24 +18,29 @@ public class EditEntityColorListener implements ActionListener {
 
 	private JPanel _parent;
 	private OperationController _operationController;
-	private DatabaseManager _databaseManager;
 	private ConfigurationEntityPanel _configurationEntityPanel;
+	private EntityController _entityController;
 	
-	public EditEntityColorListener (JPanel parent, OperationController operationController, DatabaseManager databaseManager, ConfigurationEntityPanel configurationEntityPanel) {
+	public EditEntityColorListener (JPanel parent, OperationController operationController, ConfigurationEntityPanel configurationEntityPanel, EntityController entityController) {
 		_parent = parent;
 		_operationController = operationController;
-		_databaseManager = databaseManager;
 		_configurationEntityPanel = configurationEntityPanel;
+		_entityController = entityController;
 	}
-		
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
 
 		Color colorChosen = _configurationEntityPanel.getColor();
-		String color = "#" + Integer.toHexString(colorChosen.getRGB()).substring(2, 8);
+		System.out.println("couleur : "+colorChosen);
+		//String color = "#" + Integer.toHexString(colorChosen.getRGB()).substring(2, 8);
+
+		//_entityController.setColor(color);
+		MapPanel mapPanel = (MapPanel)_parent;
+		mapPanel.addMapPanelListener();
 		
-		
+		_parent.repaint();
 		
 		
 	}
