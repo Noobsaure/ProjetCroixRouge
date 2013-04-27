@@ -34,9 +34,8 @@ public class RetourEquipierEntityListener implements ActionListener
 		
 		MapPanel mapPanel = (MapPanel)_parent;
 		mapPanel.addMapPanelListener();
-		
-		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_parent, _operationController, _entityController);
-		
+	
+		_operationController.removeObserver(_configEntityPanel);
 		_parent.remove(_configEntityPanel);
 		_parent.revalidate();
 		_parent.repaint();

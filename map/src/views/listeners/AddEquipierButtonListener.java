@@ -32,6 +32,7 @@ public class AddEquipierButtonListener implements ActionListener{
 	public void actionPerformed(ActionEvent arg0)
 	{		
 		// Ouverture de la fentre qui permet l'ajout d'un équipier
+		_operationController.removeObserver(_configEntityPanel);
 		
 		AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_jParent, _operationController, _entityController);
 		_jParent.add(addEquipierPanel);

@@ -50,6 +50,8 @@ public class Launcher {
 
 		Timer timer = new Timer();
 		timer.schedule(new RefreshTimerTask(_operation, _dbm),0,5000);
+		
+		_operation.setTimerTask(timer);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>     Tests controlleurs   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		
 		/*

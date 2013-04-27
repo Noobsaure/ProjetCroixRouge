@@ -154,11 +154,9 @@ public class EntityController implements Subject {
 	 * @param teamMember The teamMember to add
 	 */
 	public void addTeamMember(TeamMemberController teamMember){
-		System.out.println("teamMemeber "+teamMember.getId());
 		if(teamMember.joinEntity(this)){
 			_teamMemberList.add(teamMember);
 		}
-		notifyObservers();
 	}
 
 	public void removeTeamMember(TeamMemberController teamMember){

@@ -219,8 +219,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
 		
 		listEquipiers= _entityController.getTeamMemberList();	
-		System.out.println("team memeber list "+listEquipiers.toString());
-		System.out.println("TEAM MEMBER LIST SIZE : "+listEquipiers.size());
+		
 		for (TeamMemberController team : listEquipiers){
 			JPanel nomEquipierPanel = new JPanel();
 			nomEquipierPanel.setMaximumSize(new Dimension(300, 25));

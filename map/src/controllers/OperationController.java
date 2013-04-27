@@ -5,6 +5,9 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+
+import launcher.RefreshTimerTask;
 
 import observer.Observer;
 import observer.Subject;
@@ -29,6 +32,7 @@ public class OperationController implements Subject
 	private MapController _currentMap;
 	private GlobalPanel _globalPanel;
 	private int _idPcm;
+	private Timer _timerTask;
 
 	private DatabaseManager _dbm;
 
@@ -457,6 +461,21 @@ public class OperationController implements Subject
 		return false;
 	}
 
+	public void setTimerTask(Timer timer) {
+		_timerTask = timer;
+	}
+
+	public Timer getTimerTask(){
+		return _timerTask;
+	}
+	
+	public void pauseTimerTask(){
+		_timerTask.cancel();
+	}
+	
+	public void startTimerTask(){
+		_timerTask.schedule(new RefreshTimerTask(this, _dbm),0,5000);
+	}
 	
 }
 
