@@ -168,20 +168,29 @@ public class RefreshTimerTask extends TimerTask
 
 	public void refreshLocation(){
 		System.out.println("%%%%% REFRESH LOCATION LIST %%%%%");
+		/* UPDATE MAPS ALREADY IN THE LIST */
+		List<LocationController> locationList = _operation.getLocationList();
+
+		for(LocationController location : locationList){
+			location.updateFields();
+		}
+		
 		try {
 			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation"));
 
 			while(result.next()){
 				int id = result.getInt("id");
-				int id_carte = result.getInt("carte_id");
-				String nom = result.getString("nom");
-				String description = result.getString("desc");
-				float x = result.getFloat("x");
-				float y = result.getFloat("y");
+				
+				if(!_operation.existsInLocationList(id)){
+					int id_carte = result.getInt("carte_id");
+					String nom = result.getString("nom");
+					String description = result.getString("desc");
+					float x = result.getFloat("x");
+					float y = result.getFloat("y");
 
-				LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description);
-				_operation.addLocation(location);
-
+					LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description);
+					_operation.addLocation(location);
+				}
 			}
 		}catch(MalformedQueryException e1){ e1.printStackTrace(); }
 		catch(SQLException e2){ e2.printStackTrace(); }

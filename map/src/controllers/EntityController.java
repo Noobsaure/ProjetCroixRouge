@@ -399,6 +399,7 @@ public class EntityController implements Subject {
 				}
 
 				//On ajoute les equipiers presents dans l'entite
+				_teamMemberList.clear();
 				try {
 					result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Equipier", "entite_id='"+_id+"'"));
 					try{

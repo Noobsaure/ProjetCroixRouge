@@ -352,8 +352,7 @@ public class OperationController implements Subject
 
 	public List<LocationController> getLocationList(){
 		List<LocationController> listLocation = new ArrayList<LocationController>(_locationList);
-
-		
+	
 		return listLocation;
 	}
 
@@ -362,8 +361,7 @@ public class OperationController implements Subject
 
 		for(LocationController location : _locationList){
 			if(location.getId() != _idPcm){
-				if(location.getIdMap() == 
-						_currentMap.getId())
+				if(location.getIdMap() == _currentMap.getId())
 					listLocation.add(location);
 			}
 		}
