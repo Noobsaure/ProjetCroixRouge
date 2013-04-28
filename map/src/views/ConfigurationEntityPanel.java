@@ -183,11 +183,9 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		  
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 		
-		System.out.println("entity "+_entityController.getName()+"  get position  current : "+(_entityController.getIdPosCurrent()));
-		System.out.println("entity "+_entityController.getName()+"  op getLocation : "+_operationController.getLocation(_entityController.getIdPosCurrent()));
 		
-		// problème pour mettre par défaut le nom de la localisation
-		//model.setSelectedItem(_operationController.getLocation(_entityController.getIdPosCurrent()+1).getName());
+		// mmise par défaut du nom de la localisation
+		model.setSelectedItem(_operationController.getLocation(_entityController.getIdPosCurrent()).getName());
 		
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 4, fill, default");
