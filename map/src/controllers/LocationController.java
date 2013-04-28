@@ -70,8 +70,6 @@ public class LocationController implements Subject {
 		operation.getCurrentMap().addLocation(this);
 		operation.addLocation(this);
 		System.out.println("Creation Localisation : "+name+" a réussi.");
-
-		_observers = new ArrayList<Observer>();
 	}
 
 	/**
@@ -230,6 +228,16 @@ public class LocationController implements Subject {
 		}catch(MalformedQueryException e1){
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
 		}
+	}
+
+	public void setDescription(String informations) {
+		try {
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "desc='"+informations+"'","id="+_id));
+		} catch (MalformedQueryException e) { 
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description \n de la localisation "+_name+".");
+		}
+
+		_description = informations;
 	}
 
 

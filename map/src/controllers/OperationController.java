@@ -131,12 +131,14 @@ public class OperationController implements Subject
 		for(LocationController location: _locationList){
 			if(location.getName().compareTo("LocalisationBaseDesEntites") == 0){
 				_idPcm= location.getId();
+				System.out.println("ID PCM = "+_idPcm);
 				return;
 			}
 		}
 		
 		try {
 			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par d��faut toutes les entit��s se trouvent �� cette endroit.',0,0)"));
+			System.out.println("ID PCM = "+_idPcm);
 		} catch (MalformedQueryException e) {
 			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entit��s.");
 		}
@@ -305,6 +307,7 @@ public class OperationController implements Subject
 
 	public void addLocation(LocationController location){
 		_locationList.add(location);
+		notifyObservers();
 	}
 
 	public GlobalPanel getGlobalPanel(){

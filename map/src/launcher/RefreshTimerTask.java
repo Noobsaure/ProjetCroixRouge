@@ -160,12 +160,6 @@ public class RefreshTimerTask extends TimerTask
 		}
 	}
 
-	/*public void refreshTeamMemberIntoEntity() {
-		for(TeamMemberController teamMember : _teamMemberList){
-			teamMember.updateFieldEntity();
-		}
-	}*/
-
 	public void refreshLocation(){
 		System.out.println("%%%%% REFRESH LOCATION LIST %%%%%");
 		/* UPDATE MAPS ALREADY IN THE LIST */
@@ -176,7 +170,7 @@ public class RefreshTimerTask extends TimerTask
 		}
 		
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation"));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation","operation_id="+_operation.getId()));
 
 			while(result.next()){
 				int id = result.getInt("id");

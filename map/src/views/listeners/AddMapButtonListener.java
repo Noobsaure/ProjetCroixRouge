@@ -11,6 +11,7 @@ import javax.swing.filechooser.FileFilter;
 import launcher.Launcher;
 import views.ExtensionFileFilter;
 import views.MapPanel;
+import views.SubMenuMapPanel;
 import controllers.MapController;
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -19,12 +20,16 @@ public class AddMapButtonListener implements ActionListener
 {
 	private MapPanel _mapPanel;
 	private final JFileChooser _fileChooser;
+	private OperationController _operation;
+	private SubMenuMapPanel _subMenu;
 	
-	public AddMapButtonListener(MapPanel mapPanel)
+	public AddMapButtonListener(MapPanel mapPanel, OperationController operation, SubMenuMapPanel subMenu)
 	{
 		_mapPanel = mapPanel;
-		
+		_operation = operation;
 		_fileChooser = new JFileChooser();
+		_subMenu = subMenu;
+		
 	}
 	
 	
@@ -60,6 +65,7 @@ public class AddMapButtonListener implements ActionListener
 				String path = _fileChooser.getSelectedFile().getAbsolutePath();
 				new MapController(operationController, databaseManager, getFileName(path), path);
 //				_mapPanel.getGlobalPanel().getMenu().getButtonsPanel().setListPanelContent();
+				//_subMenu.update();
 				break;
 		}
 	}

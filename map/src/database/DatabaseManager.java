@@ -145,6 +145,7 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			displayError(e);
 		}
 		

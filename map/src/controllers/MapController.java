@@ -50,7 +50,7 @@ public class MapController implements Subject {
 
 		_operation.addMap(this);
 		_operation.setCurrentMap(this);
-		_listObservers.add(_operation.getGlobalPanel().getMapPanel());
+		//_listObservers.add(_operation.getGlobalPanel().getMapPanel());
 	}
 
 	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility){
@@ -75,7 +75,7 @@ public class MapController implements Subject {
 
 		_operation.addMap(this);
 		_operation.setCurrentMap(this);
-		_listObservers.add(_operation.getGlobalPanel().getMapPanel());
+		//_listObservers.add(_operation.getGlobalPanel().getMapPanel());
 		
 	}
 

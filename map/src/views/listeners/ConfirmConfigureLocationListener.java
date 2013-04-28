@@ -56,7 +56,7 @@ public class ConfirmConfigureLocationListener implements ActionListener
 		else
 		{
 			_locationController.setName(name);
-			//_locationController.setDescription(informations);
+			_locationController.setDescription(informations);
 			MapPanel mapPanel = (MapPanel)_parent;
 			mapPanel.addMapPanelListener();
 			_locationController.addObserver(mapPanel.getGlobalPanel());
