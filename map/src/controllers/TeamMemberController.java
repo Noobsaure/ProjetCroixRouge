@@ -221,6 +221,8 @@ public class TeamMemberController {
 				else
 					_available = false;
 			}
+
+			result.getStatement().close();
 		}catch (SQLException e) { 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");
 		}catch(MalformedQueryException e1) {

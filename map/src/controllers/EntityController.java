@@ -173,8 +173,8 @@ public class EntityController implements Subject {
 	public boolean isAvailable(){
 		return _available;
 	}
-	
-	
+
+
 	public void setAvailable(boolean state, String infos){
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
@@ -237,7 +237,7 @@ public class EntityController implements Subject {
 	public boolean getStatut(){
 		return _available;
 	}
-	
+
 	public String getColor() {
 		// TODO Auto-generated method stub
 		return _color;
@@ -246,7 +246,7 @@ public class EntityController implements Subject {
 	public java.sql.Timestamp getDateArriveeLocalisation(){
 		return _dateArriveeLocalisation;
 	}
-	
+
 	public void setColor(String newColor){
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "couleur='"+newColor+"'","id ="+_id));
@@ -288,7 +288,7 @@ public class EntityController implements Subject {
 		}
 
 		genererMessageDeplacement(lastPosCurrentId, idDeplacement);
-		
+
 		_operation.notifyObservers();
 	}
 
@@ -381,14 +381,15 @@ public class EntityController implements Subject {
 				_name = result.getString("nom");
 				_dateArriveeLocalisation = result.getTimestamp("date_depart");
 				_posCurrentId = result.getInt("pos_courante_id");
-				
+
 				try {
 					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("dispo", "Statut", "id='"+_stateId+"'"));
 					try{
 						while(result.next()){
-							_available = result.getBoolean("dispo");
-							_state = result.getString("infos");
+							_available = result2.getBoolean("dispo");
+							_state = result2.getString("infos");
 						}
+						result2.close();
 					}catch(SQLException e){
 						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
 					}
@@ -399,19 +400,22 @@ public class EntityController implements Subject {
 				//On ajoute les equipiers presents dans l'entite
 				_teamMemberList.clear();
 				try {
-					result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Equipier", "entite_id='"+_id+"'"));
+					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Equipier", "entite_id='"+_id+"'"));
 					try{
-						while(result.next()){
-							int idEquipier = result.getInt("id");
+						while(result2.next()){
+							int idEquipier = result2.getInt("id");
 							_teamMemberList.add(_operation.getEquipier(idEquipier));
 						}
+						result2.close();
 					}catch (SQLException e) { 
 						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
+						e.printStackTrace();
 					}
 				} catch (MalformedQueryException e1) { 
 					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
 				}
 			}
+			result.getStatement().close();
 		}catch(SQLException e){
 			e.printStackTrace();
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "WHILE Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
