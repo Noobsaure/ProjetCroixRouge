@@ -29,6 +29,8 @@ public class AddVictimButtonListener implements ActionListener
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 		
 		AddVictimPanel addVictimPanel = new AddVictimPanel(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager());		
+		addVictimPanel.addCancelButtonListener(new CancelAddVictimListener(_mapPanel, addVictimPanel));
+		addVictimPanel.addOkButtonListener(new ConfirmAddVictimListener(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), addVictimPanel));
 		_mapPanel.add(addVictimPanel);		
 		_mapPanel.setComponentZOrder(addVictimPanel, 0);
 		

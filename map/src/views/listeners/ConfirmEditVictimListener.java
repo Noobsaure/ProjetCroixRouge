@@ -2,13 +2,19 @@ package views.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.Date;
 
 import javax.swing.JPanel;
 
 import views.EditVictimPanel;
 import views.ErrorMessage;
 import views.MapPanel;
+import views.SubMenuPanel;
+import views.SubMenuVictimPanel;
 import controllers.OperationController;
+import controllers.VictimController;
 import database.DatabaseManager;
 
 
@@ -18,55 +24,82 @@ public class ConfirmEditVictimListener implements ActionListener
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
 	private String EMPTY_TYPE_MESSAGE = "Veuillez renseigner la champ \"Type\".";
 	
-	private JPanel _parent;
+	private JPanel _mapPanel;
+	private SubMenuVictimPanel _subMenu;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private EditVictimPanel _editVictimPanel;
 	
 	
-	public ConfirmEditVictimListener(JPanel parent, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel)
+	public ConfirmEditVictimListener(JPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
+		_subMenu = subMenu;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		_editVictimPanel = editVictimPanel;
 	}
 	
 	
-	public boolean checkInput(String name, String type, String informations)
-	{
-		return (!name.equals("") && (type != null) && !type.equals(""));
-	}
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		new ErrorMessage(_parent, "Ok");
-//		String name = _addVictimPanel.getName();
-//		String type = _addVictimPanel.getType();
-//		String informations = _addVictimPanel.getInformations();
-//		
-//		if(!checkInput(name, type, informations))
-//		{
-//			if(name.equals(""))
-//				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_NAME_MESSAGE);
-//			
-//			if((type != null) && type.equals(""))
-//				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_TYPE_MESSAGE);
-//			
-//			if(informations.equals(""))
-//				System.out.println("Informations null");			
-//		}
-//		else
-//		{
-//			new EntityController(_operationController, _databaseManager, name, type, informations);
+		Object[] objects = _editVictimPanel.getMotifList().getSelectedValuesList().toArray();
+		String[] motifsList = new String[objects.length];
+		for(int i = 0; i < objects.length; i++)
+			motifsList[i] = (String)objects[i];
+		String otherMotif = _editVictimPanel.getDetailsTextArea().getText();
+		String idAnonymat = _editVictimPanel.getIdAnonymat().getText();
+		String soins = _editVictimPanel.getSoins().getText();
+		
+		if(!ConfirmAddVictimListener.checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins))
+		{
+			if(motifsList.length == 0 )
+				new ErrorMessage(_mapPanel, "Saisie incomplète", "");
 			
-			MapPanel mapPanel = (MapPanel)_parent;
+			if(otherMotif.equals(""))
+				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
+			
+			if(idAnonymat.equals(""))
+				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_TYPE_MESSAGE);
+			
+			if(soins.equals(""))
+				System.out.println("Informations null");			
+		}
+		else
+		{
+			String name = _editVictimPanel.getNameTextField().getText();
+			String prenom = _editVictimPanel.getPrenomTextField().getText();
+			String adress = _editVictimPanel.getAdressTextField().getText();
+			
+			Date dateDeNaissanceDate = _editVictimPanel.getDateDeNaissanceDatePicker().getDate();
+			Timestamp dateDeNaissance = null;
+			if(dateDeNaissanceDate != null)
+				dateDeNaissance = new Timestamp(dateDeNaissanceDate.getYear(),  dateDeNaissanceDate.getMonth(), dateDeNaissanceDate.getDate(), dateDeNaissanceDate.getHours(), dateDeNaissanceDate.getMinutes(), dateDeNaissanceDate.getSeconds(), 0);
+			
+			Date datePriseEnChargeDate = _editVictimPanel.getDatePriseEnChargeDatePicker().getDate();
+			Timestamp datePriseEnCharge = null;
+			if(datePriseEnChargeDate != null)
+				datePriseEnCharge = new Timestamp(datePriseEnChargeDate.getYear(),  datePriseEnChargeDate.getMonth(), datePriseEnChargeDate.getDate(), datePriseEnChargeDate.getHours(), datePriseEnChargeDate.getMinutes(), datePriseEnChargeDate.getSeconds(), 0);
+
+			Timestamp dateSortie = null;
+			
+			try
+			{
+				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat, false);
+				_subMenu.update();
+			}
+			catch(ParseException e1)
+			{
+				e1.printStackTrace();
+			}
+			
+			MapPanel mapPanel = (MapPanel)_mapPanel;
 			mapPanel.addMapPanelListener();
 			
-			_parent.remove(_editVictimPanel);
-			_parent.repaint();
-//		}
+			_mapPanel.remove(_editVictimPanel);
+			_mapPanel.repaint();
+		}
 	}
 }

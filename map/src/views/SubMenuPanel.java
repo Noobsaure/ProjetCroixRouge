@@ -28,6 +28,8 @@ public class SubMenuPanel extends JPanel
 	public static final int BUTTON_HEIGHT = 25;
 	
 	private MapPanel _mapPanel;
+	private OperationController _operationController;
+	private DatabaseManager _databaseManager;
 	private JPanel _thumbnailsPanel;
 	private CustomButton _addButton;
 	private CustomButton _okButton;
@@ -37,6 +39,8 @@ public class SubMenuPanel extends JPanel
 	public SubMenuPanel(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager)
 	{
 		_mapPanel = mapPanel;
+		_operationController = operationController;
+		_databaseManager = databaseManager;
 		_thumbnailsPanel = new JPanel();
 		_mapMaps = new HashMap<JToggleButton, MapController>();
 		_mapVictims = new HashMap<JToggleButton, VictimController>();
@@ -63,8 +67,8 @@ public class SubMenuPanel extends JPanel
 	}
 	
 	
-	public void displayThumbnail(OperationController operationController, DatabaseManager databaseManager)
-	{		
+	public void displayThumbnail()
+	{
 		
 	}
 	

@@ -17,6 +17,7 @@ import javax.swing.ScrollPaneConstants;
 
 import observer.Observer;
 import views.listeners.AddVictimButtonListener;
+import views.listeners.EditVictimButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.OperationController;
 import controllers.VictimController;
@@ -31,6 +32,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 	
 	private Map<JToggleButton, VictimController> _map;
 	private JPanel _thumbnailsPanel;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private ButtonGroup _group;
@@ -39,90 +41,64 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 	{
 		super(mapPanel, operationController, databaseManager);
 		
+		_mapPanel = mapPanel;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		
 		_map = super.getMapVictim();
 		_thumbnailsPanel = super.getThumbnailPanel();
-		displayThumbnail(operationController, databaseManager);
+		_thumbnailsPanel.setBackground(SubMenuMapPanel.COLOR_BACKGROUND);
+		_thumbnailsPanel.setLayout(new BoxLayout(_thumbnailsPanel, BoxLayout.PAGE_AXIS));
+		
+		displayThumbnail();
+
+		JScrollPane scrollPane = new JScrollPane(_thumbnailsPanel);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.setViewportBorder(null);
+		add(scrollPane, BorderLayout.CENTER);
 
 		addAddButtonListener(new AddVictimButtonListener(mapPanel, this));
 		addOkButtonListener(null);
 	}
 
 	@Override
-	public void displayThumbnail(OperationController operationController, DatabaseManager databaseManager)
+	public void displayThumbnail()
 	{		
-		_thumbnailsPanel.setBackground(SubMenuMapPanel.COLOR_BACKGROUND);
-		_thumbnailsPanel.setLayout(new BoxLayout(_thumbnailsPanel, BoxLayout.PAGE_AXIS));
-		
-		List<VictimController> listVictimsName = operationController.getVictimList();
+		List<VictimController> listVictimsName = _operationController.getVictimList();
 		_group = new ButtonGroup();
 		
+		System.out.println("Nb victimes : " + listVictimsName.size());
+		
 		for(int i = 0; i < listVictimsName.size(); i++)
-		{			
-			int id = listVictimsName.get(i).getId();
-//			ImageIcon icon = databaseManager.getImage(id + "", listVictimsName.get(i).getNom());
-//			Image imageScaled = icon.getImage().getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, Image.SCALE_DEFAULT);
-//			ImageIcon iconScaled = new ImageIcon(imageScaled);
-//			
-//			JToggleButton toggleButton = new JToggleButton();
-//			toggleButton.setMaximumSize(new Dimension(THUMBNAIL_WIDTH + 10, THUMBNAIL_HEIGHT + 10));
-//			toggleButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//			toggleButton.setIcon(iconScaled);
-//			group.add(toggleButton);
-//			_thumbnailsPanel.add(toggleButton);
+		{
+			System.out.println("Victime " + i + " " + listVictimsName.get(i).getId());
 			
-			JLabel nameLabel = new JLabel(listVictimsName.get(i).getPrenom() + " " + listVictimsName.get(i).getNom());
+			int id = listVictimsName.get(i).getId();
+			VictimController victim = listVictimsName.get(i);
+			
+			JLabel nameLabel = new JLabel("(" + victim.getIdAnonymat() + ") " + victim.getPrenom() + " " + victim.getNom());
 			nameLabel.setForeground(Color.WHITE);
-			JPanel _panelLabel = new JPanel();
-			_panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-			_panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-			_panelLabel.setBackground(COLOR_BACKGROUND);
-			_panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			_panelLabel.add(nameLabel);
-			_thumbnailsPanel.add(_panelLabel);
+			JPanel panelLabel = new JPanel();
+			panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
+			panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
+			panelLabel.setBackground(COLOR_BACKGROUND);
+			panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+			panelLabel.add(nameLabel);
+			panelLabel.addMouseListener(new EditVictimButtonListener(_mapPanel, this, panelLabel, victim));
+			_thumbnailsPanel.add(panelLabel);
 			
 //			_map.put(toggleButton, listVictimsName.get(i));
 		}
-		
-		JScrollPane scrollPane = new JScrollPane(_thumbnailsPanel);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setViewportBorder(null);
-		
-		add(scrollPane, BorderLayout.CENTER);
 	}
 
 	@Override
 	public void update()
 	{
-		List<VictimController> listVictimsName = _operationController.getVictimList();
-		_group = new ButtonGroup();
+		_thumbnailsPanel.removeAll();
 		
-		int i = listVictimsName.size() - 1;
+		displayThumbnail();
 		
-		int id = listVictimsName.get(i).getId();
-//		ImageIcon icon = databaseManager.getImage(id + "", listVictimsName.get(i).getNom());
-//		Image imageScaled = icon.getImage().getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, Image.SCALE_DEFAULT);
-//		ImageIcon iconScaled = new ImageIcon(imageScaled);
-//		
-//		JToggleButton toggleButton = new JToggleButton();
-//		toggleButton.setMaximumSize(new Dimension(THUMBNAIL_WIDTH + 10, THUMBNAIL_HEIGHT + 10));
-//		toggleButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-//		toggleButton.setIcon(iconScaled);
-//		group.add(toggleButton);
-//		_thumbnailsPanel.add(toggleButton);
-			
-		JLabel nameLabel = new JLabel(listVictimsName.get(i).getPrenom() + " " + listVictimsName.get(i).getNom());
-		nameLabel.setForeground(Color.WHITE);
-		JPanel panelLabel = new JPanel();
-		panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-		panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-		panelLabel.setBackground(COLOR_BACKGROUND);
-		panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panelLabel.add(nameLabel);
-		_thumbnailsPanel.add(panelLabel);
-			
-//		_map.put(toggleButton, listVictimsName.get(i));
+		_thumbnailsPanel.repaint();
+		_thumbnailsPanel.revalidate();
 	}
 }

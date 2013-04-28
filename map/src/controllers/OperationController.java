@@ -171,6 +171,7 @@ public class OperationController implements Subject
 				if (result.getString("motif_sortie").equals("")) {
 					int id_victim = result.getInt("id");
 					int operation_id = _idOperation;
+					String idAnonymat = result.getString("surnom");
 					String nom = result.getString("nom");
 					String prenom = result.getString("prenom");
 					java.sql.Timestamp dateDeNaissance = result.getTimestamp("date_naissance");
@@ -187,7 +188,7 @@ public class OperationController implements Subject
 					java.sql.Timestamp dateSortiePriseEnCharge = result.getTimestamp("date_sortie");
 					
 					if(dateSortiePriseEnCharge == null);{
-						VictimController victim = new VictimController(this, _dbm, id_victim, statut, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
+						VictimController victim = new VictimController(this, _dbm, id_victim, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
 						_victimList.add(victim);
 					}
 				}

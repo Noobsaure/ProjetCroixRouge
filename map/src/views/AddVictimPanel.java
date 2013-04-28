@@ -1,12 +1,16 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionListener;
 
 import javax.swing.AbstractListModel;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
@@ -14,33 +18,28 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import views.buttons.CustomButton;
-import views.listeners.CancelAddVictimListener;
-import views.listeners.ConfirmAddVictimListener;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import com.toedter.calendar.JCalendar;
 import com.toedter.calendar.JDateChooser;
 
 import controllers.OperationController;
 import database.DatabaseManager;
-import java.awt.Insets;
-import javax.swing.border.TitledBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.BoxLayout;
 
 public class AddVictimPanel extends JLayeredPane
 {
 	private static final long serialVersionUID = 1L;
 	
 	private static final int WIDTH = 600;
-	private static final int HEIGHT = 435;
+	private static final int HEIGHT = 460;
 	private static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	private static final Dimension DIMENSION_FORM_PANEL = new Dimension(WIDTH- 20, 200);
 	private static final String TITLE = "Ajouter une victime";
@@ -58,11 +57,11 @@ public class AddVictimPanel extends JLayeredPane
 	private JTextField _nameTextField;
 	private JTextField _prenomTextField;
 	private JTextField _adressTextField;
-	private JTextField _codePostaleTextField;
-	private JTextField _villeTextField;
 	private JDateChooser _dateDeNaissanceDatePicker;
 	private JDateChooser _dateArriveeDatePicker;
 	private JTextField _idAnonymat;
+	private CustomButton _cancelButton;
+	private CustomButton _okButton;
 	
 	
 	public AddVictimPanel(JPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
@@ -195,20 +194,6 @@ public class AddVictimPanel extends JLayeredPane
 		
 		_adressTextField = new JTextField();
 		_adressTextField.setColumns(10);
-		
-		JLabel codePostalLabel = new JLabel("Code postal :");
-		
-		_codePostaleTextField = new JTextField();
-		_codePostaleTextField.setColumns(10);
-		
-		JLabel villeLabel = new JLabel("Ville :");
-		
-		_villeTextField = new JTextField();
-		_villeTextField.setColumns(10);
-
-		JLabel dateDeNaissanceLabel = new JLabel("Date de naissance :");
-		
-		_dateDeNaissanceDatePicker = new JDateChooser();
 //		_dateArriveeTextField.setColumns(10);
 		
 		int anchor = GridBagConstraints.WEST;
@@ -230,6 +215,7 @@ public class AddVictimPanel extends JLayeredPane
 		gbc_prenomLabel.gridy = 0;
 		identityPanel.add(prenomLabel, gbc_prenomLabel);
 		GridBagConstraints gbc_prenomTextField = new GridBagConstraints();
+		gbc_prenomTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_prenomTextField.insets = new Insets(0, 0, 5, 0);
 		gbc_prenomTextField.gridx = 3;
 		gbc_prenomTextField.gridy = 0;
@@ -246,61 +232,50 @@ public class AddVictimPanel extends JLayeredPane
 		gbc_textField.gridwidth = 3;
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 1;
-		identityPanel.add(_adressTextField, gbc_textField);		
-		GridBagConstraints gbc_codePostalLabel = new GridBagConstraints();
-		gbc_codePostalLabel.anchor = anchor;
-		gbc_codePostalLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_codePostalLabel.gridx = 0;
-		gbc_codePostalLabel.gridy = 2;
-		identityPanel.add(codePostalLabel, gbc_codePostalLabel);
+		identityPanel.add(_adressTextField, gbc_textField);
 		GridBagConstraints gbc_codePostaleTextField = new GridBagConstraints();
-		gbc_codePostaleTextField = new GridBagConstraints();
-		gbc_codePostaleTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_codePostaleTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_codePostaleTextField.gridx = 1;
-		gbc_codePostaleTextField.gridy = 2;
-		identityPanel.add(_codePostaleTextField, gbc_codePostaleTextField);
-		GridBagConstraints gbc_villeLabel = new GridBagConstraints();
-		gbc_villeLabel.anchor = anchor;
-		gbc_villeLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_villeLabel.gridx = 2;
-		gbc_villeLabel.gridy = 2;
-		identityPanel.add(villeLabel, gbc_villeLabel);
-		GridBagConstraints gbc_villeTextField = new GridBagConstraints();
-		gbc_villeTextField.insets = new Insets(0, 0, 5, 0);
-		gbc_villeTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_villeTextField.gridx = 3;
-		gbc_villeTextField.gridy = 2;
-		identityPanel.add(_villeTextField, gbc_villeTextField);
-		GridBagConstraints gbc_dateDeNaissanceLabel = new GridBagConstraints();
-		gbc_dateDeNaissanceLabel.anchor = anchor;
-		gbc_dateDeNaissanceLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_dateDeNaissanceLabel.gridx = 0;
-		gbc_dateDeNaissanceLabel.gridy = 3;
-		identityPanel.add(dateDeNaissanceLabel, gbc_dateDeNaissanceLabel);
+		
+				JLabel dateDeNaissanceLabel = new JLabel("Date de naissance :");
+				GridBagConstraints gbc_dateDeNaissanceLabel = new GridBagConstraints();
+				gbc_dateDeNaissanceLabel.anchor = anchor;
+				gbc_dateDeNaissanceLabel.insets = new Insets(0, 0, 5, 5);
+				gbc_dateDeNaissanceLabel.gridx = 0;
+				gbc_dateDeNaissanceLabel.gridy = 2;
+				identityPanel.add(dateDeNaissanceLabel, gbc_dateDeNaissanceLabel);
+		
+		_dateDeNaissanceDatePicker = new JDateChooser();
 		GridBagConstraints gbc_dateDeNaissanceTextField = new GridBagConstraints();
 		gbc_dateDeNaissanceTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_dateDeNaissanceTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_dateDeNaissanceTextField.gridx = 1;
-		gbc_dateDeNaissanceTextField.gridy = 3;
+		gbc_dateDeNaissanceTextField.gridy = 2;
+		gbc_dateDeNaissanceTextField.gridwidth = 2;
 		identityPanel.add(_dateDeNaissanceDatePicker, gbc_dateDeNaissanceTextField);
-								//		_dateDeNaissanceTextField.setColumns(10);
-										
-										JLabel dateArriveeLabel = new JLabel("Date de prise en charge :");
-										GridBagConstraints gbc_dateArriveeLabel = new GridBagConstraints();
-										gbc_dateArriveeLabel.anchor = anchor;
-										gbc_dateArriveeLabel.insets = new Insets(0, 0, 5, 5);
-										gbc_dateArriveeLabel.gridx = 2;
-										gbc_dateArriveeLabel.gridy = 3;
-										identityPanel.add(dateArriveeLabel, gbc_dateArriveeLabel);
-								
-								_dateArriveeDatePicker = new JDateChooser();
-								GridBagConstraints gbc_dateArriveeTextField = new GridBagConstraints();
-								gbc_dateArriveeTextField.insets = new Insets(0, 0, 5, 0);
-								gbc_dateArriveeTextField.fill = GridBagConstraints.HORIZONTAL;
-								gbc_dateArriveeTextField.gridx = 3;
-								gbc_dateArriveeTextField.gridy = 3;
-								identityPanel.add(_dateArriveeDatePicker, gbc_dateArriveeTextField);
+//		_dateDeNaissanceTextField.setColumns(10);
+												
+		JLabel dateArriveeLabel = new JLabel("Date de prise en charge :");
+		GridBagConstraints gbc_dateArriveeLabel = new GridBagConstraints();
+		gbc_dateArriveeLabel.anchor = anchor;
+		gbc_dateArriveeLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_dateArriveeLabel.gridx = 0;
+		gbc_dateArriveeLabel.gridy = 3;
+		identityPanel.add(dateArriveeLabel, gbc_dateArriveeLabel);
+		
+		_dateArriveeDatePicker = new JDateChooser();
+		GridBagConstraints gbc_dateArriveeTextField = new GridBagConstraints();
+		gbc_dateArriveeTextField.insets = new Insets(0, 0, 5, 5);
+		gbc_dateArriveeTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_dateArriveeTextField.gridx = 1;
+		gbc_dateArriveeTextField.gridy = 3;
+		gbc_dateArriveeTextField.gridwidth = 2;
+		identityPanel.add(_dateArriveeDatePicker, gbc_dateArriveeTextField);
+		
+		JToggleButton finDePriseENCHargeToggle = new JToggleButton("Fin de prise en charge");
+		GridBagConstraints gbc_finDePriseENCHargeToggle = new GridBagConstraints();
+		gbc_finDePriseENCHargeToggle.insets = new Insets(0, 0, 5, 0);
+		gbc_finDePriseENCHargeToggle.gridx = 3;
+		gbc_finDePriseENCHargeToggle.gridy = 3;
+		identityPanel.add(finDePriseENCHargeToggle, gbc_finDePriseENCHargeToggle);
 		/**************************************************************/
 
 		
@@ -312,18 +287,30 @@ public class AddVictimPanel extends JLayeredPane
 		JPanel buttonPanel = new JPanel();
 		_mainPanel.add(buttonPanel);
 		
-		CustomButton cancelButton = new CustomButton("Annuler");
-		cancelButton.addActionListener(new CancelAddVictimListener(_parent, this));
-		buttonPanel.add(cancelButton);
+		_cancelButton = new CustomButton("Annuler");
+		buttonPanel.add(_cancelButton);
 		
-		CustomButton okButton = new CustomButton("Ok");
-		okButton.addActionListener(new ConfirmAddVictimListener(_parent, _subMenu, _operationController, _dbm, this));
-		buttonPanel.add(okButton);
+		_okButton = new CustomButton("Ok");
+		buttonPanel.add(_okButton);
 		/**************************************************************/
+	}
+	
+	public void addCancelButtonListener(ActionListener listener)
+	{
+		_cancelButton.addActionListener(listener);
+	}
+	
+	public void addOkButtonListener(ActionListener listener)
+	{
+		_okButton.addActionListener(listener);
 	}
 	
 	
 
+	public RoundedPanel getMainPanel()
+	{
+		return _mainPanel;
+	}
 	public JList getMotifList()
 	{
 		return _motifsList;
@@ -348,14 +335,6 @@ public class AddVictimPanel extends JLayeredPane
 	{
 		return _adressTextField;
 	}
-	public JTextField getCodePostaleTextField()
-	{
-		return _codePostaleTextField;
-	}
-	public JTextField getVilleTextField()
-	{
-		return _villeTextField;
-	}
 	public JDateChooser getDateDeNaissanceDatePicker()
 	{
 		return _dateDeNaissanceDatePicker;
@@ -364,7 +343,7 @@ public class AddVictimPanel extends JLayeredPane
 	{
 		return _dateArriveeDatePicker;
 	}
-	public JTextField getIdANonymat()
+	public JTextField getIdAnonymat()
 	{
 		return _idAnonymat;
 	}

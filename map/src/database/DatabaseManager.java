@@ -56,7 +56,6 @@ public class DatabaseManager
 			System.out.print("Connection of " + login + " to " + databaseURL + "...");
 			_connection = DriverManager.getConnection(databaseURL, login, password);
 			System.out.println("Connected");
-			
 			_statement = _connection.createStatement();
 		}
 		catch (Exception e)

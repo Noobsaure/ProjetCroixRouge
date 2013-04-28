@@ -13,10 +13,10 @@ public class CancelEditVictimListener implements ActionListener
 	private JPanel _parent;
 	private EditVictimPanel _editVictimPanel;
 	
-	public CancelEditVictimListener(JPanel parent, EditVictimPanel addVictimPanel)
+	public CancelEditVictimListener(JPanel parent, EditVictimPanel editVictimPanel)
 	{
 		_parent = parent;
-		_editVictimPanel = addVictimPanel;
+		_editVictimPanel = editVictimPanel;
 	}
 
 	

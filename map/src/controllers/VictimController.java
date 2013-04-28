@@ -26,7 +26,7 @@ public class VictimController implements Subject {
 	private Timestamp _dateDeNaissance;
 	private String _adresse;
 	private String _statut;
-	private Timestamp _datePriseENCharge;
+	private Timestamp _datePriseEnCharge;
 	private Timestamp _dateSortie;
 	private String _motifSortie;
 	private boolean _petitSoin;
@@ -36,7 +36,7 @@ public class VictimController implements Subject {
 	private boolean _arretCardiaque;
 	private String _atteinteDetails;
 	private String _soin;
-	private String _anon; // champ d'anonymisation d'une victime
+	private String _idAnonymat; // champ d'anonymisation d'une victime
 	private int _messageParent;
 	
 	private List<Observer> _listObservers = new ArrayList<Observer>();
@@ -52,7 +52,7 @@ public class VictimController implements Subject {
 	
 	// java.sql.Timestamp Timestamp = new java.sql.Timestamp(date.getTime());
 
-	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, String codePostale, String ville, Timestamp dateDeNaissance, Timestamp datePriseEnCharge,  Timestamp dateSortie, String atteinteDetails, String soin, String anon) throws ParseException
+	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, Timestamp datePriseEnCharge,  Timestamp dateSortie, String atteinteDetails, String soin, String anon, boolean newVictim) throws ParseException
 	{
 		_operation = operation;
 		_dbm = dbm;
@@ -74,123 +74,68 @@ public class VictimController implements Subject {
 		}
 		
 		_motifSortie = new String();
-		_adresse = ((adresse.equals("NULL")) ? "" : adresse) + ' ' + ((codePostale.equals("NULL")) ? "" : codePostale) + ' ' + ((ville.equals("NULL")) ? "" : ville);
+		_adresse = adresse;
 		
 		_dateDeNaissance = dateDeNaissance;
-		_datePriseENCharge = datePriseEnCharge;
+		_datePriseEnCharge = datePriseEnCharge;
 		_dateSortie = dateSortie;
 		
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
-		_anon = anon;
+		_idAnonymat = anon;
 		_statut = "";
 
 		try
 		{
-			int id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", "(NULL,NULL,'"+
-																	_operation.getId()+"','"+
-																	""+"','"+
-																	_nom+"','"+
-																	_prenom+"',"+
-																	((dateDeNaissance == null) ? "NULL" : ("'" + dateDeNaissance.toString()) + "'") +",'"+
-																	_adresse+"','"+
-																	_statut+"', '"+
-																	_motifSortie+"', "+
-																	((datePriseEnCharge == null) ? "NULL" : ("'" + datePriseEnCharge.toString()) + "'") +", "+
-																	((dateSortie == null) ? "NULL" : ("'" + dateSortie.toString()) + "'") +", '"+
-																	(_petitSoin ? 1 : 0)+"', '"+
-																	(_malaise ? 1 : 0)+"', '"+
-																	(_traumatisme ? 1 : 0)+"', '"+
-																	(_inconscience ? 1 : 0)+"', '"+
-																	(_arretCardiaque ? 1 : 0)+"', '"+
-																	_atteinteDetails+"', '"+
-																	_soin+"')"));
+			String query = "(NULL,NULL,'"+
+							_operation.getId()+"','"+
+							_idAnonymat+"','"+
+							_nom+"','"+
+							_prenom+"',"+
+							((dateDeNaissance == null) ? "NULL" : ("'" + dateDeNaissance.toString()) + "'") +","+
+							((adresse.equals("")) ? "NULL" : adresse)+",'"+
+							_statut+"', '"+
+							_motifSortie+"', "+
+							((datePriseEnCharge == null) ? "NULL" : ("'" + datePriseEnCharge.toString()) + "'") +", "+
+							((dateSortie == null) ? "NULL" : ("'" + dateSortie.toString()) + "'") +", '"+
+							(_petitSoin ? 1 : 0)+"', '"+
+							(_malaise ? 1 : 0)+"', '"+
+							(_traumatisme ? 1 : 0)+"', '"+
+							(_inconscience ? 1 : 0)+"', '"+
+							(_arretCardiaque ? 1 : 0)+"', '"+
+							_atteinteDetails+"', '"+
+							_soin+"')";
+			
+			System.out.println("nouvelle victime : " + newVictim + " : " + query);
+			int id;
+			if(newVictim)
+				id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
+			else
+				id = _dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
 			_id = id;
+			
 			System.out.println("ID de la victime qui vient d'être créée :"+_id);
 		}
 		catch(MalformedQueryException e) { e.printStackTrace(); }
 		
-		this.genererMessage("Début de prise en charge de la victime "+_anon);
+		this.genererMessage("Début de prise en charge de la victime "+_idAnonymat);
 		operation.addVictim(this);
 	}
 
-	/**
-	 * Constructor for creation of a victim which is in the database
-	 * @param operation The current operation
-	 * @param name Name of the entity
-	 * @param type Type of the entity
-	 * @param infos Other informations about the entity
-	 * @param color 
-	 */
-	public VictimController(OperationController operation, DatabaseManager dbm, Integer idVictime, String nom, String prenom, String[] motif, String adresse, String codePostale, String ville, String dateDeNaissance, String atteinteDetails, String soin, String motifSortie, String anon) throws ParseException{
-		_nom = nom;
-		_prenom = prenom;
-		_adresse = adresse + ' ' + codePostale + ' ' + ville;
-		_dateDeNaissance = (Timestamp) new  SimpleDateFormat("dd/mm/YYYY").parse(dateDeNaissance);
-		for (int i=0 ; i < motif.length ; i++) {
-			if (motif[i].equals("Arrêt cardiaque"))
-				_arretCardiaque = true;
-			else if (motif[i].equals("Inconscience"))
-				_inconscience = true;
-			else if (motif[i].equals("Malaise"))
-				_malaise = true;
-			else if (motif[i].equals("Petit soin"))
-				_petitSoin = true;
-			else if (motif[i].equals("Traumatisme"))
-				_traumatisme = true;
-		}
-		_atteinteDetails = atteinteDetails;
-		_soin = soin;
-		_messageParent = -1;
-		if (!_anon.equals(anon)) {
-			this.genererMessage("La victime "+_anon+" a été renommée en "+anon);
-			_anon = anon;
-		}
-		String tStatut;
-		String tNom;
-		String tPrenom;
-		String tAdresse;
-		String tAtteinteDetails;
-		String tSoin;
-		tNom = (_nom == null) ? "" : _nom;
-		tPrenom = (_prenom == null) ? "" : _prenom;
-		tAdresse = (_adresse == null) ? "" : _adresse;
-		tAtteinteDetails = (_atteinteDetails == null) ? "" : _atteinteDetails;
-		tSoin = (_soin == null) ? "" : _soin;
-		tStatut = (_statut == null) ? "" : _statut;
-		
-		int result;
-
-		try {
-			System.out.println("Mise à jour d'une victime");
-			String requete = "nom="+tNom+",prenom="+tPrenom+",date_naissance="+_dateDeNaissance+",adresse="+tAdresse+",statut="+tStatut+",motif_sortie="+_motifSortie+",petit_soin="+_petitSoin+",malaise="+_malaise+",traumatisme="+_traumatisme+",incoscient="+_inconscience+",arret_cardiaque="+_arretCardiaque+",atteinte_details="+tAtteinteDetails+",soin="+tSoin+",surnom="+_anon;
-			if (!motifSortie.equals(""))
-			{
-				_motifSortie = motifSortie;
-				java.util.Date date = new java.util.Date();
-				_dateSortie = new java.sql.Timestamp(date.getTime());
-				requete += "motif_sortie="+_motifSortie+",date_sortie="+_dateSortie;
-				operation.delVictim(this);
-				this.genererMessage("Fin de prise en charge de la victime "+_anon);
-			}
-			result = _dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", requete , "id="+_id));
-			_id = result;
-			System.out.println("ID de la victime qui vient d'être mis à jour :"+_id);
-		} catch (MalformedQueryException e) { e.printStackTrace(); }	
-	}
 	
 	public VictimController(OperationController operation,
-			DatabaseManager dbm, int id_victim, String statut, String nom,
+			DatabaseManager dbm, int id_victim, String statut, String idAnonymat, String nom,
 			String prenom, String adresse, Timestamp dateDeNaissance,
 			Timestamp dateEntree, String atteinteDetails, String soin,
 			boolean petitSoin, boolean malaise, boolean traumatisme,
 			boolean inconscient, boolean arretCardiaque) {
 		_operation = operation;
 		_dbm = dbm;
+		_idAnonymat = idAnonymat;
 		_nom = nom;
 		_prenom = prenom;
 		_dateDeNaissance = dateDeNaissance;
-		_datePriseENCharge = dateEntree;
+		_datePriseEnCharge = dateEntree;
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
 		_petitSoin = petitSoin;
@@ -204,6 +149,14 @@ public class VictimController implements Subject {
 
 	public Integer getId() {
 		return _id;
+	}
+	
+	public String getIdAnonymat() {
+		return _idAnonymat;
+	}
+	
+	public void setIdAnonymat(String idAnonymat) {
+		_idAnonymat = idAnonymat;
 	}
 	
 	public String getNom() {
@@ -247,11 +200,11 @@ public class VictimController implements Subject {
 	}
 	
 	public Timestamp getDateEntree() {
-		return _datePriseENCharge;
+		return _datePriseEnCharge;
 	}
 	
 	public void setDateEntree(Timestamp dateEntree) {
-		_datePriseENCharge = dateEntree;
+		_datePriseEnCharge = dateEntree;
 	}
 	
 	public Timestamp getDateSortie() {

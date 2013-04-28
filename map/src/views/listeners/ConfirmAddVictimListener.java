@@ -2,9 +2,9 @@ package views.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.Date;
 
 import javax.swing.JPanel;
 
@@ -40,12 +40,13 @@ public class ConfirmAddVictimListener implements ActionListener
 	}
 	
 	
-	public boolean checkInput(String motif, String otherMotif, String idAnomymat, String soins)
+	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, String soins)
 	{
 		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && !soins.equals(""));
 	}
 	
 	
+	@SuppressWarnings("deprecation")
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
@@ -56,7 +57,7 @@ public class ConfirmAddVictimListener implements ActionListener
 		for(int i = 0; i < objects.length; i++)
 			motifsList[i] = (String)objects[i];
 		String otherMotif = _addVictimPanel.getDetailsTextArea().getText();
-		String idAnonymat = _addVictimPanel.getIdANonymat().getText();
+		String idAnonymat = _addVictimPanel.getIdAnonymat().getText();
 		String soins = _addVictimPanel.getSoins().getText();
 		
 		if(!checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins))
@@ -78,28 +79,23 @@ public class ConfirmAddVictimListener implements ActionListener
 			String name = _addVictimPanel.getNameTextField().getText();
 			String prenom = _addVictimPanel.getPrenomTextField().getText();
 			String adress = _addVictimPanel.getAdressTextField().getText();
-			String codePostal = _addVictimPanel.getCodePostaleTextField().getText();
-			String ville = _addVictimPanel.getVilleTextField().getText();
 			
-			Date dateDeNaissanceDate = (Date) _addVictimPanel.getDateDeNaissanceDatePicker().getDate();
+			Date dateDeNaissanceDate = _addVictimPanel.getDateDeNaissanceDatePicker().getDate();
 			Timestamp dateDeNaissance = null;
 			if(dateDeNaissanceDate != null)
-				dateDeNaissance = new Timestamp(dateDeNaissanceDate.getDay(), dateDeNaissanceDate.getMonth(), dateDeNaissanceDate.getYear(), dateDeNaissanceDate.getHours(), dateDeNaissanceDate.getMinutes(), dateDeNaissanceDate.getSeconds(), 0);
+				dateDeNaissance = new Timestamp(dateDeNaissanceDate.getYear(),  dateDeNaissanceDate.getMonth(), dateDeNaissanceDate.getDate(), dateDeNaissanceDate.getHours(), dateDeNaissanceDate.getMinutes(), dateDeNaissanceDate.getSeconds(), 0);
 			
-			Date datePriseEnChargeDate = (Date) _addVictimPanel.getDatePriseEnChargeDatePicker().getDate();
+			Date datePriseEnChargeDate = _addVictimPanel.getDatePriseEnChargeDatePicker().getDate();
 			Timestamp datePriseEnCharge = null;
 			if(datePriseEnChargeDate != null)
-				datePriseEnCharge = new Timestamp(datePriseEnChargeDate.getDay(), datePriseEnChargeDate.getMonth(), datePriseEnChargeDate.getYear(), datePriseEnChargeDate.getHours(), datePriseEnChargeDate.getMinutes(), datePriseEnChargeDate.getSeconds(), 0);
+				datePriseEnCharge = new Timestamp(datePriseEnChargeDate.getYear(),  datePriseEnChargeDate.getMonth(), datePriseEnChargeDate.getDate(), datePriseEnChargeDate.getHours(), datePriseEnChargeDate.getMinutes(), datePriseEnChargeDate.getSeconds(), 0);
 
 			Timestamp dateSortie = null;
 			
-			if(adress.equals("")) adress = "NULL";
-			if(codePostal.equals("")) codePostal = "NULL";
-			if(ville.equals("")) ville = "NULL";
-			
 			try
 			{
-				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, codePostal, ville, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat);
+				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat, true);
+				_subMenu.update();
 			}
 			catch(ParseException e1)
 			{
