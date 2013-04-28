@@ -34,9 +34,9 @@ public class EditEntityColorListener implements ActionListener {
 
 		Color colorChosen = _configurationEntityPanel.getColor();
 		System.out.println("couleur : "+colorChosen);
-		//String color = "#" + Integer.toHexString(colorChosen.getRGB()).substring(2, 8);
+		String color = "#" + Integer.toHexString(colorChosen.getRGB()).substring(2, 8);
 
-		//_entityController.setColor(color);
+		_entityController.setColor(color);
 		MapPanel mapPanel = (MapPanel)_parent;
 		mapPanel.addMapPanelListener();
 		

@@ -307,6 +307,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		_colorChooserPanel.setMinimumSize(new Dimension(10, 1));
 		_colorChooserPanel.setPreferredSize(new Dimension(10, 1));
 		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
+		
 		String stringColor = _entityController.getColor();
 		
 		colorEntity = stringToColor(stringColor);
@@ -378,7 +379,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 
 	public Color getColor() {
 		// TODO Auto-generated method stub
-		return null;
+		return _colorChooserPanel.getBackground();
 	}
 	
 	public void paintComponent(Graphics g)
