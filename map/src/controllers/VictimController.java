@@ -52,10 +52,11 @@ public class VictimController implements Subject {
 	
 	// java.sql.Timestamp Timestamp = new java.sql.Timestamp(date.getTime());
 
-	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, Timestamp datePriseEnCharge,  Timestamp dateSortie, String atteinteDetails, String soin, String anon, boolean newVictim) throws ParseException
+	public VictimController(OperationController operation, DatabaseManager dbm, Integer id, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, Timestamp datePriseEnCharge,  Timestamp dateSortie, String atteinteDetails, String soin, String anon) throws ParseException
 	{
 		_operation = operation;
 		_dbm = dbm;
+		_id = id;
 		_nom = nom;
 		_prenom = prenom;
 
@@ -87,17 +88,23 @@ public class VictimController implements Subject {
 
 		try
 		{
-			String query = "(NULL,NULL,'"+
+			String query = "";
+			int result;
+			
+			if(id == null)
+			{
+				query = "(" +
+							_id + ",NULL,'"+
 							_operation.getId()+"','"+
 							_idAnonymat+"','"+
 							_nom+"','"+
 							_prenom+"',"+
-							((dateDeNaissance == null) ? "NULL" : ("'" + dateDeNaissance.toString()) + "'") +","+
-							((adresse.equals("")) ? "NULL" : adresse)+",'"+
+							((_dateDeNaissance == null) ? "NULL" : ("'" + _dateDeNaissance.toString()) + "'") +","+
+							((_adresse.equals("")) ? "NULL" : _adresse)+",'"+
 							_statut+"', '"+
 							_motifSortie+"', "+
-							((datePriseEnCharge == null) ? "NULL" : ("'" + datePriseEnCharge.toString()) + "'") +", "+
-							((dateSortie == null) ? "NULL" : ("'" + dateSortie.toString()) + "'") +", '"+
+							((_datePriseEnCharge == null) ? "NULL" : ("'" + _datePriseEnCharge.toString()) + "'") +", "+
+							((_dateSortie == null) ? "NULL" : ("'" + _dateSortie.toString()) + "'") +", '"+
 							(_petitSoin ? 1 : 0)+"', '"+
 							(_malaise ? 1 : 0)+"', '"+
 							(_traumatisme ? 1 : 0)+"', '"+
@@ -106,20 +113,40 @@ public class VictimController implements Subject {
 							_atteinteDetails+"', '"+
 							_soin+"')";
 			
-			System.out.println("nouvelle victime : " + newVictim + " : " + query);
-			int id;
-			if(newVictim)
-				id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
+				result = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
+				
+				this.genererMessage("Début de prise en charge de la victime "+_idAnonymat);
+				operation.addVictim(this);
+			}
 			else
-				id = _dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
-			_id = id;
+			{
+				query = "categorie_id = NULL" +
+						", operation_id = " + _operation.getId() +
+						", surnom = '" + _idAnonymat + "'" +
+						((_nom.equals("")) ? "" : (", nom = '" + _nom + "'")) +
+						((_prenom.equals("")) ? "" : (", prenom = '" + _prenom + "'")) +
+						((_dateDeNaissance == null) ? "" : (", date_naissance = '" + _dateDeNaissance.toString()) + "'") +
+						((_adresse.equals("")) ? "" : (", adresse = '" + _adresse + "'")) +
+						((_statut.equals("")) ? "" : (", statut = '" + _statut + "'")) +
+						((_motifSortie.equals("")) ? "" : (", motif_sortie = '" + _motifSortie + "'")) +
+						((_datePriseEnCharge == null ) ? "" : (", date_entree = '" + _datePriseEnCharge.toString()) + "'") +
+						((_dateSortie == null) ? "" : (", date_sortie = '" + _dateSortie.toString()) + "'") +
+						", petit_soin = " + _petitSoin +
+						", malaise = " + _malaise +
+						", traumatisme = " + _traumatisme +
+						", inconscient = " + _inconscience +
+						", arret_cardiaque = " + _arretCardiaque +
+						((_atteinteDetails.equals("")) ? "" : (", atteinte_details = '" + _atteinteDetails + "'")) +
+						((_soin.equals("")) ? "" : (", soin = '" + _soin + "'")) +
+						"where id = " + _id;
+				result = _dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
+			}
+		
+			_id = result;
 			
 			System.out.println("ID de la victime qui vient d'être créée :"+_id);
 		}
 		catch(MalformedQueryException e) { e.printStackTrace(); }
-		
-		this.genererMessage("Début de prise en charge de la victime "+_idAnonymat);
-		operation.addVictim(this);
 	}
 
 	

@@ -29,15 +29,17 @@ public class ConfirmEditVictimListener implements ActionListener
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private EditVictimPanel _editVictimPanel;
+	private VictimController _victimController;
 	
 	
-	public ConfirmEditVictimListener(JPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel)
+	public ConfirmEditVictimListener(JPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel, VictimController victimController)
 	{
 		_mapPanel = mapPanel;
 		_subMenu = subMenu;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		_editVictimPanel = editVictimPanel;
+		_victimController = victimController;
 	}
 	
 	
@@ -87,7 +89,7 @@ public class ConfirmEditVictimListener implements ActionListener
 			
 			try
 			{
-				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat, false);
+				new VictimController(_operationController, _databaseManager, _victimController.getId(), name, prenom, motifsList, adress, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat);
 				_subMenu.update();
 			}
 			catch(ParseException e1)
