@@ -144,6 +144,8 @@ public class MapController implements Subject {
 				if(!_operation.existsInLocationList(idLocation))
 					_locationList.add(_operation.getLocation(idLocation));
 			}
+
+			result.getStatement().close();
 		}catch(SQLException e){
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
 		}catch(MalformedQueryException e){

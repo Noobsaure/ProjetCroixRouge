@@ -223,6 +223,8 @@ public class LocationController implements Subject {
 			while(result.next()){
 				_name = result.getString("nom");
 			}
+			
+			result.getStatement().close();
 		}catch(SQLException e){
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
 		}catch(MalformedQueryException e1){

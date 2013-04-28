@@ -72,6 +72,7 @@ public class OperationController implements Subject
 				System.out.println("---->Chargement equipier :"+name+" avec l'id: "+id+" "+entityId);
 				_teamMemberList.add(equipier);
 			}
+			result.getStatement().close();
 		} catch (SQLException e) {e.printStackTrace();}
 		catch(MalformedQueryException e1) {e1.printStackTrace();}
 	}	
@@ -99,9 +100,11 @@ public class OperationController implements Subject
 						_entityList.add(entite);
 						entite.addObserver(_globalPanel);
 					}
+					result2.getStatement().close();
 
 				}catch(SQLException e2){e2.printStackTrace();}
 			}
+			result.getStatement().close();
 
 		}catch(SQLException e) {e.printStackTrace();}
 		catch(MalformedQueryException e1) {e1.printStackTrace();}
@@ -125,6 +128,7 @@ public class OperationController implements Subject
 				location.addObserver(_globalPanel);
 				
 			}
+			result.getStatement().close();
 		}catch(MalformedQueryException e1){e1.printStackTrace();}
 		catch(SQLException e2){e2.printStackTrace();}
 		
@@ -157,6 +161,7 @@ public class OperationController implements Subject
 				System.out.println("Chargement carte "+name+" avec l'id: "+id);
 			}
 
+			result.getStatement().close();
 		}catch(MalformedQueryException e1){ e1.printStackTrace(); }
 		catch(SQLException e2){ e2.printStackTrace(); }
 	}
@@ -193,6 +198,7 @@ public class OperationController implements Subject
 					}
 				}
 			}
+			result.getStatement().close();
 		}catch(MalformedQueryException e1){ e1.printStackTrace(); }
 		catch(SQLException e2){ e2.printStackTrace(); }
 	}

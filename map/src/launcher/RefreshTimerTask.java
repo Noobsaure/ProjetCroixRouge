@@ -63,14 +63,14 @@ public class RefreshTimerTask extends TimerTask
 		for(TeamMemberController team : teamMemberList){
 			team.updateFields();
 		}		
-		
+
 		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1"));
 			while(result.next()){
 				int id = result.getInt("id");
-				
+
 				if(!_operation.existsInTeamMemberList(id)){
 					String name = result.getString("nom");
 					String firstName = result.getString("prenom");
@@ -84,6 +84,8 @@ public class RefreshTimerTask extends TimerTask
 					_operation.addTeamMember(equipier);
 				}
 			}
+
+			result.getStatement().close();
 		} catch (SQLException e) {e.printStackTrace();}
 		catch(MalformedQueryException e1) {e1.printStackTrace();}
 	}	
@@ -114,14 +116,18 @@ public class RefreshTimerTask extends TimerTask
 							String infos = result2.getString("infos");
 							java.sql.Timestamp date = result2.getTimestamp("date_depart");
 							String color = result2.getString("couleur");
-							
+
 							EntityController entite = new EntityController(_operation, _dbm, id, statut_id, position_id, date, nom, type, infos, color);
 							_operation.addEntite(entite);
 						}
 
+						result2.getStatement().close();
+						
 					}catch(SQLException e2){e2.printStackTrace();}
 				}
 			}
+
+			result.getStatement().close();
 
 		}catch(SQLException e) {e.printStackTrace();}
 		catch(MalformedQueryException e1) {e1.printStackTrace();}
@@ -139,19 +145,24 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW MAPS WHICH ARE IN THE DATABASE */
 
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Carte", "operation_id='"+_operation.getId()+"'"));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"'"));
 
 			while(result.next()){
 				int id = result.getInt("id");
 
 				if(!_operation.existsInMapList(id)){
-					String name = result.getString("nom");
-					Boolean visibility = result.getBoolean("visibilite");
-					MapController map = new MapController(_operation, _dbm , id, name, visibility);
-					System.out.println("Chargement carte "+name+" avec l'id: "+id);
-					_operation.addMap(map);
+					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"'"));
+					while(result2.next()){
+						String name = result2.getString("nom");
+						Boolean visibility = result2.getBoolean("visibilite");
+						MapController map = new MapController(_operation, _dbm , id, name, visibility);
+						System.out.println("Chargement carte "+name+" avec l'id: "+id);
+						_operation.addMap(map);
+					}
+				result2.getStatement().close();
 				}
 			}
+			result.getStatement().close();
 		}catch(MalformedQueryException e1){ 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur lors de la mise à jour des cartes");
 		}
@@ -168,13 +179,13 @@ public class RefreshTimerTask extends TimerTask
 		for(LocationController location : locationList){
 			location.updateFields();
 		}
-		
+
 		try {
 			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation","operation_id="+_operation.getId()));
 
 			while(result.next()){
 				int id = result.getInt("id");
-				
+
 				if(!_operation.existsInLocationList(id)){
 					int id_carte = result.getInt("carte_id");
 					String nom = result.getString("nom");
@@ -186,6 +197,8 @@ public class RefreshTimerTask extends TimerTask
 					_operation.addLocation(location);
 				}
 			}
+
+			result.getStatement().close();
 		}catch(MalformedQueryException e1){ e1.printStackTrace(); }
 		catch(SQLException e2){ e2.printStackTrace(); }
 	}
