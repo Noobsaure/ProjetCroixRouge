@@ -111,13 +111,13 @@ public class MapPanel extends JPanel implements Observer
 			listLocations.remove(oneLoc.getLocationController());
 		}
 		
-		for(LocationController oneLocController : listLocations)
+		for(LocationController oneLoc : listLocations)
 		{
-			int x = (int) oneLocController.getX();
-			int y = (int) oneLocController.getY();
-			Location location = new Location(_globalPanel, oneLocController);
+			int x = (int) oneLoc.getX();
+			int y = (int) oneLoc.getY();
+			Location location = new Location(_globalPanel, oneLoc);
 			LocationPanel locPanel = new LocationPanel(location, this, x, y);
-			locPanel.addIconMouseListener(new EditLocationButtonListener(_operation,locPanel,_globalPanel.getMapPanel(),oneLocController));
+			locPanel.addIconMouseListener(new EditLocationButtonListener(_operation,locPanel,_globalPanel.getMapPanel(),oneLoc));
 			location.setLocPanel(locPanel);
 			_locations.add(location);
 			add(locPanel);

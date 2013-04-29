@@ -84,16 +84,15 @@ public class LocationPanel extends JPanel {
 	}
 	
 	public void update() {
-		_entitiesPanel.removeAll();
 		List<EntityController> entitiesList = _loc.getLocationController().getEntityList();
 		_entitiesList.retainAll(entitiesList);
 		entitiesList.removeAll(_entitiesList);
-		_entitiesList.addAll(entitiesList);
 		AffectedEntityPanel affectedEntity;
-		for(EntityController oneEntity : _entitiesList) {
+		for(EntityController oneEntity : entitiesList) {
 			affectedEntity = new AffectedEntityPanel(_mapPanel, oneEntity);
 			_entitiesPanel.add(affectedEntity);
 		}
+		_entitiesList.addAll(entitiesList);
 	}
 
 	public boolean is_displayed() {return _displayed;}
