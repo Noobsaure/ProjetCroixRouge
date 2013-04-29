@@ -51,7 +51,6 @@ public class MapController implements Subject {
 
 		_operation.addMap(this);
 		_operation.setCurrentMap(this);
-		//_listObservers.add(_operation.getGlobalPanel().getMapPanel());
 	}
 
 	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility){
@@ -62,7 +61,7 @@ public class MapController implements Subject {
 		_visibility = visibility;
 		_datas = _dbm.getImage(_id + "", name);
 
-		try{
+		/*try{
 			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Localisation","carte_id = "+_id));
 
 			while(result.next()){
@@ -72,12 +71,10 @@ public class MapController implements Subject {
 		}catch(SQLException e){
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Chargement carte '"+name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+name+"'.");
 		}
-		catch(MalformedQueryException e){ e.printStackTrace(); }
+		catch(MalformedQueryException e){ e.printStackTrace(); }*/
 
 		_operation.addMap(this);
 		_operation.setCurrentMap(this);
-		//_listObservers.add(_operation.getGlobalPanel().getMapPanel());
-		
 	}
 
 	public String getName(){
@@ -95,7 +92,10 @@ public class MapController implements Subject {
 	public List<EntityController> getEntityListInThisMap(){
 		List<EntityController> _entityList = new ArrayList<>();
 		
+		System.out.println("Location list.size() : "+_locationList.size());
+		
 		for(LocationController location : _locationList){
+			System.out.println("Location "+location.getName());
 			if(location.getEntityList().size() != 0){
 				_entityList.addAll(location.getEntityList());
 			}
@@ -120,6 +120,7 @@ public class MapController implements Subject {
 		}catch(MalformedQueryException e){
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur lors de la supression de la carte '"+_name+"'.");
 		}
+		
 		_visibility = false;
 		_operation.removeMap(this);
 	}
@@ -130,6 +131,7 @@ public class MapController implements Subject {
 	}
 
 	public void addLocation(LocationController locationController) {
+		System.out.println("On ajoute la location "+locationController.getName()+" à la map: "+_name);
 		_locationList.add(locationController);
 		//notifyObservers();
 	}

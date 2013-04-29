@@ -92,7 +92,7 @@ public class LocationController implements Subject {
 		_idMap = idMap;
 		_idOperation = _operation.getId();
 
-		if(_name.compareTo("LocalisationBaseDesEntites") != 0)
+		if(_name.compareTo("LocalisationBaseDesEntites") != 0 )
 			operation.getMap(_idMap).addLocation(this);
 
 		_observers = new ArrayList<Observer>();
@@ -240,6 +240,10 @@ public class LocationController implements Subject {
 		}
 
 		_description = informations;
+	}
+
+	public void addEntityList(EntityController entityController) {
+		_entityList.add(entityController);		
 	}
 
 

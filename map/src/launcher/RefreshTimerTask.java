@@ -232,9 +232,11 @@ public class RefreshTimerTask extends TimerTask
 					String description = result.getString("desc");
 					float x = result.getFloat("x");
 					float y = result.getFloat("y");
-
-					LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description);
-					_operation.addLocation(location);
+					
+					if(_operation.getMap(id_carte) != null){
+						LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description);
+						_operation.addLocation(location);
+					}
 				}
 			}
 
