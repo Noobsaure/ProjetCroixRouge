@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -13,6 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controllers.EntityController;
+import controllers.LocationController;
 
 import views.listeners.LocationPanelMouseListener;
 import views.listeners.EditLocationButtonListener;
@@ -31,6 +33,7 @@ public class LocationPanel extends JPanel {
 	private ImageIcon _iconGearOn,_iconGearOff;
 	private LocationPanelMouseListener _mouseListener;
 	private EditLocationButtonListener _iconGearMouseListener;
+	private List<EntityController> _entitiesList;
 
 	public LocationPanel(Location loc, MapPanel mapPanel, int x, int y) {
 		super();
@@ -63,6 +66,8 @@ public class LocationPanel extends JPanel {
 		southPanel.add(_iconGearLabel, BorderLayout.EAST);
 		add(_entitiesPanel,BorderLayout.CENTER);
 		add(southPanel,BorderLayout.SOUTH);
+		
+		_entitiesList = new ArrayList();
 	}
 	
 	public void moveLocationPanel(int x, int y) {
@@ -79,9 +84,13 @@ public class LocationPanel extends JPanel {
 	}
 	
 	public void update() {
-		List<EntityController> entityList = _loc.getLocationController().getEntityList();
+		_entitiesPanel.removeAll();
+		List<EntityController> entitiesList = _loc.getLocationController().getEntityList();
+		_entitiesList.retainAll(entitiesList);
+		entitiesList.removeAll(_entitiesList);
+		_entitiesList.addAll(entitiesList);
 		AffectedEntityPanel affectedEntity;
-		for(EntityController oneEntity : entityList) {
+		for(EntityController oneEntity : _entitiesList) {
 			affectedEntity = new AffectedEntityPanel(_mapPanel, oneEntity);
 			_entitiesPanel.add(affectedEntity);
 		}
