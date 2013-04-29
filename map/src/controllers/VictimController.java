@@ -143,6 +143,9 @@ public class VictimController implements Subject {
 						((_soin.equals("")) ? "" : (", soin = '" + _soin + "'")) +
 						"where id = " + _id;
 				result = _dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
+				
+				if( _motifSortie.compareTo("") !=0 )
+					_operation.delVictim(this);
 			}
 		
 			_id = result;
