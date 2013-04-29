@@ -18,6 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import observer.Observer;
 import views.listeners.AddVictimButtonListener;
 import views.listeners.EditVictimButtonListener;
+import views.listeners.OkVictimButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.OperationController;
 import controllers.VictimController;
@@ -59,7 +60,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		add(_scrollPane, BorderLayout.CENTER);
 
 		addAddButtonListener(new AddVictimButtonListener(mapPanel, this));
-		addOkButtonListener(null);
+		addOkButtonListener(new  OkVictimButtonListener(mapPanel, this));
 	}
 
 	@Override

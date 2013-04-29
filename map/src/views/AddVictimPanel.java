@@ -8,9 +8,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractListModel;
 import javax.swing.BoxLayout;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JList;
@@ -18,13 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import views.buttons.CustomButton;
-import views.listeners.FinDePriseEnChargeButtonListener;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -32,6 +33,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 import com.toedter.calendar.JDateChooser;
 
+import controllers.EntityController;
 import controllers.OperationController;
 import database.DatabaseManager;
 
@@ -40,7 +42,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	private static final long serialVersionUID = 1L;
 	
 	private static final int WIDTH = 600;
-	private static final int HEIGHT = 425;
+	private static final int HEIGHT = 450;
 	private static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	private static final Dimension DIMENSION_FORM_PANEL = new Dimension(WIDTH- 20, 200);
 	public static final String TITLE = "Ajouter une victime";
@@ -64,7 +66,11 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	private CustomButton _cancelButton;
 	private CustomButton _okButton;
 	private JPanel _buttonPanel;
-	private JPanel _identityPanel ;
+	private JPanel _identityPanel;
+	private JLabel entiteAssocieeLabel;
+	private JComboBox _entitéAssocieeCombobox;
+	
+	private Map<String, EntityController> _map;
 	
 	
 	public AddVictimPanel(MapPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
@@ -74,6 +80,8 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		_operationController = operation;
 		_dbm = dbm;
 		_parent.setCurrentPopUp(this);
+		
+		_map = new HashMap<String, EntityController>();
 		
 		initGui();
 	}
@@ -256,6 +264,32 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		gbc_dateDeNaissanceTextField.gridy = 2;
 		gbc_dateDeNaissanceTextField.gridwidth = 2;
 		_identityPanel.add(_dateDeNaissanceDatePicker, gbc_dateDeNaissanceTextField);
+		
+		entiteAssocieeLabel = new JLabel("Entité associée :");
+		GridBagConstraints gbc_entiteAssocieeLabel = new GridBagConstraints();
+		gbc_entiteAssocieeLabel.anchor = anchor;
+		gbc_entiteAssocieeLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_entiteAssocieeLabel.gridx = 0;
+		gbc_entiteAssocieeLabel.gridy = 3;
+		_identityPanel.add(entiteAssocieeLabel, gbc_entiteAssocieeLabel);
+		
+		Object[] entitiesListObjects = _operationController.getEntityList().toArray();
+		String[] entitiesList = new String[entitiesListObjects.length];
+		for(int i = 0; i < entitiesListObjects.length; i++)
+		{
+			EntityController entityController = ((EntityController)entitiesListObjects[i]);
+			String string = entityController.getId() + " - " + entityController.getName();
+			entitiesList[i] = string;
+			_map.put(string, entityController);
+		}
+			_entitéAssocieeCombobox = new JComboBox(entitiesList);
+		GridBagConstraints gbc_entitéAssocieeCombobox = new GridBagConstraints();
+		gbc_entitéAssocieeCombobox.insets = new Insets(0, 0, 0, 5);
+		gbc_entitéAssocieeCombobox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_entitéAssocieeCombobox.gridx = 1;
+		gbc_entitéAssocieeCombobox.gridy = 3;
+		gbc_entitéAssocieeCombobox.gridwidth = 2;
+		_identityPanel.add(_entitéAssocieeCombobox, gbc_entitéAssocieeCombobox);
 		/**************************************************************/
 
 		
@@ -302,6 +336,11 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		return _identityPanel;
 	}
 	
+	public JComboBox getEntiteAssocieeCombobox()
+	{
+		return _entitéAssocieeCombobox;
+	}
+	
 	
 
 	public RoundedPanel getMainPanel()
@@ -339,6 +378,11 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	public JTextField getIdAnonymat()
 	{
 		return _idAnonymat;
+	}
+	
+	public Map<String, EntityController> getMap()
+	{
+		return _map;
 	}
 	
 	

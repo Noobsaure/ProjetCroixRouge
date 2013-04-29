@@ -98,7 +98,7 @@ public class EditVictimPanel extends AddVictimPanel
 		GridBagConstraints gbc_finDePriseEnChargeLabel = new GridBagConstraints();
 		gbc_finDePriseEnChargeLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_finDePriseEnChargeLabel.gridx = 0;
-		gbc_finDePriseEnChargeLabel.gridy = 3;
+		gbc_finDePriseEnChargeLabel.gridy = 4;
 		super.getIdentityPanel().add(finDePriseEnChargeLabel, gbc_finDePriseEnChargeLabel);
 		
 		_motifTextField = new JTextField();
@@ -106,7 +106,7 @@ public class EditVictimPanel extends AddVictimPanel
 		gbc_motifTextArea.insets = new Insets(0, 0, 0, 5);
 		gbc_motifTextArea.fill = GridBagConstraints.BOTH;
 		gbc_motifTextArea.gridx = 1;
-		gbc_motifTextArea.gridy = 3;
+		gbc_motifTextArea.gridy = 4;
 		gbc_motifTextArea.gridwidth = 3;
 		super.getIdentityPanel().add(_motifTextField, gbc_motifTextArea);
 		

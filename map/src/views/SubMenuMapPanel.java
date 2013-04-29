@@ -16,9 +16,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EmptyBorder;
 
 import observer.Observer;
-
 import views.buttons.SubMenuMapButton;
 import views.listeners.AddMapButtonListener;
 import views.listeners.HideMapListener;
@@ -93,6 +93,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 			deleteIcon.addMouseListener(new HideMapListener(_operationController, listMapsName.get(i)));
 			
 			JPanel panelLabel = new JPanel();
+			panelLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
 			panelLabel.setLayout(new BorderLayout());
 			panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
 			panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));

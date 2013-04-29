@@ -46,7 +46,6 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
-	
 	private RoundedPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
@@ -63,7 +62,13 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 		_parent = parent;
 		_operationController = operation;
 		_dbm = dbm;
+<<<<<<< HEAD
 		_parent.setCurrentPopUp(this);
+=======
+		
+		operation.getGlobalPanel().getMenu().enableListeners(false);
+		
+>>>>>>> c9c925348e45b48b8e932bc48df5f9116cc702ff
 		initGui();
 	}
 	

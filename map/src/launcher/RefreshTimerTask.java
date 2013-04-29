@@ -20,19 +20,14 @@ import database.MalformedQueryException;
 import database.SQLQuerySelect;
 
 /***
- * Cette classe est en charge de la v��rification toutes les 5 secondes de la base de donn��es (Pour v��rifier les
+ * Cette classe est en charge de la vérification toutes les 5 secondes de la base de données (Pour vérifier les
  * 
  */
 public class RefreshTimerTask extends TimerTask
 {
 	private OperationController _operation;
 	private DatabaseManager _dbm;
-
-	private List<EntityController> _entityList = new ArrayList<EntityController>();
-	private List<TeamMemberController> _teamMemberList = new ArrayList<TeamMemberController>();
-	private List<MapController> _mapList = new ArrayList<MapController>();
-	private List<LocationController> _locationList = new ArrayList<LocationController>();
-
+	
 	public RefreshTimerTask(OperationController op,DatabaseManager dbm){
 		super();
 		_operation = op;
@@ -46,6 +41,9 @@ public class RefreshTimerTask extends TimerTask
 		refreshMaps();
 		refreshLocation();
 		refreshVictim();
+
+		_operation.loadTeamMemberIntoEntity();
+		_operation.loadEntityIntoLocation();
 
 		_operation.notifyObservers();	
 	}

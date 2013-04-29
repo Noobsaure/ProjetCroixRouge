@@ -418,10 +418,17 @@ public class EntityController implements Subject {
 			result.getStatement().close();
 		}catch(SQLException e){
 			e.printStackTrace();
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "WHILE Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
 		}catch(MalformedQueryException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "TRY Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
 		}
+	}
+
+
+	public void loadLocation() {
+		System.out.println("Entity : "+_name+"POS CURANTE ID : "+_posCurrentId);
+		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) )
+			_operation.getLocation(_posCurrentId).addEntity(this);		
 	}
 
 }

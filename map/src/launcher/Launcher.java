@@ -39,6 +39,7 @@ public class Launcher {
 		_operation.loadMaps();
 		_operation.loadVictim();
 		_operation.loadLocation();
+		_operation.loadEntityIntoLocation();
 				
 		_operation.notifyObservers();
 		
