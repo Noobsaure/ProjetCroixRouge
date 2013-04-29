@@ -80,13 +80,6 @@ public class ConfirmEditVictimListener implements ActionListener
 			if(dateDeNaissanceDate != null)
 				dateDeNaissance = new Timestamp(dateDeNaissanceDate.getYear(),  dateDeNaissanceDate.getMonth(), dateDeNaissanceDate.getDate(), dateDeNaissanceDate.getHours(), dateDeNaissanceDate.getMinutes(), dateDeNaissanceDate.getSeconds(), 0);
 			
-			Date datePriseEnChargeDate = _editVictimPanel.getDatePriseEnChargeDatePicker().getDate();
-			Timestamp datePriseEnCharge = null;
-			if(datePriseEnChargeDate != null)
-				datePriseEnCharge = new Timestamp(datePriseEnChargeDate.getYear(),  datePriseEnChargeDate.getMonth(), datePriseEnChargeDate.getDate(), datePriseEnChargeDate.getHours(), datePriseEnChargeDate.getMinutes(), datePriseEnChargeDate.getSeconds(), 0);
-
-			Timestamp dateSortie = null;
-			
 			try
 			{
 				_victimController.updateVictim(name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat);

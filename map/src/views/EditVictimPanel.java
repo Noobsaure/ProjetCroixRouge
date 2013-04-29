@@ -1,11 +1,17 @@
 package views;
 
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import views.buttons.CustomButton;
+import views.listeners.FinDePriseEnChargeButtonListener;
 
 import com.toedter.calendar.JDateChooser;
 
@@ -17,11 +23,12 @@ public class EditVictimPanel extends AddVictimPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private static final String TITLE = "Editer victime";
+	public static final String TITLE = "Editer victime";
 
 	private JPanel _parent;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
+	private SubMenuVictimPanel _subMenu;
 	private VictimController _victimController;
 	
 	private RoundedPanel _mainPanel;
@@ -33,7 +40,7 @@ public class EditVictimPanel extends AddVictimPanel
 	private JTextField _prenomTextField;
 	private JTextField _adressTextField;
 	private JDateChooser _dateDeNaissanceDatePicker;
-	private JDateChooser _dateArriveeDatePicker;
+	private JTextField _motifTextField;
 	
 	
 	public EditVictimPanel(JPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm, VictimController victim)
@@ -41,6 +48,7 @@ public class EditVictimPanel extends AddVictimPanel
 		super(parent, subMenu, operation, dbm);
 		
 		_parent = parent;
+		_subMenu = subMenu;
 		_operationController = operation;
 		_dbm = dbm;
 		_victimController = victim;
@@ -54,13 +62,12 @@ public class EditVictimPanel extends AddVictimPanel
 		_prenomTextField = super.getPrenomTextField();
 		_adressTextField = super.getAdressTextField();
 		_dateDeNaissanceDatePicker = super.getDateDeNaissanceDatePicker();
-		_dateArriveeDatePicker = super.getDatePriseEnChargeDatePicker();
 		
 		initFields();
 	}
 	
 	private void initFields()
-	{
+	{		
 		if(_victimController.getArretCardiaque())
 			_motifsList.setSelectedIndex(0);
 		else
@@ -85,7 +92,31 @@ public class EditVictimPanel extends AddVictimPanel
 		_prenomTextField.setText(_victimController.getPrenom());
 		_adressTextField.setText(_victimController.getAdresse());
 		_dateDeNaissanceDatePicker.setDate(_victimController.getDateDeNaissance());
-		_dateArriveeDatePicker.setDate(_victimController.getDateEntree());
+		
+		JLabel finDePriseEnChargeLabel = new JLabel("Motif fin de prise ne charge :");
+		GridBagConstraints gbc_finDePriseEnChargeLabel = new GridBagConstraints();
+		gbc_finDePriseEnChargeLabel.insets = new Insets(0, 0, 0, 5);
+		gbc_finDePriseEnChargeLabel.gridx = 0;
+		gbc_finDePriseEnChargeLabel.gridy = 3;
+		super.getIdentityPanel().add(finDePriseEnChargeLabel, gbc_finDePriseEnChargeLabel);
+		
+		_motifTextField = new JTextField();
+		GridBagConstraints gbc_motifTextArea = new GridBagConstraints();
+		gbc_motifTextArea.insets = new Insets(0, 0, 0, 5);
+		gbc_motifTextArea.fill = GridBagConstraints.BOTH;
+		gbc_motifTextArea.gridx = 1;
+		gbc_motifTextArea.gridy = 3;
+		gbc_motifTextArea.gridwidth = 3;
+		super.getIdentityPanel().add(_motifTextField, gbc_motifTextArea);
+		
+		CustomButton finDePriseEnChargeButton = new CustomButton("Fin de prise en charge");
+		finDePriseEnChargeButton.addActionListener(new FinDePriseEnChargeButtonListener(_parent, _subMenu, _victimController, this));
+		super.getButtonPanel().add(finDePriseEnChargeButton);
+	}
+	
+	public JTextField getMotifTextField()
+	{
+		return _motifTextField;
 	}
 	
 	

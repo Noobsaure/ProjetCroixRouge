@@ -24,6 +24,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import views.buttons.CustomButton;
+import views.listeners.FinDePriseEnChargeButtonListener;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -39,10 +40,10 @@ public class AddVictimPanel extends JLayeredPane
 	private static final long serialVersionUID = 1L;
 	
 	private static final int WIDTH = 600;
-	private static final int HEIGHT = 460;
+	private static final int HEIGHT = 425;
 	private static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	private static final Dimension DIMENSION_FORM_PANEL = new Dimension(WIDTH- 20, 200);
-	private static final String TITLE = "Ajouter une victime";
+	public static final String TITLE = "Ajouter une victime";
 	
 
 	private JPanel _parent;
@@ -51,6 +52,7 @@ public class AddVictimPanel extends JLayeredPane
 	
 	private RoundedPanel _mainPanel;
 	private SubMenuVictimPanel _subMenu;
+	private JLabel _title;
 	private JList _motifsList;
 	private JTextArea _detailsTextArea;
 	private JTextArea _soinsTextArea;
@@ -58,10 +60,11 @@ public class AddVictimPanel extends JLayeredPane
 	private JTextField _prenomTextField;
 	private JTextField _adressTextField;
 	private JDateChooser _dateDeNaissanceDatePicker;
-	private JDateChooser _dateArriveeDatePicker;
 	private JTextField _idAnonymat;
 	private CustomButton _cancelButton;
 	private CustomButton _okButton;
+	private JPanel _buttonPanel;
+	private JPanel _identityPanel ;
 	
 	
 	public AddVictimPanel(JPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
@@ -94,8 +97,8 @@ public class AddVictimPanel extends JLayeredPane
 		/**************************************************************\
 		 * 							Titre
 		\**************************************************************/
-		JLabel title = new JLabel(AddVictimPanel.TITLE);
-		_mainPanel.add(title, BorderLayout.NORTH);
+		_title = new JLabel("Victime");
+		_mainPanel.add(_title, BorderLayout.NORTH);
 		/**************************************************************/
 		
 		
@@ -173,12 +176,13 @@ public class AddVictimPanel extends JLayeredPane
 		/**************************************************************\
 		 * 							Identity Panel
 		\**************************************************************/
-		JPanel identityPanel = new JPanel();
-		identityPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Compl\u00E9ment d'informations", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		_identityPanel = new JPanel();
+		_identityPanel.setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 1, true), "Compl\u00E9ment d'informations", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagLayout gridBagLayout = new GridBagLayout();
-		gridBagLayout.columnWeights = new double[]{0.0, 1.0, 0.0, 1.0};
-		identityPanel.setLayout(gridBagLayout);
-		_mainPanel.add(identityPanel);
+		gridBagLayout.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0};
+		gridBagLayout.columnWeights = new double[]{1.0, 1.0, 0.0, 1.0};
+		_identityPanel.setLayout(gridBagLayout);
+		_mainPanel.add(_identityPanel);
 		
 		JLabel nameLabel = new JLabel("Nom :");
 		
@@ -202,46 +206,46 @@ public class AddVictimPanel extends JLayeredPane
 		gbc_nameLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_nameLabel.gridx = 0;
 		gbc_nameLabel.gridy = 0;
-		identityPanel.add(nameLabel, gbc_nameLabel);
+		_identityPanel.add(nameLabel, gbc_nameLabel);
 		GridBagConstraints gbc_nameTextField = new GridBagConstraints();
 		gbc_nameTextField.insets = new Insets(0, 0, 5, 5);
 		gbc_nameTextField.gridx = 1;
 		gbc_nameTextField.gridy = 0;
-		identityPanel.add(_nameTextField, gbc_nameTextField);
+		_identityPanel.add(_nameTextField, gbc_nameTextField);
 		GridBagConstraints gbc_prenomLabel = new GridBagConstraints();
 		gbc_prenomLabel.anchor = anchor;
 		gbc_prenomLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_prenomLabel.gridx = 2;
 		gbc_prenomLabel.gridy = 0;
-		identityPanel.add(prenomLabel, gbc_prenomLabel);
+		_identityPanel.add(prenomLabel, gbc_prenomLabel);
 		GridBagConstraints gbc_prenomTextField = new GridBagConstraints();
 		gbc_prenomTextField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_prenomTextField.insets = new Insets(0, 0, 5, 0);
 		gbc_prenomTextField.gridx = 3;
 		gbc_prenomTextField.gridy = 0;
-		identityPanel.add(_prenomTextField, gbc_prenomTextField);
+		_identityPanel.add(_prenomTextField, gbc_prenomTextField);
 		GridBagConstraints gbc_adresseLabel = new GridBagConstraints();
 		gbc_adresseLabel.anchor = anchor;
 		gbc_adresseLabel.insets = new Insets(0, 0, 5, 5);
 		gbc_adresseLabel.gridx = 0;
 		gbc_adresseLabel.gridy = 1;
-		identityPanel.add(adresseLabel, gbc_adresseLabel);
+		_identityPanel.add(adresseLabel, gbc_adresseLabel);
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.insets = new Insets(0, 0, 5, 0);
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.gridwidth = 3;
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 1;
-		identityPanel.add(_adressTextField, gbc_textField);
+		_identityPanel.add(_adressTextField, gbc_textField);
 		GridBagConstraints gbc_codePostaleTextField = new GridBagConstraints();
 		
-				JLabel dateDeNaissanceLabel = new JLabel("Date de naissance :");
-				GridBagConstraints gbc_dateDeNaissanceLabel = new GridBagConstraints();
-				gbc_dateDeNaissanceLabel.anchor = anchor;
-				gbc_dateDeNaissanceLabel.insets = new Insets(0, 0, 5, 5);
-				gbc_dateDeNaissanceLabel.gridx = 0;
-				gbc_dateDeNaissanceLabel.gridy = 2;
-				identityPanel.add(dateDeNaissanceLabel, gbc_dateDeNaissanceLabel);
+		JLabel dateDeNaissanceLabel = new JLabel("Date de naissance :");
+		GridBagConstraints gbc_dateDeNaissanceLabel = new GridBagConstraints();
+		gbc_dateDeNaissanceLabel.anchor = anchor;
+		gbc_dateDeNaissanceLabel.insets = new Insets(0, 0, 5, 5);
+		gbc_dateDeNaissanceLabel.gridx = 0;
+		gbc_dateDeNaissanceLabel.gridy = 2;
+		_identityPanel.add(dateDeNaissanceLabel, gbc_dateDeNaissanceLabel);
 		
 		_dateDeNaissanceDatePicker = new JDateChooser();
 		GridBagConstraints gbc_dateDeNaissanceTextField = new GridBagConstraints();
@@ -250,32 +254,7 @@ public class AddVictimPanel extends JLayeredPane
 		gbc_dateDeNaissanceTextField.gridx = 1;
 		gbc_dateDeNaissanceTextField.gridy = 2;
 		gbc_dateDeNaissanceTextField.gridwidth = 2;
-		identityPanel.add(_dateDeNaissanceDatePicker, gbc_dateDeNaissanceTextField);
-//		_dateDeNaissanceTextField.setColumns(10);
-												
-		JLabel dateArriveeLabel = new JLabel("Date de prise en charge :");
-		GridBagConstraints gbc_dateArriveeLabel = new GridBagConstraints();
-		gbc_dateArriveeLabel.anchor = anchor;
-		gbc_dateArriveeLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_dateArriveeLabel.gridx = 0;
-		gbc_dateArriveeLabel.gridy = 3;
-		identityPanel.add(dateArriveeLabel, gbc_dateArriveeLabel);
-		
-		_dateArriveeDatePicker = new JDateChooser();
-		GridBagConstraints gbc_dateArriveeTextField = new GridBagConstraints();
-		gbc_dateArriveeTextField.insets = new Insets(0, 0, 5, 5);
-		gbc_dateArriveeTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_dateArriveeTextField.gridx = 1;
-		gbc_dateArriveeTextField.gridy = 3;
-		gbc_dateArriveeTextField.gridwidth = 2;
-		identityPanel.add(_dateArriveeDatePicker, gbc_dateArriveeTextField);
-		
-		JToggleButton finDePriseENCHargeToggle = new JToggleButton("Fin de prise en charge");
-		GridBagConstraints gbc_finDePriseENCHargeToggle = new GridBagConstraints();
-		gbc_finDePriseENCHargeToggle.insets = new Insets(0, 0, 5, 0);
-		gbc_finDePriseENCHargeToggle.gridx = 3;
-		gbc_finDePriseENCHargeToggle.gridy = 3;
-		identityPanel.add(finDePriseENCHargeToggle, gbc_finDePriseENCHargeToggle);
+		_identityPanel.add(_dateDeNaissanceDatePicker, gbc_dateDeNaissanceTextField);
 		/**************************************************************/
 
 		
@@ -284,14 +263,16 @@ public class AddVictimPanel extends JLayeredPane
 		/**************************************************************\
 		 * 						Panneau de boutons
 		\**************************************************************/
-		JPanel buttonPanel = new JPanel();
-		_mainPanel.add(buttonPanel);
+		_buttonPanel = new JPanel();
+		_buttonPanel.setPreferredSize(new Dimension(400, 30));
+		_mainPanel.add(_buttonPanel);
 		
 		_cancelButton = new CustomButton("Annuler");
-		buttonPanel.add(_cancelButton);
+		_buttonPanel.add(_cancelButton);
 		
-		_okButton = new CustomButton("Ok");
-		buttonPanel.add(_okButton);
+		_okButton = new CustomButton("Modifier");
+		_okButton.setText("Ok");
+		_buttonPanel.add(_okButton);
 		/**************************************************************/
 	}
 	
@@ -303,6 +284,21 @@ public class AddVictimPanel extends JLayeredPane
 	public void addOkButtonListener(ActionListener listener)
 	{
 		_okButton.addActionListener(listener);
+	}
+	
+	public static String getTitle()
+	{
+		return TITLE;
+	}
+	
+	public JPanel getButtonPanel()
+	{
+		return _buttonPanel;
+	}
+	
+	public JPanel getIdentityPanel()
+	{
+		return _identityPanel;
 	}
 	
 	
@@ -338,10 +334,6 @@ public class AddVictimPanel extends JLayeredPane
 	public JDateChooser getDateDeNaissanceDatePicker()
 	{
 		return _dateDeNaissanceDatePicker;
-	}
-	public JDateChooser getDatePriseEnChargeDatePicker()
-	{
-		return _dateArriveeDatePicker;
 	}
 	public JTextField getIdAnonymat()
 	{
