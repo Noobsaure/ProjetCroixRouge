@@ -28,7 +28,7 @@ import database.DatabaseManager;
 
 
 
-public class AddLocationPanel extends JLayeredPane
+public class AddLocationPanel extends JLayeredPane implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -41,7 +41,7 @@ public class AddLocationPanel extends JLayeredPane
 	public static final String TITLE = "Ajouter une localisation";
 	protected static final int MIDDLE = AddLocationPanel.WIDTH / 2;
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
@@ -53,25 +53,27 @@ public class AddLocationPanel extends JLayeredPane
 	private JTextArea _informationsTextArea;
 	
 	
-	public AddLocationPanel(JPanel parent, OperationController operation, DatabaseManager dbm, int x, int y)
+	public AddLocationPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, int x, int y)
 	{
 		_parent = parent;
 		_operationController = operation;
 		_dbm = dbm;
 		_x = x;
 		_y = y;
+		_parent.setCurrentPopUp(this);
 		
 		initGui();
 	}
 	
 	
-	public AddLocationPanel(JPanel parent, OperationController operation, DatabaseManager dbm, String nom, String type, String informations, int x, int y)
+	public AddLocationPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, String nom, String type, String informations, int x, int y)
 	{
 		_parent = parent;
 		_operationController = operation;
 		_dbm = dbm;
 		_x = x;
 		_y = y;
+		_parent.setCurrentPopUp(this);
 		
 		initGui();
 		
@@ -190,6 +192,13 @@ public class AddLocationPanel extends JLayeredPane
 //
 //		_internalPanel.repaint();
 //		_internalPanel.revalidate();		
+	}
+
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

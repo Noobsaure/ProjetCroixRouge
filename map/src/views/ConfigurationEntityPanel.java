@@ -47,7 +47,7 @@ import controllers.TeamMemberController;
 
 
 // cool
-public class ConfigurationEntityPanel extends JLayeredPane implements Observer
+public class ConfigurationEntityPanel extends JLayeredPane implements Observer, PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -58,7 +58,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Information sur l'entité";
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private EntityController _entityController;
 	private OperationController _operationController;
 	
@@ -85,12 +85,13 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public ConfigurationEntityPanel(JPanel parent,OperationController operationController, EntityController entityController)
+	public ConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController)
 	{
 		_parent = parent;
 		_operationController = operationController;
 		_entityController = entityController;
 		_entityController.addObserver(this);
+		_parent.setCurrentPopUp(this);
 		initGui();
 	}	
 	
@@ -389,7 +390,6 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 
 	@Override
 	public void update() {
-		// TODO Auto-generated method stub
 		_listeEquipierPanel.removeAll();
 		listEquipiers= _entityController.getTeamMemberList();
 		for (TeamMemberController team : listEquipiers){
@@ -413,6 +413,12 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
+	}
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -36,7 +36,7 @@ import controllers.TeamMemberController;
 
 
 
-public class AddEquipierPanel extends JLayeredPane
+public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class AddEquipierPanel extends JLayeredPane
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static String TITLE = "";
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private OperationController _operationController;
 	private EntityController _entityController;
 	
@@ -64,12 +64,12 @@ public class AddEquipierPanel extends JLayeredPane
 	 * @wbp.parser.constructor
 	 */
 	
-	public AddEquipierPanel(JPanel parent,OperationController operationController, EntityController entityController)
+	public AddEquipierPanel(MapPanel parent,OperationController operationController, EntityController entityController)
 	{
 		_parent = parent;
 		_operationController = operationController;
 		_entityController=entityController;
-		
+		_parent.setCurrentPopUp(this);
 		initGui();
 	}
 	
@@ -169,6 +169,12 @@ public class AddEquipierPanel extends JLayeredPane
 		super.paintComponent(g);
 		
 		centrer();		
+	}
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

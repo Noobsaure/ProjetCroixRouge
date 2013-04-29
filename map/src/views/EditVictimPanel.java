@@ -25,7 +25,7 @@ public class EditVictimPanel extends AddVictimPanel
 	
 	public static final String TITLE = "Editer victime";
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	private SubMenuVictimPanel _subMenu;
@@ -43,7 +43,7 @@ public class EditVictimPanel extends AddVictimPanel
 	private JTextField _motifTextField;
 	
 	
-	public EditVictimPanel(JPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm, VictimController victim)
+	public EditVictimPanel(MapPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm, VictimController victim)
 	{
 		super(parent, subMenu, operation, dbm);
 		
@@ -52,6 +52,7 @@ public class EditVictimPanel extends AddVictimPanel
 		_operationController = operation;
 		_dbm = dbm;
 		_victimController = victim;
+		_parent.setCurrentPopUp(this);
 		
 		_mainPanel = super.getMainPanel();
 		_motifsList = super.getMotifList();
@@ -133,5 +134,10 @@ public class EditVictimPanel extends AddVictimPanel
 		super.paintComponent(g);
 		
 		centrer();
+	}
+	
+	@Override
+	public void updatePanel() {
+		//TODO
 	}
 }

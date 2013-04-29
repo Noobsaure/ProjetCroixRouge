@@ -35,7 +35,7 @@ import com.toedter.calendar.JDateChooser;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddVictimPanel extends JLayeredPane
+public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -46,7 +46,7 @@ public class AddVictimPanel extends JLayeredPane
 	public static final String TITLE = "Ajouter une victime";
 	
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
@@ -67,12 +67,13 @@ public class AddVictimPanel extends JLayeredPane
 	private JPanel _identityPanel ;
 	
 	
-	public AddVictimPanel(JPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
+	public AddVictimPanel(MapPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
 	{
 		_parent = parent;
 		_subMenu = subMenu;
 		_operationController = operation;
 		_dbm = dbm;
+		_parent.setCurrentPopUp(this);
 		
 		initGui();
 	}
@@ -355,5 +356,11 @@ public class AddVictimPanel extends JLayeredPane
 		super.paintComponent(g);
 		
 		centrer();
+	}
+
+
+	@Override
+	public void updatePanel() {
+		//TODO
 	}
 }

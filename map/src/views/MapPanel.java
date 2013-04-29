@@ -29,6 +29,7 @@ public class MapPanel extends JPanel implements Observer
 
 	private BufferedImage _map;
 	private GlobalPanel _gPanel;
+	private PopUpPanel _currentPopUp;
 	private int _x = 0;
 	private int _y = 0;
 	private MapPanelMouseListener _mapListener;
@@ -67,10 +68,14 @@ public class MapPanel extends JPanel implements Observer
 
 	public int get_x() {return _x;}
 	public int get_y() {return _y;}
+	public void setCurrentPopUp(PopUpPanel currentPopUp) {_currentPopUp = currentPopUp;}
 
 	public void moveMap(int x, int y){
 		_x = _x + x;
 		_y = _y + y;
+		for(Location oneLoc : _locations) {
+			oneLoc.moveLocation(x,y);
+		}
 		repaint();
 	}
 	
@@ -177,10 +182,9 @@ public class MapPanel extends JPanel implements Observer
 			
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
-			System.out.println("TAILLE MAP = "+_map.getHeight() + "    " + _map.getWidth());
 		}
 		updateLocations();
-
+		_currentPopUp.updatePanel();
 		repaint();
 		revalidate();
 	}
