@@ -123,11 +123,13 @@ public class OperationController implements Subject
 				float x = result.getFloat("x");
 				float y = result.getFloat("y");
 
-				if( (getMap(id_carte) != null) || (nom.compareTo("LocalisationBaseDesEntites")==0) ){
+				if(getMap(id_carte) != null){
 					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
 					_locationList.add(location);
-					location.addObserver(_globalPanel);
-				}				
+				}else if(nom.compareTo("LocalisationBaseDesEntites") == 0){
+					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
+					_locationList.add(location);
+				}
 			}
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){e1.printStackTrace();}
@@ -135,6 +137,7 @@ public class OperationController implements Subject
 		
 		for(LocationController location: _locationList){
 			if(location.getName().compareTo("LocalisationBaseDesEntites") == 0){
+				System.out.println("NON MAIS ALLO QUOI ???");
 				_idPcm= location.getId();
 				System.out.println("ID PCM = "+_idPcm);
 				return;
@@ -286,7 +289,6 @@ public class OperationController implements Subject
 	}
 
 	public int getIdPcm(){
-		System.out.println("Valeur de IDPCM: "+_idPcm);
 		return _idPcm;
 	}
 
@@ -382,7 +384,7 @@ public class OperationController implements Subject
 		List<LocationController> listLocation = new ArrayList<LocationController>();
 
 		for(LocationController location : _locationList){
-			if(location.getId() != _idPcm){
+			if(location.getId() != _idPcm && (_currentMap!=null) ){
 				if(location.getIdMap() == _currentMap.getId())
 					listLocation.add(location);
 			}
@@ -429,6 +431,10 @@ public class OperationController implements Subject
 
 	public int getIdOperateur() {
 		return _idOperateur;
+	}
+	
+	public LocationController getPcmLocation(){
+		return getLocation(_idPcm);
 	}
 
 	public void setListTeamMember(List<TeamMemberController> teamMemberList) {

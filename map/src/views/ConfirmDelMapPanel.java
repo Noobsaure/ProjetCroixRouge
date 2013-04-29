@@ -14,13 +14,10 @@ public class ConfirmDelMapPanel extends ErrorPanel
 	private JPanel _parent;	
 	private OperationController _operation;
 	private MapController _map;
-	private CustomButton _cancelButton;
 
 	public ConfirmDelMapPanel(OperationController operation, MapController map, String title, String message)
 	{
 		super(operation.getGlobalPanel().getMapPanel(), title, message);
-		
-		System.out.println("GO THERE");		
 		
 		_operation = operation;
 		_map = map;

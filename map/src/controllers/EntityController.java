@@ -264,8 +264,8 @@ public class EntityController implements Subject {
 		if(loc != null) loc.removeEntity(this);
 
 		if(location == null){
+			System.out.println("Here");
 			_posCurrentId = _operation.getIdPcm();
-
 		}else{
 			_posCurrentId = location.getId();
 		}
@@ -276,7 +276,10 @@ public class EntityController implements Subject {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la position courante pour l'entite \n"+_name);
 		}
 
-		int idDeplacement = _operation.getLocation(location.getId()).addEntity(this);
+		int idDeplacement = _operation.
+				getLocation(
+						location.getId()).
+				addEntity(this);
 
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp _dateArriveeLocalisation = new java.sql.Timestamp(date.getTime());
@@ -309,6 +312,7 @@ public class EntityController implements Subject {
 	public void genererMessageDeplacement(int lastPosCurrentId,int idDeplacement){
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		System.out.println("On cherche a avoir la localisation d'ID "+lastPosCurrentId);
 		String message =  _name+" a quitté \""+_operation.getLocation(lastPosCurrentId).getName()+"\" pour \""+_operation.getLocation(_posCurrentId).getName()+"\".";
 
 		try {
@@ -426,9 +430,10 @@ public class EntityController implements Subject {
 
 
 	public void loadLocation() {
-		System.out.println("Entity : "+_name+"POS CURANTE ID : "+_posCurrentId);
-		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) )
-			_operation.getLocation(_posCurrentId).addEntity(this);		
+		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) ){
+			_operation.getLocation(_posCurrentId).addEntityList(this);
+			System.out.println("Entity : "+_name+" ajouté à la localisation : "+_operation.getLocation(_posCurrentId).getName());
+		}
 	}
 
 }
