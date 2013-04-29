@@ -41,6 +41,7 @@ public class VictimController implements Subject {
 	private String _soin;
 	private String _idAnonymat; // champ d'anonymisation d'une victime
 	private int _messageParent;
+	private EntityController _entity;
 	
 	private List<Observer> _listObservers = new ArrayList<Observer>();
 	/**
@@ -54,7 +55,7 @@ public class VictimController implements Subject {
 	 */
 	
 
-	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon) throws ParseException
+	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon, EntityController entity) throws ParseException
 	{
 		_operation = operation;
 		_dbm = dbm;
@@ -84,6 +85,7 @@ public class VictimController implements Subject {
 		_soin = soin;
 		_idAnonymat = anon;
 		_statut = "";
+		_entity = entity;
 
 		try
 		{
@@ -123,7 +125,7 @@ public class VictimController implements Subject {
 			String prenom, String adresse, Timestamp dateDeNaissance,
 			Timestamp dateEntree, String atteinteDetails, String soin,
 			boolean petitSoin, boolean malaise, boolean traumatisme,
-			boolean inconscient, boolean arretCardiaque) {
+			boolean inconscient, boolean arretCardiaque, int entity) {
 		_operation = operation;
 		_dbm = dbm;
 		_idAnonymat = idAnonymat;
@@ -140,9 +142,10 @@ public class VictimController implements Subject {
 		_arretCardiaque = arretCardiaque;
 		_messageParent = -1;
 		_id = id_victim;
+		_entity = _operation.getEntity(entity);
 	}
 
-	public void updateVictim(String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon) throws ParseException{
+	public void updateVictim(String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon, EntityController entity) throws ParseException{
 		for(int i=0 ; i < motif.length ; i++){
 			if (motif[i] == "Arrêt cardiaque")
 				_arretCardiaque = true;
@@ -164,6 +167,11 @@ public class VictimController implements Subject {
 		_soin = soin;
 		_idAnonymat = anon;
 		
+		if(_entity.getId() != entity.getId()){
+			genererChangementEntite();
+			_entity = entity;
+		}
+		
 		String query = "surnom = '" + _idAnonymat + "'" +
 				((_nom.equals("")) ? "" : (", nom = '" + _nom + "'")) +
 				((_prenom.equals("")) ? "" : (", prenom = '" + _prenom + "'")) +
@@ -177,6 +185,7 @@ public class VictimController implements Subject {
 				", arret_cardiaque = " + _arretCardiaque +
 				((_atteinteDetails.equals("")) ? "" : (", atteinte_details = '" + _atteinteDetails + "'")) +
 				((_soin.equals("")) ? "" : (", soin = '" + _soin + "'")) +
+				", entite_id = "+_entity.getId()+
 				" WHERE id = " + _id;
 		
 		try {
@@ -196,8 +205,37 @@ public class VictimController implements Subject {
 		}catch(MalformedQueryException e){
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime '"+_idAnonymat+"'.");
 		}
+		
+		genererFinDePriseEnCharge();
 	}
 	
+	private void genererChangementEntite() {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		
+		String message = "La victime '"+_idAnonymat+"' est maintenant pris en charge par "+_entity.getName()+".";
+		try {			
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+message+"','0')"));	
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+
+					"Message : "+message);
+		}
+	}
+	
+	private void genererFinDePriseEnCharge() {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		
+		String message = "La victime '"+_idAnonymat+"' n'est plus prise en charge.";
+		try {			
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+message+"','0')"));	
+		} catch (MalformedQueryException e) {
+					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. \n"+
+							"Message : "+message);
+		}
+	}
+
+		
 	public Integer getId() {
 		return _id;
 	}
