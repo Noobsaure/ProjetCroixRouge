@@ -55,9 +55,10 @@ public class Location extends JPanel {
 	}
 	
 	public void moveLocation(int x, int y) {
-		/*_offsetX = _offsetX - x;
-		_offsetY = _offsetY - y;
-		setBounds(_offsetX, _offsetY, getWidth(), getHeight());*/
+		_offsetX = _offsetX + x;
+		_offsetY = _offsetY + y;
+		setBounds(_offsetX + _x, _offsetY + _y, getWidth(), getHeight());
+		_locPanel.moveLocationPanel(x, y);
 	}
 
 	@Override

@@ -28,7 +28,7 @@ import database.DatabaseManager;
 
 
 
-public class ConfigurationLocationPanel extends JLayeredPane
+public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -41,7 +41,7 @@ public class ConfigurationLocationPanel extends JLayeredPane
 	public static final String TITLE = "Modifier une localisation";
 	protected static final int MIDDLE = ConfigurationLocationPanel.WIDTH / 2;
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
@@ -51,12 +51,13 @@ public class ConfigurationLocationPanel extends JLayeredPane
 	private JTextField _nomTextField;
 	private JTextArea _informationsTextArea;	
 	
-	public ConfigurationLocationPanel(JPanel parent, OperationController operation, DatabaseManager dbm, String nom, String informations, LocationController locationController)
+	public ConfigurationLocationPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, String nom, String informations, LocationController locationController)
 	{
 		_parent = parent;
 		_operationController = operation;
 		_locationController = locationController;
 		_dbm = dbm;
+		_parent.setCurrentPopUp(this);
 		
 		initGui();
 		
@@ -175,6 +176,13 @@ public class ConfigurationLocationPanel extends JLayeredPane
 //
 //		_internalPanel.repaint();
 //		_internalPanel.revalidate();		
+	}
+
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

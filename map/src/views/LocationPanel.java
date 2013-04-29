@@ -25,6 +25,7 @@ public class LocationPanel extends JPanel {
 	private JPanel _entitiesPanel;
 	private MapPanel _mapPanel;
 	private boolean _displayed;
+	private int _offsetX, _offsetY;
 	private int _x, _y;
 	private JLabel _iconGearLabel;
 	private ImageIcon _iconGearOn,_iconGearOff;
@@ -63,11 +64,16 @@ public class LocationPanel extends JPanel {
 		add(_entitiesPanel,BorderLayout.CENTER);
 		add(southPanel,BorderLayout.SOUTH);
 	}
+	
+	public void moveLocationPanel(int x, int y) {
+		_offsetX = _offsetX + x;
+		_offsetY = _offsetY + y;
+	}
 
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		setBounds(_x - 100, _y - 50, 200,100);
+		setBounds(_offsetX + _x - 100, _offsetY + _y - 50, 200,100);
 		setForeground(Color.LIGHT_GRAY);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 	}

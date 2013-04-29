@@ -47,7 +47,7 @@ import controllers.TeamMemberController;
 
 
 // cool
-public class ConfigurationEntityPanel extends JLayeredPane implements Observer
+public class ConfigurationEntityPanel extends JLayeredPane implements Observer, PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -58,7 +58,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Information sur l'entité";
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private EntityController _entityController;
 	private OperationController _operationController;
 	
@@ -85,12 +85,13 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public ConfigurationEntityPanel(JPanel parent,OperationController operationController, EntityController entityController)
+	public ConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController)
 	{
 		_parent = parent;
 		_operationController = operationController;
 		_entityController = entityController;
 		_entityController.addObserver(this);
+		_parent.setCurrentPopUp(this);
 		initGui();
 	}	
 	
@@ -397,6 +398,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 
 	@Override
 	public void update() {
+<<<<<<< HEAD
 		// TODO Auto-generated method stub
 //		_listeEquipierPanel.removeAll();
 //		listEquipiers= _entityController.getTeamMemberList();
@@ -421,6 +423,37 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 //			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 //			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 //		}
+=======
+		_listeEquipierPanel.removeAll();
+		listEquipiers= _entityController.getTeamMemberList();
+		for (TeamMemberController team : listEquipiers){
+			JPanel nomEquipierPanel = new JPanel();
+			nomEquipierPanel.setMaximumSize(new Dimension(300, 25));
+			_listeEquipierPanel.add(nomEquipierPanel);
+			nomEquipierPanel.setLayout(new BorderLayout(0, 0));
+				
+			JLabel _nomEquipierLabel = new JLabel(team.getName());
+			_nomEquipierLabel.setBorder(new EmptyBorder(5, 6, 5, 0));
+			nomEquipierPanel.add(_nomEquipierLabel, BorderLayout.WEST);
+			_nomEquipierLabel.setPreferredSize(new Dimension(200, 16));
+			_nomEquipierLabel.setSize(new Dimension(200, 16));
+			_nomEquipierLabel.setMaximumSize(new Dimension(200, 16));
+			_nomEquipierLabel.setMinimumSize(new Dimension(200, 16));
+			
+			JButton removeEquipierButton = new JButton("X");
+			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_parent, nomEquipierPanel, _operationController, team, _entityController, this));
+			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
+			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
+			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
+		}
+>>>>>>> d45d4113bad1aa21e8527aaf507f42ebd658bacd
+	}
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 
 

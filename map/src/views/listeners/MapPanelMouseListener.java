@@ -58,8 +58,12 @@ public class MapPanelMouseListener extends MouseAdapter {
 
 	public void mousePressed(MouseEvent e) {
 		if(_enabled) {
-			_x = e.getX();
-			_y = e.getY();
+			int x = e.getX();
+			int y = e.getY();
+			if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
+				_x = x;
+				_y = y;
+			}
 		}
 	}
 

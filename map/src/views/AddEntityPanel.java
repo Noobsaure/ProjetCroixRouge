@@ -31,7 +31,7 @@ import database.DatabaseManager;
 
 
 
-public class AddEntityPanel extends JLayeredPane
+public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -42,7 +42,7 @@ public class AddEntityPanel extends JLayeredPane
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Ajouter une entité";
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
@@ -57,23 +57,28 @@ public class AddEntityPanel extends JLayeredPane
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public AddEntityPanel(JPanel parent, OperationController operation, DatabaseManager dbm)
+	public AddEntityPanel(MapPanel parent, OperationController operation, DatabaseManager dbm)
 	{
 		_parent = parent;
 		_operationController = operation;
 		_dbm = dbm;
+<<<<<<< HEAD
+		_parent.setCurrentPopUp(this);
+=======
 		
 		operation.getGlobalPanel().getMenu().enableListeners(false);
 		
+>>>>>>> c9c925348e45b48b8e932bc48df5f9116cc702ff
 		initGui();
 	}
 	
 	
-	public AddEntityPanel(JPanel parent, OperationController operation, DatabaseManager dbm, String nom, String type, String informations)
+	public AddEntityPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, String nom, String type, String informations)
 	{
 		_parent = parent;
 		_operationController = operation;
 		_dbm = dbm;
+		_parent.setCurrentPopUp(this);
 		
 		initGui();
 		
@@ -227,6 +232,13 @@ public class AddEntityPanel extends JLayeredPane
 //
 //		_internalPanel.repaint();
 //		_internalPanel.revalidate();		
+	}
+
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }
 
