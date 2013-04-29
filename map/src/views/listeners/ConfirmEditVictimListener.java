@@ -89,7 +89,7 @@ public class ConfirmEditVictimListener implements ActionListener
 			
 			try
 			{
-				new VictimController(_operationController, _databaseManager, _victimController.getId(), name, prenom, motifsList, adress, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat);
+				_victimController.updateVictim(name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat);
 				_subMenu.update();
 			}
 			catch(ParseException e1)

@@ -111,41 +111,9 @@ public class VictimController implements Subject {
 				operation.addVictim(this);
 				genererMessage("Début de prise en charge de la victime "+_idAnonymat);
 			}
-<<<<<<< Updated upstream
-			else
-			{
-				query = "categorie_id = NULL" +
-						", operation_id = " + _operation.getId() +
-						", surnom = '" + _idAnonymat + "'" +
-						((_nom.equals("")) ? "" : (", nom = '" + _nom + "'")) +
-						((_prenom.equals("")) ? "" : (", prenom = '" + _prenom + "'")) +
-						((_dateDeNaissance == null) ? "" : (", date_naissance = '" + _dateDeNaissance.toString()) + "'") +
-						((_adresse.equals("")) ? "" : (", adresse = '" + _adresse + "'")) +
-						((_statut.equals("")) ? "" : (", statut = '" + _statut + "'")) +
-						((_motifSortie.equals("")) ? "" : (", motif_sortie = '" + _motifSortie + "'")) +
-						((_datePriseEnCharge == null ) ? "" : (", date_entree = '" + _datePriseEnCharge.toString()) + "'") +
-						((_dateSortie == null) ? "" : (", date_sortie = '" + _dateSortie.toString()) + "'") +
-						", petit_soin = " + _petitSoin +
-						", malaise = " + _malaise +
-						", traumatisme = " + _traumatisme +
-						", inconscient = " + _inconscience +
-						", arret_cardiaque = " + _arretCardiaque +
-						((_atteinteDetails.equals("")) ? "" : (", atteinte_details = '" + _atteinteDetails + "'")) +
-						((_soin.equals("")) ? "" : (", soin = '" + _soin + "'")) +
-						"where id = " + _id;
-				result = _dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
-				
-				if( _motifSortie.compareTo("") !=0 )
-					_operation.delVictim(this);
-			}
-		
-			_id = result;
-			operation.addVictim(this);
-			System.out.println("ID de la victime qui vient d'être créée :"+_id);
-=======
-		catch(MalformedQueryException e) { 
+			catch(MalformedQueryException e) { 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
->>>>>>> Stashed changes
+
 		}
 	}
 
