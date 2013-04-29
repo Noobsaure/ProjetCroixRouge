@@ -51,7 +51,7 @@ public class RefreshTimerTask extends TimerTask
 	}
 
 	private void refreshVictim() {
-		System.out.println("%%%%% REFRESH TEAMMEMBER LIST %%%%%");
+		System.out.println("%%%%% REFRESH VICTIM LIST %%%%%");
 		/* UPDATE TEAMMEMBER ALREADY IN THE LIST */		
 		List<VictimController> victimList = _operation.getVictimList();
 
@@ -62,35 +62,35 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victim", "operation_id="+_operation.getId()+" AND date_sortie is NULL"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victime", "operation_id="+_operation.getId()+" AND date_sortie is NULL"));
 			while(result.next()){
 				int id = result.getInt("id");
 
 				if(!_operation.existsInVictimList(id)){
-					result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victim", "id="+id));
-					while(result.next()){
-						String idAnonymat = result.getString("surnom");
-						String nom = result.getString("nom");
-						String prenom = result.getString("prenom");
-						java.sql.Timestamp dateDeNaissance = result.getTimestamp("date_naissance");
-						String adresse = result.getString("adresse");
-						String statut = result.getString("statut");
-						java.sql.Timestamp dateEntree = result.getTimestamp("date_entree");
-						boolean petitSoin = result.getBoolean("petit_soin");
-						boolean malaise = result.getBoolean("malaise");
-						boolean traumatisme = result.getBoolean("traumatisme");
-						boolean inconscient = result.getBoolean("inconscient");
-						boolean arretCardiaque = result.getBoolean("arret_cardiaque");
-						String atteinteDetails = result.getString("atteinte_details");
-						String soin = result.getString("soin");
-						java.sql.Timestamp dateSortiePriseEnCharge = result.getTimestamp("date_sortie");
+					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("*","Victime", "id="+id));
+					while(result2.next()){
+						String idAnonymat = result2.getString("surnom");
+						String nom = result2.getString("nom");
+						String prenom = result2.getString("prenom");
+						java.sql.Timestamp dateDeNaissance = result2.getTimestamp("date_naissance");
+						String adresse = result2.getString("adresse");
+						String statut = result2.getString("statut");
+						java.sql.Timestamp dateEntree = result2.getTimestamp("date_entree");
+						boolean petitSoin = result2.getBoolean("petit_soin");
+						boolean malaise = result2.getBoolean("malaise");
+						boolean traumatisme = result2.getBoolean("traumatisme");
+						boolean inconscient = result2.getBoolean("inconscient");
+						boolean arretCardiaque = result2.getBoolean("arret_cardiaque");
+						String atteinteDetails = result2.getString("atteinte_details");
+						String soin = result2.getString("soin");
+						java.sql.Timestamp dateSortiePriseEnCharge = result2.getTimestamp("date_sortie");
 
 						VictimController victim = new VictimController(_operation, _dbm, id, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
 						_operation.addVictim(victim);
 					}
+					result2.getStatement().close();
 				}
 			}
-
 			result.getStatement().close();
 		} catch (SQLException e) {e.printStackTrace();}
 		catch(MalformedQueryException e1) {e1.printStackTrace();}
