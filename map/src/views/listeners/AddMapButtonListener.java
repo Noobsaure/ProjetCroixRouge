@@ -64,8 +64,7 @@ public class AddMapButtonListener implements ActionListener
 			case JFileChooser.APPROVE_OPTION:
 				String path = _fileChooser.getSelectedFile().getAbsolutePath();
 				new MapController(operationController, databaseManager, getFileName(path), path);
-//				_mapPanel.getGlobalPanel().getMenu().getButtonsPanel().setListPanelContent();
-				//_subMenu.update();
+				_subMenu.update();
 				break;
 		}
 	}

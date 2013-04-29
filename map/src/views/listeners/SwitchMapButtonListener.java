@@ -51,32 +51,40 @@ public class SwitchMapButtonListener implements ActionListener
 		
 		Map<JToggleButton, MapController> map = _subMenuPanel.getMapMap();
 		MapController mapController = map.get(buttonSelected);
-		ImageIcon image = mapController.getImage();
 		
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		double width = screenSize.getWidth();
-		double height = screenSize.getHeight();
-		double ratio = 1;
-		
-		if(image.getIconHeight() > height && image.getIconWidth() > width) {
-			if(image.getIconHeight() > image.getIconWidth()) {
-				ratio = width/image.getIconWidth();
-			} else {
-				ratio = height/image.getIconHeight();
+		if(mapController != null)
+		{
+			ImageIcon image = mapController.getImage();
+			
+			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+			double width = screenSize.getWidth();
+			double height = screenSize.getHeight();
+			double ratio = 1;
+			
+			if(image.getIconHeight() > height && image.getIconWidth() > width)
+			{
+				if(image.getIconHeight() > image.getIconWidth())
+					ratio = width/image.getIconWidth();
+				else
+					ratio = height/image.getIconHeight();
 			}
-		} else if(image.getIconHeight() > height) {
-			ratio = height/image.getIconHeight();
-		} else if(image.getIconWidth() > width) {
-			ratio = width/image.getIconWidth();
+			else
+				if(image.getIconHeight() > height)
+					ratio = height/image.getIconHeight();
+				else
+					if(image.getIconWidth() > width)
+						ratio = width/image.getIconWidth();
+			
+			BufferedImage newMap = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
+			newMap.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
+			
+			_mapPanel.setMap(newMap);
+			_operationController.setCurrentMap(mapController);
 		}
 		
-		BufferedImage newMap = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
-		newMap.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
-		
-		_mapPanel.setMap(newMap);
-		_operationController.setCurrentMap(mapController);
 		_button.setEnabled(true);
 		_mapPanel.remove(_subMenuPanel);
+		
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
 	}

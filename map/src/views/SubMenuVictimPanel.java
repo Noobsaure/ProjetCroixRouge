@@ -75,8 +75,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		{
 			System.out.println("Victime " + i + " " + listVictimsName.get(i).getId() + " " + listVictimsName.get(i).getIdAnonymat());
 			System.out.println("I : "+i);
-			int id = listVictimsName.get(i)
-					.getId();
+			int id = listVictimsName.get(i).getId();
 			VictimController victim = listVictimsName.get(i);
 			
 			JLabel nameLabel = new JLabel("(" + victim.getIdAnonymat() + ") " + victim.getPrenom() + " " + victim.getNom());
