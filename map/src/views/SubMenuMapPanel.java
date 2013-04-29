@@ -32,6 +32,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 {
 	private Map<JToggleButton, MapController> _map;
 	private JPanel _thumbnailsPanel;
+	private JScrollPane _scrollPane;
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
@@ -45,7 +46,12 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		displayThumbnail();
-		//operationController.addObserver(this);
+
+		_scrollPane = new JScrollPane(_thumbnailsPanel);
+		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		_scrollPane.setViewportBorder(null);
+		add(_scrollPane, BorderLayout.CENTER);
+		
 		addAddButtonListener(new AddMapButtonListener(mapPanel,operationController,this));
 		addOkButtonListener(new SwitchMapButtonListener(mapPanel, button, this, operationController));
 	}
@@ -104,18 +110,10 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 			_thumbnailsPanel.add(panelLabel);
 			
 			if(id == currentMapId)
-			{
 				toggleButton.setSelected(true);
-			}
 			
 			_map.put(toggleButton, listMapsName.get(i));
 		}
-		
-		JScrollPane scrollPane = new JScrollPane(_thumbnailsPanel);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setViewportBorder(null);
-		
-		add(scrollPane, BorderLayout.CENTER);
 	}
 
 	@Override
@@ -124,6 +122,11 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		_thumbnailsPanel.removeAll();
 		
 		displayThumbnail();
+		
+		_scrollPane.repaint();
+		_scrollPane.revalidate();
+		_thumbnailsPanel.repaint();
+		_thumbnailsPanel.revalidate();
 	}
 	
 	
