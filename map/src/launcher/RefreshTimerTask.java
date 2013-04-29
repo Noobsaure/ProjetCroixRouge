@@ -84,8 +84,9 @@ public class RefreshTimerTask extends TimerTask
 						String atteinteDetails = result2.getString("atteinte_details");
 						String soin = result2.getString("soin");
 						java.sql.Timestamp dateSortiePriseEnCharge = result2.getTimestamp("date_sortie");
+						int entiteId = result2.getInt("entite_id");
 
-						VictimController victim = new VictimController(_operation, _dbm, id, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
+						VictimController victim = new VictimController(_operation, _dbm, id, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque,entiteId);
 						_operation.addVictim(victim);
 					}
 					result2.getStatement().close();

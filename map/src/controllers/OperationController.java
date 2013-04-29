@@ -173,7 +173,7 @@ public class OperationController implements Subject
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Victime", "operation_id='"+_idOperation+"'"));
 
 			while(result.next()){
-				if (result.getString("motif_sortie").equals("")) {
+				if (result.getString("motif_sortie") == null) {
 					int id_victim = result.getInt("id");
 					int operation_id = _idOperation;
 					String idAnonymat = result.getString("surnom");
@@ -191,9 +191,10 @@ public class OperationController implements Subject
 					String atteinteDetails = result.getString("atteinte_details");
 					String soin = result.getString("soin");
 					java.sql.Timestamp dateSortiePriseEnCharge = result.getTimestamp("date_sortie");
+					int entityId = result.getInt("enite_id");
 					
 					if(dateSortiePriseEnCharge == null);{
-						VictimController victim = new VictimController(this, _dbm, id_victim, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
+						VictimController victim = new VictimController(this, _dbm, id_victim, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque, entityId);
 						_victimList.add(victim);
 					}
 				}
