@@ -39,7 +39,7 @@ public class MapPanel extends JPanel implements Observer
 	public void setOperation(OperationController operation) {
 		_operation = operation;
 	}
-	
+
 	public MapPanel(GlobalPanel gPanel)
 	{
 		super(true);
@@ -48,7 +48,7 @@ public class MapPanel extends JPanel implements Observer
 
 		setBackground(Color.LIGHT_GRAY);
 	}
-	
+
 	public void addMapPanelListener()
 	{
 		_mapListener = new MapPanelMouseListener(_gPanel);
@@ -78,7 +78,7 @@ public class MapPanel extends JPanel implements Observer
 		}
 		repaint();
 	}
-	
+
 	@Override 
 	public void paintComponent(Graphics g)
 	{
@@ -118,11 +118,12 @@ public class MapPanel extends JPanel implements Observer
 
 	public void updateLocations() {
 		List<LocationController> listLocations = _operation.getMapLocationList();
-		for(Location oneLoc : _locations) {
-			remove(oneLoc.getLocPanel());
-			remove(oneLoc);
-		}
-		_locations.clear();
+		listLocations.removeAll(_locations);
+		/*for(Location oneLoc : _locations) {
+			oneLoc.getLocPanel().update();
+			oneLoc.update();
+		}*/
+
 		for(int i = 0; i < listLocations.size(); i++)
 		{
 			LocationController locationController = listLocations.get(i);
@@ -140,7 +141,7 @@ public class MapPanel extends JPanel implements Observer
 			add(oneLoc);
 		}
 	}
-	
+
 	public void enableListeners(boolean enable) {
 		_mapListener.enable(enable);
 		for(Location oneLoc : _locations) {
@@ -148,7 +149,7 @@ public class MapPanel extends JPanel implements Observer
 			oneLoc.getLocPanel().setEnabled(enable);
 		}
 	}
-	
+
 	public synchronized void disableLocationHighlight() {
 		for(Location oneLoc : _locations) {
 			oneLoc.displayPanel(false);
@@ -167,7 +168,7 @@ public class MapPanel extends JPanel implements Observer
 			double height = screenSize.getHeight();
 			double ratio = 1;
 			ImageIcon image = mapController.getImage();
-			
+
 			if(image.getIconHeight() > height && image.getIconWidth() > width) {
 				if(image.getIconHeight() > image.getIconWidth()) {
 					ratio = width/image.getIconWidth();
@@ -179,12 +180,14 @@ public class MapPanel extends JPanel implements Observer
 			} else if(image.getIconWidth() > width) {
 				ratio = width/image.getIconWidth();
 			}
-			
+
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
 		}
 		updateLocations();
-		_currentPopUp.updatePanel();
+		if(_currentPopUp != null) {
+			_currentPopUp.updatePanel();
+		}
 		repaint();
 		revalidate();
 	}
