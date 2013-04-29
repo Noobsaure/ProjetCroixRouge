@@ -8,6 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controllers.EntityController;
 import controllers.LocationController;
 
 import views.listeners.LocationDropTargetListener;
@@ -34,6 +35,10 @@ public class Location extends JPanel {
 	public Location(GlobalPanel gPanel, LocationController locationController) {
 		super();
 		_locationController = locationController;
+		System.out.println("Liste des entites : ");
+		for(EntityController entity : locationController.getEntityList()){
+			System.out.println(entity.show());
+		}
 		_name = _locationController.getName();
 		_x = (int) _locationController.getX();
 		_y = (int) _locationController.getY();
