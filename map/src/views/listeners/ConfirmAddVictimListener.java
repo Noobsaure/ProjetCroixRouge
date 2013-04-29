@@ -12,6 +12,7 @@ import views.AddVictimPanel;
 import views.ErrorMessage;
 import views.MapPanel;
 import views.SubMenuVictimPanel;
+import controllers.EntityController;
 import controllers.OperationController;
 import controllers.VictimController;
 import database.DatabaseManager;
@@ -20,8 +21,9 @@ import database.DatabaseManager;
 
 public class ConfirmAddVictimListener implements ActionListener
 {
-	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
-	private String EMPTY_TYPE_MESSAGE = "Veuillez renseigner la champ \"Type\".";
+	public static String EMPTY_MOTIF_MESSAGE = "Veuillez renseigner soit le champ \"Motif\", soit le champ \"Autre motif\".";
+	public static String EMPTY_ID_ANONYMAT_MESSAGE = "Veuillez renseigner le champ \"Id d'anonymat\".";
+	public static String EMPTY_SOINS_MESSAGE = "Veuillez renseigner le champ \"Soins\".";
 	
 	private JPanel _parent;
 	private SubMenuVictimPanel _subMenu;
@@ -59,20 +61,18 @@ public class ConfirmAddVictimListener implements ActionListener
 		String otherMotif = _addVictimPanel.getDetailsTextArea().getText();
 		String idAnonymat = _addVictimPanel.getIdAnonymat().getText();
 		String soins = _addVictimPanel.getSoins().getText();
+		EntityController entitesAssociees = _addVictimPanel.getMap().get(_addVictimPanel.getEntiteAssocieeCombobox().getSelectedObjects());
 		
 		if(!checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins))
 		{
-			if(motifsList.length == 0 )
-				new ErrorMessage(_parent, "Saisie incomplète", "");
-			
-			if(otherMotif.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_NAME_MESSAGE);
+			if((motifsList.length == 0 ) || (otherMotif.equals("")))
+				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_MOTIF_MESSAGE);
 			
 			if(idAnonymat.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_TYPE_MESSAGE);
+				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
 			
 			if(soins.equals(""))
-				System.out.println("Informations null");			
+				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_SOINS_MESSAGE);	
 		}
 		else
 		{
@@ -87,7 +87,7 @@ public class ConfirmAddVictimListener implements ActionListener
 			
 			try
 			{
-				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat);
+				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
 				_subMenu.update();
 			}
 			catch(ParseException e1)

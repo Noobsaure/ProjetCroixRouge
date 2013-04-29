@@ -16,8 +16,8 @@ import database.DatabaseManager;
 
 public class ConfirmAddEntityListener implements ActionListener
 {
-	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
-	private String EMPTY_TYPE_MESSAGE = "Veuillez renseigner la champ \"Type\".";
+	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner le champ \"Nom\".";
+	private String EMPTY_TYPE_MESSAGE = "Veuillez renseigner le champ \"Type\".";
 	
 	private JPanel _parent;
 	private OperationController _operationController;
