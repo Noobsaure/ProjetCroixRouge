@@ -13,6 +13,7 @@ import controllers.LocationController;
 import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
+import controllers.VictimController;
 
 import database.DatabaseManager;
 import database.MalformedQueryException;
@@ -42,17 +43,57 @@ public class RefreshTimerTask extends TimerTask
 	public void run() {
 		refreshTeamMember();
 		refreshEntity();
-		//refreshTeamMemberIntoEntity();
 		refreshMaps();
 		refreshLocation();
-
-		//_operation.setListTeamMember(_teamMemberList);
-		//_operation.setListEntity(_entityList);
-		//_operation.setListMaps(_mapList);
-		//_operation.setListLocation(_locationList);
-		//_operation.setCurrentMap(_mapList.get(currentMap));
+		refreshVictim();
 
 		_operation.notifyObservers();	
+	}
+
+	private void refreshVictim() {
+		System.out.println("%%%%% REFRESH TEAMMEMBER LIST %%%%%");
+		/* UPDATE TEAMMEMBER ALREADY IN THE LIST */		
+		List<VictimController> victimList = _operation.getVictimList();
+
+		for(VictimController victim : victimList){
+			victim.updateFields();
+		}		
+
+		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
+		ResultSet result;
+		try {
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victim", "operation_id="+_operation.getId()+" AND date_sortie is NULL"));
+			while(result.next()){
+				int id = result.getInt("id");
+
+				if(!_operation.existsInVictimList(id)){
+					result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victim", "id="+id));
+					while(result.next()){
+						String idAnonymat = result.getString("surnom");
+						String nom = result.getString("nom");
+						String prenom = result.getString("prenom");
+						java.sql.Timestamp dateDeNaissance = result.getTimestamp("date_naissance");
+						String adresse = result.getString("adresse");
+						String statut = result.getString("statut");
+						java.sql.Timestamp dateEntree = result.getTimestamp("date_entree");
+						boolean petitSoin = result.getBoolean("petit_soin");
+						boolean malaise = result.getBoolean("malaise");
+						boolean traumatisme = result.getBoolean("traumatisme");
+						boolean inconscient = result.getBoolean("inconscient");
+						boolean arretCardiaque = result.getBoolean("arret_cardiaque");
+						String atteinteDetails = result.getString("atteinte_details");
+						String soin = result.getString("soin");
+						java.sql.Timestamp dateSortiePriseEnCharge = result.getTimestamp("date_sortie");
+
+						VictimController victim = new VictimController(_operation, _dbm, id, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque);
+						_operation.addVictim(victim);
+					}
+				}
+			}
+
+			result.getStatement().close();
+		} catch (SQLException e) {e.printStackTrace();}
+		catch(MalformedQueryException e1) {e1.printStackTrace();}
 	}
 
 	public void refreshTeamMember(){
@@ -122,7 +163,7 @@ public class RefreshTimerTask extends TimerTask
 						}
 
 						result2.getStatement().close();
-						
+
 					}catch(SQLException e2){e2.printStackTrace();}
 				}
 			}
@@ -159,7 +200,7 @@ public class RefreshTimerTask extends TimerTask
 						System.out.println("Chargement carte "+name+" avec l'id: "+id);
 						_operation.addMap(map);
 					}
-				result2.getStatement().close();
+					result2.getStatement().close();
 				}
 			}
 			result.getStatement().close();

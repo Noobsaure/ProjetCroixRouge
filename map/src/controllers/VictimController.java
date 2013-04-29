@@ -3,8 +3,11 @@ package controllers;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
+import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -334,6 +337,38 @@ public class VictimController implements Subject {
 	public void notifyObservers() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	public void updateFields() {
+		try{
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Victime","id = "+_id));
+
+			while(result.next()){
+				_idAnonymat = result.getString("surnom");
+				_nom = result.getString("nom");
+				_prenom = result.getString("prenom");
+				_dateDeNaissance = result.getTimestamp("date_naissance");
+				_adresse = result.getString("adresse");
+				_statut = result.getString("statut");
+				_datePriseEnCharge = result.getTimestamp("date_entree");
+				_petitSoin = result.getBoolean("petit_soin");
+				_malaise = result.getBoolean("malaise");
+				_traumatisme = result.getBoolean("traumatisme");
+				_arretCardiaque = result.getBoolean("arret_cardiaque");
+				_inconscience = result.getBoolean("inconscient");
+				_atteinteDetails = result.getString("atteinte_details");
+				_soin = result.getString("soin");
+				_dateSortie = result.getTimestamp("date_sortie");
+				if(_dateSortie != null){
+					_operation.delVictim(this);
+				}
+			}			
+			result.getStatement().close();
+		}catch(SQLException e){
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
+		}catch(MalformedQueryException e1){
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");}
 	}
 	
 }

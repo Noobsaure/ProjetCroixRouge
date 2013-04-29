@@ -486,6 +486,14 @@ public class OperationController implements Subject
 	public void startTimerTask(){
 		_timerTask.schedule(new RefreshTimerTask(this, _dbm),0,5000);
 	}
+
+	public boolean existsInVictimList(int id) {
+		for(VictimController victim : _victimList){
+			if(victim.getId() == id)
+				return true;
+		}
+		return false;
+	}
 	
 }
 
