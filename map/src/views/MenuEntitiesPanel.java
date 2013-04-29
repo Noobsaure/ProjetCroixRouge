@@ -109,7 +109,9 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	}
 
 	public void enableListeners(boolean enable) {
-		
+//		Component[] com = _panelAvailable.getComponents();
+//		for (int i = 0; i < com.length; i++)
+//		     com[i].enableListener(enable);
 	}
 
 	@Override

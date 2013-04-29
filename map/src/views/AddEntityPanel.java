@@ -46,7 +46,6 @@ public class AddEntityPanel extends JLayeredPane
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
-	
 	private RoundedPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
@@ -63,6 +62,8 @@ public class AddEntityPanel extends JLayeredPane
 		_parent = parent;
 		_operationController = operation;
 		_dbm = dbm;
+		
+		operation.getGlobalPanel().getMenu().enableListeners(false);
 		
 		initGui();
 	}
