@@ -29,9 +29,11 @@ public class EntityPanel extends JPanel
 	private JLabel _entityName;
 	private ImageIcon _iconGearOn;
 	private ImageIcon _iconGearOff;
+
 	private EntityController _entity;
 
-
+	private JPanel _iconPanel;
+	
 	public EntityPanel(MenuEntitiesPanel entitiesPanel, EntityController entity)
 	{
 		_entity = entity;
@@ -55,15 +57,29 @@ public class EntityPanel extends JPanel
 		setForeground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 
+		// icone disponibilitée
 		JLabel iconDude = new JLabel();
 		if(entity.isAvailable())
 			iconDude.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/entity-green.png")));
 		else
 			iconDude.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/entity-red.png")));
 		add(iconDude, BorderLayout.WEST);
-
+	
 		_entityName = new JLabel(entity.getName());
 		add(_entityName, BorderLayout.CENTER);
+	
+		
+		// Panel pour l'ajout de l'icone carte et config de l'entité
+		_iconPanel = new JPanel();
+		_iconPanel.setBackground(Color.WHITE);
+		_iconPanel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel iconLocation = new JLabel();
+		if(_entity.getIdPosCurrent() != 1)
+			iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_on.png")));
+		else
+			iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_off.png")));
+		_iconPanel.add(iconLocation,BorderLayout.EAST);
 
 		_iconGearLabel = new JLabel();
 		_iconGearOn = new ImageIcon(EntityPanel.class.getResource("/ui/gear.png"));
@@ -71,8 +87,10 @@ public class EntityPanel extends JPanel
 		_iconGearLabel.setIcon(_iconGearOff);
 		_iconGearLabel.setVisible(false);
 		_iconGearLabel.addMouseListener(new EditEntityButtonListener(entitiesPanel.getOperationController(), this, entitiesPanel.getGlobalPanel().getMapPanel(), _entity));
-		add(_iconGearLabel, BorderLayout.EAST);
+		_iconPanel.add(_iconGearLabel, BorderLayout.WEST);
 
+		add(_iconPanel,BorderLayout.EAST);
+		
 		EntityMouseListener listener = new EntityMouseListener(this, (GlassPane)entitiesPanel.getGlobalPanel().getGlassPane(), entitiesPanel.getGlobalPanel());
 		_entityName.addMouseListener(listener);
 		_entityName.addMouseMotionListener(listener);
