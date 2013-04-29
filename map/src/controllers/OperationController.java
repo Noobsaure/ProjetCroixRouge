@@ -173,7 +173,7 @@ public class OperationController implements Subject
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Victime", "operation_id='"+_idOperation+"'"));
 
 			while(result.next()){
-				if (result.getString("motif_sortie").equals("")) {
+				if (result.getString("motif_sortie") == null) {
 					int id_victim = result.getInt("id");
 					int operation_id = _idOperation;
 					String idAnonymat = result.getString("surnom");
