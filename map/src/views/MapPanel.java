@@ -28,7 +28,7 @@ public class MapPanel extends JPanel implements Observer
 	private OperationController _operation;
 
 	private BufferedImage _map;
-	private GlobalPanel _gPanel;
+	private GlobalPanel _globalPanel;
 	private PopUpPanel _currentPopUp;
 	private int _x = 0;
 	private int _y = 0;
@@ -44,14 +44,14 @@ public class MapPanel extends JPanel implements Observer
 	{
 		super(true);
 		setLayout(null);
-		_gPanel = gPanel;
+		_globalPanel = gPanel;
 
 		setBackground(Color.LIGHT_GRAY);
 	}
 
 	public void addMapPanelListener()
 	{
-		_mapListener = new MapPanelMouseListener(_gPanel);
+		_mapListener = new MapPanelMouseListener(_globalPanel);
 		addMouseListener(_mapListener);
 		addMouseMotionListener(_mapListener);
 	}
@@ -101,44 +101,30 @@ public class MapPanel extends JPanel implements Observer
 		revalidate();
 	}
 
-	protected BufferedImage getScaledImage(float ratio) {
-		int w = (int)(_map.getWidth() * ratio);
-		int h = (int)(_map.getHeight() * ratio);
-		BufferedImage img = new BufferedImage(w, h,BufferedImage.TYPE_INT_RGB);
-		Graphics g = img.getGraphics();
-		g.drawImage(_map.getScaledInstance(w, h, Image.SCALE_FAST), 0, 0, w, h, null);
-		g.dispose();
-		return img;
-	}
-
-
-	public GlobalPanel getGlobalPanel() {return _gPanel;}
+	public GlobalPanel getGlobalPanel() {return _globalPanel;}
 	public BufferedImage getMap() {return _map;}
 	public void setMap(BufferedImage map) {_map = map;}
 
 	public void updateLocations() {
 		List<LocationController> listLocations = _operation.getMapLocationList();
-		listLocations.removeAll(_locations);
-		/*for(Location oneLoc : _locations) {
-			oneLoc.getLocPanel().update();
-			oneLoc.update();
-		}*/
-
-		for(int i = 0; i < listLocations.size(); i++)
+		for(Location oneLoc : _locations) {
+			listLocations.remove(oneLoc.getLocationController());
+		}
+		
+		for(LocationController oneLocController : listLocations)
 		{
-			LocationController locationController = listLocations.get(i);
-			int x = (int) locationController.getX();
-			int y = (int) locationController.getY();
-			Location location = new Location(_gPanel, locationController);
+			int x = (int) oneLocController.getX();
+			int y = (int) oneLocController.getY();
+			Location location = new Location(_globalPanel, oneLocController);
 			LocationPanel locPanel = new LocationPanel(location, this, x, y);
-			locPanel.addIconMouseListener(new EditLocationButtonListener(_operation,locPanel,_gPanel.getMapPanel(),locationController));
+			locPanel.addIconMouseListener(new EditLocationButtonListener(_operation,locPanel,_globalPanel.getMapPanel(),oneLocController));
 			location.setLocPanel(locPanel);
 			_locations.add(location);
 			add(locPanel);
+			add(location);
 		}
 		for(Location oneLoc : _locations) {
 			oneLoc.update();
-			add(oneLoc);
 		}
 	}
 
@@ -159,7 +145,7 @@ public class MapPanel extends JPanel implements Observer
 
 	public synchronized void update()
 	{
-		Launcher launcher = _gPanel.getLauncher();
+		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
 		if(mapController != null && _map == null) {
