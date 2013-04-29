@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -30,12 +31,26 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	private JPanel _panelAvailable;
 	private JPanel _panelNotAvailable;
 
+	private List<EntityController> _availableEntities;
+	private List<EntityController> _unavailableEntities;
+
 	public MenuEntitiesPanel(OperationController operation, GlobalPanel gPanel)
 	{
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		_operation = operation;
 		_gPanel = gPanel;
+
+		_availableEntities = new ArrayList<EntityController>();
+		_unavailableEntities = new ArrayList<EntityController>();
+		List<EntityController> listEntities = _operation.getEntityList();
+		for(EntityController oneEntity : listEntities) {
+			if(oneEntity.isAvailable()) {
+				_availableEntities.add(oneEntity);
+			} else {
+				_unavailableEntities.add(oneEntity);				
+			}
+		}
 		
 		_panelAvailable = new JPanel();
 		_panelAvailable.setLayout(new BoxLayout(_panelAvailable, BoxLayout.Y_AXIS));
@@ -54,14 +69,6 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		add(_panelNotAvailable, BorderLayout.SOUTH);
 		
 		setOpaque(false);
-	}
-	
-	
-	public void setListEntitiesContent()
-	{
-		List<EntityController> listEntities = _operation.getEntityList();
-		_panelAvailable.removeAll();
-		_panelNotAvailable.removeAll();
 		
 		final int WIDTH_PANEL_ADD_BUTTON = MenuPanel.LEFT_PANEL_WIDTH - 13;
 		final int HEIGHT_BUTTON = 25;
@@ -74,25 +81,36 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		AddEntityButton addButton = new AddEntityButton(_gPanel.getMapPanel(), "+");
 		panelAddButton.add(addButton);
 		_panelAvailable.add(panelAddButton);
-		
-		for(int i = 0; i < listEntities.size(); i++)
-		{
-			if (listEntities.get(i).isAvailable())
-			{
-				EntityPanel panel = new EntityPanel(this, listEntities.get(i));
-				_panelAvailable.add(panel);
-			}
-			else
-			{
-				EntityPanel panelNotAvailable = new EntityPanel(this, listEntities.get(i));
-				_panelNotAvailable.add(panelNotAvailable);
+	}
+	
+	
+	public void setListEntitiesContent()
+	{
+		List<EntityController> listEntities = _operation.getEntityList();
+		List<EntityController> availableEntities = new ArrayList<EntityController>();
+		List<EntityController> unavailableEntities = new ArrayList<EntityController>();
+		for(EntityController oneEntity : listEntities) {
+			if(oneEntity.isAvailable()) {
+				availableEntities.add(oneEntity);
+			} else {
+				unavailableEntities.add(oneEntity);				
 			}
 		}
-
-		/*_panelAvailable.repaint();
-		_panelAvailable.revalidate();
-		_panelNotAvailable.repaint();
-		_panelNotAvailable.revalidate();*/
+		_availableEntities.retainAll(availableEntities);
+		availableEntities.removeAll(_availableEntities);
+		for(EntityController oneEntity : availableEntities) {
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelAvailable.add(panel);
+		}
+		_availableEntities.addAll(availableEntities);
+		
+		_unavailableEntities.retainAll(unavailableEntities);
+		unavailableEntities.removeAll(_unavailableEntities);
+		for(EntityController oneEntity : unavailableEntities) {
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelNotAvailable.add(panel);
+		}
+		_unavailableEntities.addAll(unavailableEntities);
 	}
 	
 	
