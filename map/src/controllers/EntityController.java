@@ -426,7 +426,8 @@ public class EntityController implements Subject {
 
 
 	public void loadLocation() {
-		if(!_operation.getLocation(_posCurrentId).getEntityList().contains(this))
+		System.out.println("Entity : "+_name+"POS CURANTE ID : "+_posCurrentId);
+		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) )
 			_operation.getLocation(_posCurrentId).addEntity(this);		
 	}
 

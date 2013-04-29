@@ -123,7 +123,7 @@ public class OperationController implements Subject
 				float x = result.getFloat("x");
 				float y = result.getFloat("y");
 
-				if(getMap(id_carte) != null){
+				if( (getMap(id_carte) != null) || (nom.compareTo("LocalisationBaseDesEntites")==0) ){
 					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
 					_locationList.add(location);
 					location.addObserver(_globalPanel);

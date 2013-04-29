@@ -41,8 +41,9 @@ public class RefreshTimerTask extends TimerTask
 		refreshMaps();
 		refreshLocation();
 		refreshVictim();
-		_operation.loadEntityIntoLocation();
+
 		_operation.loadTeamMemberIntoEntity();
+		_operation.loadEntityIntoLocation();
 
 		_operation.notifyObservers();	
 	}
