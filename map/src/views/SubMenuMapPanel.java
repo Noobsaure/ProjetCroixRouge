@@ -21,6 +21,7 @@ import observer.Observer;
 
 import views.buttons.SubMenuMapButton;
 import views.listeners.AddMapButtonListener;
+import views.listeners.HideMapListener;
 import views.listeners.SubMenuMapToggleButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
@@ -89,6 +90,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 			
 			JLabel deleteIcon = new JLabel();
 			deleteIcon.setIcon(iconDeleteScaled);
+			deleteIcon.addMouseListener(new HideMapListener(_operationController, listMapsName.get(i)));
 			
 			JPanel panelLabel = new JPanel();
 			panelLabel.setLayout(new BorderLayout());

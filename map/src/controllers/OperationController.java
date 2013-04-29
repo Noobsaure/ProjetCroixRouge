@@ -144,13 +144,13 @@ public class OperationController implements Subject
 			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par d��faut toutes les entit��s se trouvent �� cette endroit.',0,0)"));
 			System.out.println("ID PCM = "+_idPcm);
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entit��s.");
+			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entitées.");
 		}
 	}
 
 	public void loadMaps(){
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Carte", "operation_id='"+_idOperation+"'"));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Carte", "operation_id='"+_idOperation+"' AND visibilite=1"));
 
 			while(result.next()){
 				int id = result.getInt("id");
@@ -493,6 +493,10 @@ public class OperationController implements Subject
 				return true;
 		}
 		return false;
+	}
+
+	public void removeMap(MapController mapController) {
+		_mapList.remove(mapController);
 	}
 	
 }

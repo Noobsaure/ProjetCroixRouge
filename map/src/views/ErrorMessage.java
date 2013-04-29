@@ -24,11 +24,9 @@ public class ErrorMessage extends JLayeredPane
 	 */
 	public ErrorMessage(JPanel parent, String message)
 	{
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DECLENCHEMENT ERREUR  : "+message);
 		ErrorPanel errorPanel = new ErrorPanel(parent, message);
 		parent.add(errorPanel);
 		parent.setComponentZOrder(errorPanel, 0);
-		System.out.println("######################################################ZOrder : " + parent.getComponentZOrder(errorPanel));
 		parent.repaint();
 		parent.revalidate();
 	}

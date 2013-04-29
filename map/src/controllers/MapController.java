@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import observer.Observer;
 import observer.Subject;
 
+import sun.security.action.GetLongAction;
 import views.ErrorMessage;
 
 import database.DatabaseManager;
@@ -91,6 +92,18 @@ public class MapController implements Subject {
 		return _visibility;
 	}
 
+	public List<EntityController> getEntityListInThisMap(){
+		List<EntityController> _entityList = new ArrayList<>();
+		
+		for(LocationController location : _locationList){
+			if(location.getEntityList().size() != 0){
+				_entityList.addAll(location.getEntityList());
+			}
+		}
+		
+		return _entityList;
+	}
+	
 	public void hideMap(){		
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte","visibilite = 0","id="+_id));
@@ -98,6 +111,7 @@ public class MapController implements Subject {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur lors de la supression de la carte '"+_name+"'.");
 		}
 		_visibility = false;
+		_operation.removeMap(this);
 	}
 	
 	public ImageIcon getImage()
