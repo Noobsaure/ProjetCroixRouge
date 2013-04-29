@@ -87,7 +87,7 @@ public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
 		
 		TITLE = _entityController.getName();
 		
-		JLabel title = new JLabel("Ajout d'un equipier \u00E0\u00A0 l'entite <dynamic>");
+		JLabel title = new JLabel("Ajout d'un equipier à l'entite <dynamic>");
 		_internalPanel.add(title, BorderLayout.NORTH);
 		
 		JPanel formPanel = new JPanel();
@@ -130,7 +130,7 @@ public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 2, left, default");
 		
-		CustomButton ajoutButton = new CustomButton("Ajouter l'equipier \u00E0\u00A0 l'entit\u00E9");	
+		CustomButton ajoutButton = new CustomButton("Valider l'ajouter d'un équipier à l'entité");	
 		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_parent, _operationController, _entityController, this));
 		
 		formPanel.add(ajoutButton, "2, 4");
