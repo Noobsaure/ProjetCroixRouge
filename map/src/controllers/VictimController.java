@@ -92,6 +92,7 @@ public class VictimController implements Subject {
 			String query = "(NULL,"+
 							"NULL,'"+
 							_operation.getId()+"','"+
+							_entity.getId()+"','"+
 							_idAnonymat+"','"+
 							_nom+"','"+
 							_prenom+"',"+
