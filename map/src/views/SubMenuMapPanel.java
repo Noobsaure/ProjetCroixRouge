@@ -96,7 +96,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 			
 			JLabel deleteIcon = new JLabel();
 			deleteIcon.setIcon(iconDeleteScaled);
-			deleteIcon.addMouseListener(new HideMapListener(_operationController, listMapsName.get(i)));
+			deleteIcon.addMouseListener(new HideMapListener(_operationController, this, listMapsName.get(i)));
 			
 			JPanel panelLabel = new JPanel();
 			panelLabel.setBorder(new EmptyBorder(0, 0, 0, 15));

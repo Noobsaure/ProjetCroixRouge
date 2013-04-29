@@ -1,30 +1,29 @@
 package views.listeners;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import views.AddEquipierPanel;
 import views.ConfirmDelMapPanel;
-import views.ErrorMessage;
 import views.MapPanel;
-
+import views.SubMenuMapPanel;
 import controllers.MapController;
 import controllers.OperationController;
 
 public class HideMapListener implements MouseListener {
 	private OperationController _operation;
 	private MapController _map;
+	private SubMenuMapPanel _subMenu;
 
-	public HideMapListener(OperationController operation, MapController map){
+	public HideMapListener(OperationController operation, SubMenuMapPanel subMenu, MapController map){
 		_operation = operation;
+		_subMenu = subMenu;
 		_map = map;
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-//		new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Tu vois, c'est ton code qui marche pas!!!");
+	public void mouseClicked(MouseEvent e)
+	{
+		_operation.getGlobalPanel().getMapPanel().remove(_subMenu);
 		
 		MapPanel mapPanel = _operation.getGlobalPanel().getMapPanel();
 		String title = "Confirmation suppression map : " + _map.getName();
