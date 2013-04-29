@@ -5,17 +5,22 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import launcher.Launcher;
+
 import views.AddVictimPanel;
 import views.MapPanel;
+import views.SubMenuVictimPanel;
 
 public class CancelAddVictimListener implements ActionListener
 {
-	private JPanel _parent;
+	private MapPanel _mapPanel;
+	private SubMenuVictimPanel _subMenu;
 	private AddVictimPanel _addVictimPanel;
 	
-	public CancelAddVictimListener(JPanel parent, AddVictimPanel addVictimPanel)
+	public CancelAddVictimListener(MapPanel parent, SubMenuVictimPanel subMenu, AddVictimPanel addVictimPanel)
 	{
-		_parent = parent;
+		_mapPanel = parent;
+		_subMenu = subMenu;
 		_addVictimPanel = addVictimPanel;
 	}
 
@@ -23,10 +28,16 @@ public class CancelAddVictimListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MapPanel mapPanel = (MapPanel)_parent;
+		MapPanel mapPanel = (MapPanel)_mapPanel;
 		mapPanel.addMapPanelListener();
+
+		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 		
-		_parent.remove(_addVictimPanel);
-		_parent.repaint();
+		SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());
+		_mapPanel.add(subMenu);
+		_mapPanel.setComponentZOrder(subMenu, 0);
+		
+		_mapPanel.remove(_addVictimPanel);
+		_mapPanel.repaint();
 	}
 }

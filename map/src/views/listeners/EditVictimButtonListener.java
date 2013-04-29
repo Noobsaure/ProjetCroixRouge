@@ -33,6 +33,7 @@ public class EditVictimButtonListener implements MouseListener
 	public void mouseClicked(MouseEvent arg0)
 	{
 		_mapPanel.removeMapPanelListener();
+		_mapPanel.remove(_subMenu);
 		
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 		

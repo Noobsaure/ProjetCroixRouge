@@ -52,7 +52,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
-	protected static final int HEIGHT = 500;
+	protected static final int HEIGHT = 680;
 	public static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 480);
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
@@ -102,7 +102,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		setOpaque(false);
 	
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(new Dimension(400, 700));	
+		_internalPanel.setSize(DIMENSION_PANEL);	
 		centrer();
 		add(_internalPanel, 1);
 		
@@ -336,13 +336,6 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 	}
 
 	
-	private void centrer()
-	{
-		int x = (_parent.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_internalPanel.getHeight() / 2);
-		_internalPanel.setLocation(x, y);
-	}
-	
 
 	public String getNewName()
 	{
@@ -380,39 +373,54 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer
 		return _colorChooserPanel.getBackground();
 	}
 	
+
+	
+	private void centrer()
+	{
+		int x = (_parent.getWidth() / 2) - (_internalPanel.getWidth() / 2);
+		int y = (_parent.getHeight() / 2) - (_internalPanel.getHeight() / 2);
+		_internalPanel.setLocation(x, y);
+	}
+	
+	
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+
+		setSize(new Dimension(_parent.getWidth(), _parent.getHeight()));
 		
 		centrer();
+		
+		repaint();
+		revalidate();
 	}
 
 	@Override
 	public void update() {
 		// TODO Auto-generated method stub
-		_listeEquipierPanel.removeAll();
-		listEquipiers= _entityController.getTeamMemberList();
-		for (TeamMemberController team : listEquipiers){
-			JPanel nomEquipierPanel = new JPanel();
-			nomEquipierPanel.setMaximumSize(new Dimension(300, 25));
-			_listeEquipierPanel.add(nomEquipierPanel);
-			nomEquipierPanel.setLayout(new BorderLayout(0, 0));
-				
-			JLabel _nomEquipierLabel = new JLabel(team.getName());
-			_nomEquipierLabel.setBorder(new EmptyBorder(5, 6, 5, 0));
-			nomEquipierPanel.add(_nomEquipierLabel, BorderLayout.WEST);
-			_nomEquipierLabel.setPreferredSize(new Dimension(200, 16));
-			_nomEquipierLabel.setSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMaximumSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMinimumSize(new Dimension(200, 16));
-			
-			JButton removeEquipierButton = new JButton("X");
-			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_parent, nomEquipierPanel, _operationController, team, _entityController, this));
-			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
-			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
-			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
-		}
+//		_listeEquipierPanel.removeAll();
+//		listEquipiers= _entityController.getTeamMemberList();
+//		for (TeamMemberController team : listEquipiers){
+//			JPanel nomEquipierPanel = new JPanel();
+//			nomEquipierPanel.setMaximumSize(new Dimension(300, 25));
+//			_listeEquipierPanel.add(nomEquipierPanel);
+//			nomEquipierPanel.setLayout(new BorderLayout(0, 0));
+//				
+//			JLabel _nomEquipierLabel = new JLabel(team.getName());
+//			_nomEquipierLabel.setBorder(new EmptyBorder(5, 6, 5, 0));
+//			nomEquipierPanel.add(_nomEquipierLabel, BorderLayout.WEST);
+//			_nomEquipierLabel.setPreferredSize(new Dimension(200, 16));
+//			_nomEquipierLabel.setSize(new Dimension(200, 16));
+//			_nomEquipierLabel.setMaximumSize(new Dimension(200, 16));
+//			_nomEquipierLabel.setMinimumSize(new Dimension(200, 16));
+//			
+//			JButton removeEquipierButton = new JButton("X");
+//			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
+//			removeEquipierButton.addActionListener(new RemoveEquipierListener(_parent, nomEquipierPanel, _operationController, team, _entityController, this));
+//			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
+//			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
+//			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
+//		}
 	}
 
 

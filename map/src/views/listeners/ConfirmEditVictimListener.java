@@ -26,7 +26,7 @@ public class ConfirmEditVictimListener implements ActionListener
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
 	private String EMPTY_TYPE_MESSAGE = "Veuillez renseigner la champ \"Type\".";
 	
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private SubMenuVictimPanel _subMenu;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
@@ -34,9 +34,9 @@ public class ConfirmEditVictimListener implements ActionListener
 	private VictimController _victimController;
 	
 	
-	public ConfirmEditVictimListener(JPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel, VictimController victimController)
+	public ConfirmEditVictimListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel, VictimController victimController)
 	{
-		_parent = mapPanel;
+		_mapPanel = mapPanel;
 		_subMenu = subMenu;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
@@ -62,13 +62,13 @@ public class ConfirmEditVictimListener implements ActionListener
 		if(!ConfirmAddVictimListener.checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins))
 		{
 			if((motifsList.length == 0 ) || (otherMotif.equals("")))
-				new ErrorMessage(_parent, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
+				new ErrorMessage(_mapPanel, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
 			
 			if(idAnonymat.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_ID_ANONYMAT_MESSAGE);
+				new ErrorMessage(_mapPanel, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_ID_ANONYMAT_MESSAGE);
 			
 			if(soins.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);	
+				new ErrorMessage(_mapPanel, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);	
 		}
 		else
 		{
@@ -84,18 +84,21 @@ public class ConfirmEditVictimListener implements ActionListener
 			try
 			{
 				_victimController.updateVictim(name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
-				_subMenu.update();
+				
+				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
+				_mapPanel.add(subMenu);
+				_mapPanel.setComponentZOrder(subMenu, 0);
 			}
 			catch(ParseException e1)
 			{
 				e1.printStackTrace();
 			}
 			
-			MapPanel mapPanel = (MapPanel)_parent;
+			MapPanel mapPanel = (MapPanel)_mapPanel;
 			mapPanel.addMapPanelListener();
 			
-			_parent.remove(_editVictimPanel);
-			_parent.repaint();
+			_mapPanel.remove(_editVictimPanel);
+			_mapPanel.repaint();
 		}
 	}
 }
