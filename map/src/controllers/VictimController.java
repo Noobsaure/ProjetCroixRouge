@@ -53,18 +53,15 @@ public class VictimController implements Subject {
 	 * @throws ParseException 
 	 */
 	
-	// java.sql.Timestamp Timestamp = new java.sql.Timestamp(date.getTime());
 
-	public VictimController(OperationController operation, DatabaseManager dbm, Integer id, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, Timestamp datePriseEnCharge,  Timestamp dateSortie, String atteinteDetails, String soin, String anon) throws ParseException
+	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon) throws ParseException
 	{
 		_operation = operation;
 		_dbm = dbm;
-		_id = id;
 		_nom = nom;
 		_prenom = prenom;
 
-		for(int i=0 ; i < motif.length ; i++)
-		{
+		for(int i=0 ; i < motif.length ; i++){
 			if (motif[i] == "Arrêt cardiaque")
 				_arretCardiaque = true;
 			else if (motif[i] == "Inconscience")
@@ -77,12 +74,11 @@ public class VictimController implements Subject {
 				_traumatisme = true;
 		}
 		
-		_motifSortie = new String();
 		_adresse = adresse;
 		
 		_dateDeNaissance = dateDeNaissance;
-		_datePriseEnCharge = datePriseEnCharge;
-		_dateSortie = dateSortie;
+		java.util.Date date = new java.util.Date();
+		_datePriseEnCharge = new java.sql.Timestamp(date.getTime());
 		
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
@@ -91,12 +87,7 @@ public class VictimController implements Subject {
 
 		try
 		{
-			String query = "";
-			int result;
-			
-			if(id == null)
-			{
-				query = "(" +
+			String query = "(" +
 							_id + ",NULL,'"+
 							_operation.getId()+"','"+
 							_idAnonymat+"','"+
@@ -104,10 +95,10 @@ public class VictimController implements Subject {
 							_prenom+"',"+
 							((_dateDeNaissance == null) ? "NULL" : ("'" + _dateDeNaissance.toString()) + "'") +","+
 							((_adresse.equals("")) ? "NULL" : _adresse)+",'"+
-							_statut+"', '"+
-							_motifSortie+"', "+
-							((_datePriseEnCharge == null) ? "NULL" : ("'" + _datePriseEnCharge.toString()) + "'") +", "+
-							((_dateSortie == null) ? "NULL" : ("'" + _dateSortie.toString()) + "'") +", '"+
+							_statut+"',"+
+							"NULL,'"+
+							_datePriseEnCharge+"',"+
+							"NULL,"+
 							(_petitSoin ? 1 : 0)+"', '"+
 							(_malaise ? 1 : 0)+"', '"+
 							(_traumatisme ? 1 : 0)+"', '"+
@@ -116,11 +107,11 @@ public class VictimController implements Subject {
 							_atteinteDetails+"', '"+
 							_soin+"')";
 			
-				result = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
-				
-				this.genererMessage("Début de prise en charge de la victime "+_idAnonymat);
+				int _id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
 				operation.addVictim(this);
+				genererMessage("Début de prise en charge de la victime "+_idAnonymat);
 			}
+<<<<<<< Updated upstream
 			else
 			{
 				query = "categorie_id = NULL" +
@@ -151,8 +142,11 @@ public class VictimController implements Subject {
 			_id = result;
 			operation.addVictim(this);
 			System.out.println("ID de la victime qui vient d'être créée :"+_id);
+=======
+		catch(MalformedQueryException e) { 
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
+>>>>>>> Stashed changes
 		}
-		catch(MalformedQueryException e) { e.printStackTrace(); }
 	}
 
 	
@@ -180,6 +174,55 @@ public class VictimController implements Subject {
 		_id = id_victim;
 	}
 
+	public void updateVictim(String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon) throws ParseException{
+		
+		for(int i=0 ; i < motif.length ; i++){
+			if (motif[i] == "Arrêt cardiaque")
+				_arretCardiaque = true;
+			else if (motif[i] == "Inconscience")
+				_inconscience = true;
+			else if (motif[i] == "Malaise")
+				_malaise = true;
+			else if (motif[i] == "Petit soin")
+				_petitSoin = true;
+			else if (motif[i] == "Traumatisme")
+				_traumatisme = true;
+		}
+		
+		String query = "surnom = '" + _idAnonymat + "'" +
+				((_nom.equals("")) ? "" : (", nom = '" + _nom + "'")) +
+				((_prenom.equals("")) ? "" : (", prenom = '" + _prenom + "'")) +
+				((_dateDeNaissance == null) ? "" : (", date_naissance = '" + _dateDeNaissance.toString()) + "'") +
+				((_adresse.equals("")) ? "" : (", adresse = '" + _adresse + "'")) +
+				((_statut.equals("")) ? "" : (", statut = '" + _statut + "'")) +
+				", petit_soin = " + _petitSoin +
+				", malaise = " + _malaise +
+				", traumatisme = " + _traumatisme +
+				", inconscient = " + _inconscience +
+				", arret_cardiaque = " + _arretCardiaque +
+				((_atteinteDetails.equals("")) ? "" : (", atteinte_details = '" + _atteinteDetails + "'")) +
+				((_soin.equals("")) ? "" : (", soin = '" + _soin + "'")) +
+				"WHERE id = " + _id;
+		
+		try {
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour victime '"+_idAnonymat+"'", "Une erreur est survenue lors de la mise à jour de la victime '"+_idAnonymat+"' \n " +
+					"Veuillez réessayez.");
+		}
+	}
+
+	public void finDePriseEnCharge(String motifSortie){
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datesortie = new java.sql.Timestamp(date.getTime());
+		
+		try{
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime","date_sortie='"+datesortie+"',motif_sortie='"+motifSortie+"'","id="+_id));
+		}catch(MalformedQueryException e){
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime '"+_idAnonymat+"'.");
+		}
+	}
+	
 	public Integer getId() {
 		return _id;
 	}

@@ -94,7 +94,7 @@ public class ConfirmAddVictimListener implements ActionListener
 			
 			try
 			{
-				new VictimController(_operationController, _databaseManager, null, name, prenom, motifsList, adress, dateDeNaissance, datePriseEnCharge, dateSortie, otherMotif, soins, idAnonymat);
+				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat);
 				_subMenu.update();
 			}
 			catch(ParseException e1)

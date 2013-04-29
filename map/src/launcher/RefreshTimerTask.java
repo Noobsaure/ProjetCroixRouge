@@ -186,7 +186,7 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW MAPS WHICH ARE IN THE DATABASE */
 
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"'"));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"' AND visibilite=1"));
 
 			while(result.next()){
 				int id = result.getInt("id");
