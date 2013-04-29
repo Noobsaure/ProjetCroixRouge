@@ -96,7 +96,7 @@ public class VictimController implements Subject {
 							_nom+"','"+
 							_prenom+"',"+
 							((_dateDeNaissance == null) ? "NULL" : ("'" + _dateDeNaissance.toString()) + "'") +","+
-							((_adresse.equals("")) ? "NULL" : _adresse)+",'"+
+							((_adresse.equals("")) ? "NULL" :("'" + _adresse + "'"))+",'"+
 							_statut+"',"+
 							"NULL,'"+
 							_datePriseEnCharge+"',"+
