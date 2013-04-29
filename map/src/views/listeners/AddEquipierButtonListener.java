@@ -18,10 +18,10 @@ public class AddEquipierButtonListener implements ActionListener{
 
 	private EntityController _entityController;
 	private OperationController _operationController;
-	private JPanel _jParent;
+	private MapPanel _jParent;
 	private ConfigurationEntityPanel _configEntityPanel;
 
-	public AddEquipierButtonListener(JPanel _parent, OperationController operationController, EntityController entityController, ConfigurationEntityPanel configEntityPanel) 
+	public AddEquipierButtonListener(MapPanel _parent, OperationController operationController, EntityController entityController, ConfigurationEntityPanel configEntityPanel) 
 	{
 		_jParent = _parent;
 		_entityController=entityController;

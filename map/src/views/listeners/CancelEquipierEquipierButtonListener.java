@@ -3,21 +3,20 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
+import views.MapPanel;
 import controllers.EntityController;
 import controllers.OperationController;
 
 public class CancelEquipierEquipierButtonListener implements ActionListener
 {
-	private JPanel _jParent;
+	private MapPanel _jParent;
 	private AddEquipierPanel _addEquipierPanel;
 	private OperationController _operationController;
 	private EntityController _entityController;
 	
-	public CancelEquipierEquipierButtonListener(JPanel parent, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel)
+	public CancelEquipierEquipierButtonListener(MapPanel parent, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel)
 	{
 		_jParent = parent;
 		_addEquipierPanel = addEquipierPanel;

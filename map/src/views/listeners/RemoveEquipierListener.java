@@ -15,14 +15,14 @@ import controllers.TeamMemberController;
 
 public class RemoveEquipierListener implements ActionListener{
 
-	private JPanel _parent;
+	private MapPanel _parent;
 	private JPanel _nomEquipierPanel;
 	private OperationController _operationController;
 	private TeamMemberController _equipier;
 	private EntityController _entityController;
 	private ConfigurationEntityPanel _configEntityPanel;
 	
-	public RemoveEquipierListener(JPanel parent, JPanel nomEquipierPanel, OperationController operationController ,TeamMemberController equipier, EntityController entityController, ConfigurationEntityPanel configurationEntityPanel)
+	public RemoveEquipierListener(MapPanel parent, JPanel nomEquipierPanel, OperationController operationController ,TeamMemberController equipier, EntityController entityController, ConfigurationEntityPanel configurationEntityPanel)
 	{
 		_parent = parent;
 		_nomEquipierPanel = nomEquipierPanel;

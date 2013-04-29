@@ -4,17 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
+import views.MapPanel;
 import controllers.EntityController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
 public class AddEquipierDansEntityButtonListener implements ActionListener {
 	
-	private JPanel _parent;
+	private MapPanel _parent;
 	private AddEquipierPanel _addEquipierPanel;
 	private OperationController _operationController;
 	private EntityController _entityController;
@@ -22,7 +21,7 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 	private static List<TeamMemberController> listEquipiers;
 
 	
-	public AddEquipierDansEntityButtonListener(JPanel parent, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel) 
+	public AddEquipierDansEntityButtonListener(MapPanel parent, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel) 
 	{
 		_parent = parent;
 		_addEquipierPanel = addEquipierPanel;
