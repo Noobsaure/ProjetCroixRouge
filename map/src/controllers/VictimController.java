@@ -149,7 +149,7 @@ public class VictimController implements Subject {
 			}
 		
 			_id = result;
-			
+			operation.addVictim(this);
 			System.out.println("ID de la victime qui vient d'être créée :"+_id);
 		}
 		catch(MalformedQueryException e) { e.printStackTrace(); }

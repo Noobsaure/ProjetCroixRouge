@@ -32,6 +32,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 	
 	private Map<JToggleButton, VictimController> _map;
 	private JPanel _thumbnailsPanel;
+	private JScrollPane _scrollPane;
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
@@ -52,10 +53,10 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		
 		displayThumbnail();
 
-		JScrollPane scrollPane = new JScrollPane(_thumbnailsPanel);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setViewportBorder(null);
-		add(scrollPane, BorderLayout.CENTER);
+		_scrollPane = new JScrollPane(_thumbnailsPanel);
+		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		_scrollPane.setViewportBorder(null);
+		add(_scrollPane, BorderLayout.CENTER);
 
 		addAddButtonListener(new AddVictimButtonListener(mapPanel, this));
 		addOkButtonListener(null);
@@ -71,7 +72,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		
 		for(int i = 0; i < listVictimsName.size(); i++)
 		{
-			System.out.println("Victime " + i + " " + listVictimsName.get(i).getId());
+			System.out.println("Victime " + i + " " + listVictimsName.get(i).getId() + " " + listVictimsName.get(i).getIdAnonymat());
 			
 			int id = listVictimsName.get(i).getId();
 			VictimController victim = listVictimsName.get(i);
@@ -98,6 +99,8 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		
 		displayThumbnail();
 		
+		_scrollPane.repaint();
+		_scrollPane.revalidate();
 		_thumbnailsPanel.repaint();
 		_thumbnailsPanel.revalidate();
 	}

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -22,6 +23,8 @@ public class ErrorPanel extends JPanel
 	private JPanel _parent;
 	private String _message;
 	private String _title;
+	private JPanel _buttonPanel;
+	private CustomButton _okButton;
 	
 	
 	/**
@@ -78,16 +81,31 @@ public class ErrorPanel extends JPanel
 		popupPanel.add(messageLabel);
 		
 		// Bouton Ok
-		JPanel panel = new JPanel();
-		panel.setBorder(new EmptyBorder(0, 0, 10, 0));
-		panel.setOpaque(false);
-		popupPanel.add(panel, BorderLayout.SOUTH);
+		_buttonPanel = new JPanel();
+		_buttonPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
+		_buttonPanel.setOpaque(false);
+		popupPanel.add(_buttonPanel, BorderLayout.SOUTH);
 		
-		CustomButton okButton = new CustomButton("Ok");
-		okButton.addActionListener(new ErrorMessageButtonListener(_parent, this));
-		panel.add(okButton);
+		_okButton = new CustomButton("Ok");
+		_buttonPanel.add(_okButton);
 		
 		add(popupPanel);
+	}
+	
+	public void addOkButtonListener(ActionListener listener)
+	{
+		_okButton.addActionListener(listener);
+	}
+	
+	
+	public CustomButton getOkButton()
+	{
+		return _okButton;
+	}
+	
+	public JPanel getButtonsPanel()
+	{
+		return _buttonPanel;
 	}
 	
 	

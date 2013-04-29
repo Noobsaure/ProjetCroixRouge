@@ -24,9 +24,14 @@ public class HideMapListener implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+//		new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Tu vois, c'est ton code qui marche pas!!!");
+		
 		MapPanel mapPanel = _operation.getGlobalPanel().getMapPanel();
+		String title = "Confirmation suppression map : " + _map.getName();
+		String message = "Êtes-vous sur de vouloir supprimer la carte '"+_map.getName()+"' \n" +
+				"Cette action est irréversible et toutes les entités présentes sur la carte seront ramenées à leur localisation de base.";
 
-		ConfirmDelMapPanel confirmDelMap = new ConfirmDelMapPanel(_operation, _map);
+		ConfirmDelMapPanel confirmDelMap = new ConfirmDelMapPanel(_operation, _map, title, message);
 		mapPanel.add(confirmDelMap);
 		mapPanel.setComponentZOrder(confirmDelMap, 0);
 
