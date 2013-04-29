@@ -52,17 +52,6 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 			}
 		}
 		
-		for(EntityController oneEntity : _availableEntities) {
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelAvailable.add(panel);
-		}
-		
-		for(EntityController oneEntity : _unavailableEntities) {
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelNotAvailable.add(panel);
-		}
-		
-		
 		_panelAvailable = new JPanel();
 		_panelAvailable.setLayout(new BoxLayout(_panelAvailable, BoxLayout.Y_AXIS));
 		_panelAvailable.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -76,11 +65,10 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		_panelAvailable.setBackground(Color.BLACK);
 		_panelNotAvailable.setBackground(Color.BLACK);
 		
-		add(_panelAvailable, BorderLayout.CENTER);
+		add(_panelAvailable, BorderLayout.CENTER);		
 		add(_panelNotAvailable, BorderLayout.SOUTH);
 		
-		setOpaque(false);
-		
+
 		final int WIDTH_PANEL_ADD_BUTTON = MenuPanel.LEFT_PANEL_WIDTH - 13;
 		final int HEIGHT_BUTTON = 25;
 		JPanel panelAddButton = new JPanel();
@@ -92,6 +80,19 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		AddEntityButton addButton = new AddEntityButton(_globalPanel.getMapPanel(), "+");
 		panelAddButton.add(addButton);
 		_panelAvailable.add(panelAddButton);
+		
+		for(EntityController oneEntity : _availableEntities) {
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelAvailable.add(panel);
+		}
+		
+		for(EntityController oneEntity : _unavailableEntities) {
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelNotAvailable.add(panel);
+		}
+		
+		setOpaque(false);
+		
 	}
 	
 	

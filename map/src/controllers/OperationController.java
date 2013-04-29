@@ -432,6 +432,10 @@ public class OperationController implements Subject
 	public int getIdOperateur() {
 		return _idOperateur;
 	}
+	
+	public LocationController getPcmLocation(){
+		return getLocation(_idPcm);
+	}
 
 	public void setListTeamMember(List<TeamMemberController> teamMemberList) {
 		_teamMemberList = teamMemberList;		
