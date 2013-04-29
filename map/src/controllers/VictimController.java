@@ -225,16 +225,30 @@ public class VictimController implements Subject {
 	private void genererFinDePriseEnCharge() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		String newLine = System.getProperty("line.separator");
 		
 		String message = "La victime '"+_idAnonymat+"' n'est plus prise en charge.";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+message+"','0')"));	
 		} catch (MalformedQueryException e) {
-					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. \n"+
+					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge."+newLine+
 							"Message : "+message);
 		}
+		
+		_operation.delVictim(this);
 	}
 
+	public void genererMessage(String message) {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		try {			
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+message+"','0')"));	
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime \n"+
+					"Message : "+message);
+		}
+		
+	}
 		
 	public Integer getId() {
 		return _id;
@@ -360,17 +374,6 @@ public class VictimController implements Subject {
 		_soin = soin;
 	}
 	
-	public void genererMessage(String message) {
-		java.util.Date date = new java.util.Date();
-		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+message+"','0')"));	
-		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime \n"+
-					"Message : "+message);
-		}
-		
-	}
 
 	@Override
 	public void addObserver(Observer observer) {
