@@ -62,7 +62,6 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 			_panelNotAvailable.add(panel);
 		}
 		
-		
 		_panelAvailable = new JPanel();
 		_panelAvailable.setLayout(new BoxLayout(_panelAvailable, BoxLayout.Y_AXIS));
 		_panelAvailable.setAlignmentX(Component.LEFT_ALIGNMENT);
