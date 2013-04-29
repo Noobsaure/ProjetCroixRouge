@@ -104,6 +104,16 @@ public class MapController implements Subject {
 		return _entityList;
 	}
 	
+	public List<LocationController> getLocationList(){
+		List<LocationController> _locationList = new ArrayList<>();
+		
+		for(LocationController location : _locationList){
+			_locationList.add(location);
+		}
+		
+		return _locationList;
+	}
+	
 	public void hideMap(){		
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte","visibilite = 0","id="+_id));

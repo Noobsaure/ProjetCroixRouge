@@ -107,7 +107,8 @@ public class VictimController implements Subject {
 							(_inconscience ? 1 : 0)+"', '"+
 							(_arretCardiaque ? 1 : 0)+"', '"+
 							_atteinteDetails+"', '"+
-							_soin+"')";
+							_soin+"','"+
+							_entity.getId()+"')";
 			
 				_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
 				operation.addVictim(this);
