@@ -234,9 +234,9 @@ public class LocationController implements Subject {
 
 	public void setDescription(String informations) {
 		try {
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "desc='"+informations+"'","id="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "`desc`='"+informations+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description \n de la localisation "+_name+".");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description de la localisation "+_name+".");
 		}
 
 		_description = informations;

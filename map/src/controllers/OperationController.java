@@ -195,7 +195,7 @@ public class OperationController implements Subject
 					String atteinteDetails = result.getString("atteinte_details");
 					String soin = result.getString("soin");
 					java.sql.Timestamp dateSortiePriseEnCharge = result.getTimestamp("date_sortie");
-					int entityId = result.getInt("enite_id");
+					int entityId = result.getInt("entite_id");
 					
 					if(dateSortiePriseEnCharge == null);{
 						VictimController victim = new VictimController(this, _dbm, id_victim, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque, entityId);
