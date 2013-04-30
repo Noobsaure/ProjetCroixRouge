@@ -10,12 +10,14 @@ import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 import controllers.EntityController;
@@ -57,12 +59,7 @@ public class LocationPanel extends JPanel {
 		setLayout(new BorderLayout());
 		
 		_entitiesPanel = new JPanel();
-		GridLayout gl = new GridLayout();
-		gl.setColumns(2);
-		gl.setRows(3);
-		gl.setHgap(5);
-		gl.setVgap(5);
-		_entitiesPanel.setLayout(gl);
+		_entitiesPanel.setLayout(null);
 		JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel southPanel = new JPanel();
@@ -77,11 +74,13 @@ public class LocationPanel extends JPanel {
 		_iconGearLabel.setIcon(_iconGearOff);
 		_locationName = new JLabel(_loc.getLocName(),SwingConstants.CENTER);
 		_locationName.setFont(new Font(Font.SANS_SERIF,Font.BOLD,14));
+		Border empty = BorderFactory.createEmptyBorder(2,2,2,2);
+		_locationName.setBorder(empty);
 		southPanel.add(_locationName, BorderLayout.CENTER);
 		southPanel.add(_iconGearLabel, BorderLayout.EAST);
 		add(scrollPane,BorderLayout.CENTER);
 		add(southPanel,BorderLayout.SOUTH);
-
+		
 		_affectedEntityPanels = new ArrayList<AffectedEntityPanel>();
 	}
 
@@ -119,9 +118,20 @@ public class LocationPanel extends JPanel {
 			_entitiesPanel.add(affectedEntity);
 			_affectedEntityPanels.add(affectedEntity);
 		}
-		
+		int hgap = (_entitiesPanel.getWidth() - 2 * AffectedEntityPanel.WIDTH) / 3;
+		int vgap = (_entitiesPanel.getHeight() - 2 * AffectedEntityPanel.HEIGHT) / 3;
+		int x = hgap, y = vgap;
+		int i = 1; int j = 0;
 		for(AffectedEntityPanel oneEntity : _affectedEntityPanels) {
+			oneEntity.setBounds(x, y, AffectedEntityPanel.WIDTH, AffectedEntityPanel.HEIGHT);
+			x = hgap + i * (AffectedEntityPanel.WIDTH + hgap);
+			i = 1 - i;
+			y = y + i * (AffectedEntityPanel.HEIGHT + vgap);
 			oneEntity.update();
+			j = j + i;
+		}
+		if(j > 2) {
+			
 		}
 		_locationName.setText(_loc.getLocName());
 	}

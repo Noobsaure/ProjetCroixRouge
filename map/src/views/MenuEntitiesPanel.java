@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -66,7 +67,11 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		_panelDropHere.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
 		_panelDropHere.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
 		_panelDropHere.setPreferredSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
-		_panelDropHere.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,new Color(255,255,255),new Color(128,128,128)));
+		Border bevel = BorderFactory.createBevelBorder(BevelBorder.LOWERED,new Color(255,255,255),new Color(128,128,128));
+		Border empty = BorderFactory.createEmptyBorder(2,2,2,2);
+		Border compound = BorderFactory.createCompoundBorder(empty, bevel);
+		_panelDropHere.setBorder(compound);
+		
 		JPanel info = new JPanel();
 		JLabel info1 = new JLabel("Glisser les entités",SwingConstants.CENTER);
 		JLabel info2 = new JLabel("à désaffecter ici",SwingConstants.CENTER);
