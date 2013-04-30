@@ -277,6 +277,13 @@ public class DatabaseManager
 		return output;
 	}
 	
+	public static String stripSlashes(String input)
+	{
+		String output = input.replace("\\'", "'");
+		output = output.replace("\\`", "`");
+		return output;
+	}
+	
 	
 	/**
 	 * 
