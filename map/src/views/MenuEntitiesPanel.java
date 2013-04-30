@@ -170,6 +170,10 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		for(EntityPanel onePanel : _availableEntityPanels) {
 			onePanel.update();
 		}
+		
+		for(EntityPanel onePanel : _unavailableEntityPanels) {
+			onePanel.update();
+		}
 	}
 	
 	public void addDropTarget() {
