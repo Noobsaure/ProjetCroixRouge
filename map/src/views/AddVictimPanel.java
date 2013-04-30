@@ -168,6 +168,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		panel.add(lblIdentifiantDanonymat);
 		
 		_idAnonymat = new JTextField();
+		_idAnonymat.setText("Victime");
 		panel.add(_idAnonymat);
 		_idAnonymat.setColumns(10);
 		
