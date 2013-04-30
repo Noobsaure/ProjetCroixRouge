@@ -100,7 +100,7 @@ public class EntityPanel extends JPanel
 	
 	
 	public JLabel getIconGearLabel()	{return _iconGearLabel;}
-	public EntityController getEntity() {return _entity;}
+	public EntityController getEntityController() {return _entity;}
 	public void setIconState(boolean on) {
 		if(on) {
 			_iconGearLabel.setIcon(_iconGearOn);

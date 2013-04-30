@@ -50,7 +50,7 @@ public class LocationDropTargetListener implements DropTargetListener {
 			Object transferableObj = dtde.getTransferable().getTransferData(EntityPanel.ENTITY_PANEL_FLAVOR);
 			if(transferableObj instanceof EntityPanel) {
 				EntityPanel droppedPanel = (EntityPanel)transferableObj;
-				droppedPanel.getEntity().setLocation(_loc.getLocationController());
+				droppedPanel.getEntityController().setLocation(_loc.getLocationController());
 			} else {
 				AffectedEntityPanel droppedPanel = (AffectedEntityPanel)transferableObj;
 				droppedPanel.getEntity().setLocation(_loc.getLocationController());

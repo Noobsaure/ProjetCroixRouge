@@ -107,10 +107,17 @@ public class MapPanel extends JPanel implements Observer
 
 	public void updateLocations() {
 		List<LocationController> listLocations = _operation.getMapLocationList();
+		List<Location> listLocationsToDelete = new ArrayList<Location>();
 		for(Location oneLoc : _locations) {
-			listLocations.remove(oneLoc.getLocationController());
+			if(!listLocations.contains(oneLoc.getLocationController())) {
+				remove(oneLoc.getLocPanel());
+				remove(oneLoc);
+				listLocationsToDelete.add(oneLoc);
+			} else {
+				listLocations.remove(oneLoc.getLocationController());
+			}
 		}
-		
+		_locations.removeAll(listLocationsToDelete);
 		for(LocationController oneLoc : listLocations)
 		{
 			int x = (int) oneLoc.getX();

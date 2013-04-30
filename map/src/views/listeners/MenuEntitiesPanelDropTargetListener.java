@@ -49,7 +49,7 @@ public class MenuEntitiesPanelDropTargetListener implements DropTargetListener {
 		try {
 			Object transferableObj = dtde.getTransferable().getTransferData(EntityPanel.ENTITY_PANEL_FLAVOR);
 			EntityPanel droppedPanel = (EntityPanel)transferableObj;
-			droppedPanel.getEntity().setLocation(_globalPanel.getLauncher().getOperationController().getPcmLocation());
+			droppedPanel.getEntityController().setLocation(_globalPanel.getLauncher().getOperationController().getPcmLocation());
 			_globalPanel.revalidate();
 			_globalPanel.repaint();
 		} catch (UnsupportedFlavorException e) {

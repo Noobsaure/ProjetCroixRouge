@@ -29,7 +29,10 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	private OperationController _operation;
 	
 	private JPanel _panelAvailable;
-	private JPanel _panelNotAvailable;
+	private JPanel _panelUnavailable;
+
+	private List<EntityPanel> _availableEntityPanels;
+	private List<EntityPanel> _unavailableEntityPanels;
 
 	private List<EntityController> _availableEntities;
 	private List<EntityController> _unavailableEntities;
@@ -56,17 +59,17 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		_panelAvailable.setLayout(new BoxLayout(_panelAvailable, BoxLayout.Y_AXIS));
 		_panelAvailable.setAlignmentX(Component.LEFT_ALIGNMENT);
 		_panelAvailable.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2), "Disponible", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
-		_panelNotAvailable = new JPanel();
-		_panelNotAvailable.setAlignmentX(Component.LEFT_ALIGNMENT);
-		_panelNotAvailable.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 0));
-		_panelNotAvailable.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, Short.MAX_VALUE));
-		_panelNotAvailable.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2), "Indisponible", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		_panelUnavailable = new JPanel();
+		_panelUnavailable.setAlignmentX(Component.LEFT_ALIGNMENT);
+		_panelUnavailable.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 0));
+		_panelUnavailable.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, Short.MAX_VALUE));
+		_panelUnavailable.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2), "Indisponible", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		
 		_panelAvailable.setBackground(Color.BLACK);
-		_panelNotAvailable.setBackground(Color.BLACK);
+		_panelUnavailable.setBackground(Color.BLACK);
 		
 		add(_panelAvailable, BorderLayout.CENTER);		
-		add(_panelNotAvailable, BorderLayout.SOUTH);
+		add(_panelUnavailable, BorderLayout.SOUTH);
 		
 
 		final int WIDTH_PANEL_ADD_BUTTON = MenuPanel.LEFT_PANEL_WIDTH - 13;
@@ -84,11 +87,13 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		for(EntityController oneEntity : _availableEntities) {
 			EntityPanel panel = new EntityPanel(this, oneEntity);
 			_panelAvailable.add(panel);
+			_availableEntityPanels.add(panel);
 		}
 		
 		for(EntityController oneEntity : _unavailableEntities) {
 			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelNotAvailable.add(panel);
+			_panelUnavailable.add(panel);
+			_unavailableEntityPanels.add(panel);
 		}
 		
 		setOpaque(false);
@@ -101,6 +106,7 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		List<EntityController> listEntities = _operation.getEntityList();
 		List<EntityController> availableEntities = new ArrayList<EntityController>();
 		List<EntityController> unavailableEntities = new ArrayList<EntityController>();
+		//On trie les entités du controleur available/unavailable.
 		for(EntityController oneEntity : listEntities) {
 			if(oneEntity.isAvailable()) {
 				availableEntities.add(oneEntity);
@@ -108,21 +114,38 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 				unavailableEntities.add(oneEntity);				
 			}
 		}
-		_availableEntities.retainAll(availableEntities);
-		availableEntities.removeAll(_availableEntities);
+		
+		List<EntityPanel> entityPanelsToDelete = new ArrayList<EntityPanel>();
+		for(EntityPanel oneEntityPanel : _availableEntityPanels) {
+			if(!availableEntities.contains(oneEntityPanel.getEntityController())) {
+				_panelAvailable.remove(oneEntityPanel);
+				entityPanelsToDelete.add(oneEntityPanel);
+			} else {
+				availableEntities.remove(oneEntityPanel.getEntityController());
+			}
+		}
+		_availableEntityPanels.removeAll(entityPanelsToDelete);
+		
 		for(EntityController oneEntity : availableEntities) {
 			EntityPanel panel = new EntityPanel(this, oneEntity);
 			_panelAvailable.add(panel);
 		}
-		_availableEntities.addAll(availableEntities);
 		
-		_unavailableEntities.retainAll(unavailableEntities);
-		unavailableEntities.removeAll(_unavailableEntities);
+		entityPanelsToDelete.clear();
+		for(EntityPanel oneEntityPanel : _unavailableEntityPanels) {
+			if(!unavailableEntities.contains(oneEntityPanel.getEntityController())) {
+				_panelUnavailable.remove(oneEntityPanel);
+				entityPanelsToDelete.add(oneEntityPanel);
+			} else {
+				unavailableEntities.remove(oneEntityPanel.getEntityController());
+			}
+		}
+		_unavailableEntityPanels.removeAll(entityPanelsToDelete);
+		
 		for(EntityController oneEntity : unavailableEntities) {
 			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelNotAvailable.add(panel);
+			_panelUnavailable.add(panel);
 		}
-		_unavailableEntities.addAll(unavailableEntities);
 	}
 	
 	
