@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 import launcher.Launcher;
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
-import views.EmptyEquipierPanel;
 import views.EntityPanel;
 import views.ErrorMessage;
 import views.MapPanel;

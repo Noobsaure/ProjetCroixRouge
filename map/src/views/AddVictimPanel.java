@@ -68,7 +68,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	private JPanel _buttonPanel;
 	private JPanel _identityPanel;
 	private JLabel entiteAssocieeLabel;
-	private JComboBox _entitéAssocieeCombobox;
+	private JComboBox _entiteAssocieeCombobox;
 	
 	private Map<String, EntityController> _map;
 	
@@ -199,7 +199,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		_nameTextField = new JTextField();
 		_nameTextField.setColumns(10);
 		
-		JLabel prenomLabel = new JLabel("Prénom :");
+		JLabel prenomLabel = new JLabel("Prenom :");
 		
 		_prenomTextField = new JTextField();
 		_prenomTextField.setColumns(10);
@@ -265,7 +265,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		gbc_dateDeNaissanceTextField.gridwidth = 2;
 		_identityPanel.add(_dateDeNaissanceDatePicker, gbc_dateDeNaissanceTextField);
 		
-		entiteAssocieeLabel = new JLabel("Entité associée :");
+		entiteAssocieeLabel = new JLabel("Entite associee :");
 		GridBagConstraints gbc_entiteAssocieeLabel = new GridBagConstraints();
 		gbc_entiteAssocieeLabel.anchor = anchor;
 		gbc_entiteAssocieeLabel.insets = new Insets(0, 0, 0, 5);
@@ -282,14 +282,14 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 			entitiesList[i] = string;
 			_map.put(string, entityController);
 		}
-			_entitéAssocieeCombobox = new JComboBox(entitiesList);
-		GridBagConstraints gbc_entitéAssocieeCombobox = new GridBagConstraints();
-		gbc_entitéAssocieeCombobox.insets = new Insets(0, 0, 0, 5);
-		gbc_entitéAssocieeCombobox.fill = GridBagConstraints.HORIZONTAL;
-		gbc_entitéAssocieeCombobox.gridx = 1;
-		gbc_entitéAssocieeCombobox.gridy = 3;
-		gbc_entitéAssocieeCombobox.gridwidth = 2;
-		_identityPanel.add(_entitéAssocieeCombobox, gbc_entitéAssocieeCombobox);
+			_entiteAssocieeCombobox = new JComboBox(entitiesList);
+		GridBagConstraints gbc_entiteAssocieeCombobox = new GridBagConstraints();
+		gbc_entiteAssocieeCombobox.insets = new Insets(0, 0, 0, 5);
+		gbc_entiteAssocieeCombobox.fill = GridBagConstraints.HORIZONTAL;
+		gbc_entiteAssocieeCombobox.gridx = 1;
+		gbc_entiteAssocieeCombobox.gridy = 3;
+		gbc_entiteAssocieeCombobox.gridwidth = 2;
+		_identityPanel.add(_entiteAssocieeCombobox, gbc_entiteAssocieeCombobox);
 		/**************************************************************/
 
 		
@@ -338,10 +338,9 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	
 	public JComboBox getEntiteAssocieeCombobox()
 	{
-		return _entitéAssocieeCombobox;
+		return _entiteAssocieeCombobox;
 	}
-	
-	
+		
 
 	public RoundedPanel getMainPanel()
 	{
