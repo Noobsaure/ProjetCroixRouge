@@ -89,9 +89,9 @@ public class ConfirmAddVictimListener implements ActionListener
 			{
 				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
 				
-				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
-				_mapPanel.add(subMenu);
-				_mapPanel.setComponentZOrder(subMenu, 0);
+//				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
+//				_mapPanel.add(subMenu);
+//				_mapPanel.setComponentZOrder(subMenu, 0);
 			}
 			catch(ParseException e1)
 			{
