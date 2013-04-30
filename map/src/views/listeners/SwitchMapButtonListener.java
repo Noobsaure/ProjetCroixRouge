@@ -54,7 +54,9 @@ public class SwitchMapButtonListener implements ActionListener
 
 		if(mapController != null)
 		{
-			ImageIcon image = mapController.getImage();
+			_operationController.setCurrentMap(mapController);
+		}
+		/*	ImageIcon image = mapController.getImage();
 
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			double width = screenSize.getWidth();
@@ -85,8 +87,8 @@ public class SwitchMapButtonListener implements ActionListener
 			newMap.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
 			_mapPanel.setMap(newMap);
 			
-			_operationController.setCurrentMap(mapController);
-		}
+			
+		}*/
 
 		_button.setEnabled(true);
 		_mapPanel.remove(_subMenuPanel);

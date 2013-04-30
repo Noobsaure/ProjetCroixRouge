@@ -165,13 +165,11 @@ public class MapPanel extends JPanel implements Observer
 
 	public synchronized void update()
 	{
-		System.out.println();
-		System.out.println("UPDATE MAP");
-		System.out.println();
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
-		if(mapController != null && _map == null) {
+		System.out.println(mapController.getName());
+		if(mapController != null) {
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			double width = screenSize.getWidth();
 			double height = screenSize.getHeight();
