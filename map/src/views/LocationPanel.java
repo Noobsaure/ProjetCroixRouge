@@ -41,6 +41,7 @@ public class LocationPanel extends JPanel {
 	private LocationPanelMouseListener _mouseListener;
 	private EditLocationButtonListener _iconGearMouseListener;
 	private List<AffectedEntityPanel> _affectedEntityPanels;
+	private JScrollPane _scrollPane;
 
 	public LocationPanel(Location loc, MapPanel mapPanel, int x, int y) {
 		super();
@@ -60,8 +61,9 @@ public class LocationPanel extends JPanel {
 		
 		_entitiesPanel = new JPanel();
 		_entitiesPanel.setLayout(null);
-		JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane _scrollPane = new JScrollPane(_entitiesPanel);
+		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		_scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		JPanel southPanel = new JPanel();
 		_iconGearLabel = new JLabel();
 		_iconGearOn = new ImageIcon(EntityPanel.class.getResource("/ui/gear.png"));
@@ -78,7 +80,7 @@ public class LocationPanel extends JPanel {
 		_locationName.setBorder(empty);
 		southPanel.add(_locationName, BorderLayout.CENTER);
 		southPanel.add(_iconGearLabel, BorderLayout.EAST);
-		add(scrollPane,BorderLayout.CENTER);
+		add(_scrollPane,BorderLayout.CENTER);
 		add(southPanel,BorderLayout.SOUTH);
 		
 		_affectedEntityPanels = new ArrayList<AffectedEntityPanel>();
@@ -128,11 +130,11 @@ public class LocationPanel extends JPanel {
 			i = 1 - i;
 			y = y + i * (AffectedEntityPanel.HEIGHT + vgap);
 			oneEntity.update();
-			j = j + i;
 		}
-		if(j > 2) {
-			
-		}
+		_entitiesPanel.setMinimumSize(new Dimension(_entitiesPanel.getWidth(),y));
+		_entitiesPanel.setMaximumSize(new Dimension(_entitiesPanel.getWidth(),y));
+		_entitiesPanel.setPreferredSize(new Dimension(_entitiesPanel.getWidth(),y));
+		
 		_locationName.setText(_loc.getLocName());
 	}
 
