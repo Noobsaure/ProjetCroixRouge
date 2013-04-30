@@ -17,7 +17,11 @@ public class DatabaseTest
 	public static void main(String[] args) throws SQLException
 	{
 //		testQueries();
-		testImages();
+//		testImages();
+		
+		final String input = "L'apostr`ophe";
+		
+		System.out.println("Test : " + DatabaseManager.addSlashes(input));
 	}
 	
 	

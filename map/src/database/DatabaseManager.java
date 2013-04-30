@@ -135,10 +135,7 @@ public class DatabaseManager
 			
 			ResultSet generatedKeys = statement.getGeneratedKeys();
 			while(generatedKeys.next())
-			{
-				//JOptionPane.showMessageDialog(null, "Last inserted : " + generatedKeys.getInt(1));
 				lastInserted = generatedKeys.getInt(1);
-			}
 			
 			System.out.println("Requete executee...");
 		}
@@ -271,6 +268,13 @@ public class DatabaseManager
 		{
 			displayError(e);
 		}
+	}
+	
+	public static String addSlashes(String input)
+	{
+		String output = input.replace("'", "\\'");
+		output = output.replace("`", "\\`");
+		return output;
 	}
 	
 	
