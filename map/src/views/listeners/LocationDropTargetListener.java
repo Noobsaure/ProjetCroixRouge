@@ -53,7 +53,7 @@ public class LocationDropTargetListener implements DropTargetListener {
 				droppedPanel.getEntityController().setLocation(_loc.getLocationController());
 			} else {
 				AffectedEntityPanel droppedPanel = (AffectedEntityPanel)transferableObj;
-				droppedPanel.getEntity().setLocation(_loc.getLocationController());
+				droppedPanel.getEntityController().setLocation(_loc.getLocationController());
 			}
 			_loc.setDragOver(false);
 			_gPanel.revalidate();

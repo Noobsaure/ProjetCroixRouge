@@ -11,6 +11,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 
+import views.AffectedEntityPanel;
 import views.Location;
 import views.GlobalPanel;
 import views.EntityPanel;
@@ -26,7 +27,7 @@ public class MenuEntitiesPanelDropTargetListener implements DropTargetListener {
 
 	public MenuEntitiesPanelDropTargetListener(GlobalPanel gPanel) {
 		_globalPanel = gPanel;
-		_menu = _globalPanel.getMenu();//.getEntitiesPanel();
+		_menu = _globalPanel.getMenu();
 	}
 
 	public void dragEnter(DropTargetDragEvent dtde) {}
@@ -45,10 +46,9 @@ public class MenuEntitiesPanelDropTargetListener implements DropTargetListener {
 
 	public void drop(DropTargetDropEvent dtde) {
 		this._menu.setCursor(Cursor.getDefaultCursor());
-
 		try {
-			Object transferableObj = dtde.getTransferable().getTransferData(EntityPanel.ENTITY_PANEL_FLAVOR);
-			EntityPanel droppedPanel = (EntityPanel)transferableObj;
+			Object transferableObj = dtde.getTransferable().getTransferData(AffectedEntityPanel.AFFECTED_ENTITY_PANEL_FLAVOR);
+			AffectedEntityPanel droppedPanel = (AffectedEntityPanel)transferableObj;
 			droppedPanel.getEntityController().setLocation(_globalPanel.getLauncher().getOperationController().getPcmLocation());
 			_globalPanel.revalidate();
 			_globalPanel.repaint();

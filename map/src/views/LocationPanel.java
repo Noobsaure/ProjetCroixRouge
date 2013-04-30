@@ -88,11 +88,11 @@ public class LocationPanel extends JPanel {
 		List<AffectedEntityPanel> listAffectedEntityPanelsToDelete = new ArrayList<AffectedEntityPanel>();
 		
 		for(AffectedEntityPanel oneEntity : _affectedEntityPanels) {
-			if(!listEntities.contains(oneEntity.getEntity())) {
+			if(!listEntities.contains(oneEntity.getEntityController())) {
 				_entitiesPanel.remove(oneEntity);
 				listAffectedEntityPanelsToDelete.add(oneEntity);
 			} else {
-				listEntities.remove(oneEntity.getEntity());
+				listEntities.remove(oneEntity.getEntityController());
 			}
 		}
 		_affectedEntityPanels.removeAll(listAffectedEntityPanelsToDelete);
