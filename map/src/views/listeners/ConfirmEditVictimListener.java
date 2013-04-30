@@ -6,13 +6,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
-import javax.swing.JPanel;
-
-import views.AddVictimPanel;
 import views.EditVictimPanel;
 import views.ErrorMessage;
 import views.MapPanel;
-import views.SubMenuPanel;
 import views.SubMenuVictimPanel;
 import controllers.EntityController;
 import controllers.OperationController;
@@ -33,7 +29,6 @@ public class ConfirmEditVictimListener implements ActionListener
 	private EditVictimPanel _editVictimPanel;
 	private VictimController _victimController;
 	
-	
 	public ConfirmEditVictimListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel, VictimController victimController)
 	{
 		_mapPanel = mapPanel;
@@ -43,8 +38,6 @@ public class ConfirmEditVictimListener implements ActionListener
 		_editVictimPanel = editVictimPanel;
 		_victimController = victimController;
 	}
-	
-	
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
@@ -84,7 +77,6 @@ public class ConfirmEditVictimListener implements ActionListener
 			try
 			{
 				_victimController.updateVictim(name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
-				
 				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
 				_mapPanel.add(subMenu);
 				_mapPanel.setComponentZOrder(subMenu, 0);
@@ -93,11 +85,9 @@ public class ConfirmEditVictimListener implements ActionListener
 			{
 				e1.printStackTrace();
 			}
-			
-			MapPanel mapPanel = (MapPanel)_mapPanel;
-			mapPanel.addMapPanelListener();
-			
+						
 			_mapPanel.remove(_editVictimPanel);
+			_mapPanel.setCurrentPopUp(null);
 			_mapPanel.repaint();
 		}
 	}

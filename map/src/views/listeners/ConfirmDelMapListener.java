@@ -30,8 +30,8 @@ public class ConfirmDelMapListener implements ActionListener {
 	{
 		MapPanel mapPanel = _operation.getGlobalPanel().getMapPanel();
 		mapPanel.remove(_confirmDelMapPanel);
+		mapPanel.setCurrentPopUp(null);
 		mapPanel.repaint();
-		mapPanel.revalidate();
 		
 		List<EntityController> _entityList = _map.getEntityListInThisMap();
 		

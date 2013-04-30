@@ -11,7 +11,7 @@ public class ErrorMessage extends JLayeredPane
 	private static final long serialVersionUID = 1L;
 
 	
-	public ErrorMessage(JPanel parent, String title, String message)
+	public ErrorMessage(MapPanel parent, String title, String message)
 	{
 		ErrorPanel errorPanel = new ErrorPanel(parent, title, message);
 		errorPanel.addOkButtonListener(new ErrorMessageButtonListener(parent, errorPanel));
@@ -25,7 +25,7 @@ public class ErrorMessage extends JLayeredPane
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public ErrorMessage(JPanel parent, String message)
+	public ErrorMessage(MapPanel parent, String message)
 	{
 		ErrorPanel errorPanel = new ErrorPanel(parent, message);
 		errorPanel.addOkButtonListener(new ErrorMessageButtonListener(parent, errorPanel));

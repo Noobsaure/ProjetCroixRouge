@@ -41,7 +41,7 @@ public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPan
 	public static final String TITLE = "Modifier une localisation";
 	protected static final int MIDDLE = ConfigurationLocationPanel.WIDTH / 2;
 
-	private MapPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
@@ -51,13 +51,12 @@ public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPan
 	private JTextField _nomTextField;
 	private JTextArea _informationsTextArea;	
 	
-	public ConfigurationLocationPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, String nom, String informations, LocationController locationController)
+	public ConfigurationLocationPanel(MapPanel mapPanel, OperationController operation, DatabaseManager dbm, String nom, String informations, LocationController locationController)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_operationController = operation;
 		_locationController = locationController;
 		_dbm = dbm;
-		_parent.setCurrentPopUp(this);
 		
 		initGui();
 		
@@ -70,7 +69,7 @@ public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPan
 	public void initGui()
 	{
 		setLayout(null);
-		setSize(new Dimension(_parent.getWidth(), _parent.getHeight()));
+		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 		
 		_internalPanel = new RoundedPanel();
@@ -132,20 +131,20 @@ public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPan
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		CustomButton annulerButton = new CustomButton("Annuler");
-		annulerButton.addActionListener(new CancelConfigureLocationListener(_parent, this));
+		annulerButton.addActionListener(new CancelConfigureLocationListener(_mapPanel, this));
 		buttonPanel.add(annulerButton);
 		
 		CustomButton okButton = new CustomButton("Ok");
 		buttonPanel.add(okButton);
-		okButton.addActionListener(new ConfirmConfigureLocationListener(_parent, _operationController, _dbm, this, _locationController));
+		okButton.addActionListener(new ConfirmConfigureLocationListener(_mapPanel, _operationController, _dbm, this, _locationController));
 		/**************************************************************/
 	}
 	
 	
 	private void centrer()
 	{
-		int x = (_parent.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_internalPanel.getHeight() / 2);
+		int x = (_mapPanel.getWidth() / 2) - (_internalPanel.getWidth() / 2);
+		int y = (_mapPanel.getHeight() / 2) - (_internalPanel.getHeight() / 2);
 		_internalPanel.setLocation(x, y);
 	}
 	

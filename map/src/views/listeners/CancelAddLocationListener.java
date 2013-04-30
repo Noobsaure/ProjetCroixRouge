@@ -9,25 +9,19 @@ import views.AddEntityPanel;
 import views.AddLocationPanel;
 import views.MapPanel;
 
-public class CancelAddLocationListener implements ActionListener
-{
-	private JPanel _parent;
+public class CancelAddLocationListener implements ActionListener {
+	private MapPanel _mapPanel;
 	private AddLocationPanel _addLocationPanel;
 	
-	public CancelAddLocationListener(JPanel parent, AddLocationPanel addLocationPanel)
-	{
-		_parent = parent;
+	public CancelAddLocationListener(MapPanel mapPanel, AddLocationPanel addLocationPanel) {
+		_mapPanel = mapPanel;
 		_addLocationPanel = addLocationPanel;
 	}
-
 	
 	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		MapPanel mapPanel = (MapPanel)_parent;
-		mapPanel.addMapPanelListener();
-		
-		_parent.remove(_addLocationPanel);
-		_parent.repaint();
+	public void actionPerformed(ActionEvent e) {
+		_mapPanel.setCurrentPopUp(null);
+		_mapPanel.remove(_addLocationPanel);
+		_mapPanel.repaint();
 	}
 }

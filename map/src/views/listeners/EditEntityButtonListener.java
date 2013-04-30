@@ -28,13 +28,11 @@ public class EditEntityButtonListener implements MouseListener
 
 	@Override
 	public void mouseClicked(MouseEvent e)
-	{
-		_mapPanel.removeMapPanelListener();
-		
+	{		
 		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entity);	
-		_mapPanel.add(configurationEntityPanel);		
+		_mapPanel.add(configurationEntityPanel);
+		_mapPanel.setCurrentPopUp(configurationEntityPanel);
 		_mapPanel.setComponentZOrder(configurationEntityPanel, 0);
-		
 		_mapPanel.repaint();
 		_mapPanel.revalidate();			
 	}

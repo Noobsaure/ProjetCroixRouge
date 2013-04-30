@@ -86,7 +86,6 @@ public class ConfirmAddVictimListener implements ActionListener
 			try
 			{
 				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
-				
 				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
 				_mapPanel.add(subMenu);
 				_mapPanel.setComponentZOrder(subMenu, 0);
@@ -98,7 +97,7 @@ public class ConfirmAddVictimListener implements ActionListener
 			
 			MapPanel mapPanel = (MapPanel)_mapPanel;
 			mapPanel.addMapPanelListener();
-			
+			_mapPanel.setCurrentPopUp(null);
 			_mapPanel.remove(_addVictimPanel);
 			_mapPanel.repaint();
 		}

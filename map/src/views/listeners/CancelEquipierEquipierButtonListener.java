@@ -11,31 +11,27 @@ import controllers.OperationController;
 
 public class CancelEquipierEquipierButtonListener implements ActionListener
 {
-	private MapPanel _jParent;
+	private MapPanel _mapPanel;
 	private AddEquipierPanel _addEquipierPanel;
 	private OperationController _operationController;
 	private EntityController _entityController;
 	
-	public CancelEquipierEquipierButtonListener(MapPanel parent, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel)
+	public CancelEquipierEquipierButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel)
 	{
-		_jParent = parent;
+		_mapPanel = mapPanel;
 		_addEquipierPanel = addEquipierPanel;
 		_operationController = operationController;
 		_entityController = entityController;
 	}
 	
-	
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{	
-		// Arret de l'jout d'equipier dans l'entité
-		
-		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_jParent, _operationController, _entityController);
-		_jParent.add(configurationEntityPanel);
-		_jParent.setComponentZOrder(configurationEntityPanel, 0);
-		
-		_jParent.remove(_addEquipierPanel);
-		_jParent.repaint();
-		_jParent.revalidate();
+		_mapPanel.remove(_addEquipierPanel);
+		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entityController);
+		_mapPanel.add(configurationEntityPanel);
+		_mapPanel.setCurrentPopUp(configurationEntityPanel);
+		_mapPanel.setComponentZOrder(configurationEntityPanel, 0);
+		_mapPanel.repaint();
 	}
 }

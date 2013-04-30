@@ -18,15 +18,15 @@ public class ConfirmAddLocationListener implements ActionListener
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
 	
 	private int _x, _y;
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private AddLocationPanel _addLocationPanel;
 	
 	
-	public ConfirmAddLocationListener(JPanel parent, OperationController operationController, DatabaseManager databaseManager, AddLocationPanel addLocationPanel, int x, int y)
+	public ConfirmAddLocationListener(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager, AddLocationPanel addLocationPanel, int x, int y)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		_addLocationPanel = addLocationPanel;
@@ -49,7 +49,7 @@ public class ConfirmAddLocationListener implements ActionListener
 		if(!checkInput(name, informations))
 		{
 			if(name.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_NAME_MESSAGE);
+				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
 			
 			if(informations.equals(""))
 				System.out.println("Informations null");	
@@ -57,10 +57,9 @@ public class ConfirmAddLocationListener implements ActionListener
 		else
 		{
 			LocationController location = new LocationController(_operationController, _databaseManager,_x,_y,name,informations);
-			MapPanel mapPanel = (MapPanel)_parent;
-			mapPanel.addMapPanelListener();
-			_parent.remove(_addLocationPanel);
-			_parent.repaint();
+			_mapPanel.remove(_addLocationPanel);
+			_mapPanel.setCurrentPopUp(null);
+			_mapPanel.repaint();
 		}
 	}
 }

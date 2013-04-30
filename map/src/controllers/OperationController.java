@@ -137,10 +137,7 @@ public class OperationController implements Subject
 		
 		for(LocationController location: _locationList){
 			if(location.getName().compareTo("LocalisationBaseDesEntites") == 0){
-				System.out.println("NON MAIS ALLO QUOI ???");
-				_idPcm= location.getId();
-				System.out.println("ID PCM = "+_idPcm);
-				return;
+				_idPcm= location.getId();				return;
 			}
 		}
 		

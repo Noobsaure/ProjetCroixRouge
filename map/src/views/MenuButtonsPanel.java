@@ -1,98 +1,70 @@
 package views;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import observer.Observer;
 import views.buttons.AddLocationButton;
 import views.buttons.SubMenuMapButton;
 import views.buttons.SubMenuVictimButton;
 import controllers.MapController;
 import controllers.OperationController;
 
-public class MenuButtonsPanel extends JPanel{
+public class MenuButtonsPanel extends JPanel implements Observer {
 
 	private static final long serialVersionUID = 1L;
 	private MapPanel _mapPanel;
 	private JComboBox<String> _listMaps;
 	private Map<String, MapController> _map;
+
+	private JButton _victimButton;
+	private JButton _addLocationButton;
+	private JButton _mapButton;
+	private boolean _areButtonsEnabled = true;
 	
 	@SuppressWarnings("unchecked")
-	public MenuButtonsPanel(MapPanel mapPanel)
-	{
-		setBorder(new EmptyBorder(10, 0, 10, 0));
+	public MenuButtonsPanel(MapPanel mapPanel) {
 		_mapPanel = mapPanel;
-		setSize(200, 200);
-		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
+		_mapPanel.addObserver(this);
 		_map = new HashMap<String, MapController>();
+		
+		setBorder(new EmptyBorder(10, 0, 10, 0));
+		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
 
-		add(new SubMenuVictimButton(mapPanel, "Victime"));
-//		add(new EditVictimButton(mapPanel, "Editer victime"));
-		add(new AddLocationButton(mapPanel, "Localisation"));
-		add(new SubMenuMapButton(mapPanel, "Carte"));
-	
-//		setListPanelContent();
+		_victimButton =new SubMenuVictimButton(mapPanel, "Victime");
+		_addLocationButton = new AddLocationButton(mapPanel, "Localisation");
+		_mapButton = new SubMenuMapButton(mapPanel, "Carte");
 		
-		OperationController operationController = _mapPanel.getGlobalPanel().getLauncher().getOperationController();
-//		String mapName = (String)_listMaps.getSelectedItem();
-//		MapController mapController = _map.get(mapName);
-		operationController.setCurrentMap(operationController.getCurrentMap());
-		
-//		operationController.addObserver(_listMaps);
-//		_listMaps.addActionListener(new MapComboBoxListener(_mapPanel, this));
-//		add(_listMaps);
+		add(_victimButton);
+		add(_addLocationButton);
+		add(_mapButton);
+
+		/*
+		 * WTF ??
+		 * OperationController operationController = _mapPanel.getGlobalPanel().getLauncher().getOperationController();
+		 * operationController.setCurrentMap(operationController.getCurrentMap());
+		 */
 		
 		setBackground(Color.LIGHT_GRAY);
 		setOpaque(false);
 		revalidate();
 	}
-	
-	
-//	public void setListPanelContent()
-//	{
-//		if(_listMaps != null)
-//			remove(_listMaps);
-//		
-//		OperationController operationController = _mapPanel.getGlobalPanel().getLauncher().getOperationController();
-//		List<MapController> listMapsName = operationController.getMapList();
-//		
-//		Vector<String> comboBoxItems = new Vector<String>();
-//		for(int i = 0; i < listMapsName.size(); i++)
-//		{
-//			comboBoxItems.add(listMapsName.get(i).getName());
-//			_map.put(listMapsName.get(i).getName(), listMapsName.get(i));
-//			System.out.println("-----------------------------------------------------" + listMapsName.get(i).getName());
-//		}
-//		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
-//		
-//		_listMaps = new JComboBox<String>(model);
-//		_listMaps.setBackground(Color.BLACK);
-//		_listMaps.setForeground(Color.WHITE);
-//		_listMaps.setBorder(new EmptyBorder(3, 10, 3, 10));
-//		
-////		_listMaps.repaint();
-////		_listMaps.revalidate();
-////		repaint();
-////		revalidate();
-//		
-//		_listMaps.addActionListener(new MapComboBoxListener(_mapPanel, this));
-//		add(_listMaps);
-//	}
-//	
-//	public JComboBox<String> getListMaps()
-//	{
-//		return _listMaps;
-//	}
-//	
-//	public Map<String, MapController> getMap()
-//	{
-//		return _map;
-//	}
+
+	@Override
+	public void update() {
+		_areButtonsEnabled = !_areButtonsEnabled;
+		_victimButton.setEnabled(_areButtonsEnabled);
+		_addLocationButton.setEnabled(_areButtonsEnabled);
+		_mapButton.setEnabled(_areButtonsEnabled);
+	}
 }
 
 

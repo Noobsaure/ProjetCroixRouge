@@ -10,12 +10,12 @@ import views.MapPanel;
 
 public class CancelConfigureLocationListener implements ActionListener
 {
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private ConfigurationLocationPanel _configurationLocationPanel;
 	
-	public CancelConfigureLocationListener(JPanel parent, ConfigurationLocationPanel configurationLocationPanel)
+	public CancelConfigureLocationListener(MapPanel mapPanel, ConfigurationLocationPanel configurationLocationPanel)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_configurationLocationPanel = configurationLocationPanel;
 	}
 
@@ -23,10 +23,8 @@ public class CancelConfigureLocationListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MapPanel mapPanel = (MapPanel)_parent;
-		mapPanel.addMapPanelListener();
-		
-		_parent.remove(_configurationLocationPanel);
-		_parent.repaint();
+		_mapPanel.setCurrentPopUp(null);
+		_mapPanel.remove(_configurationLocationPanel);
+		_mapPanel.repaint();
 	}
 }

@@ -25,7 +25,7 @@ public class EditVictimPanel extends AddVictimPanel
 	
 	public static final String TITLE = "Editer victime";
 
-	private MapPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	private SubMenuVictimPanel _subMenu;
@@ -43,16 +43,15 @@ public class EditVictimPanel extends AddVictimPanel
 	private JTextField _motifTextField;
 	
 	
-	public EditVictimPanel(MapPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm, VictimController victim)
+	public EditVictimPanel(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm, VictimController victim)
 	{
-		super(parent, subMenu, operation, dbm);
+		super(mapPanel, subMenu, operation, dbm);
 		
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_subMenu = subMenu;
 		_operationController = operation;
 		_dbm = dbm;
 		_victimController = victim;
-		_parent.setCurrentPopUp(this);
 		
 		_mainPanel = super.getMainPanel();
 		_motifsList = super.getMotifList();
@@ -111,7 +110,7 @@ public class EditVictimPanel extends AddVictimPanel
 		super.getIdentityPanel().add(_motifTextField, gbc_motifTextArea);
 		
 		CustomButton finDePriseEnChargeButton = new CustomButton("Fin de prise en charge");
-		finDePriseEnChargeButton.addActionListener(new FinDePriseEnChargeButtonListener(_parent, _subMenu, _victimController, this));
+		finDePriseEnChargeButton.addActionListener(new FinDePriseEnChargeButtonListener(_mapPanel, _subMenu, _victimController, this));
 		super.getButtonPanel().add(finDePriseEnChargeButton);
 	}
 	
@@ -123,8 +122,8 @@ public class EditVictimPanel extends AddVictimPanel
 	
 	private void centrer()
 	{
-		int x = (_parent.getWidth() / 2) - (_mainPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_mainPanel.getHeight() / 2);
+		int x = (_mapPanel.getWidth() / 2) - (_mainPanel.getWidth() / 2);
+		int y = (_mapPanel.getHeight() / 2) - (_mainPanel.getHeight() / 2);
 		this.setLocation(x, y);
 	}
 	
