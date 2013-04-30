@@ -33,7 +33,6 @@ public class EditEntityButtonListener implements MouseListener
 		_mapPanel.add(configurationEntityPanel);
 		_mapPanel.setCurrentPopUp(configurationEntityPanel);
 		_mapPanel.setComponentZOrder(configurationEntityPanel, 0);
-		
 		_mapPanel.repaint();
 		_mapPanel.revalidate();			
 	}

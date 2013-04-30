@@ -30,17 +30,11 @@ public class EditEntityColorListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-
 		Color colorChosen = _configurationEntityPanel.getColor();
 		System.out.println("couleur : "+colorChosen);
 		String color = "#" + Integer.toHexString(colorChosen.getRGB()).substring(2, 8);
 
 		_entityController.setColor(color);
-		_mapPanel.setCurrentPopUp(null);
 		_mapPanel.repaint();
-		
-		
 	}
-
 }

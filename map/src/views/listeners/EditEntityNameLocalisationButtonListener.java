@@ -26,7 +26,6 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 	private LocationController _location;
 	private ConfigurationEntityPanel _configPanel;
 	private static List<LocationController> listLocation;
-
 	
 	public EditEntityNameLocalisationButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entity, ConfigurationEntityPanel configPanel)
 	{
@@ -43,38 +42,21 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
 		String nomEntity = _configPanel.getNewName();
 		int indexLocation = _configPanel.getIndexLocation();
 		
-		//System.out.println("entity ancien nom : "+_entity.getName());
-		if(!checkInput(nomEntity))
-		{
-			new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
-		}
-		else 
-		{
-
-			System.out.println("nom entity : "+nomEntity);
+		if(!checkInput(nomEntity)) {
+			new ErrorMessage(_mapPanel, "Saisie incompl�te", EMPTY_NAME_MESSAGE);
+		} else {
 			_entity.setName(nomEntity);
 		}
 		
-		
-		// modification de la localisation de l'entité
 		listLocation= _operationController.getLocationList();
 		_location = listLocation.get(_configPanel.getIndexLocation());
-		System.out.println("Nouvelle localisation entity : "+_location.getName());
-		
-		// erreur sur la modification de la localisation d'une entité
-		
-		//_entity.setLocation(_operationController.getLocation(indexLocation));
 		_entity.setLocation(_location); 
 		
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
-		
-		_mapPanel.addMapPanelListener();
-		
 	}
 
 	

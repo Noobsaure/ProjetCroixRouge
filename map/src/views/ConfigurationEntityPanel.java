@@ -81,15 +81,11 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 
 	JTextArea _informationsTextArea;
 	
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public ConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController) {
 		_mapPanel = parent;
 		_operationController = operationController;
 		_entityController = entityController;
 		_entityController.addObserver(this);
-		_mapPanel.setCurrentPopUp(this);
 		initGui();
 	}	
 	

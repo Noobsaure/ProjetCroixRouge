@@ -45,10 +45,11 @@ public class AddEquipierButtonListener extends AbstractObserverListener implemen
 			else
 			{
 				AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_mapPanel, _operationController, _entityController);
-				_mapPanel.add(addEquipierPanel);
-
-				_mapPanel.setComponentZOrder(addEquipierPanel, 0);
 				_mapPanel.remove(_configEntityPanel);
+				_mapPanel.setCurrentPopUp(null);
+				_mapPanel.add(addEquipierPanel);
+				_mapPanel.setCurrentPopUp(addEquipierPanel);
+				_mapPanel.setComponentZOrder(addEquipierPanel, 0);
 				_mapPanel.repaint();
 				_mapPanel.revalidate();
 			}
