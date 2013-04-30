@@ -43,18 +43,6 @@ public class MenuPanel extends JPanel
 		setMinimumSize(new Dimension(LEFT_PANEL_WIDTH, getHeight()));
 		setPreferredSize(new Dimension(LEFT_PANEL_WIDTH, getHeight()));
 		setLayout(new BorderLayout());
-		//_entitiesPanel = new MenuEntitiesPanel(operation,_gPanel);
-		//_buttonsPanel = new MenuButtonsPanel(mapPanel);
-
-		/*JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
-		scrollPane.setViewportBorder(null);
-		scrollPane.setBorder(null);
-		scrollPane.setViewportView(_entitiesPanel);
-		add(scrollPane, BorderLayout.CENTER);
-
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);*/
-
-		//add(_buttonsPanel, BorderLayout.SOUTH);
 	}
 
 	public void setOperation(OperationController operation) {

@@ -34,26 +34,15 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	private List<EntityPanel> _availableEntityPanels;
 	private List<EntityPanel> _unavailableEntityPanels;
 
-	private List<EntityController> _availableEntities;
-	private List<EntityController> _unavailableEntities;
-
 	public MenuEntitiesPanel(OperationController operation, GlobalPanel globalPanel)
 	{
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		_operation = operation;
 		_globalPanel = globalPanel;
-
-		_availableEntities = new ArrayList<EntityController>();
-		_unavailableEntities = new ArrayList<EntityController>();
-		List<EntityController> listEntities = _operation.getEntityList();
-		for(EntityController oneEntity : listEntities) {
-			if(oneEntity.isAvailable()) {
-				_availableEntities.add(oneEntity);
-			} else {
-				_unavailableEntities.add(oneEntity);				
-			}
-		}
+		
+		_availableEntityPanels = new ArrayList<EntityPanel>();
+		_unavailableEntityPanels = new ArrayList<EntityPanel>();
 		
 		_panelAvailable = new JPanel();
 		_panelAvailable.setLayout(new BoxLayout(_panelAvailable, BoxLayout.Y_AXIS));
@@ -84,22 +73,20 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		panelAddButton.add(addButton);
 		_panelAvailable.add(panelAddButton);
 		
-		for(EntityController oneEntity : _availableEntities) {
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelAvailable.add(panel);
-			_availableEntityPanels.add(panel);
+		List<EntityController> listEntities = _operation.getEntityList();
+		for(EntityController oneEntity : listEntities) {
+			if(oneEntity.isAvailable()) {
+				EntityPanel panel = new EntityPanel(this, oneEntity);
+				_panelAvailable.add(panel);
+				_availableEntityPanels.add(panel);
+			} else {
+				EntityPanel panel = new EntityPanel(this, oneEntity);
+				_panelUnavailable.add(panel);
+				_unavailableEntityPanels.add(panel);				
+			}
 		}
-		
-		for(EntityController oneEntity : _unavailableEntities) {
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelUnavailable.add(panel);
-			_unavailableEntityPanels.add(panel);
-		}
-		
-		setOpaque(false);
-		
+		setOpaque(false);	
 	}
-	
 	
 	public void setListEntitiesContent()
 	{
@@ -129,6 +116,7 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		for(EntityController oneEntity : availableEntities) {
 			EntityPanel panel = new EntityPanel(this, oneEntity);
 			_panelAvailable.add(panel);
+			_availableEntityPanels.add(panel);
 		}
 		
 		entityPanelsToDelete.clear();
@@ -145,10 +133,9 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		for(EntityController oneEntity : unavailableEntities) {
 			EntityPanel panel = new EntityPanel(this, oneEntity);
 			_panelUnavailable.add(panel);
+			_unavailableEntityPanels.add(panel);
 		}
 	}
-	
-	
 	
 	public void addDropTarget() {
 		this.setDropTarget(new DropTarget(this, new MenuEntitiesPanelDropTargetListener(_globalPanel)));

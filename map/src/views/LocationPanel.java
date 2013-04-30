@@ -33,7 +33,7 @@ public class LocationPanel extends JPanel {
 	private ImageIcon _iconGearOn,_iconGearOff;
 	private LocationPanelMouseListener _mouseListener;
 	private EditLocationButtonListener _iconGearMouseListener;
-	private List<EntityController> _entitiesList;
+	private List<AffectedEntityPanel> _affectedEntityPanels;
 
 	public LocationPanel(Location loc, MapPanel mapPanel, int x, int y) {
 		super();
@@ -66,10 +66,10 @@ public class LocationPanel extends JPanel {
 		southPanel.add(_iconGearLabel, BorderLayout.EAST);
 		add(_entitiesPanel,BorderLayout.CENTER);
 		add(southPanel,BorderLayout.SOUTH);
-		
-		_entitiesList = new ArrayList();
+
+		_affectedEntityPanels = new ArrayList<AffectedEntityPanel>();
 	}
-	
+
 	public void moveLocationPanel(int x, int y) {
 		_offsetX = _offsetX + x;
 		_offsetY = _offsetY + y;
@@ -82,17 +82,28 @@ public class LocationPanel extends JPanel {
 		setForeground(Color.LIGHT_GRAY);
 		g.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 	}
-	
+
 	public void update() {
-		List<EntityController> entitiesList = _loc.getLocationController().getEntityList();
-		_entitiesList.retainAll(entitiesList);
-		entitiesList.removeAll(_entitiesList);
+		List<EntityController> listEntities = _loc.getLocationController().getEntityList();
+		List<AffectedEntityPanel> listAffectedEntityPanelsToDelete = new ArrayList<AffectedEntityPanel>();
+		
+		for(AffectedEntityPanel oneEntity : _affectedEntityPanels) {
+			if(!listEntities.contains(oneEntity.getEntity())) {
+				_entitiesPanel.remove(oneEntity);
+				listAffectedEntityPanelsToDelete.add(oneEntity);
+			} else {
+				listEntities.remove(oneEntity.getEntity());
+			}
+		}
+		_affectedEntityPanels.removeAll(listAffectedEntityPanelsToDelete);
+		
 		AffectedEntityPanel affectedEntity;
-		for(EntityController oneEntity : entitiesList) {
+		for(EntityController oneEntity : listEntities)
+		{
 			affectedEntity = new AffectedEntityPanel(_mapPanel, oneEntity);
 			_entitiesPanel.add(affectedEntity);
+			_affectedEntityPanels.add(affectedEntity);
 		}
-		_entitiesList.addAll(entitiesList);
 	}
 
 	public boolean is_displayed() {return _displayed;}
@@ -107,7 +118,7 @@ public class LocationPanel extends JPanel {
 		}
 	}
 	public void addIconMouseListener(MouseListener listener) {_iconGearLabel.addMouseListener(listener);}
-	
+
 	public void enableListeners(boolean enable) {
 		_mouseListener.enable(enable);
 		_iconGearMouseListener.enable(enable);
