@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import controllers.EntityController;
-import controllers.LocationController;
 
 import views.listeners.LocationPanelMouseListener;
 import views.listeners.EditLocationButtonListener;
