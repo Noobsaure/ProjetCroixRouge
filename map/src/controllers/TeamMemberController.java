@@ -48,8 +48,6 @@ public class TeamMemberController {
 			_available = true;
 		else
 			_available = false;
-
-		System.out.println("Creation equipier "+_name+" "+_firstName+ " succeed");
 	}
 
 	public boolean joinEntity(EntityController entity) {
@@ -62,14 +60,14 @@ public class TeamMemberController {
 			try{
 				_dbm.executeQueryInsert(new SQLQueryInsert("EntiteHistorique", "(NULL,"+_id+","+entityId+",'"+datetime+"',NULL)"));	
 			}catch(MalformedQueryException e){
-				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Base de donnees" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+"\n à l'équipe "+entity.getName());
+				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
 			}
 
 			//Update 'EntityId' pour l'equipier
 			try{
 				_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id="+entityId+", operation_id='"+_operation.getId()+"'","id = "+_id));
 			}catch(MalformedQueryException e){ 
-				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Base de donnees" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+"\n à l'équipe "+entity.getName());
+				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
 			}
 			_entity = entity;
 			System.out.println("ENTITY A CHANGE: Elle est maintenant ---> "+_entity.getName());
@@ -107,7 +105,6 @@ public class TeamMemberController {
 					}
 				}
 				else{
-					System.out.println("No result");
 					return false;
 				}
 			}catch(SQLException e){ System.err.println("EntityController#removeTeamMember(): Error on finding entityHistory_id for teamMemberId "+_id+" and entity ID "+_entity.getId()); }
@@ -218,10 +215,8 @@ public class TeamMemberController {
 				System.out.println("ON UPDATE ENTITE");
 				_entity = _operation.getEntity(result.getInt("entite_id"));
 
-				if(result.getInt("entite_id") == 0){
-					System.out.println("ENTITE_ID EST MAINTENANT :"+_entity.getName());
+				if(result.getInt("entite_id") == 0)
 					_available = true;					
-				}
 				else
 					_available = false;
 			}

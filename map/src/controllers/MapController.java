@@ -78,7 +78,7 @@ public class MapController implements Subject {
 	}
 
 	public List<EntityController> getEntityListInThisMap(){
-		List<EntityController> _entityList = new ArrayList<>();
+		List<EntityController> _entityList = new ArrayList<EntityController>();
 		
 		for(LocationController location : _locationList){
 			if(location.getEntityList().size() != 0){
