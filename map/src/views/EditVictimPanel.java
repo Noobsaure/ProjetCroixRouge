@@ -33,7 +33,7 @@ public class EditVictimPanel extends AddVictimPanel
 	
 	private RoundedPanel _mainPanel;
 	private JList _motifsList;
-	private JTextArea _detailsTextArea;
+	private JTextField _detailsTextArea;
 	private JTextField _idAnonymat;
 	private JTextArea _soinsTextArea;
 	private JTextField _nameTextField;
