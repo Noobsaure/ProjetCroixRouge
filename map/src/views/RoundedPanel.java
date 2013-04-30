@@ -68,12 +68,11 @@ public class RoundedPanel extends JPanel
 
         //Draws the rounded opaque panel with borders.
         graphics.setColor(getBackground());
-        graphics.fillRoundRect(0, 0, width - shadowGap, 
-		height - shadowGap, arcs.width, arcs.height);
+        graphics.fillRoundRect(0, 0, width - shadowGap, height - shadowGap, arcs.width, arcs.height);
+        
         graphics.setColor(getForeground());
         graphics.setStroke(new BasicStroke(strokeSize));
-        graphics.drawRoundRect(0, 0, width - shadowGap, 
-		height - shadowGap, arcs.width, arcs.height);
+        graphics.drawRoundRect(0, 0, width - shadowGap, height - shadowGap, arcs.width, arcs.height);
 
         //Sets strokes to default, is better.
         graphics.setStroke(new BasicStroke());
