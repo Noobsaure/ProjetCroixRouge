@@ -83,6 +83,7 @@ public class Location extends JPanel {
 	}
 	
 	public void update() {
+		_name = _locationController.getName();
 		_locPanel.update();
 	}
 	

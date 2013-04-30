@@ -3,7 +3,9 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +13,12 @@ import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import controllers.EntityController;
-import controllers.LocationController;
 
 import views.listeners.LocationPanelMouseListener;
 import views.listeners.EditLocationButtonListener;
@@ -30,6 +34,7 @@ public class LocationPanel extends JPanel {
 	private int _offsetX, _offsetY;
 	private int _x, _y;
 	private JLabel _iconGearLabel;
+	private JLabel _locationName;
 	private ImageIcon _iconGearOn,_iconGearOff;
 	private LocationPanelMouseListener _mouseListener;
 	private EditLocationButtonListener _iconGearMouseListener;
@@ -50,8 +55,16 @@ public class LocationPanel extends JPanel {
 		addMouseListener(_mouseListener);
 		addMouseMotionListener(_mouseListener);
 		setLayout(new BorderLayout());
-
+		
 		_entitiesPanel = new JPanel();
+		GridLayout gl = new GridLayout();
+		gl.setColumns(2);
+		gl.setRows(3);
+		gl.setHgap(5);
+		gl.setVgap(5);
+		_entitiesPanel.setLayout(gl);
+		JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		JPanel southPanel = new JPanel();
 		_iconGearLabel = new JLabel();
 		_iconGearOn = new ImageIcon(EntityPanel.class.getResource("/ui/gear.png"));
@@ -62,9 +75,11 @@ public class LocationPanel extends JPanel {
 		_entitiesPanel.setOpaque(false);
 		_iconGearLabel.setBorder(new EmptyBorder(0, 0, 0, 12));
 		_iconGearLabel.setIcon(_iconGearOff);
-		southPanel.add(new JLabel(_loc.getLocName()), BorderLayout.CENTER);
+		_locationName = new JLabel(_loc.getLocName(),SwingConstants.CENTER);
+		_locationName.setFont(new Font(Font.SANS_SERIF,Font.BOLD,14));
+		southPanel.add(_locationName, BorderLayout.CENTER);
 		southPanel.add(_iconGearLabel, BorderLayout.EAST);
-		add(_entitiesPanel,BorderLayout.CENTER);
+		add(scrollPane,BorderLayout.CENTER);
 		add(southPanel,BorderLayout.SOUTH);
 
 		_affectedEntityPanels = new ArrayList<AffectedEntityPanel>();
@@ -80,7 +95,7 @@ public class LocationPanel extends JPanel {
 		super.paintComponent(g);
 		setBounds(_offsetX + _x - 100, _offsetY + _y - 50, 200,100);
 		setForeground(Color.LIGHT_GRAY);
-		g.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+		g.fillRect(0, 0, getWidth(), getHeight());
 	}
 
 	public void update() {
@@ -104,6 +119,11 @@ public class LocationPanel extends JPanel {
 			_entitiesPanel.add(affectedEntity);
 			_affectedEntityPanels.add(affectedEntity);
 		}
+		
+		for(AffectedEntityPanel oneEntity : _affectedEntityPanels) {
+			oneEntity.update();
+		}
+		_locationName.setText(_loc.getLocName());
 	}
 
 	public boolean is_displayed() {return _displayed;}

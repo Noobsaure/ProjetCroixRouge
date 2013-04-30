@@ -45,7 +45,7 @@ public class MapController implements Subject {
 		_name = name;
 		_visibility = true;
 		_idOperation = operation.getId();
-		_id = _dbm.storeImage(name, path, _idOperation);
+		_id = _dbm.storeImage(_dbm.stripSlashes(name), path, _idOperation);
 
 		_datas = _dbm.getImage(_id + "", name);
 
@@ -57,7 +57,7 @@ public class MapController implements Subject {
 		_operation = operation;
 		_dbm = dbm;
 		_id = id;
-		_name = name;
+		_name = _dbm.stripSlashes(name);
 		_visibility = visibility;
 		_datas = _dbm.getImage(_id + "", name);
 
@@ -108,6 +108,8 @@ public class MapController implements Subject {
 		
 		_visibility = false;
 		_operation.removeMap(this);
+		if(_operation.getMapList().size() == 0)
+			_operation.setCurrentMap(_operation.getMap(_operation.getMapList().size()-1));
 	}
 	
 	public ImageIcon getImage()

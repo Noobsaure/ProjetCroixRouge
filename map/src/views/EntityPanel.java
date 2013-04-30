@@ -108,6 +108,10 @@ public class EntityPanel extends JPanel
 			_iconGearLabel.setIcon(_iconGearOff);
 		}
 	}
+	
+	public void update() {
+		_entityName.setText(_entity.getName());
+	}
 
 	@Override
 	public void paintComponent(Graphics g)

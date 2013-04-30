@@ -179,7 +179,6 @@ public class DatabaseManager
 	public int storeImage(String name, String imagePath, int idOperation)
 	{
 		Integer id = -1;
-		System.out.println("Id operation : "+idOperation+"\n");
 		
 	    try
 	    {
@@ -192,7 +191,6 @@ public class DatabaseManager
 	    	PreparedStatement preparedStatement = null;
 	    	
 	    	// Insertion de l'image
-	    	System.out.println("Insertion image...");
 	    	_connection.setAutoCommit(false);
 			
 	    	preparedStatement = _connection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
@@ -207,7 +205,6 @@ public class DatabaseManager
 	    	while(generatedKeys.next())
 				id = generatedKeys.getInt(1);
 	    	_connection.commit();
-	    	System.out.println("Image inserted successfully");
 	    	
 	    	preparedStatement.close();
 	    	fileInputStream.close();

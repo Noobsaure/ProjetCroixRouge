@@ -161,6 +161,10 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 			_panelUnavailable.add(panel);
 			_unavailableEntityPanels.add(panel);
 		}
+		
+		for(EntityPanel onePanel : _availableEntityPanels) {
+			onePanel.update();
+		}
 	}
 	
 	public void addDropTarget() {
