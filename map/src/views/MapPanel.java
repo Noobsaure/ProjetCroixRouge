@@ -70,14 +70,27 @@ public class MapPanel extends JPanel implements Observer
 	public int get_y() {return _y;}
 	public void setCurrentPopUp(PopUpPanel currentPopUp) {_currentPopUp = currentPopUp;}
 
-	public void moveMap(int x, int y){
-		_x = _x + x;
-		_y = _y + y;
+	public void moveMap(int x, int y) {
+		if(_map.getWidth() > getWidth()) {
+			if(x > 0 && x + _x > 0) {x = -_x;}
+			else if(x < 0 && x + _x + _map.getWidth() < getWidth()) {x = getWidth() - _x - _map.getWidth();}
+			_x = _x + x;
+		} else {
+			x = 0;
+		}
+		if(_map.getHeight() > getHeight()) {
+			if(y > 0 && y + _y > 0) {y = -_y;}
+			else if(y < 0 && y + _y + _map.getHeight() < getHeight()) {y = getHeight() - _y - _map.getHeight();}
+			_y = _y + y;
+		} else {
+			y = 0;
+		}			
 		for(Location oneLoc : _locations) {
 			oneLoc.moveLocation(x,y);
 		}
 		repaint();
 	}
+
 
 	@Override 
 	public void paintComponent(Graphics g)
