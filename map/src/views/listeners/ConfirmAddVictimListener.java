@@ -52,8 +52,6 @@ public class ConfirmAddVictimListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		_mapPanel.add(_subMenu);
-		
 		Object[] objects = _addVictimPanel.getMotifList().getSelectedValuesList().toArray();
 		String[] motifsList = new String[objects.length];
 		for(int i = 0; i < objects.length; i++)
@@ -89,9 +87,9 @@ public class ConfirmAddVictimListener implements ActionListener
 			{
 				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
 				
-//				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
-//				_mapPanel.add(subMenu);
-//				_mapPanel.setComponentZOrder(subMenu, 0);
+				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
+				_mapPanel.add(subMenu);
+				_mapPanel.setComponentZOrder(subMenu, 0);
 			}
 			catch(ParseException e1)
 			{
