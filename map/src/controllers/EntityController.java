@@ -87,7 +87,7 @@ public class EntityController implements Subject {
 		}
 
 		_operation.addEntite(this);
-		//genererMessageCreation();
+		genererMessageCreation();
 	}
 
 
@@ -169,7 +169,7 @@ public class EntityController implements Subject {
 		_available = state;
 		_state = infos;
 		_operation.notifyObservers();
-		//genererMessageStatut();
+		genererMessageStatut();
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class EntityController implements Subject {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de position" ,"Impossible de mettre à jour la date d'arrivée à la localisation pour l'entite '"+_name+"'.");
 		}
 
-		//genererMessageDeplacement(lastPosCurrentId, idDeplacement);
+		genererMessageDeplacement(lastPosCurrentId, idDeplacement);
 		_operation.notifyObservers();
 	}
 
@@ -295,20 +295,19 @@ public class EntityController implements Subject {
 		}
 		String tmp = _name;
 		_name = newName;
-		//genererMessageChangementDeNom(tmp);
+		genererMessageChangementDeNom(tmp);
 	}
 
 	private void genererMessageChangementDeNom(String tmp) {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message =  "\'"+tmp+"\' a été renommée en \'"+_name+"\'.";
+		String message =  "'"+tmp+"' a été renommée en '"+_name+"'.";
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-4', "+_operation.getId()+",NULL, NULL, '"+datetime+"','"+message+"','0')"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-4', "+_operation.getId()+",NULL, NULL, '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante."+
-					"Message : "+message);
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 		}
 	}
 
@@ -321,13 +320,12 @@ public class EntityController implements Subject {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message =  "\'"+_name+"\' a quitté \'"+_operation.getLocation(lastPosCurrentId).getName()+"\' pour \'"+_operation.getLocation(_posCurrentId).getName()+"\'.";
+		String message =  "'"+_name+"' a quitté '"+_operation.getLocation(lastPosCurrentId).getName()+"' pour '"+_operation.getLocation(_posCurrentId).getName()+"'.";
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+message+"','0')"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante."+
-					"Message : "+message);
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 		}
 	}
 
@@ -346,14 +344,13 @@ public class EntityController implements Subject {
 			disponibility = "indisponible";
 		}
 
-		String message =  "\'"+_name+"\' est maintenant "+disponibility+" (Informations: "+_dbm.addSlashes(_state)+" ).";
+		String message =  "'"+_name+"' est maintenant "+disponibility+" (Informations: "+_state+" ).";
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+message+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
-					"Message : "+message);
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 		}
 	}
 
@@ -361,11 +358,11 @@ public class EntityController implements Subject {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message =  "L'entité \'"+_name+"\' vient d'être créée.";
+		String message =  "L'entité '"+_name+"' vient d'être créée.";
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+message+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
