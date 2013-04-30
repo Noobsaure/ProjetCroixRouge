@@ -272,15 +272,27 @@ public class DatabaseManager
 	
 	public static String addSlashes(String input)
 	{
-		String output = input.replace("'", "\\'");
-		output = output.replace("`", "\\`");
+		String output = null;
+		
+		if(input != null)
+		{
+			output = input.replace("'", "\\'");
+			output = output.replace("`", "\\`");
+		}
+		
 		return output;
 	}
 	
 	public static String stripSlashes(String input)
 	{
-		String output = input.replace("\\'", "'");
-		output = output.replace("\\`", "`");
+		String output = null;
+		
+		if(input != null)
+		{
+			output = input.replace("\\'", "'");
+			output = output.replace("\\`", "`");
+		}
+		
 		return output;
 	}
 	

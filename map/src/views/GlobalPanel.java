@@ -2,8 +2,6 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import javax.swing.JScrollPane;
 
 import javax.swing.JApplet;
 import javax.swing.UIManager;
