@@ -55,7 +55,7 @@ public class OperationController implements Subject
 		ResultSet result;
 
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1 AND (operation_id='"+_idOperation+"' OR operation_id is NULL)"));
 			while(result.next()){
 				int id = result.getInt("id");
 				String name = result.getString("nom");
