@@ -56,7 +56,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	private SubMenuVictimPanel _subMenu;
 	private JLabel _title;
 	private JList _motifsList;
-	private JTextArea _detailsTextArea;
+	private JTextField _detailsTextArea;
 	private JTextArea _soinsTextArea;
 	private JTextField _nameTextField;
 	private JTextField _prenomTextField;
@@ -157,14 +157,11 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		JLabel otherMotifLabel = new JLabel("Autre motif :");
 		formPanel.add(otherMotifLabel, "4, 2");
 		
-		JScrollPane scrollPane = new JScrollPane();
-		formPanel.add(scrollPane, "4, 4, fill, fill");
-		
 		JPanel panel = new JPanel();
-		scrollPane.setViewportView(panel);
+		formPanel.add(panel, "4, 4");
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		
-		_detailsTextArea = new JTextArea();
+		_detailsTextArea = new JTextField();
 		panel.add(_detailsTextArea);
 		
 		JLabel lblIdentifiantDanonymat = new JLabel("Identifiant d'anonymat :");
@@ -178,7 +175,11 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		panel.add(soinsLabel);
 		
 		_soinsTextArea = new JTextArea();
+		_soinsTextArea.setPreferredSize(new Dimension(200, 80));
 		panel.add(_soinsTextArea);
+		
+		JScrollPane scrollPane = new JScrollPane(_soinsTextArea);
+		panel.add(scrollPane);
 		/**************************************************************/
 		
 		
@@ -246,7 +247,6 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 1;
 		_identityPanel.add(_adressTextField, gbc_textField);
-		GridBagConstraints gbc_codePostaleTextField = new GridBagConstraints();
 		
 		JLabel dateDeNaissanceLabel = new JLabel("Date de naissance :");
 		GridBagConstraints gbc_dateDeNaissanceLabel = new GridBagConstraints();
@@ -351,7 +351,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	{
 		return _motifsList;
 	}
-	public JTextArea getDetailsTextArea()
+	public JTextField getDetailsTextArea()
 	{
 		return _detailsTextArea;
 	}

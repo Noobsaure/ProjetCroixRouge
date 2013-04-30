@@ -30,6 +30,8 @@ import database.DatabaseManager;
 
 public class SubMenuMapPanel extends SubMenuPanel implements Observer
 {
+	private static final long serialVersionUID = 1L;
+	
 	private Map<JToggleButton, MapController> _map;
 	private JPanel _thumbnailsPanel;
 	private JScrollPane _scrollPane;
