@@ -22,11 +22,11 @@ public class MenuEntitiesPanelDropTargetListener implements DropTargetListener {
 	private static final Cursor droppableCursor = Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 
 	private MenuPanel _menu;
-	private GlobalPanel _gPanel;
+	private GlobalPanel _globalPanel;
 
 	public MenuEntitiesPanelDropTargetListener(GlobalPanel gPanel) {
-		_gPanel = gPanel;
-		_menu = _gPanel.getMenu();//.getEntitiesPanel();
+		_globalPanel = gPanel;
+		_menu = _globalPanel.getMenu();//.getEntitiesPanel();
 	}
 
 	public void dragEnter(DropTargetDragEvent dtde) {}
@@ -49,9 +49,9 @@ public class MenuEntitiesPanelDropTargetListener implements DropTargetListener {
 		try {
 			Object transferableObj = dtde.getTransferable().getTransferData(EntityPanel.ENTITY_PANEL_FLAVOR);
 			EntityPanel droppedPanel = (EntityPanel)transferableObj;
-			droppedPanel.getEntity().setLocation(null);
-			_gPanel.revalidate();
-			_gPanel.repaint();
+			droppedPanel.getEntity().setLocation(_globalPanel.getLauncher().getOperationController().getPcmLocation());
+			_globalPanel.revalidate();
+			_globalPanel.repaint();
 		} catch (UnsupportedFlavorException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

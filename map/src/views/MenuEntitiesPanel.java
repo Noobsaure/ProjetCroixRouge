@@ -25,7 +25,7 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 {	
 	private static final long serialVersionUID = 1L;
 	
-	private GlobalPanel _gPanel;
+	private GlobalPanel _globalPanel;
 	private OperationController _operation;
 	
 	private JPanel _panelAvailable;
@@ -34,12 +34,12 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	private List<EntityController> _availableEntities;
 	private List<EntityController> _unavailableEntities;
 
-	public MenuEntitiesPanel(OperationController operation, GlobalPanel gPanel)
+	public MenuEntitiesPanel(OperationController operation, GlobalPanel globalPanel)
 	{
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		_operation = operation;
-		_gPanel = gPanel;
+		_globalPanel = globalPanel;
 
 		_availableEntities = new ArrayList<EntityController>();
 		_unavailableEntities = new ArrayList<EntityController>();
@@ -65,11 +65,10 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		_panelAvailable.setBackground(Color.BLACK);
 		_panelNotAvailable.setBackground(Color.BLACK);
 		
-		add(_panelAvailable, BorderLayout.CENTER);
+		add(_panelAvailable, BorderLayout.CENTER);		
 		add(_panelNotAvailable, BorderLayout.SOUTH);
 		
-		setOpaque(false);
-		
+
 		final int WIDTH_PANEL_ADD_BUTTON = MenuPanel.LEFT_PANEL_WIDTH - 13;
 		final int HEIGHT_BUTTON = 25;
 		JPanel panelAddButton = new JPanel();
@@ -78,9 +77,22 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		panelAddButton.setBorder(new EmptyBorder(0, 10, 2, 10));
 		panelAddButton.setMinimumSize(new Dimension(WIDTH_PANEL_ADD_BUTTON, HEIGHT_BUTTON));
 		panelAddButton.setMaximumSize(new Dimension(WIDTH_PANEL_ADD_BUTTON, HEIGHT_BUTTON));
-		AddEntityButton addButton = new AddEntityButton(_gPanel.getMapPanel(), "+");
+		AddEntityButton addButton = new AddEntityButton(_globalPanel.getMapPanel(), "+");
 		panelAddButton.add(addButton);
 		_panelAvailable.add(panelAddButton);
+		
+		for(EntityController oneEntity : _availableEntities) {
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelAvailable.add(panel);
+		}
+		
+		for(EntityController oneEntity : _unavailableEntities) {
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelNotAvailable.add(panel);
+		}
+		
+		setOpaque(false);
+		
 	}
 	
 	
@@ -116,10 +128,10 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	
 	
 	public void addDropTarget() {
-		this.setDropTarget(new DropTarget(this, new MenuEntitiesPanelDropTargetListener(_gPanel)));
+		this.setDropTarget(new DropTarget(this, new MenuEntitiesPanelDropTargetListener(_globalPanel)));
 	}
 	
-	public GlobalPanel getGlobalPanel() {return _gPanel;}
+	public GlobalPanel getGlobalPanel() {return _globalPanel;}
 	
 	public OperationController getOperationController()
 	{

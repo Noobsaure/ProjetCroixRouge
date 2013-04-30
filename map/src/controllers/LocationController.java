@@ -28,7 +28,7 @@ public class LocationController implements Subject {
 	private String _name;
 	private String _description;
 
-	private List<Observer> _observers;
+	private List<Observer> _observers = new ArrayList<Observer>();
 
 	private List<EntityController> _entityList = new ArrayList<EntityController>();
 
@@ -49,8 +49,8 @@ public class LocationController implements Subject {
 		_idMap = operation.getCurrentMap().getId();
 
 		if(name.compareTo("LocalisationBaseDesEntites") == 0){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation \n" +
-					"de départ pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");	
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation " +
+					"de base pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");	
 			return;
 		}
 
@@ -61,15 +61,13 @@ public class LocationController implements Subject {
 			_name = name;
 			_description = description;
 			_id = result;
-
-		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"La localisation "+_name+" n'a pas pu être ajouté dans la base de données. \n" +
-					"Veuillez relancer l'application.");				
+		}catch(MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Création localisation" ,"La localisation "+_name+" n'a pas pu être ajouté dans la base de données." +
+					"Veuillez réessayer.");				
 		}
 
 		operation.getCurrentMap().addLocation(this);
 		operation.addLocation(this);
-		System.out.println("Creation Localisation : "+name+" a réussi.");
 	}
 
 	/**
@@ -92,7 +90,7 @@ public class LocationController implements Subject {
 		_idMap = idMap;
 		_idOperation = _operation.getId();
 
-		if(_name.compareTo("LocalisationBaseDesEntites") != 0)
+		if(_name.compareTo("LocalisationBaseDesEntites") != 0 )
 			operation.getMap(_idMap).addLocation(this);
 
 		_observers = new ArrayList<Observer>();
@@ -113,10 +111,9 @@ public class LocationController implements Subject {
 		try {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("LocalisationHistorique", "(NULL,'"+entity.getIdPosCurrent()+"','"+_id+"','"+entity.getId()+"','"+entity.getDateArriveeLocalisation()+"','"+datetime+"')"));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de l'ajout de \n" +
-					"l'entité "+entity.getName()+" au point de localisation \"" +_name+"\".");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Localisation - Ajout entité" ,"Une erreur est survenue lors de l'ajout de " +
+					"l'entité '"+entity.getName()+"' au point de localisation '" +_name+"'.");
 		}
-
 		_entityList.add(entity);
 
 		return result;
@@ -135,11 +132,11 @@ public class LocationController implements Subject {
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "nom='"+name+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour du nom de la localisation \n" +
-					"\""+_name+"\" vers \""+name+"\".");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Localisation - Changement de nom" ,"Une erreur est survenue lors de la mise à jour du nom de la localisation " +
+					"'"+_name+"' vers '"+name+"'. Veuillez rééssayer.");
 		}
 
-		genererMessageChangementDeNom(name);
+		//genererMessageChangementDeNom(name);
 		_name = name;
 	}
 
@@ -149,9 +146,9 @@ public class LocationController implements Subject {
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", NULL, "+_operation.getId()+",NULL, NULL,'"+datetime+"','"+message+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-3', "+_operation.getId()+",NULL, NULL,'"+datetime+"','"+message+"',0)"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante \n"+
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
 		}
 	}
@@ -234,12 +231,16 @@ public class LocationController implements Subject {
 
 	public void setDescription(String informations) {
 		try {
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "desc='"+informations+"'","id="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "`desc`='"+informations+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description \n de la localisation "+_name+".");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description de la localisation '"+_name+"'. Veuillez rééssayer.");
 		}
 
 		_description = informations;
+	}
+
+	public void addEntityList(EntityController entityController) {
+		_entityList.add(entityController);		
 	}
 
 

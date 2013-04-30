@@ -1,17 +1,12 @@
 package controllers;
 
-import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
 import observer.Observer;
 import observer.Subject;
-
 import views.ErrorMessage;
-
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -19,7 +14,6 @@ import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
 public class EntityController implements Subject {
-	//Ceci est un test
 	private OperationController _operation;	
 	private DatabaseManager _dbm;
 
@@ -71,29 +65,29 @@ public class EntityController implements Subject {
 		try {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,NULL,'1','"+datetime+"','Creation entite')"));
 			_stateId = result;
-		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Base de donnees" ,"Une erreur est survenue lors de la creation du statut pour l'entité '"+name+"'");}
-
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation du statut pour l'entité '"+name+"'.");		
+		}
 
 		//Creation of the entity in database
 		int result2;
 
 		try {
-			System.out.println("here");
 			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+name+"','"+datetime+"','"+type+"','"+color+"','"+infos+"')"));
-			System.out.println("here2");
 			_id = result2;
-			System.out.println("ID de l'entite qui vient d'être créé :"+_id);
-		} catch (MalformedQueryException e) { e.printStackTrace(); }	
-
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation de l'entité '"+name+"'.");		
+		}	
 
 		//Update of the status of the entity
-		System.out.println("Mise a jour du statut "+_stateId+" qui vient d'etre cree avec IDEntite = "+_id);
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Statut","entite_id = '"+_id+"'", "id='"+_stateId+"'"));
-		} catch (MalformedQueryException e) { new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "H"); }
+		} catch (MalformedQueryException e) { 
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Creation Entite", "Une erreur est survenue lors de la mise à jour du statut pour l'entité '"+name+"'."); 
+		}
 
 		_operation.addEntite(this);
+		//genererMessageCreation();
 	}
 
 
@@ -108,8 +102,6 @@ public class EntityController implements Subject {
 	 * @param infos The informations about the entity in database
 	 */
 	public EntityController(OperationController operation, DatabaseManager dbm, int id, int stateId, int positionId, java.sql.Timestamp dateArriveeLocalisation, String name, String type, String infos, String color){
-		System.out.println("Creation instance Entite deja existante (id = "+id+" ).");
-
 		_operation = operation;
 		_dbm = dbm;
 		_id = id;
@@ -130,24 +122,55 @@ public class EntityController implements Subject {
 				while(result.next()){
 					_available = result.getBoolean("dispo");
 				}
-			}catch(SQLException e){	System.err.println("EntityController#EntityController(): Error in the recovery of 'dispo' in table STATUT for id "+stateId);}
-		} catch (MalformedQueryException e1) { e1.printStackTrace();}
-
+				result.getStatement().close();
+			}catch(SQLException e){	
+				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement du statut pour l'entité '"+name+"'. Aucun résultat n'a été trouvé. Veuillez relancer l'application.");		
+			}
+		}catch (MalformedQueryException e1) { 
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement du statut pour l'entité '"+name+"'. Veuillez relancer l'applciation.");		
+		}
 
 		//On ajoute les equipiers presents dans l'entite
 		try {
-			System.out.println("Chargement equipiers déjà présents dans l'équipe "+_name);
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Equipier", "entite_id='"+_id+"'"));
 			try{
 				while(result.next()){
 					int idEquipier = result.getInt("id");
-					System.out.println("Ajout team member dans "+_name+" de "+operation.getEquipier(idEquipier).getFirstName()+" "+operation.getEquipier(idEquipier).getName());
 					_teamMemberList.add(operation.getEquipier(idEquipier));
 				}
-			}catch (SQLException e) { System.err.println("EntityController#EntityController(): Error on adding teamMember"+stateId);}
-		} catch (MalformedQueryException e1) { e1.printStackTrace();}
+				result.getStatement().close();
+			}catch(SQLException e){ 
+				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement des équipiers pour l'entité '"+name+"'. Aucun résultat n'a été trouvé. Veuillez relancer l'application.");
+			}
+		}catch(MalformedQueryException e1) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement des équipiers pour l'entité '"+name+"'.Veuillez relancer l'application.");
+		}
+	}
 
-	} 
+	public void setAvailable(boolean state, String infos){
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		int result;
+
+		//Create new status for the entity and update of the variable class "_available" and "stateId"
+		try {
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+infos+"')"));
+			_stateId = result;
+		} catch (MalformedQueryException e) { 
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de statut" ,"Impossible de créér un nouveau statut pour l'entite '"+_name+"'. Veuillez réessayer.");
+		}
+
+		try {
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite","statut_id ="+_stateId,"id ="+_id));
+		} catch (MalformedQueryException e) { 
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de statut" ,"Impossible de mettre à jour le statut pour l'entite '"+_name+"'. Veuillez réessayer.");
+		}
+
+		_available = state;
+		_state = infos;
+		_operation.notifyObservers();
+		//genererMessageStatut();
+	}
 
 	/**
 	 * Add a team-member to the entity and update "Entity_historique" table
@@ -173,33 +196,7 @@ public class EntityController implements Subject {
 	public boolean isAvailable(){
 		return _available;
 	}
-
-
-	public void setAvailable(boolean state, String infos){
-		java.util.Date date = new java.util.Date();
-		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		int result;
-
-		//Create new status for the entity and update of the variable class "_available" and "stateId"
-		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+infos+"')"));
-			_stateId = result;
-		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour le statut pour l'entite \n"+_name);
-		}
-
-		try {
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite","statut_id ="+_stateId,"id ="+_id));
-		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour l'ID statut pour l'entite \n"+_name);
-		}
-
-		_available = state;
-		_state = infos;
-		_operation.notifyObservers();
-		//genererMessageStatut();
-	}
-
+	
 	public String show(){
 		String result = "---------------------------\n";
 		result+= "Nom : "+_name+" \n";
@@ -239,7 +236,6 @@ public class EntityController implements Subject {
 	}
 
 	public String getColor() {
-		// TODO Auto-generated method stub
 		return _color;
 	}
 
@@ -251,9 +247,8 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "couleur='"+newColor+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite \n"+_name);
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite '"+_name+"'. Veuillez réessayer.");
 		}
-
 		_color = newColor;
 	}
 
@@ -261,11 +256,11 @@ public class EntityController implements Subject {
 		int lastPosCurrentId = _posCurrentId;
 
 		LocationController loc = _operation.getLocation(_posCurrentId);
-		if(loc != null) loc.removeEntity(this);
+		if(loc != null)	loc.removeEntity(this);
 
 		if(location == null){
+			System.err.println("EntityController, la localisation est nulle au setLocation ! Bizarre???");
 			_posCurrentId = _operation.getIdPcm();
-
 		}else{
 			_posCurrentId = location.getId();
 		}
@@ -273,7 +268,8 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "pos_courante_id ="+_posCurrentId,"id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la position courante pour l'entite \n"+_name);
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de position" ,"Impossible de mettre à jour la position courante pour l'entite '"+_name+"'. L'entité a été ramené à '"+_operation.getPcmLocation().getName()+"'. Veuillez la repositionner." );
+			_posCurrentId = _operation.getIdPcm();
 		}
 
 		int idDeplacement = _operation.getLocation(location.getId()).addEntity(this);
@@ -284,11 +280,10 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "date_depart ='"+_dateArriveeLocalisation+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la date d'arrivée à la localisation \n pour l'entite "+_name);
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de position" ,"Impossible de mettre à jour la date d'arrivée à la localisation pour l'entite '"+_name+"'.");
 		}
 
-		genererMessageDeplacement(lastPosCurrentId, idDeplacement);
-
+		//genererMessageDeplacement(lastPosCurrentId, idDeplacement);
 		_operation.notifyObservers();
 	}
 
@@ -296,11 +291,27 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "nom='"+newName+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour le nom pour l'entite \n"+_name);
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Entité - Changement de nom" ,"Impossible de mettre à jour le nom pour l'entite '"+_name+"'. Veuillez recommencer.");
 		}
-
+		String tmp = _name;
 		_name = newName;
+		//genererMessageChangementDeNom(tmp);
 	}
+
+	private void genererMessageChangementDeNom(String tmp) {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+
+		String message =  "'"+tmp+"' a été renommée en '"+_name+"'.";
+
+		try {
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-4', "+_operation.getId()+",NULL, NULL, '"+datetime+"','"+message+"','0')"));
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante."+
+					"Message : "+message);
+		}
+	}
+
 
 	/***
 	 * Generate message in database for table "Messages", to alert daybook of the move of the entity.
@@ -309,12 +320,13 @@ public class EntityController implements Subject {
 	public void genererMessageDeplacement(int lastPosCurrentId,int idDeplacement){
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		String message =  _name+" a quitté \""+_operation.getLocation(lastPosCurrentId).getName()+"\" pour \""+_operation.getLocation(_posCurrentId).getName()+"\".";
+
+		String message =  "'"+_name+"' a quitté '"+_operation.getLocation(lastPosCurrentId).getName()+"' pour '"+_operation.getLocation(_posCurrentId).getName()+"'.";
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", NULL, "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+message+"','0')"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+message+"','0')"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante \n"+
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante."+
 					"Message : "+message);
 		}
 	}
@@ -334,23 +346,36 @@ public class EntityController implements Subject {
 			disponibility = "indisponible";
 		}
 
-		String message =  _name+" est maintenant "+disponibility+" (Informations: "+_state+" ).";
+		String message =  "'"+_name+"' est maintenant "+disponibility+" (Informations: "+_state+" ).";
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",NULL,"+id+",NULL,NULL,'"+datetime+"','"+message+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+message+"',0)"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante \n"+
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
 		}
 	}
 
+	private void genererMessageCreation() {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
+		String message =  "L'entité '"+_name+"' vient d'être créée.";
+
+		try {
+			int id = _operation.getId();
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+message+"',0)"));
+		} catch (MalformedQueryException e) {
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
+					"Message : "+message);
+		}
+	}
+	
 	@Override
 	public void addObserver(Observer observer) {
 		_observers.add(observer);
 	}
-
 
 	@Override
 	public void removeObserver(Observer observer) {
@@ -391,10 +416,10 @@ public class EntityController implements Subject {
 						}
 						result2.close();
 					}catch(SQLException e){
-						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
+						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
 					}
 				}catch (MalformedQueryException e1) {
-					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
+					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
 				}
 
 				//On ajoute les equipiers presents dans l'entite
@@ -408,27 +433,24 @@ public class EntityController implements Subject {
 						}
 						result2.close();
 					}catch (SQLException e) { 
-						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
-						e.printStackTrace();
+						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
 					}
 				} catch (MalformedQueryException e1) { 
-					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
+					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
 				}
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
-			e.printStackTrace();
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la mise à jour des informartions pour l'entité +'"+_name+"'.");
 		}catch(MalformedQueryException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "Une erreur est survenue lors de la mise à jour des informartions \n pour l'entité +'"+_name+"'.");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "Une erreur est survenue lors de la mise à jour des informartions pour l'entité +'"+_name+"'.");
 		}
 	}
 
-
 	public void loadLocation() {
-		System.out.println("Entity : "+_name+"POS CURANTE ID : "+_posCurrentId);
-		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) )
-			_operation.getLocation(_posCurrentId).addEntity(this);		
+		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) ){
+			_operation.getLocation(_posCurrentId).addEntityList(this);
+		}
 	}
 
 }

@@ -56,8 +56,8 @@ public class ConfirmEditVictimListener implements ActionListener
 		String otherMotif = _editVictimPanel.getDetailsTextArea().getText();
 		String idAnonymat = _editVictimPanel.getIdAnonymat().getText();
 		String soins = _editVictimPanel.getSoins().getText();
-		System.out.println("Maaaaaap : " + _editVictimPanel.getMap());
-		EntityController entitesAssociees = _editVictimPanel.getMap().get(_editVictimPanel.getEntiteAssocieeCombobox().getSelectedObjects());
+		
+		EntityController entitesAssociees = _editVictimPanel.getMap().get(_editVictimPanel.getEntiteAssocieeCombobox().getSelectedItem());
 		
 		if(!ConfirmAddVictimListener.checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins))
 		{

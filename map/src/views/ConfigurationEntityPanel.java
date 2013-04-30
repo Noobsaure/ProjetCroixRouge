@@ -241,7 +241,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 		
-		CustomButton AjoutEquipierButton = new CustomButton("Valider Ajouter un equipier");
+		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
 		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_parent,_operationController, _entityController, this));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		formPanel.add(AjoutEquipierButton, "2, 12, fill, fill");

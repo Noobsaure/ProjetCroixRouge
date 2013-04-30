@@ -48,10 +48,7 @@ public class ConfirmConfigureLocationListener implements ActionListener
 		if(!checkInput(name, informations))
 		{
 			if(name.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_NAME_MESSAGE);
-			
-			if(informations.equals(""))
-				System.out.println("Informations null");	
+				new ErrorMessage(_parent, "Saisie incomplète - Le nom ne peut pas être vide.", EMPTY_NAME_MESSAGE);
 		}
 		else
 		{

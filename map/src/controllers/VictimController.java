@@ -92,11 +92,12 @@ public class VictimController implements Subject {
 			String query = "(NULL,"+
 							"NULL,'"+
 							_operation.getId()+"','"+
+							_entity.getId()+"','"+
 							_idAnonymat+"','"+
 							_nom+"','"+
 							_prenom+"',"+
 							((_dateDeNaissance == null) ? "NULL" : ("'" + _dateDeNaissance.toString()) + "'") +","+
-							((_adresse.equals("")) ? "NULL" : _adresse)+",'"+
+							((_adresse.equals("")) ? "NULL" :("'" + _adresse + "'"))+",'"+
 							_statut+"',"+
 							"NULL,'"+
 							_datePriseEnCharge+"',"+
@@ -107,8 +108,7 @@ public class VictimController implements Subject {
 							(_inconscience ? 1 : 0)+"', '"+
 							(_arretCardiaque ? 1 : 0)+"', '"+
 							_atteinteDetails+"', '"+
-							_soin+"','"+
-							_entity.getId()+"')";
+							_soin+"')";
 			
 				_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
 				operation.addVictim(this);
@@ -213,12 +213,12 @@ public class VictimController implements Subject {
 	private void genererChangementEntite() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		
+		String newLine = System.getProperty("line.separator");
 		String message = "La victime '"+_idAnonymat+"' est maintenant pris en charge par "+_entity.getName()+".";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+message+"','0')"));	
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+newLine+
 					"Message : "+message);
 		}
 	}
@@ -242,10 +242,11 @@ public class VictimController implements Subject {
 	public void genererMessage(String message) {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		String newLine = System.getProperty("line.separator");
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+message+"','0')"));	
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime \n"+
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+newLine+
 					"Message : "+message);
 		}
 		
