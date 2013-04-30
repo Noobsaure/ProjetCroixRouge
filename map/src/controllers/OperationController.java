@@ -179,7 +179,6 @@ public class OperationController implements Subject
 			while(result.next()){
 				if (result.getString("motif_sortie") == null) {
 					int id_victim = result.getInt("id");
-					int operation_id = _idOperation;
 					String idAnonymat = result.getString("surnom");
 					String nom = result.getString("nom");
 					String prenom = result.getString("prenom");
