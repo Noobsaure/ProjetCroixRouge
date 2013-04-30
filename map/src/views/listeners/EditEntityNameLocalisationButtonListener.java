@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import views.ConfigurationEntityPanel;
 import views.EntityPanel;
+import views.ErrorMessage;
 import views.MapPanel;
 import controllers.EntityController;
 import controllers.LocationController;
@@ -16,6 +17,8 @@ import controllers.OperationController;
 
 public class EditEntityNameLocalisationButtonListener implements ActionListener
 {
+	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner le champ \"Nom\".";
+
 	private JPanel _parent;
 	private OperationController _operationController;
 	private EntityPanel _entityPanel;
@@ -35,6 +38,10 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		_mapPanel = mapPanel;
 	}
 
+	public boolean checkInput(String name)
+	{
+		return (!name.equals(""));
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -43,9 +50,17 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		int indexLocation = _configPanel.getIndexLocation();
 		
 		//System.out.println("entity ancien nom : "+_entity.getName());
+		if(!checkInput(nomEntity))
+		{
+			new ErrorMessage(_parent, "Saisie incomplète", EMPTY_NAME_MESSAGE);
+		}
+		else 
+		{
+
+			System.out.println("nom entity : "+nomEntity);
+			_entity.setName(nomEntity);
+		}
 		
-		System.out.println("nom entity : "+nomEntity);
-		_entity.setName(nomEntity);
 		
 		// modification de la localisation de l'entité
 		listLocation= _operationController.getLocationList();

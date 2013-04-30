@@ -46,7 +46,9 @@ import controllers.OperationController;
 import controllers.TeamMemberController;
 
 
-// cool
+// a modifier les fenetre pop up par des messages d'erreurs => erreur message
+// modifier le listing des localisations
+// éviter de mettre un nom d'entité vide
 public class ConfigurationEntityPanel extends JLayeredPane implements Observer, PopUpPanel
 {
 	private static final long serialVersionUID = 1L;

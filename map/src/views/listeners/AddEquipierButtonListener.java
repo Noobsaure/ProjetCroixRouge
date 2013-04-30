@@ -10,6 +10,7 @@ import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
 import views.EmptyEquipierPanel;
 import views.EntityPanel;
+import views.ErrorMessage;
 import views.MapPanel;
 import controllers.EntityController;
 import controllers.OperationController;
@@ -17,6 +18,8 @@ import controllers.OperationController;
 
 public class AddEquipierButtonListener implements ActionListener{
 
+	private String EMPTY_LIST_MESSAGE = "Il n'y a aucun équipier d'enregistré";
+	private String EMPTY_DISPO_MESSAGE = "Il n'y a plus d'équipier de disponible";
 	private EntityController _entityController;
 	private OperationController _operationController;
 	private MapPanel _jParent;
@@ -34,21 +37,25 @@ public class AddEquipierButtonListener implements ActionListener{
 	{		
 		// Ouverture de la fentre qui permet l'ajout d'un équipier
 		_operationController.removeObserver(_configEntityPanel);
-System.out.println("list teamMember "+_operationController.getTeamMemberAvailableList().size());
-		if (_operationController.getTeamMemberAvailableList().size() != 0)
+		System.out.println("list teamMember "+_operationController.getTeamMemberAvailableList().size());
+		
+		if (_operationController.getTeamMemberAvailableList().size() == 0)
 		{
-			AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_jParent, _operationController, _entityController);
-			_jParent.add(addEquipierPanel);
-			_jParent.setComponentZOrder(addEquipierPanel, 0);
+			if (_operationController.getTeamMemberList().size() == 0)
+				new ErrorMessage(_jParent, "Equipier insuffisant", EMPTY_LIST_MESSAGE);
+			else
+				new ErrorMessage(_jParent, "Equipier insuffisant", EMPTY_DISPO_MESSAGE);
 		}
 		else
 		{
-			EmptyEquipierPanel emptyEquipierPanel = new EmptyEquipierPanel(_jParent, _operationController, _entityController);
-			_jParent.add(emptyEquipierPanel);
-			_jParent.setComponentZOrder(emptyEquipierPanel, 0);
+			AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_jParent, _operationController, _entityController);
+			_jParent.add(addEquipierPanel);
+			
+			_jParent.setComponentZOrder(addEquipierPanel, 0);
+			_jParent.remove(_configEntityPanel);
+			_jParent.repaint();
+			_jParent.revalidate();
 		}
-		_jParent.remove(_configEntityPanel);
-		_jParent.repaint();
-		_jParent.revalidate();
+		
 	}
 }
