@@ -87,7 +87,7 @@ public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
 		
 		TITLE = _entityController.getName();
 		
-		JLabel title = new JLabel("Ajout d'un equipier à l'entite <dynamic>");
+		JLabel title = new JLabel("Ajout d'un equipier à l'entite");
 		_internalPanel.add(title, BorderLayout.NORTH);
 		
 		JPanel formPanel = new JPanel();

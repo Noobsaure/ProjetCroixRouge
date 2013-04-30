@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import launcher.Launcher;
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
+import views.EmptyEquipierPanel;
 import views.EntityPanel;
 import views.MapPanel;
 import controllers.EntityController;
@@ -33,11 +34,19 @@ public class AddEquipierButtonListener implements ActionListener{
 	{		
 		// Ouverture de la fentre qui permet l'ajout d'un équipier
 		_operationController.removeObserver(_configEntityPanel);
-		
-		AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_jParent, _operationController, _entityController);
-		_jParent.add(addEquipierPanel);
-		_jParent.setComponentZOrder(addEquipierPanel, 0);
-		
+System.out.println("list teamMember "+_operationController.getTeamMemberAvailableList().size());
+		if (_operationController.getTeamMemberAvailableList().size() != 0)
+		{
+			AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_jParent, _operationController, _entityController);
+			_jParent.add(addEquipierPanel);
+			_jParent.setComponentZOrder(addEquipierPanel, 0);
+		}
+		else
+		{
+			EmptyEquipierPanel emptyEquipierPanel = new EmptyEquipierPanel(_jParent, _operationController, _entityController);
+			_jParent.add(emptyEquipierPanel);
+			_jParent.setComponentZOrder(emptyEquipierPanel, 0);
+		}
 		_jParent.remove(_configEntityPanel);
 		_jParent.repaint();
 		_jParent.revalidate();
