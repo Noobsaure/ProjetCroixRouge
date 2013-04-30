@@ -73,7 +73,7 @@ public class EntityController implements Subject {
 		int result2;
 
 		try {
-			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+name+"','"+datetime+"','"+type+"','"+color+"','"+infos+"')"));
+			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+_dbm.addSlashes(name)+"','"+datetime+"','"+type+"','"+color+"','"+_dbm.addSlashes(infos)+"')"));
 			_id = result2;
 		} catch (MalformedQueryException e) {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation de l'entité '"+name+"'.");		
@@ -107,9 +107,9 @@ public class EntityController implements Subject {
 		_id = id;
 		_stateId = stateId;
 		_posCurrentId = positionId;
-		_name = name;
+		_name = _dbm.stripSlashes(name);
 		_type = type;
-		_infos = infos;
+		_infos = _dbm.stripSlashes(infos);
 		_dateArriveeLocalisation = dateArriveeLocalisation;
 		_color = color;
 
@@ -154,7 +154,7 @@ public class EntityController implements Subject {
 
 		//Create new status for the entity and update of the variable class "_available" and "stateId"
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+infos+"')"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+_dbm.addSlashes(infos)+"')"));
 			_stateId = result;
 		} catch (MalformedQueryException e) { 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de statut" ,"Impossible de créér un nouveau statut pour l'entite '"+_name+"'. Veuillez réessayer.");
@@ -289,7 +289,7 @@ public class EntityController implements Subject {
 
 	public void setName(String newName){
 		try{
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "nom='"+newName+"'","id ="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "nom='"+_dbm.addSlashes(newName)+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Entité - Changement de nom" ,"Impossible de mettre à jour le nom pour l'entite '"+_name+"'. Veuillez recommencer.");
 		}
@@ -302,7 +302,7 @@ public class EntityController implements Subject {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message =  "'"+tmp+"' a été renommée en '"+_name+"'.";
+		String message =  "\'"+tmp+"\' a été renommée en \'"+_name+"\'.";
 
 		try {
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-4', "+_operation.getId()+",NULL, NULL, '"+datetime+"','"+message+"','0')"));
@@ -321,7 +321,7 @@ public class EntityController implements Subject {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message =  "'"+_name+"' a quitté '"+_operation.getLocation(lastPosCurrentId).getName()+"' pour '"+_operation.getLocation(_posCurrentId).getName()+"'.";
+		String message =  "\'"+_name+"\' a quitté \'"+_operation.getLocation(lastPosCurrentId).getName()+"\' pour \'"+_operation.getLocation(_posCurrentId).getName()+"\'.";
 
 		try {
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+message+"','0')"));
@@ -346,7 +346,7 @@ public class EntityController implements Subject {
 			disponibility = "indisponible";
 		}
 
-		String message =  "'"+_name+"' est maintenant "+disponibility+" (Informations: "+_state+" ).";
+		String message =  "\'"+_name+"\' est maintenant "+disponibility+" (Informations: "+_dbm.addSlashes(_state)+" ).";
 
 		try {
 			int id = _operation.getId();
@@ -361,7 +361,7 @@ public class EntityController implements Subject {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message =  "L'entité '"+_name+"' vient d'être créée.";
+		String message =  "L'entité \'"+_name+"\' vient d'être créée.";
 
 		try {
 			int id = _operation.getId();
@@ -403,7 +403,7 @@ public class EntityController implements Subject {
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Entite", "id="+_id));
 			while(result.next()){
 				_stateId = result.getInt("statut_id");
-				_name = result.getString("nom");
+				_name = _dbm.stripSlashes(result.getString("nom"));
 				_dateArriveeLocalisation = result.getTimestamp("date_depart");
 				_posCurrentId = result.getInt("pos_courante_id");
 

@@ -61,18 +61,6 @@ public class MapController implements Subject {
 		_visibility = visibility;
 		_datas = _dbm.getImage(_id + "", name);
 
-		/*try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Localisation","carte_id = "+_id));
-
-			while(result.next()){
-				int idLocation = result.getInt("id");
-				_locationList.add(operation.getLocation(idLocation));
-			}
-		}catch(SQLException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Chargement carte '"+name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+name+"'.");
-		}
-		catch(MalformedQueryException e){ e.printStackTrace(); }*/
-
 		_operation.addMap(this);
 		_operation.setCurrentMap(this);
 	}
@@ -92,10 +80,7 @@ public class MapController implements Subject {
 	public List<EntityController> getEntityListInThisMap(){
 		List<EntityController> _entityList = new ArrayList<>();
 		
-		System.out.println("Location list.size() : "+_locationList.size());
-		
 		for(LocationController location : _locationList){
-			System.out.println("Location "+location.getName());
 			if(location.getEntityList().size() != 0){
 				_entityList.addAll(location.getEntityList());
 			}
@@ -118,7 +103,7 @@ public class MapController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte","visibilite = 0","id="+_id));
 		}catch(MalformedQueryException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur lors de la supression de la carte '"+_name+"'.");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Supression carte", "Erreur lors de la supression de la carte '"+_name+"'. Veuillez rééssayer.");
 		}
 		
 		_visibility = false;
@@ -131,9 +116,7 @@ public class MapController implements Subject {
 	}
 
 	public void addLocation(LocationController locationController) {
-		System.out.println("On ajoute la location "+locationController.getName()+" à la map: "+_name);
 		_locationList.add(locationController);
-		//notifyObservers();
 	}
 
 	public String show() {
@@ -170,7 +153,6 @@ public class MapController implements Subject {
 				if(!_operation.existsInLocationList(idLocation))
 					_locationList.add(_operation.getLocation(idLocation));
 			}
-
 			result.getStatement().close();
 		}catch(SQLException e){
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
