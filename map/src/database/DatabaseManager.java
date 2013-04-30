@@ -1,7 +1,13 @@
 package database;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.sql.Blob;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,9 +16,8 @@ import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import controllers.OperationController;
-
 import views.ErrorMessage;
+import controllers.OperationController;
 
 
 public class DatabaseManager
@@ -20,6 +25,9 @@ public class DatabaseManager
 	private java.sql.Statement _statement;
 	private java.sql.Connection _connection;
 	private OperationController _operation;
+	private String _databaseURL;
+	private String _login;
+	private String _password;
 	
 	/**
 	 * Constructor
@@ -52,6 +60,10 @@ public class DatabaseManager
 	{	
 		try
 		{
+			_databaseURL = databaseURL;
+			_login = login;
+			_password = password;
+			
 			// Connection a la base de donnees
 			System.out.print("Connection of " + login + " to " + databaseURL + "...");
 			_connection = DriverManager.getConnection(databaseURL, login, password);
@@ -170,6 +182,23 @@ public class DatabaseManager
 	}
 	
 	
+	private String readFile(String fileName, Writer writerArg)
+	        throws FileNotFoundException, IOException {
+
+	    BufferedReader br = new BufferedReader(new FileReader(fileName));
+	    String nextLine = "";
+	    StringBuffer sb = new StringBuffer();
+	    while ((nextLine = br.readLine()) != null) {
+	        System.out.println("Writing: " + nextLine);
+	        writerArg.write(nextLine);
+	        sb.append(nextLine);
+	    }
+	    // Convert the content into to a string
+	    String clobData = sb.toString();
+
+	    // Return the data.
+	    return clobData;
+	}
 	
 	/**
 	 * Stores an image in the database.  
@@ -208,6 +237,9 @@ public class DatabaseManager
 	    	
 	    	preparedStatement.close();
 	    	fileInputStream.close();
+	    	
+	    	_connection.close();
+	    	connection(_databaseURL, _login, _password);
 	    }
 	    catch(Exception e)
 	    {
