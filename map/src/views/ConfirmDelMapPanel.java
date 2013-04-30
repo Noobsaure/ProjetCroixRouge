@@ -3,6 +3,7 @@ package views;
 import javax.swing.JPanel;
 
 import views.buttons.CustomButton;
+import views.buttons.SubMenuMapButton;
 import views.listeners.CancelButtonListener;
 import views.listeners.ConfirmDelMapListener;
 import controllers.MapController;
@@ -15,7 +16,7 @@ public class ConfirmDelMapPanel extends ErrorPanel
 	private OperationController _operation;
 	private MapController _map;
 
-	public ConfirmDelMapPanel(OperationController operation, MapController map, String title, String message)
+	public ConfirmDelMapPanel(OperationController operation, SubMenuPanel subMenu, SubMenuMapButton button, MapController map, String title, String message)
 	{
 		super(operation.getGlobalPanel().getMapPanel(), title, message);
 		
@@ -24,10 +25,10 @@ public class ConfirmDelMapPanel extends ErrorPanel
 		_parent = operation.getGlobalPanel().getMapPanel();
 			
 		CustomButton cancelButton = new CustomButton("Annuler");
-		cancelButton.addActionListener( new CancelButtonListener(_operation, this) );
+		cancelButton.addActionListener( new CancelButtonListener(_operation, subMenu, this) );
 		super.getButtonsPanel().add(cancelButton);
 		
 		CustomButton okButton = super.getOkButton();
-		addOkButtonListener(new ConfirmDelMapListener(_operation, this, _map));
+		addOkButtonListener(new ConfirmDelMapListener(_operation, button, this, _map));
 	}
 }
