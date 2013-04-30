@@ -21,8 +21,8 @@ public class AffectedEntityPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	//private static final int WIDTH = 32;
-	private static final int WIDTH =  (MenuPanel.LEFT_PANEL_WIDTH - 12) / 2;
-	private static final int HEIGHT = 32;
+	public static final int WIDTH =  (MenuPanel.LEFT_PANEL_WIDTH - 12) / 2;
+	public static final int HEIGHT = 32;
 	public static DataFlavor AFFECTED_ENTITY_PANEL_FLAVOR;
 
 	private EntityController _entity;

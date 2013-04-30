@@ -20,7 +20,7 @@ public class TeamMemberController {
 	private String _othersInformations;
 	private EntityController _entity;
 	private boolean _available;
-	
+
 	private int _temporaryEntityId;
 
 	/**
@@ -43,11 +43,12 @@ public class TeamMemberController {
 		_phoneNumber = phoneNumber;
 		_othersInformations = othersInformations;		
 		_temporaryEntityId = entityId;
+		
 		if (entityId == 0)
 			_available = true;
 		else
 			_available = false;
-		
+
 		System.out.println("Creation equipier "+_name+" "+_firstName+ " succeed");
 	}
 
@@ -56,7 +57,7 @@ public class TeamMemberController {
 			java.util.Date date = new java.util.Date();
 			java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 			int entityId = entity.getId();
-			
+
 			//Update 'EntiteHistorique'
 			try{
 				_dbm.executeQueryInsert(new SQLQueryInsert("EntiteHistorique", "(NULL,"+_id+","+entityId+",'"+datetime+"',NULL)"));	
@@ -66,14 +67,13 @@ public class TeamMemberController {
 
 			//Update 'EntityId' pour l'equipier
 			try{
-				_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id="+entityId,"id = "+_id));
+				_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id="+entityId+", operation_id='"+_operation.getId()+"'","id = "+_id));
 			}catch(MalformedQueryException e){ 
 				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Base de donnees" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+"\n à l'équipe "+entity.getName());
 			}
-			
 			_entity = entity;
+			System.out.println("ENTITY A CHANGE: Elle est maintenant ---> "+_entity.getName());
 			_available = false;
-			
 			return true;
 		}
 		else{
@@ -89,18 +89,19 @@ public class TeamMemberController {
 
 		try{
 			//Get the id of the line in "EntiteHistorique" table
+			System.out.println("Enite ID = "+_entity.getId());
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "EntiteHistorique", "equipier_id ="+_id+" AND entite_id="
-			+_entity.getId()+" AND date_fin is NULL"));
-			
+					+_entity.getId()+" AND date_fin is NULL"));
+
 			try{
 				if(result.next()){
 					int idEntityHistory = result.getInt("id");
 					//Update "date_depart" in table "EntiteHistorique" for the team-member
 					_dbm.executeQueryUpdate(new SQLQueryUpdate("EntiteHistorique", "date_fin='"+datetime+"'","id="+idEntityHistory));
-					
+
 					//Update a jour 'Entity_id' in Equipier table
 					try{
-						_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id=NULL","id="+_id));	
+						_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id=NULL, operation_id=NULL","id="+_id));	
 					}catch(MalformedQueryException e){
 						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Base de donnees" ,"Une erreur est survenue lors de la desafectation de l'entite_id à l'équipier "+_firstName+" "+_name);
 					}
@@ -110,7 +111,7 @@ public class TeamMemberController {
 					return false;
 				}
 			}catch(SQLException e){ System.err.println("EntityController#removeTeamMember(): Error on finding entityHistory_id for teamMemberId "+_id+" and entity ID "+_entity.getId()); }
-			
+
 		}catch(MalformedQueryException e){e = new MalformedQueryException("EntityController#removeTeamMember() : Error creation history");}
 
 		_entity = null;
@@ -134,7 +135,7 @@ public class TeamMemberController {
 		if(_entity != null){
 			result += "Entite : "+_entity.getName();
 		}
-		
+
 		return result;
 	}
 	/**
@@ -173,7 +174,6 @@ public class TeamMemberController {
 	public String getOthersInformation() {
 		return _othersInformations;
 	}
-
 
 	/**
 	 * @return the entite
@@ -215,9 +215,13 @@ public class TeamMemberController {
 				if(_othersInformations == null){
 					_othersInformations = "";
 				}
+				System.out.println("ON UPDATE ENTITE");
 				_entity = _operation.getEntity(result.getInt("entite_id"));
-				if (result.getInt("entite_id") == 0)
-					_available = true;
+
+				if(result.getInt("entite_id") == 0){
+					System.out.println("ENTITE_ID EST MAINTENANT :"+_entity.getName());
+					_available = true;					
+				}
 				else
 					_available = false;
 			}
