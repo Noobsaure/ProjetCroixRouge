@@ -6,23 +6,24 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import views.ErrorPanel;
+import views.MapPanel;
 
 public class ErrorMessageButtonListener implements ActionListener
 {
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private ErrorPanel _errorMessage;
 	
-	
-	public ErrorMessageButtonListener(JPanel parent, ErrorPanel errorMessage)
+	public ErrorMessageButtonListener(MapPanel mapPanel, ErrorPanel errorMessage)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_errorMessage = errorMessage;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		_parent.remove(_errorMessage);
-		_parent.repaint();
+		_mapPanel.remove(_errorMessage);
+		_mapPanel.setCurrentPopUp(null);
+		_mapPanel.repaint();
 	}
 }

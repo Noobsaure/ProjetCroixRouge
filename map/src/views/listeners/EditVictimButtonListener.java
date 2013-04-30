@@ -26,8 +26,6 @@ public class EditVictimButtonListener implements MouseListener
 		_panelLabel = panelLabel;
 		_victimCOntroller = victimCOntroller;
 	}
-	
-
 
 	@Override
 	public void mouseClicked(MouseEvent arg0)
@@ -37,13 +35,12 @@ public class EditVictimButtonListener implements MouseListener
 		
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 		
-		// évidemment il faudra remplacer 1 par l'id de la victime sélectionnée
 		EditVictimPanel editVictimPanel = new EditVictimPanel(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), _victimCOntroller);		
 		editVictimPanel.addCancelButtonListener(new CancelEditVictimListener(_mapPanel, editVictimPanel));
 		editVictimPanel.addOkButtonListener(new ConfirmEditVictimListener(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), editVictimPanel, _victimCOntroller));
 		_mapPanel.add(editVictimPanel);
 		_mapPanel.setComponentZOrder(editVictimPanel, 0);
-		
+		_mapPanel.setCurrentPopUp(editVictimPanel);
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
 	}

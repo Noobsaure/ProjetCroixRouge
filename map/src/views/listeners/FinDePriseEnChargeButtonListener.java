@@ -8,19 +8,20 @@ import javax.swing.JTextField;
 
 import views.EditVictimPanel;
 import views.ErrorMessage;
+import views.MapPanel;
 import views.SubMenuVictimPanel;
 import controllers.VictimController;
 
 public class FinDePriseEnChargeButtonListener implements ActionListener
 {
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private SubMenuVictimPanel _subMenu;
 	private VictimController _victimController;
 	private EditVictimPanel _editVictimPanel;
 	
-	public FinDePriseEnChargeButtonListener(JPanel parent, SubMenuVictimPanel subMenu, VictimController victimController, EditVictimPanel editVictimPanel)
+	public FinDePriseEnChargeButtonListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, VictimController victimController, EditVictimPanel editVictimPanel)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_subMenu = subMenu;
 		_victimController = victimController;
 		_editVictimPanel = editVictimPanel;
@@ -31,15 +32,15 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 	{
 		String motifDeSortie = _editVictimPanel.getMotifTextField().getText();
 		if(motifDeSortie.equals(""))
-			new ErrorMessage(_parent, "Saisie incomplète", "Un motif de fin de prise en charge doit être renseigné.");
+			new ErrorMessage(_mapPanel, "Saisie incompl�te", "Un motif de fin de prise en charge doit être renseigné.");
 		else
 		{
 			_victimController.finDePriseEnCharge(motifDeSortie);
 			
-			_parent.remove(_editVictimPanel);
+			_mapPanel.remove(_editVictimPanel);
 			
-			_parent.repaint();
-			_parent.revalidate();
+			_mapPanel.repaint();
+			_mapPanel.revalidate();
 			
 			_subMenu.update();
 		}

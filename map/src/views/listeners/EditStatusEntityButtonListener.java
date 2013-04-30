@@ -30,10 +30,9 @@ public class EditStatusEntityButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
-		// On récupère le status et le text d'information sur le statut 
 		boolean boolStatut=_configPanel.getStatutDispo();
 		String textInfos = _configPanel.getInformations();
-				
+		
 		_entity.setAvailable(boolStatut, textInfos);
 				
 	}
