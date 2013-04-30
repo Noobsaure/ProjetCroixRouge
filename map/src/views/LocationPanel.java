@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +19,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import controllers.EntityController;
-
-import views.listeners.LocationPanelMouseListener;
 import views.listeners.EditLocationButtonListener;
+import views.listeners.LocationPanelMouseListener;
+import controllers.EntityController;
 
 public class LocationPanel extends JPanel {
 
