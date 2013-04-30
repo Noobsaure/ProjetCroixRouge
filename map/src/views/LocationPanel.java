@@ -76,7 +76,7 @@ public class LocationPanel extends JPanel {
 		_iconGearLabel.setBorder(new EmptyBorder(0, 0, 0, 12));
 		_iconGearLabel.setIcon(_iconGearOff);
 		_locationName = new JLabel(_loc.getLocName(),SwingConstants.CENTER);
-		_locationName.setFont(new Font(Font.SANS_SERIF,Font.BOLD,16));
+		_locationName.setFont(new Font(Font.SANS_SERIF,Font.BOLD,14));
 		southPanel.add(_locationName, BorderLayout.CENTER);
 		southPanel.add(_iconGearLabel, BorderLayout.EAST);
 		add(scrollPane,BorderLayout.CENTER);
@@ -118,6 +118,10 @@ public class LocationPanel extends JPanel {
 			affectedEntity = new AffectedEntityPanel(_mapPanel, oneEntity);
 			_entitiesPanel.add(affectedEntity);
 			_affectedEntityPanels.add(affectedEntity);
+		}
+		
+		for(AffectedEntityPanel oneEntity : _affectedEntityPanels) {
+			oneEntity.update();
 		}
 		_locationName.setText(_loc.getLocName());
 	}
