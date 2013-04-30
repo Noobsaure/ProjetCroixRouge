@@ -188,6 +188,8 @@ public class MapPanel extends JPanel implements Observer, Subject
 
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
+		} else {
+			_map = null;
 		}
 		updateLocations();
 		if(_currentPopUp != null) {
