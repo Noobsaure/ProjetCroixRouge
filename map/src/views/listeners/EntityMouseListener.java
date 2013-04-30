@@ -1,23 +1,22 @@
 package views.listeners;
 
-import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 import views.EntityPanel;
+import views.GlassPane;
 import views.GlobalPanel;
 import views.LocationPanel;
-import views.GlassPane;
 
-public class EntityMouseListener extends MouseAdapter{
+public class EntityMouseListener extends AbstractListener implements MouseListener, MouseMotionListener{
 
 	private EntityPanel _entity;
 	private GlobalPanel _globalPanel;
@@ -26,29 +25,32 @@ public class EntityMouseListener extends MouseAdapter{
 	private boolean _dragOccurring = false;
 
 	public EntityMouseListener(EntityPanel entity, GlassPane glassPane, GlobalPanel globalPanel) {
+		super(globalPanel.getMapPanel());
 		_entity = entity;
 		_glassPane = glassPane;
 		_globalPanel = globalPanel;
 	}
 
 	public void mousePressed(MouseEvent e){
-		if(e.getButton() == MouseEvent.BUTTON1) {
-			_glassPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			setDragOccurring(true);
-			_entity.getIconGearLabel().setVisible(false);
-			Point location = (Point)e.getPoint().clone();
-			SwingUtilities.convertPointToScreen(location, _entity);
-			SwingUtilities.convertPointFromScreen(location, _glassPane);
-			_image = new BufferedImage(_entity.getWidth(), _entity.getHeight(), BufferedImage.TYPE_INT_ARGB);
-			Graphics g = _image.getGraphics();
-			_entity.paint(g);
-			_glassPane.setLocation(location);
-			_glassPane.setImage(_image);
-			_glassPane.setVisible(true);
-			if(_entity.getParent().getParent() instanceof views.LocationPanel) {
-				LocationPanel parent = (LocationPanel)_entity.getParent().getParent();
-				parent.getLoc().displayPanel(false);
-				parent.getLoc().setHighlight(false);
+		if(isEnabled()) {
+			if(e.getButton() == MouseEvent.BUTTON1) {
+				_glassPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				setDragOccurring(true);
+				_entity.getIconGearLabel().setVisible(false);
+				Point location = (Point)e.getPoint().clone();
+				SwingUtilities.convertPointToScreen(location, _entity);
+				SwingUtilities.convertPointFromScreen(location, _glassPane);
+				_image = new BufferedImage(_entity.getWidth(), _entity.getHeight(), BufferedImage.TYPE_INT_ARGB);
+				Graphics g = _image.getGraphics();
+				_entity.paint(g);
+				_glassPane.setLocation(location);
+				_glassPane.setImage(_image);
+				_glassPane.setVisible(true);
+				if(_entity.getParent().getParent() instanceof views.LocationPanel) {
+					LocationPanel parent = (LocationPanel)_entity.getParent().getParent();
+					parent.getLoc().displayPanel(false);
+					parent.getLoc().setHighlight(false);
+				}
 			}
 		}
 	}
@@ -79,16 +81,32 @@ public class EntityMouseListener extends MouseAdapter{
 
 	public void mouseEntered(MouseEvent e)
 	{
-		_entity.getIconGearLabel().setVisible(true);
+		if(isEnabled()) {
+			_entity.getIconGearLabel().setVisible(true);
+		}
 	}
 
 	public void mouseExited(MouseEvent e)
 	{
-		_entity.getIconGearLabel().setVisible(false);
+		if(isEnabled()) {
+			_entity.getIconGearLabel().setVisible(false);
+		}
 	}
-	
+
 	public void setDragOccurring(boolean dragOccurring) {
 		_dragOccurring = dragOccurring;
 		_globalPanel.setDragOccurring(dragOccurring);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

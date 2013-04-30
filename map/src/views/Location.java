@@ -86,10 +86,6 @@ public class Location extends JPanel {
 		_name = _locationController.getName();
 		_locPanel.update();
 	}
-	
-	public void enableListeners(boolean enable) {
-		_mouseListener.enable(enable);
-	}
 
 	public LocationPanel getLocPanel() {return _locPanel;}
 	public String getLocName() {return _name;}

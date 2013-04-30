@@ -65,7 +65,6 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 
 		_parent.setCurrentPopUp(this);
 		
-		operation.getGlobalPanel().getMenu().enableListeners(false);
 		initGui();
 	}
 	

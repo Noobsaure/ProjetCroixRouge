@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import launcher.Launcher;
 import observer.Observer;
+import observer.Subject;
 import views.listeners.EditLocationButtonListener;
 import views.listeners.MapPanelMouseListener;
 import controllers.LocationController;
@@ -21,7 +22,7 @@ import controllers.MapController;
 import controllers.OperationController;
 
 
-public class MapPanel extends JPanel implements Observer
+public class MapPanel extends JPanel implements Observer, Subject
 {
 	private static final long serialVersionUID = 1L;
 
@@ -33,6 +34,8 @@ public class MapPanel extends JPanel implements Observer
 	private int _x = 0;
 	private int _y = 0;
 	private MapPanelMouseListener _mapListener;
+	
+	private List<Observer> _observers;
 
 	private List<Location> _locations = new ArrayList<Location>();
 
@@ -46,6 +49,7 @@ public class MapPanel extends JPanel implements Observer
 		setLayout(null);
 		_globalPanel = gPanel;
 
+		_observers = new ArrayList<Observer>();
 		setBackground(Color.LIGHT_GRAY);
 	}
 
@@ -68,7 +72,10 @@ public class MapPanel extends JPanel implements Observer
 
 	public int get_x() {return _x;}
 	public int get_y() {return _y;}
-	public void setCurrentPopUp(PopUpPanel currentPopUp) {_currentPopUp = currentPopUp;}
+	public void setCurrentPopUp(PopUpPanel currentPopUp) {
+		_currentPopUp = currentPopUp;
+		notifyObservers();
+	}
 
 	public void moveMap(int x, int y) {
 		if(_map.getWidth() > getWidth()) {
@@ -148,14 +155,6 @@ public class MapPanel extends JPanel implements Observer
 		}
 	}
 
-	public void enableListeners(boolean enable) {
-		_mapListener.enable(enable);
-		for(Location oneLoc : _locations) {
-			oneLoc.setEnabled(enable);
-			oneLoc.getLocPanel().setEnabled(enable);
-		}
-	}
-
 	public synchronized void disableLocationHighlight() {
 		for(Location oneLoc : _locations) {
 			oneLoc.displayPanel(false);
@@ -168,7 +167,6 @@ public class MapPanel extends JPanel implements Observer
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
-		System.out.println(mapController.getName());
 		if(mapController != null) {
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			double width = screenSize.getWidth();
@@ -197,6 +195,23 @@ public class MapPanel extends JPanel implements Observer
 		}
 		repaint();
 		revalidate();
+	}
+
+	@Override
+	public void addObserver(Observer observer) {
+		_observers.add(observer);		
+	}
+
+	@Override
+	public void removeObserver(Observer observer) {
+		_observers.remove(observer);
+	}
+
+	@Override
+	public void notifyObservers() {
+		for(Observer oneObs : _observers) {
+			oneObs.update();
+		}
 	}
 
 }
