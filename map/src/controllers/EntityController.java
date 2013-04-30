@@ -291,7 +291,7 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "nom='"+newName+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de nom" ,"Impossible de mettre à jour le nom pour l'entite '"+_name+"'. Veuillez recommencer.");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Entité - Changement de nom" ,"Impossible de mettre à jour le nom pour l'entite '"+_name+"'. Veuillez recommencer.");
 		}
 		String tmp = _name;
 		_name = newName;
