@@ -43,12 +43,11 @@ public class MapPanel extends JPanel implements Observer, Subject
 		_operation = operation;
 	}
 
-	public MapPanel(GlobalPanel gPanel)
+	public MapPanel(GlobalPanel globalPanel)
 	{
 		super(true);
 		setLayout(null);
-		_globalPanel = gPanel;
-
+		_globalPanel = globalPanel;
 		_observers = new ArrayList<Observer>();
 		setBackground(Color.LIGHT_GRAY);
 	}

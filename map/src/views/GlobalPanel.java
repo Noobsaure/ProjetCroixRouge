@@ -33,7 +33,6 @@ public class GlobalPanel extends JApplet implements Observer
 		new GlobalPanel();
 	}
 
-
 	@Override
 	public void init()
 	{
@@ -87,13 +86,6 @@ public class GlobalPanel extends JApplet implements Observer
 	}
 	public boolean isDragOccurring() {
 		return _dragOccurring;
-	}
-	public void enableListeners(boolean enable) {
-		System.out.println("TROLOLO");
-		_mapPanel.setEnabled(enable);
-		for(int i=0;i<_menuPanel.getComponentCount();i++) {
-			_menuPanel.getComponent(i).setEnabled(enable);
-		}
 	}
 
 	public Launcher getLauncher() {return _launcher;}

@@ -64,11 +64,11 @@ public class ConfirmAddEntityListener implements ActionListener
 		{
 			EntityController entity = new EntityController(_operationController, _databaseManager, name, type, informations, color);
 			MapPanel mapPanel = (MapPanel)_parent;
-			mapPanel.addMapPanelListener();
 			entity.addObserver(mapPanel.getGlobalPanel());
 			entity.notifyObservers();
 			_parent.remove(_addEntityPanel);
 			_parent.repaint();
+			mapPanel.setCurrentPopUp(null);
 		}
 	}
 }

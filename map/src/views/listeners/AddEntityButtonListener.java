@@ -23,8 +23,6 @@ public class AddEntityButtonListener extends AbstractListener implements ActionL
 	public void actionPerformed(ActionEvent arg0)
 	{
 		if(isEnabled()) {
-			_mapPanel.getGlobalPanel().enableListeners(false);
-
 			Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 
 			AddEntityPanel addEntityPanel = new AddEntityPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());		
