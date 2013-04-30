@@ -165,6 +165,9 @@ public class MapPanel extends JPanel implements Observer
 
 	public synchronized void update()
 	{
+		System.out.println();
+		System.out.println("UPDATE MAP");
+		System.out.println();
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
