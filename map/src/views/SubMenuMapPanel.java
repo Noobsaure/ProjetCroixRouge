@@ -36,6 +36,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
+	private SubMenuMapButton _button;
 	
 	public SubMenuMapPanel(MapPanel mapPanel, SubMenuMapButton button, OperationController operationController, DatabaseManager databaseManager)
 	{
@@ -45,6 +46,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		_thumbnailsPanel = super.getThumbnailPanel();
 		_operationController = operationController;
 		_databaseManager = databaseManager;
+		_button = button;
 		displayThumbnail();
 
 		_scrollPane = new JScrollPane(_thumbnailsPanel);
@@ -96,7 +98,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 			
 			JLabel deleteIcon = new JLabel();
 			deleteIcon.setIcon(iconDeleteScaled);
-			deleteIcon.addMouseListener(new HideMapListener(_operationController, this, listMapsName.get(i)));
+			deleteIcon.addMouseListener(new HideMapListener(_operationController, this, _button, listMapsName.get(i)));
 			
 			JPanel panelLabel = new JPanel();
 			panelLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
