@@ -15,7 +15,9 @@ import javax.swing.border.EmptyBorder;
 import views.draganddrop.EntityTransferHandler;
 import views.listeners.EditEntityButtonListener;
 import views.listeners.EntityMouseListener;
+import views.listeners.IconLocationMouseListener;
 import controllers.EntityController;
+import controllers.OperationController;
 
 
 public class EntityPanel extends JPanel
@@ -26,18 +28,20 @@ public class EntityPanel extends JPanel
 	public static DataFlavor ENTITY_PANEL_FLAVOR;
 
 	private JLabel _iconGearLabel;
+	private JLabel _iconLocation;
 	private JLabel _entityName;
 	private ImageIcon _iconGearOn;
 	private ImageIcon _iconGearOff;
+	private OperationController _operationController;
 
 	private EntityController _entity;
 
 	private JPanel _iconPanel;
-	
+
 	public EntityPanel(MenuEntitiesPanel entitiesPanel, EntityController entity)
 	{
 		_entity = entity;
-		
+		_operationController = entitiesPanel.getOperationController();
 		setBorder(new EmptyBorder(0, 0, 0, 0));
 		if(ENTITY_PANEL_FLAVOR == null)
 		{
@@ -64,22 +68,24 @@ public class EntityPanel extends JPanel
 		else
 			iconDude.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/entity-red.png")));
 		add(iconDude, BorderLayout.WEST);
-	
+
 		_entityName = new JLabel(entity.getName());
 		add(_entityName, BorderLayout.CENTER);
-	
-		
+
 		// Panel pour l'ajout de l'icone carte et config de l'entité
 		_iconPanel = new JPanel();
 		_iconPanel.setBackground(Color.WHITE);
 		_iconPanel.setLayout(new BorderLayout(0, 0));
-		
-		JLabel iconLocation = new JLabel();
-		if(_entity.getIdPosCurrent() != 1)
-			iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_on.png")));
-		else
-			iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_off.png")));
-		_iconPanel.add(iconLocation,BorderLayout.EAST);
+
+		_iconLocation = new JLabel();
+		IconLocationMouseListener mouseListener = new IconLocationMouseListener(this, (GlassPane)entitiesPanel.getGlobalPanel().getGlassPane(), entitiesPanel.getGlobalPanel());
+		_iconLocation.addMouseListener(mouseListener);
+		if(_entity.getIdPosCurrent() == _operationController.getIdPcm()) {
+			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_off.png")));
+		} else {
+			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_on.png")));
+		}
+		_iconPanel.add(_iconLocation,BorderLayout.EAST);
 
 		_iconGearLabel = new JLabel();
 		_iconGearOn = new ImageIcon(EntityPanel.class.getResource("/ui/gear.png"));
@@ -90,15 +96,14 @@ public class EntityPanel extends JPanel
 		_iconPanel.add(_iconGearLabel, BorderLayout.WEST);
 
 		add(_iconPanel,BorderLayout.EAST);
-		
+
 		EntityMouseListener listener = new EntityMouseListener(this, (GlassPane)entitiesPanel.getGlobalPanel().getGlassPane(), entitiesPanel.getGlobalPanel());
 		_entityName.addMouseListener(listener);
 		_entityName.addMouseMotionListener(listener);
 
 		setTransferHandler(new EntityTransferHandler());
 	}
-	
-	
+
 	public JLabel getIconGearLabel()	{return _iconGearLabel;}
 	public EntityController getEntityController() {return _entity;}
 	public void setIconState(boolean on) {
@@ -108,9 +113,14 @@ public class EntityPanel extends JPanel
 			_iconGearLabel.setIcon(_iconGearOff);
 		}
 	}
-	
+
 	public void update() {
 		_entityName.setText(_entity.getName());
+		if(_entity.getIdPosCurrent() == _operationController.getIdPcm()) {
+			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_off.png")));
+		} else {
+			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_on.png")));
+		}
 	}
 
 	@Override
