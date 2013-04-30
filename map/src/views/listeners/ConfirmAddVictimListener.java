@@ -65,10 +65,10 @@ public class ConfirmAddVictimListener implements ActionListener
 		{
 			if((motifsList.length == 0 ) || (otherMotif.equals("")))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_MOTIF_MESSAGE);
-			
+			else
 			if(idAnonymat.equals(""))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
-			
+			else
 			if(soins.equals(""))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_SOINS_MESSAGE);	
 		}

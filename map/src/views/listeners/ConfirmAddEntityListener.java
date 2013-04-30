@@ -53,10 +53,10 @@ public class ConfirmAddEntityListener implements ActionListener
 		{
 			if(name.equals(""))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
-			
+			else
 			if((type != null) && type.equals(""))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_TYPE_MESSAGE);
-			
+			else
 			if(informations.equals(""))
 				System.out.println("Informations null");			
 		} else {
