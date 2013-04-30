@@ -19,7 +19,6 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 {
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner le champ \"Nom\".";
 
-	private JPanel _parent;
 	private OperationController _operationController;
 	private EntityPanel _entityPanel;
 	private MapPanel _mapPanel;
@@ -29,9 +28,8 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 	private static List<LocationController> listLocation;
 
 	
-	public EditEntityNameLocalisationButtonListener(JPanel parent, OperationController operationController, EntityController entity, ConfigurationEntityPanel configPanel, MapPanel mapPanel)
+	public EditEntityNameLocalisationButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entity, ConfigurationEntityPanel configPanel)
 	{
-		_parent=parent;
 		_operationController = operationController;
 		_entity = entity;
 		_configPanel=configPanel;
@@ -52,7 +50,7 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		//System.out.println("entity ancien nom : "+_entity.getName());
 		if(!checkInput(nomEntity))
 		{
-			new ErrorMessage(_parent, "Saisie incomplète", EMPTY_NAME_MESSAGE);
+			new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
 		}
 		else 
 		{
@@ -72,8 +70,8 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		//_entity.setLocation(_operationController.getLocation(indexLocation));
 		_entity.setLocation(_location); 
 		
-		_parent.repaint();
-		_parent.revalidate();
+		_mapPanel.repaint();
+		_mapPanel.revalidate();
 		
 		_mapPanel.addMapPanelListener();
 		

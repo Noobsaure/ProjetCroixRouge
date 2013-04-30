@@ -17,16 +17,16 @@ public class ConfirmConfigureLocationListener implements ActionListener
 {
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
 	
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private LocationController _locationController;
 	private DatabaseManager _databaseManager;
 	private ConfigurationLocationPanel _configurationLocationPanel;
 	
 	
-	public ConfirmConfigureLocationListener(JPanel parent, OperationController operationController, DatabaseManager databaseManager, ConfigurationLocationPanel configurationLocationPanel, LocationController locationController)
+	public ConfirmConfigureLocationListener(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager, ConfigurationLocationPanel configurationLocationPanel, LocationController locationController)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_operationController = operationController;
 		_locationController = locationController;
 		_databaseManager = databaseManager;
@@ -48,18 +48,17 @@ public class ConfirmConfigureLocationListener implements ActionListener
 		if(!checkInput(name, informations))
 		{
 			if(name.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète - Le nom ne peut pas être vide.", EMPTY_NAME_MESSAGE);
+				new ErrorMessage(_mapPanel, "Saisie incomplète - Le nom ne peut pas être vide.", EMPTY_NAME_MESSAGE);
 		}
 		else
 		{
 			_locationController.setName(name);
 			_locationController.setDescription(informations);
-			MapPanel mapPanel = (MapPanel)_parent;
-			mapPanel.addMapPanelListener();
-			_locationController.addObserver(mapPanel.getGlobalPanel());
+			//_locationController.addObserver(_mapPanel.getGlobalPanel());
 			_locationController.notifyObservers();
-			_parent.remove(_configurationLocationPanel);
-			_parent.repaint();
+			_mapPanel.remove(_configurationLocationPanel);
+			_mapPanel.setCurrentPopUp(null);
+			_mapPanel.repaint();
 		}
 	}
 }

@@ -59,9 +59,7 @@ public class ConfirmAddEntityListener implements ActionListener
 			
 			if(informations.equals(""))
 				System.out.println("Informations null");			
-		}
-		else
-		{
+		} else {
 			EntityController entity = new EntityController(_operationController, _databaseManager, name, type, informations, color);
 			entity.addObserver(_mapPanel.getGlobalPanel());
 			entity.notifyObservers();

@@ -16,13 +16,13 @@ import database.DatabaseManager;
 
 public class EditEntityColorListener implements ActionListener {
 
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private ConfigurationEntityPanel _configurationEntityPanel;
 	private EntityController _entityController;
 	
-	public EditEntityColorListener (JPanel parent, OperationController operationController, ConfigurationEntityPanel configurationEntityPanel, EntityController entityController) {
-		_parent = parent;
+	public EditEntityColorListener (MapPanel mapPanel, OperationController operationController, ConfigurationEntityPanel configurationEntityPanel, EntityController entityController) {
+		_mapPanel = mapPanel;
 		_operationController = operationController;
 		_configurationEntityPanel = configurationEntityPanel;
 		_entityController = entityController;
@@ -37,10 +37,8 @@ public class EditEntityColorListener implements ActionListener {
 		String color = "#" + Integer.toHexString(colorChosen.getRGB()).substring(2, 8);
 
 		_entityController.setColor(color);
-		MapPanel mapPanel = (MapPanel)_parent;
-		mapPanel.addMapPanelListener();
-		
-		_parent.repaint();
+		_mapPanel.setCurrentPopUp(null);
+		_mapPanel.repaint();
 		
 		
 	}

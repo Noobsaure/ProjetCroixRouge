@@ -57,7 +57,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Information sur l'entité";
 
-	private MapPanel _parent;
+	private MapPanel _mapPanel;
 	private EntityController _entityController;
 	private OperationController _operationController;
 	
@@ -84,13 +84,12 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public ConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController)
-	{
-		_parent = parent;
+	public ConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController) {
+		_mapPanel = parent;
 		_operationController = operationController;
 		_entityController = entityController;
 		_entityController.addObserver(this);
-		_parent.setCurrentPopUp(this);
+		_mapPanel.setCurrentPopUp(this);
 		initGui();
 	}	
 	
@@ -98,7 +97,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 	private void initGui()
 	{
 		setLayout(null);
-		setSize(new Dimension(_parent.getWidth(), _parent.getHeight()));
+		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 	
 		_internalPanel = new RoundedPanel();
@@ -192,7 +191,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 		
 		CustomButton editEntityButton = new CustomButton("Valider Modifier le Nom et la Localisation");
 		editEntityButton.setAlignmentX(0.5f);
-		editEntityButton.addActionListener(new EditEntityNameLocalisationButtonListener(_parent,_operationController, _entityController, this, (MapPanel)_parent));
+		editEntityButton.addActionListener(new EditEntityNameLocalisationButtonListener(_mapPanel,_operationController, _entityController, this));
 		formPanel.add(editEntityButton, "2, 6");
 		
 		/**************************************************************/
@@ -234,14 +233,14 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 			
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_parent, nomEquipierPanel, _operationController, team, _entityController, this));
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 		
 		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
-		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_parent,_operationController, _entityController, this));
+		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_mapPanel,_operationController, _entityController, this));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		formPanel.add(AjoutEquipierButton, "2, 12, fill, fill");
 		
@@ -315,7 +314,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 		formPanel.add(_colorChooserPanel, "2, 28, fill, fill");
 		
 		CustomButton ModifColorButton = new CustomButton("Valider Modifier couleur");
-		ModifColorButton.addActionListener(new EditEntityColorListener(_parent,_operationController, this, _entityController));
+		ModifColorButton.addActionListener(new EditEntityColorListener(_mapPanel,_operationController, this, _entityController));
 		formPanel.add(ModifColorButton, "2, 30");
 		
 		JSeparator separator_3 = new JSeparator();
@@ -329,7 +328,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
 				
 		CustomButton retourEquipierEntiteButton = new CustomButton("Retour");
-		retourEquipierEntiteButton.addActionListener(new RetourEquipierEntityListener(_parent, this,_operationController, _entityController));
+		retourEquipierEntiteButton.addActionListener(new RetourEquipierEntityListener(_mapPanel, this,_operationController, _entityController));
 		buttonPanel.add(retourEquipierEntiteButton);
 		
 		/**************************************************************/
@@ -341,11 +340,6 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 	{
 		return _nomTextField.getText();
 	}
-	
-	/*public String localisation()
-	{
-		return _localisation.getSelectedIndex();
-	}*/
 	
 	
 	private Color stringToColor(String couleur){
@@ -369,7 +363,6 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 	}
 
 	public Color getColor() {
-		// TODO Auto-generated method stub
 		return _colorChooserPanel.getBackground();
 	}
 	
@@ -377,8 +370,8 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 	
 	private void centrer()
 	{
-		int x = (_parent.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_internalPanel.getHeight() / 2);
+		int x = (_mapPanel.getWidth() / 2) - (_internalPanel.getWidth() / 2);
+		int y = (_mapPanel.getHeight() / 2) - (_internalPanel.getHeight() / 2);
 		_internalPanel.setLocation(x, y);
 	}
 	
@@ -387,7 +380,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 	{
 		super.paintComponent(g);
 
-		setSize(new Dimension(_parent.getWidth(), _parent.getHeight()));
+		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		
 		centrer();
 		
@@ -415,7 +408,7 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 			
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_parent, nomEquipierPanel, _operationController, team, _entityController, this));
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
