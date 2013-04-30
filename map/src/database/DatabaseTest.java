@@ -20,8 +20,9 @@ public class DatabaseTest
 //		testImages();
 		
 		final String input = "L'apostr`ophe";
-		
-		System.out.println("Test : " + DatabaseManager.addSlashes(input));
+		final String output = DatabaseManager.addSlashes(input);
+		System.out.println("Test : " + output);
+		System.out.println(DatabaseManager.stripSlashes(output));
 	}
 	
 	

@@ -42,7 +42,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	private static final long serialVersionUID = 1L;
 	
 	private static final int WIDTH = 600;
-	private static final int HEIGHT = 450;
+	private static final int HEIGHT = 470;
 	private static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	private static final Dimension DIMENSION_FORM_PANEL = new Dimension(WIDTH- 20, 200);
 	public static final String TITLE = "Ajouter une victime";
@@ -299,7 +299,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		 * 						Panneau de boutons
 		\**************************************************************/
 		_buttonPanel = new JPanel();
-		_buttonPanel.setPreferredSize(new Dimension(400, 30));
+		_buttonPanel.setPreferredSize(new Dimension(400, 35));
 		_mainPanel.add(_buttonPanel);
 		
 		_cancelButton = new CustomButton("Annuler");

@@ -55,7 +55,7 @@ public class LocationController implements Subject {
 		}
 
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+name+"','"+description+"',"+x+","+y+")"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+")"));
 			_coordX = x;
 			_coordY = y;
 			_name = name;
@@ -84,8 +84,8 @@ public class LocationController implements Subject {
 		_dbm = dbm;
 		_coordX = x;
 		_coordY = y;
-		_name = name;
-		_description = description;
+		_name = _dbm.stripSlashes(name);
+		_description = _dbm.stripSlashes(description);
 		_id = id;
 		_idMap = idMap;
 		_idOperation = _operation.getId();
@@ -130,13 +130,13 @@ public class LocationController implements Subject {
 
 	public void setName(String name){
 		try {
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "nom='"+name+"'","id="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Localisation - Changement de nom" ,"Une erreur est survenue lors de la mise à jour du nom de la localisation " +
 					"'"+_name+"' vers '"+name+"'. Veuillez rééssayer.");
 		}
 
-		//genererMessageChangementDeNom(name);
+		genererMessageChangementDeNom(name);
 		_name = name;
 	}
 
@@ -218,7 +218,7 @@ public class LocationController implements Subject {
 			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Localisation","id = "+_id));
 
 			while(result.next()){
-				_name = result.getString("nom");
+				_name = _dbm.stripSlashes(result.getString("nom"));
 			}
 			
 			result.getStatement().close();
@@ -231,7 +231,7 @@ public class LocationController implements Subject {
 
 	public void setDescription(String informations) {
 		try {
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "`desc`='"+informations+"'","id="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "`desc`='"+_dbm.addSlashes(informations)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description de la localisation '"+_name+"'. Veuillez rééssayer.");
 		}
