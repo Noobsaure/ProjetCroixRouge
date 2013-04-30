@@ -16,7 +16,7 @@ import views.GlassPane;
 import views.GlobalPanel;
 import views.LocationPanel;
 
-public class EntityMouseListener extends AbstractListener implements MouseListener, MouseMotionListener{
+public class EntityMouseListener extends AbstractObserverListener implements MouseListener, MouseMotionListener{
 
 	private EntityPanel _entity;
 	private GlobalPanel _globalPanel;

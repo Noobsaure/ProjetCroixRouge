@@ -26,16 +26,12 @@ public class CancelEditVictimListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		_mapPanel.addMapPanelListener();
+		_mapPanel.setCurrentPopUp(null);
 		_mapPanel.remove(_editVictimPanel);
-		
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
-		
 		SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());
 		_mapPanel.add(subMenu);
 		_mapPanel.setComponentZOrder(subMenu, 0);
-		
 		_mapPanel.repaint();
-		_mapPanel.revalidate();
 	}
 }

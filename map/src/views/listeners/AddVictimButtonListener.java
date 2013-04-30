@@ -8,7 +8,7 @@ import views.AddVictimPanel;
 import views.SubMenuVictimPanel;
 import views.MapPanel;
 
-public class AddVictimButtonListener extends AbstractListener implements ActionListener
+public class AddVictimButtonListener extends AbstractObserverListener implements ActionListener
 {
 	private MapPanel _mapPanel;
 	private SubMenuVictimPanel _subMenu;

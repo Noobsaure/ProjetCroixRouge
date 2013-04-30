@@ -11,7 +11,7 @@ import controllers.EntityController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
-public class AddEquipierDansEntityButtonListener extends AbstractListener implements ActionListener {
+public class AddEquipierDansEntityButtonListener implements ActionListener {
 
 	private MapPanel _parent;
 	private AddEquipierPanel _addEquipierPanel;
@@ -23,7 +23,6 @@ public class AddEquipierDansEntityButtonListener extends AbstractListener implem
 
 	public AddEquipierDansEntityButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel) 
 	{
-		super(mapPanel);
 		_parent = mapPanel;
 		_addEquipierPanel = addEquipierPanel;
 		_operationController = operationController;
@@ -36,33 +35,32 @@ public class AddEquipierDansEntityButtonListener extends AbstractListener implem
 
 	public void actionPerformed(ActionEvent e)
 	{	
-		if(isEnabled()) {
-			// On récupère l'équipier qui vient d'etre ajouté par l'opérateur.
-			int indexEquipier = _addEquipierPanel.getIndexEquipier();
+		// On récupère l'équipier qui vient d'etre ajouté par l'opérateur.
+		int indexEquipier = _addEquipierPanel.getIndexEquipier();
 
-			listEquipiers= _operationController.getTeamMemberAvailableList();	
+		listEquipiers= _operationController.getTeamMemberAvailableList();	
 
-			if (indexEquipier>=0) 
-			{
-				_team=listEquipiers.get(indexEquipier);
-				_entityController.addTeamMember(_team);
-			}
-			else
-			{
-				System.out.println("Impossible d'ajouter un équipier.");
-			}
-
-			// on retourne à la fenetre de configuration de l'entité
-			ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_parent, _operationController, _entityController);
-
-			_parent.add(configurationEntityPanel);
-			_parent.setComponentZOrder(configurationEntityPanel, 0);
-
-			_parent.remove(_addEquipierPanel);
-			_parent.repaint();
-			_parent.revalidate();
+		if (indexEquipier>=0) 
+		{
+			_team=listEquipiers.get(indexEquipier);
+			_entityController.addTeamMember(_team);
 		}
+		else
+		{
+			System.out.println("Impossible d'ajouter un équipier.");
+		}
+
+		// on retourne à la fenetre de configuration de l'entité
+		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_parent, _operationController, _entityController);
+
+		_parent.add(configurationEntityPanel);
+		_parent.setComponentZOrder(configurationEntityPanel, 0);
+
+		_parent.remove(_addEquipierPanel);
+		_parent.repaint();
+		_parent.revalidate();
 	}
 }
+
 
 

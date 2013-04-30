@@ -10,12 +10,12 @@ import views.MapPanel;
 
 public class CancelAddEntityListener implements ActionListener
 {
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private AddEntityPanel _addEntityPanel;
 	
-	public CancelAddEntityListener(JPanel parent, AddEntityPanel addEntityPanel)
+	public CancelAddEntityListener(MapPanel mapPanel, AddEntityPanel addEntityPanel)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_addEntityPanel = addEntityPanel;
 	}
 
@@ -23,10 +23,8 @@ public class CancelAddEntityListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MapPanel mapPanel = (MapPanel)_parent;
-		mapPanel.addMapPanelListener();
-		
-		_parent.remove(_addEntityPanel);
-		_parent.repaint();
+		_mapPanel.remove(_addEntityPanel);
+		_mapPanel.setCurrentPopUp(null);
+		_mapPanel.repaint();
 	}
 }

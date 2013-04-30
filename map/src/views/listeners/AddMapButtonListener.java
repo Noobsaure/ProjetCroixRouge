@@ -18,7 +18,7 @@ import controllers.MapController;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddMapButtonListener extends AbstractListener implements ActionListener {
+public class AddMapButtonListener extends AbstractObserverListener implements ActionListener {
 	private MapPanel _mapPanel;
 	private final JFileChooser _fileChooser;
 	private OperationController _operation;

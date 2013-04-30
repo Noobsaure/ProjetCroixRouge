@@ -13,7 +13,7 @@ import views.GlobalPanel;
 import views.Location;
 import views.MapPanel;
 
-public class MapPanelMouseListener extends AbstractListener implements MouseListener, MouseMotionListener {
+public class MapPanelMouseListener extends AbstractObserverListener implements MouseListener, MouseMotionListener {
 
 	private static final Cursor addableCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
 	private static final Cursor notAddableCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);

@@ -3,9 +3,9 @@ package views.listeners;
 import observer.Observer;
 import views.MapPanel;
 
-public abstract class AbstractListener implements Observer {
+public abstract class AbstractObserverListener implements Observer {
 
-	public AbstractListener(MapPanel mapPanel) {
+	public AbstractObserverListener(MapPanel mapPanel) {
 		mapPanel.addObserver(this);
 	}
 	

@@ -9,7 +9,7 @@ import views.GlobalPanel;
 import views.Location;
 import views.MapPanel;
 
-public class LocationMouseListener extends AbstractListener implements MouseMotionListener, MouseListener {
+public class LocationMouseListener extends AbstractObserverListener implements MouseMotionListener, MouseListener {
 
 	private Location _loc;
 	private MapPanel _map;

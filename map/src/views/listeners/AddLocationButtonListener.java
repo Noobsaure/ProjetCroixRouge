@@ -8,7 +8,7 @@ import views.AddEntityPanel;
 import views.AddLocationPanel;
 import views.MapPanel;
 
-public class AddLocationButtonListener extends AbstractListener implements ActionListener{
+public class AddLocationButtonListener extends AbstractObserverListener implements ActionListener{
 
 	private MapPanel _mapPanel;
 

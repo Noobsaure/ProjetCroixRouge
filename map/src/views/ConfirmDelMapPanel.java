@@ -25,7 +25,7 @@ public class ConfirmDelMapPanel extends ErrorPanel
 		_parent = operation.getGlobalPanel().getMapPanel();
 			
 		CustomButton cancelButton = new CustomButton("Annuler");
-		cancelButton.addActionListener( new CancelButtonListener(_operation, subMenu, this) );
+		cancelButton.addActionListener(new CancelButtonListener(_operation, subMenu, this));
 		super.getButtonsPanel().add(cancelButton);
 		
 		CustomButton okButton = super.getOkButton();

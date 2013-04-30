@@ -3,21 +3,15 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-
-import observer.Observer;
-
-import launcher.Launcher;
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
-import views.EntityPanel;
 import views.ErrorMessage;
 import views.MapPanel;
 import controllers.EntityController;
 import controllers.OperationController;
 
 
-public class AddEquipierButtonListener extends AbstractListener implements ActionListener {
+public class AddEquipierButtonListener extends AbstractObserverListener implements ActionListener {
 
 	private String EMPTY_LIST_MESSAGE = "Il n'y a aucun équipier d'enregistré";
 	private String EMPTY_DISPO_MESSAGE = "Il n'y a plus d'équipier de disponible";

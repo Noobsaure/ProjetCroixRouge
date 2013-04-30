@@ -19,15 +19,15 @@ public class ConfirmAddEntityListener implements ActionListener
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner le champ \"Nom\".";
 	private String EMPTY_TYPE_MESSAGE = "Veuillez renseigner le champ \"Type\".";
 	
-	private JPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private AddEntityPanel _addEntityPanel;
 	
 	
-	public ConfirmAddEntityListener(JPanel parent, OperationController operationController, DatabaseManager databaseManager, AddEntityPanel addEntityPanel)
+	public ConfirmAddEntityListener(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager, AddEntityPanel addEntityPanel)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		_addEntityPanel = addEntityPanel;
@@ -52,10 +52,10 @@ public class ConfirmAddEntityListener implements ActionListener
 		if(!checkInput(name, type, informations))
 		{
 			if(name.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_NAME_MESSAGE);
+				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
 			
 			if((type != null) && type.equals(""))
-				new ErrorMessage(_parent, "Saisie incomplète", EMPTY_TYPE_MESSAGE);
+				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_TYPE_MESSAGE);
 			
 			if(informations.equals(""))
 				System.out.println("Informations null");			
@@ -63,12 +63,11 @@ public class ConfirmAddEntityListener implements ActionListener
 		else
 		{
 			EntityController entity = new EntityController(_operationController, _databaseManager, name, type, informations, color);
-			MapPanel mapPanel = (MapPanel)_parent;
-			entity.addObserver(mapPanel.getGlobalPanel());
+			entity.addObserver(_mapPanel.getGlobalPanel());
 			entity.notifyObservers();
-			_parent.remove(_addEntityPanel);
-			_parent.repaint();
-			mapPanel.setCurrentPopUp(null);
+			_mapPanel.remove(_addEntityPanel);
+			_mapPanel.setCurrentPopUp(null);
+			_mapPanel.repaint();
 		}
 	}
 }
