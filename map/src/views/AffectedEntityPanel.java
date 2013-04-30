@@ -26,6 +26,7 @@ public class AffectedEntityPanel extends JPanel
 	public static DataFlavor AFFECTED_ENTITY_PANEL_FLAVOR;
 
 	private EntityController _entity;
+	private JLabel _entityName;
 
 	public AffectedEntityPanel(MapPanel mapPanel, EntityController entity)
 	{
@@ -56,8 +57,8 @@ public class AffectedEntityPanel extends JPanel
 			iconDude.setIcon(new ImageIcon(AffectedEntityPanel.class.getResource("/ui/entity-red.png")));
 		add(iconDude, BorderLayout.WEST);
 
-		JLabel nameEntity = new JLabel(entity.getName());
-		add(nameEntity, BorderLayout.CENTER);
+		_entityName = new JLabel(entity.getName());
+		add(_entityName, BorderLayout.CENTER);
 
 		AffectedEntityMouseListener listener = new AffectedEntityMouseListener(this, (GlassPane)mapPanel.getGlobalPanel().getGlassPane(), mapPanel.getGlobalPanel());
 		addMouseListener(listener);
@@ -68,6 +69,10 @@ public class AffectedEntityPanel extends JPanel
 	public EntityController getEntityController()
 	{
 		return _entity;
+	}
+	
+	public void update() {
+		_entityName.setText(_entity.getName());
 	}
 
 	@Override
