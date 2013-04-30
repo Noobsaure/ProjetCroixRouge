@@ -108,8 +108,12 @@ public class MapController implements Subject {
 		
 		_visibility = false;
 		_operation.removeMap(this);
-		if(_operation.getMapList().size() == 0)
-			_operation.setCurrentMap(_operation.getMap(_operation.getMapList().size()-1));
+		if(_operation.getMapList().size() != 0)
+			_operation.setCurrentMap(_operation.getMapList().get(_operation.getMapList().size()-1));
+		else
+			_operation.setCurrentMap(null);
+		
+		System.out.println("Courante MAP : "+_operation.getCurrentMap().getName());
 	}
 	
 	public ImageIcon getImage()
