@@ -107,7 +107,7 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1 AND (operation_id='"+_operation.getId()+"' OR operation_id is NULL)"));
 			while(result.next()){
 				int id = result.getInt("id");
 
