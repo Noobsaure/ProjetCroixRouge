@@ -8,8 +8,12 @@ import java.awt.dnd.DropTarget;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -30,6 +34,7 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	
 	private JPanel _panelAvailable;
 	private JPanel _panelUnavailable;
+	private JPanel _panelDropHere;
 
 	private List<EntityPanel> _availableEntityPanels;
 	private List<EntityPanel> _unavailableEntityPanels;
@@ -48,19 +53,40 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		_panelAvailable.setLayout(new BoxLayout(_panelAvailable, BoxLayout.Y_AXIS));
 		_panelAvailable.setAlignmentX(Component.LEFT_ALIGNMENT);
 		_panelAvailable.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2), "Disponible", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
+		
 		_panelUnavailable = new JPanel();
 		_panelUnavailable.setAlignmentX(Component.LEFT_ALIGNMENT);
 		_panelUnavailable.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 0));
 		_panelUnavailable.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, Short.MAX_VALUE));
 		_panelUnavailable.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2), "Indisponible", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		
+		_panelDropHere = new JPanel();
+		_panelDropHere.setLayout(new BorderLayout());
+		_panelDropHere.setAlignmentX(Component.LEFT_ALIGNMENT);
+		_panelDropHere.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
+		_panelDropHere.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
+		_panelDropHere.setPreferredSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
+		_panelDropHere.setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED,new Color(255,255,255),new Color(128,128,128)));
+		JPanel info = new JPanel();
+		JLabel info1 = new JLabel("Glisser les entités",SwingConstants.CENTER);
+		JLabel info2 = new JLabel("à désaffecter ici",SwingConstants.CENTER);
+		info1.setForeground(new Color(128,128,128));
+		info2.setForeground(new Color(128,128,128));
+		info.setBackground(Color.BLACK);
+		info1.setBackground(Color.BLACK);
+		info2.setBackground(Color.BLACK);
+		info.add(info1);
+		info.add(info2);
+		_panelDropHere.add(info, BorderLayout.CENTER);
+		
 		_panelAvailable.setBackground(Color.BLACK);
 		_panelUnavailable.setBackground(Color.BLACK);
+		_panelDropHere.setBackground(Color.BLACK);
 		
-		add(_panelAvailable, BorderLayout.CENTER);		
-		add(_panelUnavailable, BorderLayout.SOUTH);
+		add(_panelAvailable, BorderLayout.NORTH);		
+		add(_panelUnavailable, BorderLayout.CENTER);		
+		add(_panelDropHere, BorderLayout.SOUTH);
 		
-
 		final int WIDTH_PANEL_ADD_BUTTON = MenuPanel.LEFT_PANEL_WIDTH - 13;
 		final int HEIGHT_BUTTON = 25;
 		JPanel panelAddButton = new JPanel();
@@ -138,7 +164,7 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	}
 	
 	public void addDropTarget() {
-		this.setDropTarget(new DropTarget(this, new MenuEntitiesPanelDropTargetListener(_globalPanel)));
+		_panelDropHere.setDropTarget(new DropTarget(this, new MenuEntitiesPanelDropTargetListener(_globalPanel)));
 	}
 	
 	public GlobalPanel getGlobalPanel() {return _globalPanel;}

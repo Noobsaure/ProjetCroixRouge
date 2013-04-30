@@ -65,7 +65,7 @@ public class AffectedEntityPanel extends JPanel
 		setTransferHandler(new AffectedEntityTransferHandler());
 	}
 
-	public EntityController getEntity()
+	public EntityController getEntityController()
 	{
 		return _entity;
 	}
