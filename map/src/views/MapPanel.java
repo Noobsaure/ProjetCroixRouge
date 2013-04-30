@@ -168,7 +168,8 @@ public class MapPanel extends JPanel implements Observer
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
-		if(mapController != null && _map == null) {
+		System.out.println(mapController.getName());
+		if(mapController != null) {
 			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 			double width = screenSize.getWidth();
 			double height = screenSize.getHeight();
