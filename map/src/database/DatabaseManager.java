@@ -18,7 +18,7 @@ import controllers.OperationController;
 public class DatabaseManager
 {
 	private static final int RECONNECTION_PERIOD = 100;
-	
+
 	private java.sql.Connection _connection;
 	private java.sql.Connection _connectionBack;
 	private java.sql.Connection _currentConnection;
@@ -30,7 +30,7 @@ public class DatabaseManager
 	private int _nbExecutedQueriesConnectionBack;
 	private boolean _connectionReconnected = false;
 	private boolean _connectionBackReconnected = false;
-	
+
 	/**
 	 * Constructor
 	 */
@@ -48,11 +48,11 @@ public class DatabaseManager
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
-	
+
 	public void setOperation (OperationController operation){
 		_operation = operation;
 	}
-	
+
 	/**
 	 * Connects to a database given in parameters.
 	 * @param databaseURL the database url to connect
@@ -67,7 +67,7 @@ public class DatabaseManager
 			_login = login;
 			_password = password;
 			_nbExecutedQueriesConnection = 0;
-			
+
 			// Connection a la base de donnees
 			System.out.print("[Connection] Connection of " + login + " to " + databaseURL + "...");
 			_connection = DriverManager.getConnection(databaseURL, login, password);
@@ -80,8 +80,8 @@ public class DatabaseManager
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
-	
-	
+
+
 	public void connectionBack(String databaseURL, String login, String password)
 	{
 		try
@@ -90,12 +90,12 @@ public class DatabaseManager
 			_login = login;
 			_password = password;
 			_nbExecutedQueriesConnectionBack = 0;
-			
+
 			// Connection a la base de donnees
 			System.out.print("[Connection de secours] Connection of " + login + " to " + databaseURL + "...");
 			_connectionBack = DriverManager.getConnection(databaseURL, login, password);
 			System.out.println("Connected");
-//			_statement = _connection.createStatement();
+			//			_statement = _connection.createStatement();
 		}
 		catch(SQLException e)
 		{
@@ -103,17 +103,17 @@ public class DatabaseManager
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
-	
-	
+
+
 	private void reconnectionConnection()
 	{
 		try
 		{
 			_connection.close();
 			connection(_databaseURL, _login, _password);
-			
+
 			_connectionReconnected = true;
-			
+
 			System.out.println("Reconnection (connection principale)!!!");
 		}
 		catch(SQLException e)
@@ -122,16 +122,16 @@ public class DatabaseManager
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
-	
+
 	private void reconnectionConnectionBack()
 	{
 		try
 		{
 			_connectionBack.close();
 			connectionBack(_databaseURL, _login, _password);
-			
+
 			_connectionBackReconnected = true;
-			
+
 			System.out.println("Reconnection (connection de secours)!!!");
 		}
 		catch(SQLException e)
@@ -140,13 +140,13 @@ public class DatabaseManager
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
-	
+
 	private void updateNbExecutedQueriesConnection()
 	{
 		_nbExecutedQueriesConnection++;
-		
+
 		System.out.println("Nombre requête executée (connection principale) : " + _nbExecutedQueriesConnection);
-		
+
 		if(_nbExecutedQueriesConnection >= RECONNECTION_PERIOD)
 		{
 			_currentConnection = _connectionBack;
@@ -157,11 +157,11 @@ public class DatabaseManager
 				if(!_connectionBackReconnected)
 					reconnectionConnectionBack();
 	}
-	
+
 	private void updateNbExecutedQueriesConnectionBack()
 	{
 		_nbExecutedQueriesConnectionBack++;
-		
+
 		System.out.println("Nombre requête executée (connection de secours) : " + _nbExecutedQueriesConnectionBack);
 
 		if(_nbExecutedQueriesConnectionBack >= RECONNECTION_PERIOD)
@@ -174,7 +174,7 @@ public class DatabaseManager
 				if(!_connectionReconnected)
 					reconnectionConnection();
 	}
-	
+
 	private void updateNbExecutiionQueries()
 	{
 		if(_currentConnection == _connection)
@@ -182,9 +182,9 @@ public class DatabaseManager
 		else
 			updateNbExecutedQueriesConnectionBack();
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Executes a SQL query SELECT.
 	 * @param query the SQL query SELECT to execute
@@ -205,12 +205,12 @@ public class DatabaseManager
 			MessagePanel errorPanel = new MessagePanel("La lecture de la base de données à échouée.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 		return result;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Executes a SQL query UPDATE and returns the content of the column given in parameters for the elements updated. 
 	 * @param query the SQL query UPDATE to execute
@@ -220,7 +220,7 @@ public class DatabaseManager
 	public int executeQueryUpdate(SQLQueryUpdate query)
 	{
 		int lastInserted = -1;
-		
+
 		try
 		{			
 			System.out.println("Execution de la requete : " + query);
@@ -234,12 +234,12 @@ public class DatabaseManager
 			MessagePanel errorPanel = new MessagePanel("La mise à jour de la base de données à échouée.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 		return lastInserted;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * 
 	 * @param query
@@ -249,18 +249,18 @@ public class DatabaseManager
 	public Integer executeQueryInsert(SQLQueryInsert query)
 	{
 		Integer lastInserted = -1;
-		
+
 		try
 		{
 			System.out.println("Execution de la requete : " + query);
 			java.sql.PreparedStatement statement = _currentConnection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			updateNbExecutiionQueries();
 			statement.executeUpdate();
-			
+
 			ResultSet generatedKeys = statement.getGeneratedKeys();
 			while(generatedKeys.next())
 				lastInserted = generatedKeys.getInt(1);
-			
+
 			System.out.println("Requete executee...");
 		}
 		catch(Exception e)
@@ -268,13 +268,13 @@ public class DatabaseManager
 			MessagePanel errorPanel = new MessagePanel("La mise à jour de la base de données à échouée.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 		return lastInserted;
 	}
-	
-	
 
-	
+
+
+
 	/**
 	 * Stores an image in the database.  
 	 * @param name the name of the image to insert
@@ -322,9 +322,9 @@ public class DatabaseManager
 	    
 	    return id;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Gets an image from the database.
 	 * @param id the id of the the image to get
@@ -338,7 +338,7 @@ public class DatabaseManager
 		try
 		{
 			ResultSet result = executeQuerySelect(new SQLQuerySelect("*", "Carte", "id = " + id));
-			
+
 			result.next();
 			Blob blob = result.getBlob("image");
 			image = new ImageIcon(blob.getBytes(1L, (int)blob.length()));
@@ -348,12 +348,12 @@ public class DatabaseManager
 			MessagePanel errorPanel = new MessagePanel("La récupération dans la base de données de l'image '" + name + "' à échouée.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 		return image;
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Displays the table given in parameters.
 	 * @param table
@@ -363,7 +363,7 @@ public class DatabaseManager
 		try
 		{
 			ResultSet result = executeQuerySelect(new SQLQuerySelect("*", table));
-			
+
 			while(result.next())
 				System.out.println("Valeur : " + result.getString(1));
 		}
@@ -372,34 +372,34 @@ public class DatabaseManager
 			displayError(e);
 		}
 	}
-	
+
 	public static String addSlashes(String input)
 	{
 		String output = null;
-		
+
 		if(input != null)
 		{
 			output = input.replace("'", "\\'");
 			output = output.replace("`", "\\`");
 		}
-		
+
 		return output;
 	}
-	
+
 	public static String stripSlashes(String input)
 	{
 		String output = null;
-		
+
 		if(input != null)
 		{
 			output = input.replace("\\'", "'");
 			output = output.replace("\\`", "`");
 		}
-		
+
 		return output;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param e
@@ -409,11 +409,11 @@ public class DatabaseManager
 		String errorMessage = e + "\n";
 		for(int i = 0; i < e.getStackTrace().length; i++)
 			errorMessage += e.getStackTrace()[i] + "\n";
-		
+
 		try
 		{
 			java.sql.Statement statement;
-			
+
 			if(!_connection.isClosed())
 				statement = _connection.createStatement();
 			else
@@ -425,7 +425,7 @@ public class DatabaseManager
 		{
 			e1.printStackTrace();
 		}
-		
+
 		System.exit(0);
 	}
 }

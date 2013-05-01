@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
+
 import launcher.RefreshTimerTask;
 import observer.Observer;
 import observer.Subject;
@@ -125,7 +126,7 @@ public class OperationController implements Subject
 				if(getMap(id_carte) != null){
 					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
 					_locationList.add(location);
-				}else if(nom.compareTo("LocalisationBaseDesEntites") == 0){
+				}else if(nom.compareTo("PCM (défaut)") == 0){
 					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
 					_locationList.add(location);
 					System.out.println("On ajoute à la LOCATION LIST");
@@ -136,15 +137,15 @@ public class OperationController implements Subject
 		catch(SQLException e2){e2.printStackTrace();}
 		
 		for(LocationController location: _locationList){
-			if(location.getName().compareTo("LocalisationBaseDesEntites") == 0){
+			if(location.getName().compareTo("PCM (défaut)") == 0){
 				_idPcm= location.getId();				
 				return;
 			}
 		}
 		
 		try {
-			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.',0,0)"));
-			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "LocalisationBaseDesEntites", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.");
+			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'PCM (défaut)','Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.',0,0)"));
+			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "PCM (défaut)", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.");
 			_locationList.add(location);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur lors de la génération de la localisation de base des entitées.");
@@ -510,6 +511,11 @@ public class OperationController implements Subject
 
 	public void removeMap(MapController mapController) {
 		_mapList.remove(mapController);
+	}
+
+	public boolean locationNameAlreadyExist(String name) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

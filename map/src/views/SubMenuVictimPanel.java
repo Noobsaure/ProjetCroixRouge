@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -38,6 +39,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private ButtonGroup _group;
+	private List<VictimController> _listVictimsName;
 	
 	public SubMenuVictimPanel(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager)
 	{
@@ -68,18 +70,12 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 	@Override
 	public void displayThumbnail()
 	{		
-		List<VictimController> listVictimsName = _operationController.getVictimList();
+		 _listVictimsName = _operationController.getVictimList();
 		_group = new ButtonGroup();
 		
-		System.out.println("Nb victimes : " + listVictimsName.size());
-		
-		for(int i = 0; i < listVictimsName.size(); i++)
-		{
-			System.out.println("Victime " + i + " " + listVictimsName.get(i).getId() + " " + listVictimsName.get(i).getIdAnonymat());
-			System.out.println("I : "+i);
-			int id = listVictimsName.get(i).getId();
-			VictimController victim = listVictimsName.get(i);
-			
+		for(VictimController victim : _listVictimsName){
+			int id = victim.getId();
+
 			JLabel nameLabel = new JLabel("(" + victim.getIdAnonymat() + ") " + victim.getPrenom() + " " + victim.getNom());
 			nameLabel.setForeground(Color.WHITE);
 			JPanel panelLabel = new JPanel();
@@ -90,20 +86,34 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 			panelLabel.add(nameLabel);
 			panelLabel.addMouseListener(new EditVictimButtonListener(_mapPanel, this, panelLabel, victim));
 			_thumbnailsPanel.add(panelLabel);
-			
-//			_map.put(toggleButton, listVictimsName.get(i));
 		}
 	}
 
 	@Override
-	public void update()
+	public synchronized void update()
 	{
-		_thumbnailsPanel.removeAll();
+		List<VictimController> victimeList = new ArrayList<>();
 		
-		displayThumbnail();
+		victimeList = _operationController.getVictimList();
 		
-		_scrollPane.repaint();
-		_scrollPane.revalidate();
+		for(VictimController victime : victimeList){
+			if(!_listVictimsName.contains(victime)){
+				victimeList.add(victime);
+				int id = victime.getId();
+
+				JLabel nameLabel = new JLabel("(" + victime.getIdAnonymat() + ") " + victime.getPrenom() + " " + victime.getNom());
+				nameLabel.setForeground(Color.WHITE);
+				JPanel panelLabel = new JPanel();
+				panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
+				panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
+				panelLabel.setBackground(COLOR_BACKGROUND);
+				panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				panelLabel.add(nameLabel);
+				panelLabel.addMouseListener(new EditVictimButtonListener(_mapPanel, this, panelLabel, victime));
+				_thumbnailsPanel.add(panelLabel);
+			}
+		}
+		
 		_thumbnailsPanel.repaint();
 		_thumbnailsPanel.revalidate();
 	}

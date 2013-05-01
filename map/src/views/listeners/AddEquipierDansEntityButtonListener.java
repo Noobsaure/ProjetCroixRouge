@@ -24,8 +24,7 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 	private static List<TeamMemberController> listEquipiers;
 
 
-	public AddEquipierDansEntityButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel) 
-	{
+	public AddEquipierDansEntityButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel) {
 		_parent = mapPanel;
 		_addEquipierPanel = addEquipierPanel;
 		_operationController = operationController;
@@ -39,12 +38,11 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 	{	
 		// On récupère l'équipier qui vient d'etre ajouté par l'opérateur.
 		int indexEquipier = _addEquipierPanel.getIndexEquipier();
-
+		
 		listEquipiers= _operationController.getTeamMemberAvailableList();	
-
+		
 		if (indexEquipier>=0) {
 			_team=listEquipiers.get(indexEquipier);
-			System.out.println("Nom équipier : "+_team.getFirstName());
 			_entityController.addTeamMember(_team);
 		}
 		
@@ -52,6 +50,3 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 		dialog.dispose();
 	}
 }
-
-
-

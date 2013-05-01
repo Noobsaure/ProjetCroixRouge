@@ -1,6 +1,5 @@
 package views;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -28,8 +27,6 @@ import com.jgoodies.forms.layout.RowSpec;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-
-
 public class AddEntityPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 
@@ -51,10 +48,6 @@ public class AddEntityPanel extends CustomPanelImpl {
 	private JTextArea _informationsTextArea;
 	private JPanel _colorChooserPanel;
 	
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
 	public AddEntityPanel(MapPanel mapPanel, OperationController operation, DatabaseManager dbm)
 	{
 		_mapPanel = mapPanel;
@@ -62,7 +55,6 @@ public class AddEntityPanel extends CustomPanelImpl {
 		_dbm = dbm;
 		initGui();
 	}
-	
 	
 	public AddEntityPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, String nom, String type, String informations)
 	{
@@ -76,7 +68,6 @@ public class AddEntityPanel extends CustomPanelImpl {
 		_typeComboBox.setSelectedIndex(0);
 		_informationsTextArea.setText(informations);
 	}
-	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initGui()
@@ -198,26 +189,10 @@ public class AddEntityPanel extends CustomPanelImpl {
 	{
 		return _colorChooserPanel.getBackground();
 	}
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-//		Graphics2D g2d = (Graphics2D) g;
-//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
-//        
-//        g2d.setColor(Color.BLACK);
-//		g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-//
-//		_internalPanel.repaint();
-//		_internalPanel.revalidate();		
-	}
-
 
 	@Override
 	public void updatePanel() {
-		System.out.println("TROLOLO");
+		//Rien à update ici.
 	}
 }
 

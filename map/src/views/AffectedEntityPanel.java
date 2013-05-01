@@ -27,6 +27,7 @@ public class AffectedEntityPanel extends JPanel
 
 	private EntityController _entity;
 	private JLabel _entityName;
+	private JLabel _iconDude;
 
 	public AffectedEntityPanel(MapPanel mapPanel, EntityController entity)
 	{
@@ -50,14 +51,15 @@ public class AffectedEntityPanel extends JPanel
 		setForeground(Color.WHITE);
 		setLayout(new BorderLayout(0, 0));
 
-		JLabel iconDude = new JLabel();
-		if(entity.isAvailable())
-			iconDude.setIcon(new ImageIcon(AffectedEntityPanel.class.getResource("/ui/entity-green.png")));
-		else
-			iconDude.setIcon(new ImageIcon(AffectedEntityPanel.class.getResource("/ui/entity-red.png")));
-		add(iconDude, BorderLayout.WEST);
+		_iconDude = new JLabel();
+		if(entity.isAvailable()) {
+			_iconDude.setIcon(EntityPanel.iconDudeOn);
+		} else {
+			_iconDude.setIcon(EntityPanel.iconDudeOff);
+		}
+		add(_iconDude, BorderLayout.WEST);
 
-		_entityName = new JLabel(entity.getName());
+		_entityName = new JLabel(_entity.getName());
 		add(_entityName, BorderLayout.CENTER);
 
 		AffectedEntityMouseListener listener = new AffectedEntityMouseListener(this, (GlassPane)mapPanel.getGlobalPanel().getGlassPane(), mapPanel.getGlobalPanel());
@@ -73,6 +75,11 @@ public class AffectedEntityPanel extends JPanel
 	
 	public void update() {
 		_entityName.setText(_entity.getName());
+		if(_entity.isAvailable()) {
+			_iconDude.setIcon(EntityPanel.iconDudeOn);
+		} else {
+			_iconDude.setIcon(EntityPanel.iconDudeOff);
+		}
 	}
 
 	@Override

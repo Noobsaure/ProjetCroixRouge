@@ -165,16 +165,6 @@ public class AddLocationPanel extends CustomPanelImpl {
 
 	@Override
 	public void updatePanel() {
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		//Pas d'update à faire ici.
 	}
 }
-
-
-
-
-
-
-
-
-
-

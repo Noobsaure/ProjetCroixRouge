@@ -71,7 +71,7 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 		
 		_internalPanel = new RoundedPanel();
 		_internalPanel.setSize(DIMENSION_PANEL);
-		add(_internalPanel, 1);
+		add(_internalPanel);
 		
 		JLabel title = new JLabel(ConfigurationLocationPanel.TITLE);
 		_internalPanel.add(title, BorderLayout.NORTH);
@@ -134,9 +134,11 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 		buttonPanel.add(okButton);
 		okButton.addActionListener(new ConfirmConfigureLocationListener(_mapPanel, _operationController, _dbm, this, _locationController));
 		/**************************************************************/
+		
+		setPreferredSize(_internalPanel.getSize());
 	}	
 	
-	public String getName()
+	public String getFieldName()
 	{
 		return _nomTextField.getText();
 	}

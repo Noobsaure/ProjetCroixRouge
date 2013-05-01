@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import observer.Observer;
 import observer.Subject;
 import views.MessagePanel;
@@ -192,6 +193,7 @@ public class EntityController implements Subject {
 		if(teamMember.joinEntity(this)){
 			_teamMemberList.add(teamMember);
 		}
+		notifyObservers();
 	}
 
 	public void removeTeamMember(TeamMemberController teamMember){

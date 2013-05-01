@@ -3,7 +3,6 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -15,7 +14,6 @@ import javax.swing.AbstractListModel;
 import javax.swing.BoxLayout;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -46,7 +44,6 @@ public class AddVictimPanel extends CustomPanelImpl {
 	private static final Dimension DIMENSION_FORM_PANEL = new Dimension(WIDTH- 20, 200);
 	public static final String TITLE = "Ajouter une victime";
 	
-
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
@@ -82,7 +79,6 @@ public class AddVictimPanel extends CustomPanelImpl {
 		
 		initGui();
 	}
-	
 	
 	@SuppressWarnings({ "unchecked", "rawtypes", "serial" })
 	private void initGui()
@@ -386,6 +382,6 @@ public class AddVictimPanel extends CustomPanelImpl {
 
 	@Override
 	public void updatePanel() {
-		System.out.println("POUET");
+		//Pas d'update à faire ici.
 	}
 }
