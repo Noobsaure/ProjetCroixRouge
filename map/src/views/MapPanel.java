@@ -90,7 +90,7 @@ public class MapPanel extends JPanel implements Observer {
 		}
 	}
 
-	public void showAddLocationPanel(int x, int y){
+	public void showAddLocationPanel(int x, int y) {
 		Launcher launcher = getGlobalPanel().getLauncher();
 		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);		
 		new CustomDialog(addLocationPanel, _globalPanel);
@@ -113,8 +113,7 @@ public class MapPanel extends JPanel implements Observer {
 			}
 		}
 		_locations.removeAll(listLocationsToDelete);
-		for(LocationController oneLoc : listLocations)
-		{
+		for(LocationController oneLoc : listLocations) {
 			int x = (int) oneLoc.getX();
 			int y = (int) oneLoc.getY();
 			Location location = new Location(_globalPanel, oneLoc);
@@ -128,6 +127,10 @@ public class MapPanel extends JPanel implements Observer {
 		for(Location oneLoc : _locations) {
 			oneLoc.update();
 		}
+	}
+	
+	public void resetLocationOffsets() {
+		
 	}
 
 	public synchronized void disableLocationHighlight() {
