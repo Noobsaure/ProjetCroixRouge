@@ -90,11 +90,7 @@ public class MapController implements Subject {
 	}
 	
 	public List<LocationController> getLocationList(){
-		List<LocationController> locationList = new ArrayList<>();
-		
-		for(LocationController location : _locationList){
-			locationList.add(location);
-		}
+		List<LocationController> locationList = new ArrayList<>(_locationList);
 		
 		return locationList;
 	}

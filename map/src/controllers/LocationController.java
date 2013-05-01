@@ -185,6 +185,7 @@ public class LocationController implements Subject {
 
 	public String show() {
 		String result;
+		System.out.println("ON va la... et name = "+_name);
 		result = _name.toUpperCase();
 		result += "Equipes presentes: \n";
 
