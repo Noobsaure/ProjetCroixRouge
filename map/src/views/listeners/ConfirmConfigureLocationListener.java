@@ -2,11 +2,12 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import views.ConfigurationLocationPanel;
-import views.ErrorMessage;
 import views.MapPanel;
+import views.MessagePanel;
+import views.MyJDialog;
 import controllers.LocationController;
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -16,14 +17,14 @@ import database.DatabaseManager;
 public class ConfirmConfigureLocationListener implements ActionListener
 {
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
-	
+
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private LocationController _locationController;
 	private DatabaseManager _databaseManager;
 	private ConfigurationLocationPanel _configurationLocationPanel;
-	
-	
+
+
 	public ConfirmConfigureLocationListener(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager, ConfigurationLocationPanel configurationLocationPanel, LocationController locationController)
 	{
 		_mapPanel = mapPanel;
@@ -32,33 +33,33 @@ public class ConfirmConfigureLocationListener implements ActionListener
 		_databaseManager = databaseManager;
 		_configurationLocationPanel = configurationLocationPanel;
 	}
-	
-	
+
+
 	public boolean checkInput(String name, String informations)
 	{
 		return !name.equals("");
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
 		String name = _configurationLocationPanel.getName();
 		String informations = _configurationLocationPanel.getInformations();
-		
+
 		if(!checkInput(name, informations))
 		{
-			if(name.equals(""))
-				new ErrorMessage(_mapPanel, "Saisie incomplÃ¨te - Le nom ne peut pas Ãªtre vide.", EMPTY_NAME_MESSAGE);
+			if(name.equals("")) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète - Le nom ne peut pas être vide.", EMPTY_NAME_MESSAGE);
+				new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
+			}
 		}
 		else
 		{
 			_locationController.setName(name);
 			_locationController.setDescription(informations);
-			//_locationController.addObserver(_mapPanel.getGlobalPanel());
 			_locationController.notifyObservers();
-			_mapPanel.remove(_configurationLocationPanel);
-			_mapPanel.setCurrentPopUp(null);
-			_mapPanel.repaint();
+			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_configurationLocationPanel);
+			dialog.dispose();
 		}
 	}
 }

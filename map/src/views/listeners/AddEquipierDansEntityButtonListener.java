@@ -4,9 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
 import views.MapPanel;
+import views.MyJDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
@@ -29,8 +32,7 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 		_entityController = entityController;
 	}
 
-
-	// on récupère l'index du jCombobox selectionné et on le récupère dans la iste des équipiers
+	// On récupère l'index du jCombobox selectionné et on le récupère dans la iste des équipiers
 	// pour l'ajouter à l'entité
 
 	public void actionPerformed(ActionEvent e)
@@ -40,26 +42,14 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 
 		listEquipiers= _operationController.getTeamMemberAvailableList();	
 
-		if (indexEquipier>=0) 
-		{
+		if (indexEquipier>=0) {
 			_team=listEquipiers.get(indexEquipier);
 			System.out.println("Nom équipier : "+_team.getFirstName());
 			_entityController.addTeamMember(_team);
 		}
-		else
-		{
-			System.out.println("Impossible d'ajouter un équipier.");
-		}
-
-		// on retourne à la fenetre de configuration de l'entité
-		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_parent, _operationController, _entityController);
-
-		_parent.add(configurationEntityPanel);
-		_parent.setComponentZOrder(configurationEntityPanel, 0);
-
-		_parent.remove(_addEquipierPanel);
-		_parent.repaint();
-		_parent.revalidate();
+		
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEquipierPanel);
+		dialog.dispose();
 	}
 }
 

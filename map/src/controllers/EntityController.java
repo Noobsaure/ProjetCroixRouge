@@ -4,9 +4,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import observer.Observer;
 import observer.Subject;
-import views.ErrorMessage;
+import views.MessagePanel;
+import views.MyJDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -67,7 +69,8 @@ public class EntityController implements Subject {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,NULL,'1','"+datetime+"','Creation entite')"));
 			_stateId = result;
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation du statut pour l'entité '"+name+"'.");		
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation du statut pour l'entité '"+name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		//Creation of the entity in database
@@ -77,14 +80,16 @@ public class EntityController implements Subject {
 			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+_dbm.addSlashes(name)+"','"+datetime+"','"+type+"','"+color+"','"+_dbm.addSlashes(infos)+"')"));
 			_id = result2;
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation de l'entité '"+name+"'.");		
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation de l'entité '"+name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}	
 
 		//Update of the status of the entity
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Statut","entite_id = '"+_id+"'", "id='"+_stateId+"'"));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Creation Entite", "Une erreur est survenue lors de la mise à jour du statut pour l'entité '"+name+"'."); 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation Entite", "Une erreur est survenue lors de la mise à jour du statut pour l'entité '"+name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		_operation.addEntite(this);
@@ -125,10 +130,12 @@ public class EntityController implements Subject {
 				}
 				result.getStatement().close();
 			}catch(SQLException e){	
-				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement du statut pour l'entité '"+name+"'. Aucun résultat n'a été trouvé. Veuillez relancer l'application.");		
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement du statut pour l'entité '"+name+"'. Aucun résultat n'a été trouvé. Veuillez relancer l'application.");
+				new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			}
 		}catch (MalformedQueryException e1) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement du statut pour l'entité '"+name+"'. Veuillez relancer l'applciation.");		
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement du statut pour l'entité '"+name+"'. Veuillez relancer l'applciation.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		//On ajoute les equipiers presents dans l'entite
@@ -141,10 +148,12 @@ public class EntityController implements Subject {
 				}
 				result.getStatement().close();
 			}catch(SQLException e){ 
-				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement des équipiers pour l'entité '"+name+"'. Aucun résultat n'a été trouvé. Veuillez relancer l'application.");
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement des équipiers pour l'entité '"+name+"'. Aucun résultat n'a été trouvé. Veuillez relancer l'application.");
+				new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			}
 		}catch(MalformedQueryException e1) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement des équipiers pour l'entité '"+name+"'.Veuillez relancer l'application.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement Entité" ,"Une erreur est survenue lors du chargement des équipiers pour l'entité '"+name+"'.Veuillez relancer l'application.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -158,13 +167,15 @@ public class EntityController implements Subject {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+_dbm.addSlashes(infos)+"')"));
 			_stateId = result;
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de statut" ,"Impossible de créér un nouveau statut pour l'entite '"+_name+"'. Veuillez réessayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de statut" ,"Impossible de créér un nouveau statut pour l'entite '"+_name+"'. Veuillez réessayer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite","statut_id ="+_stateId,"id ="+_id));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de statut" ,"Impossible de mettre à jour le statut pour l'entite '"+_name+"'. Veuillez réessayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de statut" ,"Impossible de mettre à jour le statut pour l'entite '"+_name+"'. Veuillez réessayer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		_available = state;
@@ -248,7 +259,8 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "couleur='"+newColor+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite '"+_name+"'. Veuillez réessayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite '"+_name+"'. Veuillez réessayer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_color = newColor;
 	}
@@ -269,7 +281,8 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "pos_courante_id ="+_posCurrentId,"id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de position" ,"Impossible de mettre à jour la position courante pour l'entite '"+_name+"'. L'entité a été ramené à '"+_operation.getPcmLocation().getName()+"'. Veuillez la repositionner." );
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de position" ,"Impossible de mettre à jour la position courante pour l'entite '"+_name+"'. L'entité a été ramené à '"+_operation.getPcmLocation().getName()+"'. Veuillez la repositionner." );
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			_posCurrentId = _operation.getIdPcm();
 		}
 
@@ -281,7 +294,8 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "date_depart ='"+_dateArriveeLocalisation+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de position" ,"Impossible de mettre à jour la date d'arrivée à la localisation pour l'entite '"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de position" ,"Impossible de mettre à jour la date d'arrivée à la localisation pour l'entite '"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		genererMessageDeplacement(idDeplacement);
@@ -292,7 +306,8 @@ public class EntityController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "nom='"+_dbm.addSlashes(newName)+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Entité - Changement de nom" ,"Impossible de mettre à jour le nom pour l'entite '"+_name+"'. Veuillez recommencer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Entité - Changement de nom" ,"Impossible de mettre à jour le nom pour l'entite '"+_name+"'. Veuillez recommencer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		String tmp = _name;
 		_name = newName;
@@ -308,7 +323,8 @@ public class EntityController implements Subject {
 		try {
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-4', "+_operation.getId()+",NULL, NULL, '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -326,7 +342,8 @@ public class EntityController implements Subject {
 		try {
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -351,7 +368,8 @@ public class EntityController implements Subject {
 			int id = _operation.getId();
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
+			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -365,8 +383,9 @@ public class EntityController implements Subject {
 			int id = _operation.getId();
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
+			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 	
@@ -414,10 +433,12 @@ public class EntityController implements Subject {
 						}
 						result2.close();
 					}catch(SQLException e){
-						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
+						MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
+						new MyJDialog(errorPanel, _operation.getGlobalPanel());
 					}
 				}catch (MalformedQueryException e1) {
-					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
+					MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
+					new MyJDialog(errorPanel, _operation.getGlobalPanel());
 				}
 
 				//On ajoute les equipiers presents dans l'entite
@@ -431,17 +452,21 @@ public class EntityController implements Subject {
 						}
 						result2.close();
 					}catch (SQLException e) { 
-						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
+						MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
+						new MyJDialog(errorPanel, _operation.getGlobalPanel());
 					}
 				} catch (MalformedQueryException e1) { 
-					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
+					MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
+					new MyJDialog(errorPanel, _operation.getGlobalPanel());
 				}
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la mise à jour des informartions pour l'entité +'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la mise à jour des informartions pour l'entité +'"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne", "Une erreur est survenue lors de la mise à jour des informartions pour l'entité +'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel( "Erreur interne", "Une erreur est survenue lors de la mise à jour des informartions pour l'entité +'"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 

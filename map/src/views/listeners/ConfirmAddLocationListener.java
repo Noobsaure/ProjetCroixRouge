@@ -2,11 +2,12 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import views.AddLocationPanel;
-import views.ErrorMessage;
 import views.MapPanel;
+import views.MessagePanel;
+import views.MyJDialog;
 import controllers.LocationController;
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -48,35 +49,14 @@ public class ConfirmAddLocationListener implements ActionListener
 		
 		if(!checkInput(name, informations))
 		{
-			if(name.equals(""))
-				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
-			
-			if(informations.equals(""))
-				System.out.println("Informations null");	
-		}
-		else
-		{
+			if(name.equals("")) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
+				new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
+			}
+		} else {
 			LocationController location = new LocationController(_operationController, _databaseManager,_x,_y,name,informations);
-			_mapPanel.remove(_addLocationPanel);
-			_mapPanel.setCurrentPopUp(null);
-			_mapPanel.repaint();
+			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addLocationPanel);
+			dialog.dispose();
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

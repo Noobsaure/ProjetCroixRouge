@@ -4,12 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.JPanel;
-
 import views.ConfigurationEntityPanel;
 import views.EntityPanel;
-import views.ErrorMessage;
 import views.MapPanel;
+import views.MessagePanel;
+import views.MyJDialog;
 import controllers.EntityController;
 import controllers.LocationController;
 import controllers.OperationController;
@@ -46,17 +45,15 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		int indexLocation = _configPanel.getIndexLocation();
 		
 		if(!checkInput(nomEntity)) {
-			new ErrorMessage(_mapPanel, "Saisie incomplÃ¨te", EMPTY_NAME_MESSAGE);
+			MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
+			new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
 		} else {
 			_entity.setName(nomEntity);
 		}
 		
 		listLocation= _operationController.getLocationList();
 		_location = listLocation.get(_configPanel.getIndexLocation());
-		_entity.setLocation(_location); 
-		
-		_mapPanel.repaint();
-		_mapPanel.revalidate();
+		_entity.setLocation(_location);
 	}
 
 	

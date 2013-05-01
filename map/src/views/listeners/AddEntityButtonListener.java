@@ -24,7 +24,7 @@ public class AddEntityButtonListener implements ActionListener
 	{
 		Launcher launcher = _globalPanel.getLauncher();
 		AddEntityPanel addEntityPanel = new AddEntityPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());		
-		MyJDialog dialog = new MyJDialog(addEntityPanel, _globalPanel);
+		new MyJDialog(addEntityPanel, _globalPanel);
 	}
 }
 

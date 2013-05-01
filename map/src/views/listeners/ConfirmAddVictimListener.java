@@ -6,9 +6,13 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
+import javax.swing.SwingUtilities;
+
 import views.AddVictimPanel;
-import views.ErrorMessage;
+import views.GlobalPanel;
 import views.MapPanel;
+import views.MessagePanel;
+import views.MyJDialog;
 import views.SubMenuVictimPanel;
 import controllers.EntityController;
 import controllers.OperationController;
@@ -25,6 +29,7 @@ public class ConfirmAddVictimListener implements ActionListener
 	public static String EMPTY_ENTITY_ASSOCIATED_MESSAGE = "Veuillez renseigner le champ \"Entité associée\".";
 	
 	private MapPanel _mapPanel;
+	private GlobalPanel _globalPanel;
 	private SubMenuVictimPanel _subMenu;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
@@ -34,6 +39,7 @@ public class ConfirmAddVictimListener implements ActionListener
 	public ConfirmAddVictimListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, AddVictimPanel addVictimPanel)
 	{
 		_mapPanel = mapPanel;
+		_globalPanel = _mapPanel.getGlobalPanel();
 		_subMenu = subMenu;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
@@ -62,45 +68,37 @@ public class ConfirmAddVictimListener implements ActionListener
 		
 		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if(((motifsList.length == 0) || (motifsList[0].equals(" "))) && (otherMotif.equals("")))
-				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_MOTIF_MESSAGE);
-			else
-			if(idAnonymat.equals(""))
-				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
-			else
-			if(soins.equals(""))
-				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_SOINS_MESSAGE);
-			else
-			if(entitesAssociees == null)
-				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_ENTITY_ASSOCIATED_MESSAGE);
-		}
-		else
-		{
+			if((motifsList.length == 0 ) || (otherMotif.equals(""))) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_MOTIF_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			} else if(idAnonymat.equals("")) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			} else if(soins.equals("")) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_SOINS_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			} else if(entitesAssociees == null) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			}
+		} else {
 			String name = _addVictimPanel.getNameTextField().getText();
 			String prenom = _addVictimPanel.getPrenomTextField().getText();
 			String adress = _addVictimPanel.getAdressTextField().getText();
 			
 			Date dateDeNaissanceDate = _addVictimPanel.getDateDeNaissanceDatePicker().getDate();
 			Timestamp dateDeNaissance = null;
-			if(dateDeNaissanceDate != null)
+			if(dateDeNaissanceDate != null) {
 				dateDeNaissance = new Timestamp(dateDeNaissanceDate.getYear(),  dateDeNaissanceDate.getMonth(), dateDeNaissanceDate.getDate(), dateDeNaissanceDate.getHours(), dateDeNaissanceDate.getMinutes(), dateDeNaissanceDate.getSeconds(), 0);
+			}
 			
-			try
-			{
+			try	{
 				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
-				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
-				_mapPanel.add(subMenu);
-				_mapPanel.setComponentZOrder(subMenu, 0);
 			}
-			catch(ParseException e1)
-			{
-				e1.printStackTrace();
-			}
+			catch(ParseException e1) {e1.printStackTrace();}
 			
-			MapPanel mapPanel = (MapPanel)_mapPanel;
-			_mapPanel.setCurrentPopUp(null);
-			_mapPanel.remove(_addVictimPanel);
-			_mapPanel.repaint();
+			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addVictimPanel);
+			dialog.dispose();
 		}
 	}
 }
