@@ -18,10 +18,7 @@ import database.DatabaseManager;
 
 
 public class ConfirmEditVictimListener implements ActionListener
-{
-	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
-	private String EMPTY_TYPE_MESSAGE = "Veuillez renseigner la champ \"Type\".";
-	
+{	
 	private MapPanel _mapPanel;
 	private SubMenuVictimPanel _subMenu;
 	private OperationController _operationController;

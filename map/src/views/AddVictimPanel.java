@@ -164,6 +164,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		panel.add(_detailsTextArea);
 		
 		JLabel lblIdentifiantDanonymat = new JLabel("Identifiant d'anonymat :");
+//		lblIdentifiantDanonymat.setBorder(new EmptyBorder(0, -10, 0, 0));
 		panel.add(lblIdentifiantDanonymat);
 		
 		_idAnonymat = new JTextField();
@@ -175,7 +176,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		panel.add(soinsLabel);
 		
 		_soinsTextArea = new JTextArea();
-		_soinsTextArea.setPreferredSize(new Dimension(200, 80));
+		_soinsTextArea.setPreferredSize(new Dimension(200, 500));
 		panel.add(_soinsTextArea);
 		
 		JScrollPane scrollPane = new JScrollPane(_soinsTextArea);
@@ -199,7 +200,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		_nameTextField = new JTextField();
 		_nameTextField.setColumns(10);
 		
-		JLabel prenomLabel = new JLabel("Prenom :");
+		JLabel prenomLabel = new JLabel("Prénom :");
 		
 		_prenomTextField = new JTextField();
 		_prenomTextField.setColumns(10);
@@ -265,7 +266,7 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		gbc_dateDeNaissanceTextField.gridwidth = 2;
 		_identityPanel.add(_dateDeNaissanceDatePicker, gbc_dateDeNaissanceTextField);
 		
-		entiteAssocieeLabel = new JLabel("Entite associee :");
+		entiteAssocieeLabel = new JLabel("Entité associée :");
 		GridBagConstraints gbc_entiteAssocieeLabel = new GridBagConstraints();
 		gbc_entiteAssocieeLabel.anchor = anchor;
 		gbc_entiteAssocieeLabel.insets = new Insets(0, 0, 0, 5);
@@ -397,6 +398,11 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+		
+//		_soinsTextArea.setPreferredSize(null);
+//		_soinsTextArea.setMinimumSize(new Dimension(200, 80));
+		
+//		System.out.println("Content : " + (new JLabel(_soinsTextArea.getText()).getText()));
 		
 		centrer();
 	}

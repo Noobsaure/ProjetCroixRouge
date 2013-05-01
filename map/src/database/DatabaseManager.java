@@ -182,24 +182,6 @@ public class DatabaseManager
 	}
 	
 	
-	private String readFile(String fileName, Writer writerArg)
-	        throws FileNotFoundException, IOException {
-
-	    BufferedReader br = new BufferedReader(new FileReader(fileName));
-	    String nextLine = "";
-	    StringBuffer sb = new StringBuffer();
-	    while ((nextLine = br.readLine()) != null) {
-	        System.out.println("Writing: " + nextLine);
-	        writerArg.write(nextLine);
-	        sb.append(nextLine);
-	    }
-	    // Convert the content into to a string
-	    String clobData = sb.toString();
-
-	    // Return the data.
-	    return clobData;
-	}
-	
 	/**
 	 * Stores an image in the database.  
 	 * @param name the name of the image to insert
@@ -238,8 +220,10 @@ public class DatabaseManager
 	    	preparedStatement.close();
 	    	fileInputStream.close();
 	    	
+	    	_operation.pauseTimerTask();
 	    	_connection.close();
 	    	connection(_databaseURL, _login, _password);
+	    	_operation.startTimerTask();
 	    }
 	    catch(Exception e)
 	    {
