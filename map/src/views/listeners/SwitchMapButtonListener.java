@@ -44,7 +44,6 @@ public class SwitchMapButtonListener implements ActionListener
 		for(int i = 0; i < _thumbnailPanel.getComponentCount(); i += 2)
 		{
 			JToggleButton toggleButton = (JToggleButton)_thumbnailPanel.getComponent(i);
-
 			if(toggleButton.isSelected())
 				buttonSelected = toggleButton;
 		}
@@ -52,14 +51,12 @@ public class SwitchMapButtonListener implements ActionListener
 		Map<JToggleButton, MapController> map = _subMenuPanel.getMapMap();
 		MapController mapController = map.get(buttonSelected);
 
-		if(mapController != null)
-		{
+		if(mapController != null) {
 			_operationController.setCurrentMap(mapController);
+			_mapPanel.resetLocationOffsets();
 		}
-
-		_button.setEnabled(true);
+		
 		_mapPanel.remove(_subMenuPanel);
-
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
 	}

@@ -44,7 +44,7 @@ public class ConfirmAddLocationListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		String name = _addLocationPanel.getName();
+		String name = _addLocationPanel.getFieldName();
 		String informations = _addLocationPanel.getInformations();
 		
 		if(!checkInput(name, informations))
