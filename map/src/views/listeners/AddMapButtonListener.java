@@ -31,9 +31,7 @@ public class AddMapButtonListener extends AbstractObserverListener implements Ac
 		_operation = operation;
 		_fileChooser = new JFileChooser();
 		_subMenu = subMenu;
-
 	}
-
 
 	private String getFileName(String path)
 	{

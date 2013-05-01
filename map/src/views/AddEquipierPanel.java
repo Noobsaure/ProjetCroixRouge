@@ -5,18 +5,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -36,7 +30,7 @@ import controllers.TeamMemberController;
 
 
 
-public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
+public class AddEquipierPanel extends JPanel implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -81,8 +75,7 @@ public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
 		setOpaque(false);
 		
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(new Dimension(400, 180));	
-		centrer();
+		_internalPanel.setSize(new Dimension(400, 180));
 		add(_internalPanel, 1);
 		
 		TITLE = _entityController.getName();
@@ -130,7 +123,7 @@ public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 2, left, default");
 		
-		CustomButton ajoutButton = new CustomButton("Valider l'ajouter d'un Ã©quipier Ã  l'entitÃ©");	
+		CustomButton ajoutButton = new CustomButton("Valider l'ajout d'un équipier à  l'entité");	
 		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_parent, _operationController, _entityController, this));
 		
 		formPanel.add(ajoutButton, "2, 4");
@@ -149,26 +142,12 @@ public class AddEquipierPanel extends JLayeredPane implements PopUpPanel
 		
 		/**************************************************************/
 	
-	}
-
-	private void centrer()
-	{
-		int x = (_parent.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_internalPanel.getHeight() / 2);
-		_internalPanel.setLocation(x, y);
-	}
-		
+		setPreferredSize(_internalPanel.getPreferredSize());
+	}		
 	
 	public int getIndexEquipier()
 	{
 		return (int)_typeComboBox.getSelectedIndex();
-	}
-		
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-		centrer();		
 	}
 
 	@Override

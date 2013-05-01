@@ -7,9 +7,8 @@ import java.util.List;
 
 import observer.Observer;
 import observer.Subject;
-
-import views.ErrorMessage;
-
+import views.MessagePanel;
+import views.MyJDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -49,8 +48,9 @@ public class LocationController implements Subject {
 		_idMap = operation.getCurrentMap().getId();
 
 		if(name.compareTo("LocalisationBaseDesEntites") == 0){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation " +
-					"de base pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");	
+			MessagePanel errorPanel = new MessagePanel("Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation " +
+					"de base pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			return;
 		}
 
@@ -62,8 +62,9 @@ public class LocationController implements Subject {
 			_description = description;
 			_id = result;
 		}catch(MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Création localisation" ,"La localisation "+_name+" n'a pas pu être ajouté dans la base de données." +
-					"Veuillez réessayer.");				
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Création localisation" ,"La localisation "+_name+" n'a pas pu être ajouté dans la base de données." +
+					"Veuillez réessayer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		operation.getCurrentMap().addLocation(this);
@@ -112,8 +113,9 @@ public class LocationController implements Subject {
 		try {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("LocalisationHistorique", "(NULL,'"+entity.getLastPosCurrentId()+"','"+_id+"','"+entity.getId()+"','"+entity.getDateArriveeLocalisation()+"','"+datetime+"')"));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Localisation - Ajout entité" ,"Une erreur est survenue lors de l'ajout de " +
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Localisation - Ajout entité" ,"Une erreur est survenue lors de l'ajout de " +
 					"l'entité '"+entity.getName()+"' au point de localisation '" +_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_entityList.add(entity);
 
@@ -133,8 +135,9 @@ public class LocationController implements Subject {
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Localisation - Changement de nom" ,"Une erreur est survenue lors de la mise à jour du nom de la localisation " +
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Localisation - Changement de nom" ,"Une erreur est survenue lors de la mise à jour du nom de la localisation " +
 					"'"+_name+"' vers '"+name+"'. Veuillez rééssayer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		genererMessageChangementDeNom(name);
@@ -149,8 +152,9 @@ public class LocationController implements Subject {
 		try {
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-3', "+_operation.getId()+",NULL, NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
+			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -185,6 +189,7 @@ public class LocationController implements Subject {
 
 	public String show() {
 		String result;
+		System.out.println("ON va la... et name = "+_name);
 		result = _name.toUpperCase();
 		result += "Equipes presentes: \n";
 
@@ -224,9 +229,11 @@ public class LocationController implements Subject {
 			
 			result.getStatement().close();
 		}catch(SQLException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e1){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -234,7 +241,8 @@ public class LocationController implements Subject {
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "`desc`='"+_dbm.addSlashes(informations)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description de la localisation '"+_name+"'. Veuillez rééssayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description de la localisation '"+_name+"'. Veuillez rééssayer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		_description = informations;

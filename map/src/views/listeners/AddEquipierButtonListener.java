@@ -5,8 +5,10 @@ import java.awt.event.ActionListener;
 
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
-import views.ErrorMessage;
+import views.GlobalPanel;
 import views.MapPanel;
+import views.MessagePanel;
+import views.MyJDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -18,11 +20,13 @@ public class AddEquipierButtonListener implements ActionListener {
 	private EntityController _entityController;
 	private OperationController _operationController;
 	private MapPanel _mapPanel;
+	private GlobalPanel _globalPanel;
 	private ConfigurationEntityPanel _configEntityPanel;
 
 	public AddEquipierButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController, ConfigurationEntityPanel configEntityPanel) 
 	{
 		_mapPanel = mapPanel;
+		_globalPanel = _mapPanel.getGlobalPanel();
 		_entityController=entityController;
 		_operationController=operationController;
 		_configEntityPanel=configEntityPanel;
@@ -33,18 +37,15 @@ public class AddEquipierButtonListener implements ActionListener {
 		if (_operationController.getTeamMemberAvailableList().size() == 0)
 		{
 			if (_operationController.getTeamMemberList().size() == 0) {
-				new ErrorMessage(_mapPanel, "Equipier insuffisant", EMPTY_LIST_MESSAGE);
+				MessagePanel errorPanel = new MessagePanel("Equipier insuffisant", EMPTY_LIST_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
 			} else {
-				new ErrorMessage(_mapPanel, "Equipier insuffisant", EMPTY_DISPO_MESSAGE);
+				MessagePanel errorPanel = new MessagePanel("Equipier insuffisant", EMPTY_DISPO_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
 			}
 		} else {
-			_mapPanel.remove(_configEntityPanel);
-			_mapPanel.setCurrentPopUp(null);
 			AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_mapPanel, _operationController, _entityController);
-			_mapPanel.add(addEquipierPanel);
-			_mapPanel.setComponentZOrder(addEquipierPanel, 0);
-			_mapPanel.repaint();
-			_mapPanel.revalidate();
+			new MyJDialog(addEquipierPanel, _globalPanel);
 		}
 	}
 }

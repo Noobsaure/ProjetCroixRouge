@@ -4,7 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import views.ConfirmDelMapPanel;
+import views.ChoicePanel;
 import views.MapPanel;
 import views.SubMenuMapPanel;
 import views.buttons.SubMenuMapButton;
@@ -15,10 +15,10 @@ import controllers.OperationController;
 public class ConfirmDelMapListener implements ActionListener {
 	private OperationController _operation;
 	private SubMenuMapButton _button;
-	private ConfirmDelMapPanel _confirmDelMapPanel;
+	private ChoicePanel _confirmDelMapPanel;
 	private MapController _map;
 	
-	public ConfirmDelMapListener(OperationController operation, SubMenuMapButton button, ConfirmDelMapPanel confirmDelMapPanel, MapController map) {
+	public ConfirmDelMapListener(OperationController operation, SubMenuMapButton button, ChoicePanel confirmDelMapPanel, MapController map) {
 		_operation = operation;
 		_button = button;
 		_confirmDelMapPanel = confirmDelMapPanel;

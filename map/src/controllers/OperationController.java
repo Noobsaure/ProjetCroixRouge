@@ -2,17 +2,16 @@ package controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
 import launcher.RefreshTimerTask;
-
 import observer.Observer;
 import observer.Subject;
-import views.ErrorMessage;
 import views.GlobalPanel;
+import views.MessagePanel;
+import views.MyJDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -148,7 +147,8 @@ public class OperationController implements Subject
 			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "LocalisationBaseDesEntites", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.");
 			_locationList.add(location);
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entitées.");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la génération de la localisation de base des entitées.");
+			new MyJDialog(errorPanel, _globalPanel);
 		}
 	}
 

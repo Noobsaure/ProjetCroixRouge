@@ -1,5 +1,6 @@
 package launcher;
 
+import java.util.List;
 import java.util.Timer;
 
 import views.GlobalPanel;
@@ -55,41 +56,10 @@ public class Launcher {
 		_operation.setTimerTask(timer);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>     Tests controlleurs   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		
-		/*
-		EntityController entite = new EntityController(_operation, _dbm, "Alpha1" ,"Mobile", "Equipe 1");		
-		EntityController entite2 = new EntityController(_operation, _dbm, "Beta2" ,"Pied", "Equipe 2");
-		EntityController entite3 = new EntityController(_operation, _dbm, "Charlie3" ,"Lol", "Equipe 3");
-		*/
-		
-		//_operation.getEntity(1).addTeamMember(_operation.getEquipier(1));
-		//_operation.getEntity(2).addTeamMember(_operation.getEquipier(2));
-		//_operation.getEntity(3).addTeamMember(_operation.getEquipier(2));
-		
-		/*
-		String path = "resources/map/map.png";
-		_operation.addMap(new MapController(_operation, databaseManager, "Carte1", path ));
-		
-		_operation.addLocation(new LocationController(_operation, databaseManager, 2, 3, "PointLocalisation 1","Le premier point de localisation de notre GigaSuperCarte"));
-		 */
-		
-		//_operation.getEntity(61).addTeamMember(_operation.getEquipier(2));
-		//_operation.getEntity(62).addTeamMember(_operation.getEquipier(1));
-		
-		//_operation.getEquipier(2).joinEntity(_operation.getEntity(63));
-		//_operation.getEquipier(2).leaveEntity();
-		
-		//_operation.get
+	
 		
 		System.out.println("\n \n \n>>>>>>>>>>>>>>>>>>>>>>>     Resultats   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		
-		_operation.showEntityList();
-		
-		/*EntityController entity = _operation.getEntity(19);
-		entity.setAvailable(false, "Blablabla");
-		System.out.println("Etat equipe : DISPO "+entity.getStatut());
-		entity.setAvailable(true, "infos2");
-
-		System.out.println("Etat equipe : DISPO "+entity.getStatut());*/
 	}
 
 	public DatabaseManager getDatabaseManager(){

@@ -6,9 +6,13 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
+import javax.swing.SwingUtilities;
+
 import views.EditVictimPanel;
-import views.ErrorMessage;
+import views.GlobalPanel;
 import views.MapPanel;
+import views.MessagePanel;
+import views.MyJDialog;
 import views.SubMenuVictimPanel;
 import controllers.EntityController;
 import controllers.OperationController;
@@ -20,6 +24,7 @@ import database.DatabaseManager;
 public class ConfirmEditVictimListener implements ActionListener
 {	
 	private MapPanel _mapPanel;
+	private GlobalPanel _globalPanel;
 	private SubMenuVictimPanel _subMenu;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
@@ -29,6 +34,7 @@ public class ConfirmEditVictimListener implements ActionListener
 	public ConfirmEditVictimListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, EditVictimPanel editVictimPanel, VictimController victimController)
 	{
 		_mapPanel = mapPanel;
+		_globalPanel = _mapPanel.getGlobalPanel();
 		_subMenu = subMenu;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
@@ -51,17 +57,19 @@ public class ConfirmEditVictimListener implements ActionListener
 		
 		if(!ConfirmAddVictimListener.checkInput(((motifsList.length == 0) || (motifsList[0].equals(" "))) ? "" : ((motifsList[0].equals("")) ? "" : motifsList[0]), otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if(((motifsList.length == 0) || (motifsList[0].equals(" "))) && (otherMotif.equals("")))
-				new ErrorMessage(_mapPanel, "Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
-			
-			if(idAnonymat.equals(""))
-				new ErrorMessage(_mapPanel, "Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_ID_ANONYMAT_MESSAGE);
-			
-			if(soins.equals(""))
-				new ErrorMessage(_mapPanel, "Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
-			else
-			if(entitesAssociees == null)
-				new ErrorMessage(_mapPanel, "Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+			if((motifsList.length == 0 ) || (otherMotif.equals(""))) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			} else if(idAnonymat.equals("")) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ID_ANONYMAT_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			} else if(soins.equals("")) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			} else if(entitesAssociees == null) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+				new MyJDialog(errorPanel, _globalPanel);
+			}
 		}
 		else
 		{
@@ -77,18 +85,14 @@ public class ConfirmEditVictimListener implements ActionListener
 			try
 			{
 				_victimController.updateVictim(name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
-				SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, _operationController, _databaseManager);
-				_mapPanel.add(subMenu);
-				_mapPanel.setComponentZOrder(subMenu, 0);
 			}
 			catch(ParseException e1)
 			{
 				e1.printStackTrace();
 			}
-						
-			_mapPanel.remove(_editVictimPanel);
-			_mapPanel.setCurrentPopUp(null);
-			_mapPanel.repaint();
+			
+			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_editVictimPanel);
+			dialog.dispose();
 		}
 	}
 }

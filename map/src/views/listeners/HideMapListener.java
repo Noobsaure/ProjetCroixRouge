@@ -3,7 +3,7 @@ package views.listeners;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import views.ConfirmDelMapPanel;
+import views.ChoicePanel;
 import views.MapPanel;
 import views.SubMenuMapPanel;
 import views.buttons.SubMenuMapButton;
@@ -33,7 +33,7 @@ public class HideMapListener implements MouseListener {
 		String message = "Êtes-vous sur de vouloir supprimer la carte '"+_map.getName()+"'. " +
 				"Cette action est irréversible et toutes les entités présentes sur la carte seront ramenées à leur localisation de base.";
 
-		ConfirmDelMapPanel confirmDelMap = new ConfirmDelMapPanel(_operation, _subMenu, _button, _map, title, message);
+		ChoicePanel confirmDelMap = new ChoicePanel(_operation, _subMenu, _button, _map, title, message);
 		mapPanel.add(confirmDelMap);
 		mapPanel.setComponentZOrder(confirmDelMap, 0);
 		mapPanel.setCurrentPopUp(confirmDelMap);

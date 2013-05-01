@@ -2,11 +2,11 @@ package launcher;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
-import views.ErrorMessage;
+import views.MessagePanel;
+import views.MyJDialog;
 
 import controllers.EntityController;
 import controllers.LocationController;
@@ -14,7 +14,6 @@ import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 import controllers.VictimController;
-
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQuerySelect;
@@ -204,10 +203,12 @@ public class RefreshTimerTask extends TimerTask
 			}
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){ 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "WHILE Erreur lors de la mise Ã  jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		catch(SQLException e2){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), " TRY Erreur lors de la mise Ã  jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 

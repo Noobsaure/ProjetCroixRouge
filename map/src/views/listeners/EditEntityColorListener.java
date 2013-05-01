@@ -4,15 +4,10 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-
-import views.AddEntityPanel;
 import views.ConfigurationEntityPanel;
-import views.ErrorMessage;
 import views.MapPanel;
 import controllers.EntityController;
 import controllers.OperationController;
-import database.DatabaseManager;
 
 public class EditEntityColorListener implements ActionListener {
 

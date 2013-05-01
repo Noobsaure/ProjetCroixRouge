@@ -15,34 +15,29 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import views.buttons.CustomButton;
+import views.listeners.MessagePanelButtonListener;
 
 
-public class ErrorPanel extends JPanel
+public class MessagePanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
-	private JPanel _parent;
 	private String _message;
 	private String _title;
 	private JPanel _buttonPanel;
 	private CustomButton _okButton;
 	
-	public ErrorPanel(JPanel parent, String title, String message) {
-		_parent = parent;
+	public MessagePanel(String title, String message) {
 		_title = title;
 		_message = message + "  ";
 		init();
 	}
 	
-	public ErrorPanel(JPanel parent, String message)
-	{
-		_parent = parent;
+	public MessagePanel(String message) {
 		_title = "Erreur";
 		_message = message + "  ";
-		
 		init();
 	}
-	
 	
 	public void init()
 	{
@@ -55,8 +50,6 @@ public class ErrorPanel extends JPanel
 		FontMetrics metrics = getFontMetrics(messageLabel.getFont());
 		int width = metrics.stringWidth(_message) + 70;
 		int height = metrics.getHeight() + 120;
-		if(width > _parent.getWidth())
-			width = _parent.getWidth();
 		setSize(new Dimension(width, height));
 		popupPanel.setLayout(new BorderLayout(0, 0));
 		
@@ -80,8 +73,6 @@ public class ErrorPanel extends JPanel
 				i++;
 		}
 		
-		centrer();
-		
 		// Titre
 		JLabel titleLabel = new JLabel(_title);
 		titleLabel.setBorder(new EmptyBorder(5, 0, 8, 0));
@@ -91,7 +82,7 @@ public class ErrorPanel extends JPanel
 		// Icone
 		JLabel iconLabel = new JLabel();
 		iconLabel.setBorder(new EmptyBorder(0, 10, 0, 10));
-		iconLabel.setIcon(new ImageIcon(ErrorMessage.class.getResource("/ui/error.png")));
+		iconLabel.setIcon(new ImageIcon(MessagePanel.class.getResource("/ui/error.png")));
 		popupPanel.add(iconLabel, BorderLayout.WEST);
 		
 		// Message
@@ -110,16 +101,11 @@ public class ErrorPanel extends JPanel
 		popupPanel.add(_buttonPanel, BorderLayout.SOUTH);
 		
 		_okButton = new CustomButton("Ok");
+		_okButton.addActionListener(new MessagePanelButtonListener(this));
 		_buttonPanel.add(_okButton);
 		
 		add(popupPanel);
-	}
-	
-	public void addOkButtonListener(ActionListener listener)
-	{
-		_okButton.addActionListener(listener);
-	}
-	
+	}	
 	
 	public CustomButton getOkButton()
 	{
@@ -129,39 +115,5 @@ public class ErrorPanel extends JPanel
 	public JPanel getButtonsPanel()
 	{
 		return _buttonPanel;
-	}
-	
-	
-	private void centrer()
-	{		
-		int x = 0, y = 0;
-		
-		if(_parent != null)
-		{
-			x = (_parent.getWidth() / 2) - (getWidth() / 2);
-			y = (_parent.getHeight() / 2) - (getHeight() / 2);
-		}
-		else
-		{
-			Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-			int width = (int)screenSize.getWidth();
-			int height = (int)screenSize.getHeight();
-			
-			x = (width / 2) - (getWidth() / 2);
-			y = (height / 2) - (getHeight() / 2);
-		}
-		
-		if(x < 0)
-			x = 0;
-		if(y < 0)
-			y = 0;
-		setLocation(x, y);
-	}
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);	
-		
-		centrer();
 	}
 }

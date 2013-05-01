@@ -3,7 +3,9 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import views.ErrorMessage;
+import views.MessagePanel;
+import views.MyJDialog;
+
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -60,14 +62,16 @@ public class TeamMemberController {
 			try{
 				_dbm.executeQueryInsert(new SQLQueryInsert("EntiteHistorique", "(NULL,"+_id+","+entityId+",'"+datetime+"',NULL)"));	
 			}catch(MalformedQueryException e){
-				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
+				new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			}
 
 			//Update 'EntityId' pour l'equipier
 			try{
 				_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id="+entityId+", operation_id='"+_operation.getId()+"'","id = "+_id));
 			}catch(MalformedQueryException e){ 
-				new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
+				new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			}
 			_entity = entity;
 			System.out.println("ENTITY A CHANGE: Elle est maintenant ---> "+_entity.getName());
@@ -75,7 +79,8 @@ public class TeamMemberController {
 			return true;
 		}
 		else{
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), _firstName+" "+_name+" est déjà assigné à l'entité "+_entity.getName()+". Il doit d'abord quitter cette équipe pour être réassigné");
+			MessagePanel errorPanel = new MessagePanel(_firstName+" "+_name+" est déjà assigné à l'entité "+_entity.getName()+". Il doit d'abord quitter cette équipe pour être réassigné");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			return false;
 		}
 	}
@@ -105,7 +110,8 @@ public class TeamMemberController {
 					try{
 						_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id=NULL, operation_id=NULL","id="+_id));	
 					}catch(MalformedQueryException e){
-						new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Base de donnees" ,"Une erreur est survenue lors de la desafectation de l'entite_id à l'équipier "+_firstName+" "+_name);
+						MessagePanel errorPanel = new MessagePanel("Erreur interne - Base de donnees" ,"Une erreur est survenue lors de la desafectation de l'entite_id à l'équipier "+_firstName+" "+_name);
+						new MyJDialog(errorPanel, _operation.getGlobalPanel());
 					}
 				}
 				else{
@@ -229,9 +235,11 @@ public class TeamMemberController {
 			}
 			result.getStatement().close();
 		}catch (SQLException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e1) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}		
 	}
 

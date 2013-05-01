@@ -9,10 +9,8 @@ import javax.swing.ImageIcon;
 
 import observer.Observer;
 import observer.Subject;
-
-import sun.security.action.GetLongAction;
-import views.ErrorMessage;
-
+import views.MessagePanel;
+import views.MyJDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQuerySelect;
@@ -90,11 +88,7 @@ public class MapController implements Subject {
 	}
 	
 	public List<LocationController> getLocationList(){
-		List<LocationController> locationList = new ArrayList<>();
-		
-		for(LocationController location : _locationList){
-			locationList.add(location);
-		}
+		List<LocationController> locationList = new ArrayList<>(_locationList);
 		
 		return locationList;
 	}
@@ -103,7 +97,8 @@ public class MapController implements Subject {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte","visibilite = 0","id="+_id));
 		}catch(MalformedQueryException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Supression carte", "Erreur lors de la supression de la carte '"+_name+"'. Veuillez rééssayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Supression carte", "Erreur lors de la supression de la carte '"+_name+"'. Veuillez rééssayer.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		
 		_visibility = false;
@@ -158,9 +153,11 @@ public class MapController implements Subject {
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 }

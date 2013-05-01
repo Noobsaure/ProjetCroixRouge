@@ -1,26 +1,24 @@
 package controllers;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
+import observer.Observer;
+import observer.Subject;
+import views.MessagePanel;
+import views.MyJDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import observer.Observer;
-import observer.Subject;
-
-import views.ErrorMessage;
-
 public class VictimController implements Subject {
-	
+
 	private Integer _id;
 	private OperationController _operation;
 	private DatabaseManager _dbm;
@@ -40,7 +38,7 @@ public class VictimController implements Subject {
 	private String _soin;
 	private String _idAnonymat; // champ d'anonymisation d'une victime
 	private EntityController _entity;
-	
+
 	private List<Observer> _listObservers = new ArrayList<Observer>();
 	/**
 	 * Constructor for creation of a victim which is not in the database
@@ -51,7 +49,7 @@ public class VictimController implements Subject {
 	 * @param color 
 	 * @throws ParseException 
 	 */
-	
+
 
 	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon, EntityController entity) throws ParseException
 	{
@@ -72,13 +70,13 @@ public class VictimController implements Subject {
 			else if (motif[i] == "Traumatisme")
 				_traumatisme = true;
 		}
-		
+
 		_adresse = adresse;
-		
+
 		_dateDeNaissance = dateDeNaissance;
 		java.util.Date date = new java.util.Date();
 		_datePriseEnCharge = new java.sql.Timestamp(date.getTime());
-		
+
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
 		_idAnonymat = anon;
@@ -88,37 +86,37 @@ public class VictimController implements Subject {
 		try
 		{
 			String query = "(NULL,"+
-							"NULL,'"+
-							_operation.getId()+"','"+
-							_entity.getId()+"','"+
-							_idAnonymat+"','"+
-							_nom+"','"+
-							_prenom+"',"+
-							((_dateDeNaissance == null) ? "NULL" : ("'" + _dateDeNaissance.toString()) + "'") +","+
-							((_adresse.equals("")) ? "NULL" :("'" + _adresse + "'"))+",'"+
-							_statut+"',"+
-							"NULL,'"+
-							_datePriseEnCharge+"',"+
-							"NULL,'"+
-							(_petitSoin ? 1 : 0)+"', '"+
-							(_malaise ? 1 : 0)+"', '"+
-							(_traumatisme ? 1 : 0)+"', '"+
-							(_inconscience ? 1 : 0)+"', '"+
-							(_arretCardiaque ? 1 : 0)+"', '"+
-							_atteinteDetails+"', '"+
-							_soin+"')";
-			
-				_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
-				operation.addVictim(this);
-				genererMessage("Début de prise en charge de la victime "+_idAnonymat);
-			}
-			catch(MalformedQueryException e) { 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
+					"NULL,'"+
+					_operation.getId()+"','"+
+					_entity.getId()+"','"+
+					_idAnonymat+"','"+
+					_nom+"','"+
+					_prenom+"',"+
+					((_dateDeNaissance == null) ? "NULL" : ("'" + _dateDeNaissance.toString()) + "'") +","+
+					((_adresse.equals("")) ? "NULL" :("'" + _adresse + "'"))+",'"+
+					_statut+"',"+
+					"NULL,'"+
+					_datePriseEnCharge+"',"+
+					"NULL,'"+
+					(_petitSoin ? 1 : 0)+"', '"+
+					(_malaise ? 1 : 0)+"', '"+
+					(_traumatisme ? 1 : 0)+"', '"+
+					(_inconscience ? 1 : 0)+"', '"+
+					(_arretCardiaque ? 1 : 0)+"', '"+
+					_atteinteDetails+"', '"+
+					_soin+"')";
 
+			_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
+			operation.addVictim(this);
+			genererMessage("Début de prise en charge de la victime "+_idAnonymat);
+		}
+		catch(MalformedQueryException e) { 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
-	
+
 	public VictimController(OperationController operation,
 			DatabaseManager dbm, int id_victim, String statut, String idAnonymat, String nom,
 			String prenom, String adresse, Timestamp dateDeNaissance,
@@ -156,7 +154,7 @@ public class VictimController implements Subject {
 			else if (motif[i] == "Traumatisme")
 				_traumatisme = true;
 		}
-		
+
 		_adresse = adresse;
 		_nom = nom;
 		_prenom = prenom;
@@ -164,12 +162,12 @@ public class VictimController implements Subject {
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
 		_idAnonymat = anon;
-		
+
 		if(_entity.getId() != entity.getId()){
 			genererChangementEntite();
 			_entity = entity;
 		}
-		
+
 		String query = "surnom = '" + _dbm.addSlashes(_idAnonymat) + "'" +
 				((_nom.equals("")) ? "" : (", nom = '" + _dbm.addSlashes(_nom) + "'")) +
 				((_prenom.equals("")) ? "" : (", prenom = '" + _dbm.addSlashes(_prenom) + "'")) +
@@ -185,28 +183,30 @@ public class VictimController implements Subject {
 				((_soin.equals("")) ? "" : (", soin = '" + _dbm.addSlashes(_soin) + "'")) +
 				", entite_id = "+_entity.getId()+
 				" WHERE id = " + _id;
-		
+
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour victime '"+_idAnonymat+"'", "Une erreur est survenue lors de la mise à jour de la victime '"+_idAnonymat+"' \n " +
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime '"+_idAnonymat+"'", "Une erreur est survenue lors de la mise à jour de la victime '"+_idAnonymat+"' \n " +
 					"Veuillez réessayez.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
 	public void finDePriseEnCharge(String motifSortie){
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datesortie = new java.sql.Timestamp(date.getTime());
-		
+
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime","date_sortie='"+datesortie+"',motif_sortie='"+_dbm.addSlashes(motifSortie)+"'","id="+_id));
 		}catch(MalformedQueryException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime '"+_idAnonymat+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime '"+_idAnonymat+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 		genererFinDePriseEnCharge();
 	}
-	
+
 	private void genererChangementEntite() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
@@ -215,22 +215,24 @@ public class VictimController implements Subject {
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+newLine+
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+newLine+
 					"Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
-	
+
 	private void genererFinDePriseEnCharge() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		
+
 		String message = "La victime '"+_idAnonymat+"' n'est plus prise en charge.";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
-					new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. Message : "+message);
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 		_operation.delVictim(this);
 	}
 
@@ -240,152 +242,153 @@ public class VictimController implements Subject {
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+
 					"Message : "+message);
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 	}
-		
+
 	public Integer getId() {
 		return _id;
 	}
-	
+
 	public String getIdAnonymat() {
 		return _idAnonymat;
 	}
-	
+
 	public void setIdAnonymat(String idAnonymat) {
 		_idAnonymat = idAnonymat;
 	}
-	
+
 	public String getNom() {
 		return _nom;
 	}
-	
+
 	public void setNom(String nom) {
 		_nom = nom;
 	}
-	
+
 	public String getPrenom() {
 		return _prenom;
 	}
-	
+
 	public void setPrenom(String prenom) {
 		_prenom = prenom;
 	}
-	
+
 	public Timestamp getDateDeNaissance() {
 		return _dateDeNaissance;
 	}
-	
+
 	public void setNom(Timestamp dateDeNaissance) {
 		_dateDeNaissance = dateDeNaissance;
 	}
-	
+
 	public String getAdresse() {
 		return _adresse;
 	}
-	
+
 	public void setAdresse(String adresse) {
 		_adresse = adresse;
 	}
-	
+
 	public String getStatut() {
 		return _statut;
 	}
-	
+
 	public void setStatut(String statut) {
 		_statut = statut;
 	}
-	
+
 	public Timestamp getDateEntree() {
 		return _datePriseEnCharge;
 	}
-	
+
 	public void setDateEntree(Timestamp dateEntree) {
 		_datePriseEnCharge = dateEntree;
 	}
-	
+
 	public Timestamp getDateSortie() {
 		return _dateSortie;
 	}
-	
+
 	public void setDateSortie(Timestamp dateSortie) {
 		_dateSortie = dateSortie;
 	}
-	
+
 	public boolean getPetitSoin() {
 		return _petitSoin;
 	}
-	
+
 	public void setPetitSoin(Boolean petitSoin) {
 		_petitSoin = petitSoin;
 	}
-	
+
 	public boolean getMalaise() {
 		return _malaise;
 	}
-	
+
 	public void setMalaise(Boolean malaise) {
 		_malaise = malaise;
 	}
-	
+
 	public boolean getTraumatisme() {
 		return _traumatisme;
 	}
-	
+
 	public void setTraumatisme(Boolean traumatisme) {
 		_traumatisme = traumatisme;
 	}
-	
+
 	public boolean getInconscience() {
 		return _inconscience;
 	}
-	
+
 	public void setInconscience(Boolean inconscience) {
 		_inconscience = inconscience;
 	}
-	
+
 	public boolean getArretCardiaque() {
 		return _arretCardiaque;
 	}
-	
+
 	public void setArretCardiaque(Boolean arretCardiaque) {
 		_arretCardiaque = arretCardiaque;
 	}
-	
+
 	public String getAtteinteDetails() {
 		return _atteinteDetails;
 	}
-	
+
 	public void setAtteinteDetails(String atteinteDetails) {
 		_atteinteDetails = atteinteDetails;
 	}
-	
+
 	public String getSoin() {
 		return _soin;
 	}
-	
+
 	public void setSoin(String soin) {
 		_soin = soin;
 	}
-	
+
 
 	@Override
 	public void addObserver(Observer observer) {
-		
+
 	}
 
 	@Override
 	public void removeObserver(Observer observer) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void notifyObservers() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -415,9 +418,12 @@ public class VictimController implements Subject {
 			}			
 			result.getStatement().close();
 		}catch(SQLException e){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e1){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");}
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+		}
 	}
-	
+
 }

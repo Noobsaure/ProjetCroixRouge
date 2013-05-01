@@ -6,7 +6,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Writer;
 import java.sql.Blob;
 import java.sql.DriverManager;
@@ -16,9 +15,10 @@ import java.sql.ResultSet;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import views.ErrorMessage;
-import controllers.OperationController;
+import views.MessagePanel;
+import views.MyJDialog;
 
+import controllers.OperationController;
 
 public class DatabaseManager
 {
@@ -228,7 +228,8 @@ public class DatabaseManager
 	    catch(Exception e)
 	    {
 	    	displayError(e);
-	    	new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur interne - Insertion carte '"+name+"'", "Une erreur interne est survenue lors de l'ajout de la carte'"+name+"'. Veuillez recommencer s'il vous plait.");
+	    	MessagePanel errorPanel = new MessagePanel("Erreur interne - Insertion carte '"+name+"'", "Une erreur interne est survenue lors de l'ajout de la carte'"+name+"'. Veuillez recommencer s'il vous plait.");
+	    	new MyJDialog(errorPanel, _operation.getGlobalPanel());
 	    }
 	    
 	    return id;

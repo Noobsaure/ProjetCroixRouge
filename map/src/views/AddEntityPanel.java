@@ -4,20 +4,16 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Frame;
 import java.awt.Graphics;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import views.buttons.CustomButton;
 import views.listeners.CancelAddEntityListener;
@@ -34,8 +30,7 @@ import database.DatabaseManager;
 
 
 
-public class AddEntityPanel extends JPanel implements PopUpPanel
-{
+public class AddEntityPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -65,7 +60,6 @@ public class AddEntityPanel extends JPanel implements PopUpPanel
 		_mapPanel = mapPanel;
 		_operationController = operation;
 		_dbm = dbm;
-		_mapPanel.setCurrentPopUp(this);
 		initGui();
 	}
 	
@@ -75,7 +69,6 @@ public class AddEntityPanel extends JPanel implements PopUpPanel
 		_mapPanel = parent;
 		_operationController = operation;
 		_dbm = dbm;
-		_mapPanel.setCurrentPopUp(this);
 		
 		initGui();
 		
@@ -219,13 +212,6 @@ public class AddEntityPanel extends JPanel implements PopUpPanel
 //
 //		_internalPanel.repaint();
 //		_internalPanel.revalidate();		
-	}
-
-
-	@Override
-	public void updatePanel() {
-		// TODO Auto-generated method stub
-		
 	}
 }
 
