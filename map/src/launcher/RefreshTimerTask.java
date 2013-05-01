@@ -62,10 +62,11 @@ public class RefreshTimerTask extends TimerTask
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victime", "operation_id="+_operation.getId()+" AND date_sortie is NULL"));
 			while(result.next()){
 				int id = result.getInt("id");
-
+				System.out.println("1 entrÃ©e");
 				if(!_operation.existsInVictimList(id)){
 					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("*","Victime", "id="+id));
 					while(result2.next()){
+						System.out.println("VICTIME EN PLUS	");
 						String idAnonymat = result2.getString("surnom");
 						String nom = result2.getString("nom");
 						String prenom = result2.getString("prenom");
@@ -203,11 +204,11 @@ public class RefreshTimerTask extends TimerTask
 			}
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){ 
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise ï¿½ jour des cartes");
 			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		catch(SQLException e2){
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise ï¿½ jour des cartes");
 			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
