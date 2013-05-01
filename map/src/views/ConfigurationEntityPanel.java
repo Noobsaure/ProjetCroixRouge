@@ -109,10 +109,12 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 
 		formPanel.setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("100px:grow"),
+				FormFactory.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
 				ColumnSpec.decode("270px:grow"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("100px:grow"),},
-				new RowSpec[] {
+			new RowSpec[] {
 				FormFactory.LINE_GAP_ROWSPEC,
 				RowSpec.decode("27px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
@@ -156,7 +158,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		formPanel.add(_nomLabel, "1, 2, left, default");
 
 		_nomTextField = new JTextField(_entityController.getName());
-		formPanel.add(_nomTextField, "2, 2");
+		formPanel.add(_nomTextField, "4, 2");
 		/**************************************************************/
 
 
@@ -202,12 +204,12 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		model.setSelectedItem(_operationController.getLocation(_entityController.getIdPosCurrent()).getName());
 
 		_typeComboBox = new JComboBox<String>(model);
-		formPanel.add(_typeComboBox, "2, 4, fill, default");
+		formPanel.add(_typeComboBox, "4, 4, fill, default");
 
 		CustomButton editEntityButton = new CustomButton("Valider Modifier le Nom et la Localisation");
 		editEntityButton.setAlignmentX(0.5f);
 		editEntityButton.addActionListener(new EditEntityNameLocalisationButtonListener(_mapPanel,_operationController, _entityController, this));
-		formPanel.add(editEntityButton, "2, 6");
+		formPanel.add(editEntityButton, "4, 6");
 
 		/**************************************************************/
 
@@ -218,7 +220,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		\**************************************************************/
 
 		JSeparator separator = new JSeparator();
-		formPanel.add(separator, "1, 8, 2, 1");
+		formPanel.add(separator, "1, 8, 4, 1");
 		JLabel listeEquipierLabel = new JLabel("Liste Equipiers:");
 		formPanel.add(listeEquipierLabel, "1, 10, left, top");
 
@@ -226,7 +228,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		_listeEquipierPanel.setPreferredSize(new Dimension(270, 160));
 		_listeEquipierPanel.setMinimumSize(new Dimension(210, 160));
 		_listeEquipierPanel.setSize(new Dimension(200, 140));
-		formPanel.add(_listeEquipierPanel, "2, 10, center, center");
+		formPanel.add(_listeEquipierPanel, "4, 10, center, center");
 
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
 
@@ -257,26 +259,13 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
 		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_mapPanel,_operationController, _entityController, this));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		formPanel.add(AjoutEquipierButton, "2, 12, fill, fill");
+		formPanel.add(AjoutEquipierButton, "4, 12, fill, fill");
 
 		JSeparator separator_1 = new JSeparator();
-		formPanel.add(separator_1, "1, 13, 2, 1");
+		formPanel.add(separator_1, "1, 13, 4, 1");
 
 		JLabel _statusLabel = new JLabel("Status :");
 		formPanel.add(_statusLabel, "1, 15");
-
-		JSplitPane splitPane = new JSplitPane();
-		formPanel.add(splitPane, "2, 15, fill, fill");
-		_disponibleStatutRadioButton.setPreferredSize(new Dimension(73, 14));
-
-		_disponibleStatutRadioButton.setSize(new Dimension(50, 23));
-		splitPane.setLeftComponent(_disponibleStatutRadioButton);
-		JradioBoutonGroup.add(_disponibleStatutRadioButton);
-		_indisponibleStatutRadioButton.setPreferredSize(new Dimension(83, 14));
-
-		_indisponibleStatutRadioButton.setSize(new Dimension(50, 23));
-		splitPane.setRightComponent(_indisponibleStatutRadioButton);
-		JradioBoutonGroup.add(_indisponibleStatutRadioButton);
 
 		/**************************************************************\
 		 * 					Buttons radio Dispo/Indispo
@@ -287,26 +276,35 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		_indisponibleStatutRadioButton.setSelected(false);}
 		else {_disponibleStatutRadioButton.setSelected(false);
 		_indisponibleStatutRadioButton.setSelected(true);}
-
-		/**************************************************************\
-		 * 					Localisation et Information
-		\**************************************************************/
+		
+		JPanel panel = new JPanel();
+		formPanel.add(panel, "4, 15, fill, fill");
+		panel.add(_disponibleStatutRadioButton);
+		_disponibleStatutRadioButton.setPreferredSize(new Dimension(103, 14));
+		
+				_disponibleStatutRadioButton.setSize(new Dimension(50, 23));
+				JradioBoutonGroup.add(_disponibleStatutRadioButton);
+				panel.add(_indisponibleStatutRadioButton);
+				_indisponibleStatutRadioButton.setPreferredSize(new Dimension(143, 14));
+				
+						_indisponibleStatutRadioButton.setSize(new Dimension(100, 23));
+						JradioBoutonGroup.add(_indisponibleStatutRadioButton);
 
 		JLabel lblInformations = new JLabel("Informations :");
 		formPanel.add(lblInformations, "1, 17, left, top");
 
 		JScrollPane textAreaScrollPane = new JScrollPane();
-		formPanel.add(textAreaScrollPane, "2, 17, 1, 6, fill, fill");
+		formPanel.add(textAreaScrollPane, "4, 17, 1, 6, fill, fill");
 
 		_informationsTextArea = new JTextArea();
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 
 		CustomButton modifStatusButton = new CustomButton("Valider Modifier status");
 		modifStatusButton.addActionListener(new EditStatusEntityButtonListener(_operationController, _entityController, this));
-		formPanel.add(modifStatusButton, "2, 24");
+		formPanel.add(modifStatusButton, "4, 24");
 
 		JSeparator separator_2 = new JSeparator();
-		formPanel.add(separator_2, "1, 26, 2, 1");
+		formPanel.add(separator_2, "1, 26, 4, 1");
 
 		/**************************************************************\
 		 * 						Couleur
@@ -326,14 +324,14 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 
 		_colorChooserPanel.setBackground(colorEntity);
 
-		formPanel.add(_colorChooserPanel, "2, 28, fill, fill");
+		formPanel.add(_colorChooserPanel, "4, 28, fill, fill");
 
 		CustomButton ModifColorButton = new CustomButton("Valider Modifier couleur");
 		ModifColorButton.addActionListener(new EditEntityColorListener(_mapPanel,_operationController, this, _entityController));
-		formPanel.add(ModifColorButton, "2, 30");
+		formPanel.add(ModifColorButton, "4, 30");
 
 		JSeparator separator_3 = new JSeparator();
-		formPanel.add(separator_3, "1, 31, 2, 1");
+		formPanel.add(separator_3, "1, 31, 4, 1");
 
 		/**************************************************************\
 		 * 						Button retour
