@@ -3,9 +3,12 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.SwingUtilities;
+
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
 import views.MapPanel;
+import views.MyJDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -27,11 +30,7 @@ public class CancelEquipierEquipierButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{	
-		_mapPanel.remove(_addEquipierPanel);
-		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entityController);
-		_mapPanel.add(configurationEntityPanel);
-		_mapPanel.setCurrentPopUp(configurationEntityPanel);
-		_mapPanel.setComponentZOrder(configurationEntityPanel, 0);
-		_mapPanel.repaint();
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEquipierPanel);
+		dialog.dispose();
 	}
 }

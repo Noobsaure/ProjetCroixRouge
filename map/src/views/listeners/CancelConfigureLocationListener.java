@@ -4,9 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import views.ConfigurationLocationPanel;
 import views.MapPanel;
+import views.MyJDialog;
 
 public class CancelConfigureLocationListener implements ActionListener
 {
@@ -23,8 +25,7 @@ public class CancelConfigureLocationListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		_mapPanel.setCurrentPopUp(null);
-		_mapPanel.remove(_configurationLocationPanel);
-		_mapPanel.repaint();
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_configurationLocationPanel);
+		dialog.dispose();
 	}
 }

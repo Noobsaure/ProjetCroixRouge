@@ -54,7 +54,7 @@ public class ConfirmAddLocationListener implements ActionListener
 				new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
 			}
 		} else {
-			LocationController location = new LocationController(_operationController, _databaseManager,_x,_y,name,informations);
+			new LocationController(_operationController, _databaseManager,_x,_y,name,informations);
 			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addLocationPanel);
 			dialog.dispose();
 		}

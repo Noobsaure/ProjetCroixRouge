@@ -30,7 +30,6 @@ public class MapPanel extends JPanel implements Observer, Subject
 
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
-	private PopUpPanel _currentPopUp;
 
 	private int _x = 0;
 	private int _y = 0;
@@ -66,11 +65,6 @@ public class MapPanel extends JPanel implements Observer, Subject
 
 	public int get_x() {return _x;}
 	public int get_y() {return _y;}
-	public void setCurrentPopUp(PopUpPanel currentPopUp) {
-		_currentPopUp = currentPopUp;
-		notifyObservers();
-	}
-	public PopUpPanel getCurrentPopUp() {return _currentPopUp;}
 
 	public void moveMap(int x, int y) {
 		if(_map.getWidth() > getWidth()) {
@@ -185,9 +179,6 @@ public class MapPanel extends JPanel implements Observer, Subject
 			_map = null;
 		}
 		updateLocations();
-		if(_currentPopUp != null) {
-			_currentPopUp.updatePanel();
-		}
 		repaint();
 		revalidate();
 	}

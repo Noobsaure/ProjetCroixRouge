@@ -9,8 +9,7 @@ import views.listeners.ConfirmDelMapListener;
 import controllers.MapController;
 import controllers.OperationController;
 
-public class ChoicePanel extends MessagePanel implements PopUpPanel
-{
+public class ChoicePanel extends MessagePanel {
 	private static final long serialVersionUID = 1L;	
 	private OperationController _operation;
 	private MapController _map;
@@ -28,11 +27,5 @@ public class ChoicePanel extends MessagePanel implements PopUpPanel
 		
 		CustomButton okButton = super.getOkButton();
 		//addOkButtonListener(new ConfirmDelMapListener(_operation, button, this, _map));
-	}
-
-	@Override
-	public void updatePanel() {
-		// TODO Auto-generated method stub
-		
 	}
 }

@@ -37,7 +37,7 @@ import controllers.EntityController;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddVictimPanel extends JLayeredPane implements PopUpPanel
+public class AddVictimPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -79,7 +79,6 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		_subMenu = subMenu;
 		_operationController = operation;
 		_dbm = dbm;
-		_parent.setCurrentPopUp(this);
 		_map = new HashMap<String, EntityController>();
 		
 		initGui();
@@ -405,11 +404,5 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 //		System.out.println("Content : " + (new JLabel(_soinsTextArea.getText()).getText()));
 		
 		centrer();
-	}
-
-
-	@Override
-	public void updatePanel() {
-		//TODO
 	}
 }

@@ -1,10 +1,8 @@
 package views;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.List;
 import java.util.Vector;
 
@@ -29,9 +27,7 @@ import controllers.OperationController;
 import controllers.TeamMemberController;
 
 
-
-public class AddEquipierPanel extends JPanel implements PopUpPanel
-{
+public class AddEquipierPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -63,7 +59,6 @@ public class AddEquipierPanel extends JPanel implements PopUpPanel
 		_parent = parent;
 		_operationController = operationController;
 		_entityController=entityController;
-		_parent.setCurrentPopUp(this);
 		initGui();
 	}
 	
@@ -148,12 +143,6 @@ public class AddEquipierPanel extends JPanel implements PopUpPanel
 	public int getIndexEquipier()
 	{
 		return (int)_typeComboBox.getSelectedIndex();
-	}
-
-	@Override
-	public void updatePanel() {
-		// TODO Auto-generated method stub
-		
 	}
 }
 

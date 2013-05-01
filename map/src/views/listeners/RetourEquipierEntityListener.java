@@ -4,12 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import controllers.EntityController;
 import controllers.OperationController;
 import views.ConfigurationEntityPanel;
 import views.MapPanel;
-
+import views.MyJDialog;
 
 public class RetourEquipierEntityListener implements ActionListener
 {
@@ -26,26 +27,11 @@ public class RetourEquipierEntityListener implements ActionListener
 		_entityController = entityController;
 	}
 	
-	
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{	
 		_operationController.removeObserver(_configEntityPanel);
-		_mapPanel.remove(_configEntityPanel);
-		_mapPanel.setCurrentPopUp(null);
-		_mapPanel.revalidate();
-		_mapPanel.repaint();
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_configEntityPanel);
+		dialog.dispose();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-

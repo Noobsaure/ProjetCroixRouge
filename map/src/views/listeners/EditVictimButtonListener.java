@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import launcher.Launcher;
 import views.EditVictimPanel;
 import views.MapPanel;
+import views.MyJDialog;
 import views.SubMenuVictimPanel;
 import controllers.VictimController;
 
@@ -26,19 +27,13 @@ public class EditVictimButtonListener implements MouseListener {
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		_mapPanel.remove(_subMenu);
-		
+	public void mouseClicked(MouseEvent arg0) {		
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 		
 		EditVictimPanel editVictimPanel = new EditVictimPanel(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), _victimCOntroller);		
 		editVictimPanel.addCancelButtonListener(new CancelEditVictimListener(_mapPanel, editVictimPanel));
 		editVictimPanel.addOkButtonListener(new ConfirmEditVictimListener(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), editVictimPanel, _victimCOntroller));
-		_mapPanel.add(editVictimPanel);
-		_mapPanel.setComponentZOrder(editVictimPanel, 0);
-		_mapPanel.setCurrentPopUp(editVictimPanel);
-		_mapPanel.repaint();
-		_mapPanel.revalidate();
+		new MyJDialog(editVictimPanel, _mapPanel.getGlobalPanel());
 	}
 
 	@Override

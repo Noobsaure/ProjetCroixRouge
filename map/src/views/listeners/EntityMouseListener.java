@@ -16,7 +16,7 @@ import views.GlassPane;
 import views.GlobalPanel;
 import views.LocationPanel;
 
-public class EntityMouseListener extends AbstractObserverListener implements MouseListener, MouseMotionListener{
+public class EntityMouseListener implements MouseListener, MouseMotionListener{
 
 	private EntityPanel _entity;
 	private GlobalPanel _globalPanel;
@@ -25,35 +25,33 @@ public class EntityMouseListener extends AbstractObserverListener implements Mou
 	private boolean _dragOccurring = false;
 
 	public EntityMouseListener(EntityPanel entity, GlassPane glassPane, GlobalPanel globalPanel) {
-		super(globalPanel.getMapPanel());
 		_entity = entity;
 		_glassPane = glassPane;
 		_globalPanel = globalPanel;
 	}
 
 	public void mousePressed(MouseEvent e){
-		if(isEnabled()) {
-			if(e.getButton() == MouseEvent.BUTTON1) {
-				_glassPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				setDragOccurring(true);
-				_entity.getIconGearLabel().setVisible(false);
-				Point location = (Point)e.getPoint().clone();
-				SwingUtilities.convertPointToScreen(location, _entity);
-				SwingUtilities.convertPointFromScreen(location, _glassPane);
-				_image = new BufferedImage(_entity.getWidth(), _entity.getHeight(), BufferedImage.TYPE_INT_ARGB);
-				Graphics g = _image.getGraphics();
-				_entity.paint(g);
-				_glassPane.setLocation(location);
-				_glassPane.setImage(_image);
-				_glassPane.setVisible(true);
-				if(_entity.getParent().getParent() instanceof views.LocationPanel) {
-					LocationPanel parent = (LocationPanel)_entity.getParent().getParent();
-					parent.getLoc().displayPanel(false);
-					parent.getLoc().setHighlight(false);
-				}
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			_glassPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			setDragOccurring(true);
+			_entity.getIconGearLabel().setVisible(false);
+			Point location = (Point)e.getPoint().clone();
+			SwingUtilities.convertPointToScreen(location, _entity);
+			SwingUtilities.convertPointFromScreen(location, _glassPane);
+			_image = new BufferedImage(_entity.getWidth(), _entity.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics g = _image.getGraphics();
+			_entity.paint(g);
+			_glassPane.setLocation(location);
+			_glassPane.setImage(_image);
+			_glassPane.setVisible(true);
+			if(_entity.getParent().getParent() instanceof views.LocationPanel) {
+				LocationPanel parent = (LocationPanel)_entity.getParent().getParent();
+				parent.getLoc().displayPanel(false);
+				parent.getLoc().setHighlight(false);
 			}
 		}
 	}
+
 
 	public void mouseReleased(MouseEvent e) {
 		if(_dragOccurring && e.getButton() == MouseEvent.BUTTON1) {
@@ -70,7 +68,7 @@ public class EntityMouseListener extends AbstractObserverListener implements Mou
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		if(_dragOccurring && isEnabled()) {
+		if(_dragOccurring) {
 			Point p = (Point) e.getPoint().clone();
 			SwingUtilities.convertPointToScreen(p, _entity);
 			SwingUtilities.convertPointFromScreen(p, _glassPane);
@@ -81,16 +79,12 @@ public class EntityMouseListener extends AbstractObserverListener implements Mou
 
 	public void mouseEntered(MouseEvent e)
 	{
-		if(isEnabled()) {
-			_entity.getIconGearLabel().setVisible(true);
-		}
+		_entity.getIconGearLabel().setVisible(true);
 	}
 
 	public void mouseExited(MouseEvent e)
 	{
-		if(isEnabled()) {
-			_entity.getIconGearLabel().setVisible(false);
-		}
+		_entity.getIconGearLabel().setVisible(false);
 	}
 
 	public void setDragOccurring(boolean dragOccurring) {

@@ -26,9 +26,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-
-
-public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPanel
+public class ConfigurationLocationPanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -73,8 +71,7 @@ public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPan
 		setOpaque(false);
 		
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(DIMENSION_PANEL);	
-		centrer();
+		_internalPanel.setSize(DIMENSION_PANEL);
 		add(_internalPanel, 1);
 		
 		JLabel title = new JLabel(ConfigurationLocationPanel.TITLE);
@@ -138,16 +135,7 @@ public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPan
 		buttonPanel.add(okButton);
 		okButton.addActionListener(new ConfirmConfigureLocationListener(_mapPanel, _operationController, _dbm, this, _locationController));
 		/**************************************************************/
-	}
-	
-	
-	private void centrer()
-	{
-		int x = (_mapPanel.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_mapPanel.getHeight() / 2) - (_internalPanel.getHeight() / 2);
-		_internalPanel.setLocation(x, y);
-	}
-	
+	}	
 	
 	public String getName()
 	{
@@ -158,39 +146,4 @@ public class ConfigurationLocationPanel extends JLayeredPane implements PopUpPan
 	{
 		return _informationsTextArea.getText();
 	}
-	
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-		centrer();
-		
-//		Graphics2D g2d = (Graphics2D) g;
-//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
-//        
-//        g2d.setColor(Color.BLACK);
-//		g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-//
-//		_internalPanel.repaint();
-//		_internalPanel.revalidate();		
-	}
-
-
-	@Override
-	public void updatePanel() {
-		// TODO Auto-generated method stub
-		
-	}
 }
-
-
-
-
-
-
-
-
-
-

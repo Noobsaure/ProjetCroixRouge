@@ -5,12 +5,11 @@ import java.awt.event.MouseListener;
 
 import views.MapPanel;
 
-public class MenuMouseListener extends AbstractObserverListener implements MouseListener {
+public class MenuMouseListener implements MouseListener {
 
 	private MapPanel _mapPanel;
 	
 	public MenuMouseListener(MapPanel mapPanel) {
-		super(mapPanel);
 		_mapPanel = mapPanel;
 	}
 	

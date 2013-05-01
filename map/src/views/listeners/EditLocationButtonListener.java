@@ -9,6 +9,7 @@ import views.ConfigurationLocationPanel;
 import views.Location;
 import views.LocationPanel;
 import views.MapPanel;
+import views.MyJDialog;
 import controllers.OperationController;
 import controllers.LocationController;
 
@@ -41,11 +42,7 @@ public class EditLocationButtonListener implements MouseListener
 		ConfigurationLocationPanel configurationLocationPanel = new ConfigurationLocationPanel(_mapPanel,
 				_operationController,launcher.getDatabaseManager(),_locationController.getName(),
 				_locationController.getDescription(),_locationController);	
-		_mapPanel.add(configurationLocationPanel);
-		_mapPanel.setCurrentPopUp(configurationLocationPanel);
-		_mapPanel.setComponentZOrder(configurationLocationPanel, 0);
-		_mapPanel.repaint();
-		_mapPanel.revalidate();	
+		new MyJDialog(configurationLocationPanel, _mapPanel.getGlobalPanel());	
 	}
 
 	@Override

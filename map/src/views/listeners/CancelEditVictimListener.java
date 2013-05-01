@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import launcher.Launcher;
 
 import views.EditVictimPanel;
 import views.MapPanel;
+import views.MyJDialog;
 import views.SubMenuVictimPanel;
 
 public class CancelEditVictimListener implements ActionListener
@@ -26,12 +28,9 @@ public class CancelEditVictimListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		_mapPanel.setCurrentPopUp(null);
-		_mapPanel.remove(_editVictimPanel);
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
-		SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());
-		_mapPanel.add(subMenu);
-		_mapPanel.setComponentZOrder(subMenu, 0);
-		_mapPanel.repaint();
+		new SubMenuVictimPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_editVictimPanel);
+		dialog.dispose();
 	}
 }

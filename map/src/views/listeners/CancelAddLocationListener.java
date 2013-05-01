@@ -4,10 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import views.AddEntityPanel;
 import views.AddLocationPanel;
 import views.MapPanel;
+import views.MyJDialog;
 
 public class CancelAddLocationListener implements ActionListener {
 	private MapPanel _mapPanel;
@@ -20,8 +22,7 @@ public class CancelAddLocationListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		_mapPanel.setCurrentPopUp(null);
-		_mapPanel.remove(_addLocationPanel);
-		_mapPanel.repaint();
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addLocationPanel);
+		dialog.dispose();
 	}
 }

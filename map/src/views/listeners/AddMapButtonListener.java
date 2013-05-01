@@ -18,7 +18,7 @@ import controllers.MapController;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddMapButtonListener extends AbstractObserverListener implements ActionListener {
+public class AddMapButtonListener implements ActionListener {
 	private MapPanel _mapPanel;
 	private final JFileChooser _fileChooser;
 	private OperationController _operation;
@@ -26,7 +26,6 @@ public class AddMapButtonListener extends AbstractObserverListener implements Ac
 
 	public AddMapButtonListener(MapPanel mapPanel, OperationController operation, SubMenuMapPanel subMenu)
 	{
-		super(mapPanel);
 		_mapPanel = mapPanel;
 		_operation = operation;
 		_fileChooser = new JFileChooser();
@@ -47,27 +46,25 @@ public class AddMapButtonListener extends AbstractObserverListener implements Ac
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if(isEnabled()) {
-			Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
-			OperationController operationController = launcher.getOperationController();
-			DatabaseManager databaseManager = launcher.getDatabaseManager();
+		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
+		OperationController operationController = launcher.getOperationController();
+		DatabaseManager databaseManager = launcher.getDatabaseManager();
 
-			FileFilter filter1 = new ExtensionFileFilter("Images", new String[] { "PNG", "JPG", "JPEG", "BMP", "GIF" });
-			_fileChooser.setFileFilter(filter1);
+		FileFilter filter1 = new ExtensionFileFilter("Images", new String[] { "PNG", "JPG", "JPEG", "BMP", "GIF" });
+		_fileChooser.setFileFilter(filter1);
 
-			int result = _fileChooser.showOpenDialog(null);
+		int result = _fileChooser.showOpenDialog(null);
 
-			switch(result)
-			{
-			case JFileChooser.CANCEL_OPTION:
-				break;
+		switch(result)
+		{
+		case JFileChooser.CANCEL_OPTION:
+			break;
 
-			case JFileChooser.APPROVE_OPTION:
-				String path = _fileChooser.getSelectedFile().getAbsolutePath();
-				new MapController(operationController, databaseManager, getFileName(path), path);
-				_subMenu.update();
-				break;
-			}
+		case JFileChooser.APPROVE_OPTION:
+			String path = _fileChooser.getSelectedFile().getAbsolutePath();
+			new MapController(operationController, databaseManager, getFileName(path), path);
+			_subMenu.update();
+			break;
 		}
 	}
 }

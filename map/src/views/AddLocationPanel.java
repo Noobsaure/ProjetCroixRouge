@@ -6,7 +6,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
@@ -28,8 +27,7 @@ import database.DatabaseManager;
 
 
 
-public class AddLocationPanel extends JLayeredPane implements PopUpPanel
-{
+public class AddLocationPanel extends JLayeredPane {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -60,7 +58,6 @@ public class AddLocationPanel extends JLayeredPane implements PopUpPanel
 		_dbm = dbm;
 		_x = x;
 		_y = y;
-		_parent.setCurrentPopUp(this);
 		
 		initGui();
 	}
@@ -73,7 +70,6 @@ public class AddLocationPanel extends JLayeredPane implements PopUpPanel
 		_dbm = dbm;
 		_x = x;
 		_y = y;
-		_parent.setCurrentPopUp(this);
 		
 		initGui();
 		
@@ -174,31 +170,6 @@ public class AddLocationPanel extends JLayeredPane implements PopUpPanel
 	public String getInformations()
 	{
 		return _informationsTextArea.getText();
-	}
-	
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-		centrer();
-		
-//		Graphics2D g2d = (Graphics2D) g;
-//        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.75f));
-//        
-//        g2d.setColor(Color.BLACK);
-//		g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-//
-//		_internalPanel.repaint();
-//		_internalPanel.revalidate();		
-	}
-
-
-	@Override
-	public void updatePanel() {
-		// TODO Auto-generated method stub
-		
 	}
 }
 

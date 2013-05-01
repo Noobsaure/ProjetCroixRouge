@@ -15,7 +15,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -46,7 +45,7 @@ import controllers.OperationController;
 import controllers.TeamMemberController;
 
 // modifier le listing des localisations
-public class ConfigurationEntityPanel extends JLayeredPane implements Observer, PopUpPanel
+public class ConfigurationEntityPanel extends JPanel implements Observer
 {
 	private static final long serialVersionUID = 1L;
 
@@ -410,14 +409,6 @@ public class ConfigurationEntityPanel extends JLayeredPane implements Observer, 
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 	}
-
-	@Override
-	public void updatePanel() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 }
 
 

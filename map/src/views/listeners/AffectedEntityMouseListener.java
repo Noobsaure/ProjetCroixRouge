@@ -18,7 +18,7 @@ import views.GlassPane;
 import views.GlobalPanel;
 import views.LocationPanel;
 
-public class AffectedEntityMouseListener extends AbstractObserverListener implements MouseListener, MouseMotionListener {
+public class AffectedEntityMouseListener implements MouseListener, MouseMotionListener {
 
 	private AffectedEntityPanel _entity;
 	private GlassPane _glassPane;
@@ -27,7 +27,6 @@ public class AffectedEntityMouseListener extends AbstractObserverListener implem
 	private boolean _dragOccurring = false;
 
 	public AffectedEntityMouseListener(AffectedEntityPanel entity, GlassPane glassPane, GlobalPanel globalPanel) {
-		super(globalPanel.getMapPanel());
 		_entity = entity;
 		_glassPane = glassPane;
 		_globalPanel = globalPanel;
@@ -35,24 +34,22 @@ public class AffectedEntityMouseListener extends AbstractObserverListener implem
 
 	@Override
 	public void mousePressed(MouseEvent e){
-		if(isEnabled()) {
-			if(e.getButton() == MouseEvent.BUTTON1) {
-				_glassPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
-				setDragOccurring(true);
-				Point location = (Point)e.getPoint().clone();
-				SwingUtilities.convertPointToScreen(location, _entity);
-				SwingUtilities.convertPointFromScreen(location, _glassPane);
-				_image = new BufferedImage(_entity.getWidth(), _entity.getHeight(), BufferedImage.TYPE_INT_ARGB);
-				Graphics g = _image.getGraphics();
-				_entity.paint(g);
-				_glassPane.setLocation(location);
-				_glassPane.setImage(_image);
-				_glassPane.setVisible(true);
-				if(_entity.getParent().getParent() instanceof views.LocationPanel) {
-					LocationPanel parent = (LocationPanel)_entity.getParent().getParent();
-					parent.getLoc().displayPanel(false);
-					parent.getLoc().setHighlight(false);
-				}
+		if(e.getButton() == MouseEvent.BUTTON1) {
+			_glassPane.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			setDragOccurring(true);
+			Point location = (Point)e.getPoint().clone();
+			SwingUtilities.convertPointToScreen(location, _entity);
+			SwingUtilities.convertPointFromScreen(location, _glassPane);
+			_image = new BufferedImage(_entity.getWidth(), _entity.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics g = _image.getGraphics();
+			_entity.paint(g);
+			_glassPane.setLocation(location);
+			_glassPane.setImage(_image);
+			_glassPane.setVisible(true);
+			if(_entity.getParent().getParent() instanceof views.LocationPanel) {
+				LocationPanel parent = (LocationPanel)_entity.getParent().getParent();
+				parent.getLoc().displayPanel(false);
+				parent.getLoc().setHighlight(false);
 			}
 		}
 	}

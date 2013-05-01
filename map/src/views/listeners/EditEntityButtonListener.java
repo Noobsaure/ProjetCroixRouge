@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import views.ConfigurationEntityPanel;
 import views.EntityPanel;
 import views.MapPanel;
+import views.MyJDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -30,11 +31,7 @@ public class EditEntityButtonListener implements MouseListener
 	public void mouseClicked(MouseEvent e)
 	{		
 		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entity);	
-		_mapPanel.add(configurationEntityPanel);
-		_mapPanel.setCurrentPopUp(configurationEntityPanel);
-		_mapPanel.setComponentZOrder(configurationEntityPanel, 0);
-		_mapPanel.repaint();
-		_mapPanel.revalidate();			
+		new MyJDialog(configurationEntityPanel, _mapPanel.getGlobalPanel());		
 	}
 
 	@Override

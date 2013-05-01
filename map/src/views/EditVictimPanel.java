@@ -1,12 +1,10 @@
 package views;
 
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -117,26 +115,5 @@ public class EditVictimPanel extends AddVictimPanel
 	public JTextField getMotifTextField()
 	{
 		return _motifTextField;
-	}
-	
-	
-	private void centrer()
-	{
-		int x = (_mapPanel.getWidth() / 2) - (_mainPanel.getWidth() / 2);
-		int y = (_mapPanel.getHeight() / 2) - (_mainPanel.getHeight() / 2);
-		this.setLocation(x, y);
-	}
-	
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-		centrer();
-	}
-	
-	@Override
-	public void updatePanel() {
-		//TODO
 	}
 }

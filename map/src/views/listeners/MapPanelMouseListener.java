@@ -1,7 +1,6 @@
 package views.listeners;
 
 import java.awt.Cursor;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -13,7 +12,7 @@ import views.GlobalPanel;
 import views.Location;
 import views.MapPanel;
 
-public class MapPanelMouseListener extends AbstractObserverListener implements MouseListener, MouseMotionListener {
+public class MapPanelMouseListener implements MouseListener, MouseMotionListener {
 
 	private static final Cursor addableCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
 	private static final Cursor notAddableCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
@@ -27,13 +26,12 @@ public class MapPanelMouseListener extends AbstractObserverListener implements M
 	private boolean _moving = false;
 
 	public MapPanelMouseListener(GlobalPanel globalPanel) {
-		super(globalPanel.getMapPanel());
 		_globalPanel = globalPanel;
 		_mapPanel = _globalPanel.getMapPanel();
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		if(isEnabled() && _addingLocation) {
+		if(_addingLocation) {
 			int x = e.getX();
 			int y = e.getY();
 			if(isCoordAwayFromLocs(x, y) && !_mapPanel.getCursor().equals(addableCursor)) {
@@ -45,7 +43,7 @@ public class MapPanelMouseListener extends AbstractObserverListener implements M
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		if(isEnabled() && _moving) {
+		if(_moving) {
 			int x = e.getX();
 			int y = e.getY();
 			_mapPanel.moveMap(x - _x, y - _y);
@@ -55,33 +53,30 @@ public class MapPanelMouseListener extends AbstractObserverListener implements M
 	}
 
 	public void mousePressed(MouseEvent e) {
-		if(isEnabled()) {
-			int x = e.getX();
-			int y = e.getY();
-			if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
-				_x = x;
-				_y = y;
-				_moving = true;
-			}
+		int x = e.getX();
+		int y = e.getY();
+		if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
+			_x = x;
+			_y = y;
+			_moving = true;
 		}
 	}
 
+
 	public void mouseReleased(MouseEvent e) {
 		_moving = false;
-		if(isEnabled()) {
-			int x = e.getX();
-			int y = e.getY();
-			if(_addingLocation) {
-				if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
-					_mapPanel.showAddLocationPanel(x, y);
-					setAddingLocation(false);
-				} else {
-					setAddingLocation(false);		
-				}
+		int x = e.getX();
+		int y = e.getY();
+		if(_addingLocation) {
+			if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
+				_mapPanel.showAddLocationPanel(x, y);
+				setAddingLocation(false);
+			} else {
+				setAddingLocation(false);		
 			}
-			else if(e.getButton() == MouseEvent.BUTTON3) {
-				displayJPopMenu(x,y);
-			}
+		}
+		else if(e.getButton() == MouseEvent.BUTTON3) {
+			displayJPopMenu(x,y);
 		}
 	}
 

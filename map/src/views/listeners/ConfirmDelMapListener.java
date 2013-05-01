@@ -4,8 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.SwingUtilities;
+
 import views.ChoicePanel;
 import views.MapPanel;
+import views.MyJDialog;
 import views.SubMenuMapPanel;
 import views.buttons.SubMenuMapButton;
 import controllers.EntityController;
@@ -28,21 +31,15 @@ public class ConfirmDelMapListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MapPanel mapPanel = _operation.getGlobalPanel().getMapPanel();
-		mapPanel.remove(_confirmDelMapPanel);
-		mapPanel.setCurrentPopUp(null);
-		mapPanel.repaint();
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_confirmDelMapPanel);
+		dialog.dispose();
 		
 		List<EntityController> _entityList = _map.getEntityListInThisMap();
 		
 		for(EntityController entity : _entityList){
 			entity.setLocation(_operation.getLocation(_operation.getIdPcm()));
 		}
-		
 		_map.hideMap();
-		
-		SubMenuMapPanel subMenu = new SubMenuMapPanel(mapPanel, _button, _operation, _operation.getGlobalPanel().getLauncher().getDatabaseManager());
-		mapPanel.add(subMenu);
 	}
 
 }
