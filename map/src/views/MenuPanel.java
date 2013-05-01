@@ -15,8 +15,7 @@ import views.listeners.MenuMouseListener;
 import controllers.OperationController;
 
 
-public class MenuPanel extends JPanel
-{
+public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	public static final int LEFT_PANEL_WIDTH = 170;
 

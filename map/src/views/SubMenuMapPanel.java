@@ -179,7 +179,5 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		}
 		_thumbnailsPanel.repaint();
 		_thumbnailsPanel.revalidate();
-	}
-	
-	
+	}	
 }

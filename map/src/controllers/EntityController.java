@@ -192,6 +192,7 @@ public class EntityController implements Subject {
 		if(teamMember.joinEntity(this)){
 			_teamMemberList.add(teamMember);
 		}
+		notifyObservers();
 	}
 
 	public void removeTeamMember(TeamMemberController teamMember){

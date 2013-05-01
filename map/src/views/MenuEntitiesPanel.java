@@ -26,9 +26,7 @@ import views.listeners.MenuMouseListener;
 import controllers.EntityController;
 import controllers.OperationController;
 
-
-public class MenuEntitiesPanel extends JPanel implements Observer
-{	
+public class MenuEntitiesPanel extends JPanel {	
 	private static final long serialVersionUID = 1L;
 	
 	private GlobalPanel _globalPanel;
@@ -135,7 +133,7 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		List<EntityController> listEntities = _operation.getEntityList();
 		List<EntityController> availableEntities = new ArrayList<EntityController>();
 		List<EntityController> unavailableEntities = new ArrayList<EntityController>();
-		//On trie les entités du controleur available/unavailable.
+		
 		for(EntityController oneEntity : listEntities) {
 			if(oneEntity.isAvailable()) {
 				availableEntities.add(oneEntity);
@@ -198,14 +196,7 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 		return _operation;
 	}
 
-	public void enableListeners(boolean enable) {
-//		Component[] com = _panelAvailable.getComponents();
-//		for (int i = 0; i < com.length; i++)
-//		     com[i].enableListener(enable);
-	}
-
-	@Override
-	public synchronized void update()
+	public void update()
 	{
 		setListEntitiesContent();	
 	}

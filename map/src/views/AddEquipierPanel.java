@@ -26,7 +26,6 @@ import controllers.EntityController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
-
 public class AddEquipierPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 
@@ -40,8 +39,8 @@ public class AddEquipierPanel extends CustomPanelImpl {
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private EntityController _entityController;
-	
-	
+
+
 	private JPanel _background;
 	private RoundedPanel _internalPanel;
 	private JLabel _nomLabel;
@@ -49,11 +48,11 @@ public class AddEquipierPanel extends CustomPanelImpl {
 	private JComboBox<String> _typeComboBox;
 	private JTextArea _informationsTextArea;
 	private static List<TeamMemberController> listEquipiers;
-	
+
 	/**
 	 * @wbp.parser.constructor
 	 */
-	
+
 	public AddEquipierPanel(MapPanel mapPanel,OperationController operationController, EntityController entityController)
 	{
 		_mapPanel = mapPanel;
@@ -61,23 +60,23 @@ public class AddEquipierPanel extends CustomPanelImpl {
 		_entityController=entityController;
 		initGui();
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void initGui()
 	{
 		setLayout(null);
 		//setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
-		
+
 		_internalPanel = new RoundedPanel();
 		_internalPanel.setSize(new Dimension(400, 180));
 		add(_internalPanel);
-		
+
 		TITLE = _entityController.getName();
-		
+
 		JLabel title = new JLabel("Ajout d'un equipier Ã  l'entite");
 		_internalPanel.add(title, BorderLayout.NORTH);
-		
+
 		JPanel formPanel = new JPanel();
 		formPanel.setPreferredSize(new Dimension(380, 100));
 		_internalPanel.add(formPanel, BorderLayout.CENTER);
@@ -87,59 +86,56 @@ public class AddEquipierPanel extends CustomPanelImpl {
 				ColumnSpec.decode("270px:grow"),
 				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
 				ColumnSpec.decode("100px:grow"),},
-			new RowSpec[] {
+				new RowSpec[] {
 				FormFactory.LINE_GAP_ROWSPEC,
 				RowSpec.decode("27px"),
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
-				
+
 				RowSpec.decode("27px"),
 				RowSpec.decode("default:none"),}));
 
-		
+
 		/**************************************************************\
 		 * 					Liste de tous les equipiers
 		\**************************************************************/
 		JLabel EquipierLabel = new JLabel("Equipier :");
 		formPanel.add(EquipierLabel, "1, 2, left, default");
-		
+
 		Vector<String> comboBoxItems = new Vector<String>();
-		
+
 		listEquipiers= _operationController.getTeamMemberAvailableList();	
-		 
-		System.out.println("Taille list : "+listEquipiers.size());
-		
-		 for (TeamMemberController team : listEquipiers){
+
+		for (TeamMemberController team : listEquipiers){
 			comboBoxItems.add(team.getFirstName() +" "+team.getName());
-			System.out.println("AJOUT");
-		 }
-		
+		}
+
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 2, left, default");
-		
+
 		CustomButton ajoutButton = new CustomButton("Valider l'ajout d'un équipier à  l'entité");	
 		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_mapPanel, _operationController, _entityController, this));
-		
+
 		formPanel.add(ajoutButton, "2, 4");
 		/**************************************************************/
 
-		
+
 		/**************************************************************\
 		 * 							Boutons
 		\**************************************************************/
 		JPanel buttonPanel = new JPanel();
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
-		
+
 		CustomButton retourButton = new CustomButton("Retour");
 		buttonPanel.add(retourButton);
 		retourButton.addActionListener(new CancelEquipierEquipierButtonListener(_mapPanel, _operationController, _entityController, this));
-		
+
 		/**************************************************************/
-	
+
 		setPreferredSize(_internalPanel.getSize());
 	}		
-	
+
 	public int getIndexEquipier()
 	{
 		return (int)_typeComboBox.getSelectedIndex();
@@ -147,6 +143,16 @@ public class AddEquipierPanel extends CustomPanelImpl {
 
 	@Override
 	public void updatePanel() {
-		System.out.println("SISISLOL");
+		Vector<String> comboBoxItems = new Vector<String>();
+		
+		listEquipiers= _operationController.getTeamMemberAvailableList();	
+
+		for (TeamMemberController team : listEquipiers){
+			comboBoxItems.add(team.getFirstName() +" "+team.getName());
+		}
+
+		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
+		_typeComboBox = new JComboBox<String>(model);
+
 	}
 }

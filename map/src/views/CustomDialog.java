@@ -15,7 +15,8 @@ public class CustomDialog extends JDialog {
 	private CustomPanelImpl _contentPane;
 
 	public CustomDialog(CustomPanelImpl contentPane, GlobalPanel globalPanel) {
-		super((Frame)SwingUtilities.getAncestorOfClass(Frame.class,globalPanel), true);
+		super((Frame)SwingUtilities.getAncestorOfClass(Frame.class,globalPanel), false);
+		globalPanel.addDialog(this);
 		_contentPane = contentPane;
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		setContentPane(_contentPane);
@@ -24,7 +25,6 @@ public class CustomDialog extends JDialog {
 		setLocation((screenSize.width - getWidth()) / 2, (screenSize.height - getHeight()) / 2);
 		setUndecorated(true);
 		setVisible(true);
-		globalPanel.addDialog(this);
 	}
 	
 	public void update() {

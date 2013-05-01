@@ -26,6 +26,8 @@ public class EntityPanel extends JPanel
 	private static final int WIDTH = MenuPanel.LEFT_PANEL_WIDTH - 12;
 	private static final int HEIGHT = 25;
 	public static DataFlavor ENTITY_PANEL_FLAVOR;
+	public static final ImageIcon iconDudeOn = new ImageIcon(AffectedEntityPanel.class.getResource("/ui/entity-green.png"));
+	public static final ImageIcon iconDudeOff = new ImageIcon(AffectedEntityPanel.class.getResource("/ui/entity-red.png"));
 
 	private JLabel _iconGearLabel;
 	private JLabel _iconLocation;
@@ -38,8 +40,7 @@ public class EntityPanel extends JPanel
 
 	private JPanel _iconPanel;
 
-	public EntityPanel(MenuEntitiesPanel entitiesPanel, EntityController entity)
-	{
+	public EntityPanel(MenuEntitiesPanel entitiesPanel, EntityController entity) {
 		_entity = entity;
 		_operationController = entitiesPanel.getOperationController();
 		setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -63,10 +64,11 @@ public class EntityPanel extends JPanel
 
 		// icone disponibilitée
 		JLabel iconDude = new JLabel();
-		if(entity.isAvailable())
-			iconDude.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/entity-green.png")));
-		else
-			iconDude.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/entity-red.png")));
+		if(entity.isAvailable()) {
+			iconDude.setIcon(iconDudeOn);
+		} else {
+			iconDude.setIcon(iconDudeOff);
+		}
 		add(iconDude, BorderLayout.WEST);
 
 		_entityName = new JLabel(entity.getName());

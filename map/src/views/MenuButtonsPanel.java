@@ -18,7 +18,7 @@ import views.buttons.SubMenuVictimButton;
 import controllers.MapController;
 import controllers.OperationController;
 
-public class MenuButtonsPanel extends JPanel implements Observer {
+public class MenuButtonsPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 	private MapPanel _mapPanel;
@@ -33,7 +33,6 @@ public class MenuButtonsPanel extends JPanel implements Observer {
 	@SuppressWarnings("unchecked")
 	public MenuButtonsPanel(MapPanel mapPanel) {
 		_mapPanel = mapPanel;
-		_mapPanel.addObserver(this);
 		_map = new HashMap<String, MapController>();
 		
 		setBorder(new EmptyBorder(10, 0, 10, 0));
@@ -46,33 +45,9 @@ public class MenuButtonsPanel extends JPanel implements Observer {
 		add(_victimButton);
 		add(_addLocationButton);
 		add(_mapButton);
-
-		/*
-		 * WTF ??
-		 * OperationController operationController = _mapPanel.getGlobalPanel().getLauncher().getOperationController();
-		 * operationController.setCurrentMap(operationController.getCurrentMap());
-		 */
 		
 		setBackground(Color.LIGHT_GRAY);
 		setOpaque(false);
 		revalidate();
 	}
-
-	@Override
-	public void update() {
-		_areButtonsEnabled = !_areButtonsEnabled;
-		_victimButton.setEnabled(_areButtonsEnabled);
-		_addLocationButton.setEnabled(_areButtonsEnabled);
-		_mapButton.setEnabled(_areButtonsEnabled);
-	}
 }
-
-
-
-
-
-
-
-
-
-

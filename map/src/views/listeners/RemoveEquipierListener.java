@@ -35,17 +35,6 @@ public class RemoveEquipierListener implements ActionListener{
 	public void actionPerformed(ActionEvent e)
 	{
 		_entityController.removeTeamMember(_equipier);
-		
-		_parent.remove(_nomEquipierPanel);
-		
-		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_parent, _operationController, _entityController);
-		
-		_parent.remove(_configEntityPanel);
-		_parent.repaint();
-		_parent.revalidate();
-		
-		_parent.add(configurationEntityPanel);
-		_parent.setComponentZOrder(configurationEntityPanel, 0);
 	}
 	
 }
