@@ -48,7 +48,7 @@ public class AddVictimPanel extends JPanel
 	public static final String TITLE = "Ajouter une victime";
 	
 
-	private MapPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
@@ -73,9 +73,9 @@ public class AddVictimPanel extends JPanel
 	private Map<String, EntityController> _map;
 	
 	
-	public AddVictimPanel(MapPanel parent, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
+	public AddVictimPanel(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_subMenu = subMenu;
 		_operationController = operation;
 		_dbm = dbm;
@@ -88,7 +88,8 @@ public class AddVictimPanel extends JPanel
 	@SuppressWarnings({ "unchecked", "rawtypes", "serial" })
 	private void initGui()
 	{
-		setSize(DIMENSION_PANEL);
+		setLayout(null);
+		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 		
 		/**************************************************************\
@@ -98,8 +99,6 @@ public class AddVictimPanel extends JPanel
 		_mainPanel.setSize(DIMENSION_PANEL);
 		add(_mainPanel);
 		/**************************************************************/
-		
-		centrer();
 		
 		/**************************************************************\
 		 * 							Titre
@@ -309,6 +308,8 @@ public class AddVictimPanel extends JPanel
 		_okButton.setText("Ok");
 		_buttonPanel.add(_okButton);
 		/**************************************************************/
+		
+		setPreferredSize(_mainPanel.getSize());
 	}
 	
 	public void addCancelButtonListener(ActionListener listener)
@@ -382,27 +383,5 @@ public class AddVictimPanel extends JPanel
 	public Map<String, EntityController> getMap()
 	{
 		return _map;
-	}
-	
-	
-	
-	private void centrer()
-	{
-		int x = (_parent.getWidth() / 2) - (_mainPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_mainPanel.getHeight() / 2);
-		this.setLocation(x, y);
-	}
-	
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-//		_soinsTextArea.setPreferredSize(null);
-//		_soinsTextArea.setMinimumSize(new Dimension(200, 80));
-		
-//		System.out.println("Content : " + (new JLabel(_soinsTextArea.getText()).getText()));
-		
-		centrer();
 	}
 }

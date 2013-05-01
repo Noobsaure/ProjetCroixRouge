@@ -23,8 +23,6 @@ public class AddVictimButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		_mapPanel.remove(_subMenu);
-
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 		AddVictimPanel addVictimPanel = new AddVictimPanel(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager());		
 		addVictimPanel.addCancelButtonListener(new CancelAddVictimListener(_mapPanel, _subMenu, addVictimPanel));

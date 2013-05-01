@@ -96,9 +96,8 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		setOpaque(false);
 	
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(DIMENSION_PANEL);	
-		centrer();
-		add(_internalPanel, 1);
+		_internalPanel.setSize(DIMENSION_PANEL);
+		add(_internalPanel);
 		
 		JLabel title = new JLabel("Ajouter une entité");
 		_internalPanel.add(title, BorderLayout.NORTH);
@@ -327,9 +326,9 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		buttonPanel.add(retourEquipierEntiteButton);
 		
 		/**************************************************************/
+		
+		setPreferredSize(_internalPanel.getSize());
 	}
-
-	
 
 	public String getNewName()
 	{
@@ -361,28 +360,6 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		return _colorChooserPanel.getBackground();
 	}
 	
-
-	
-	private void centrer()
-	{
-		int x = (_mapPanel.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_mapPanel.getHeight() / 2) - (_internalPanel.getHeight() / 2);
-		_internalPanel.setLocation(x, y);
-	}
-	
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-
-		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
-		
-		centrer();
-		
-		repaint();
-		revalidate();
-	}
-
 	@Override
 	public void update() {
 		_listeEquipierPanel.removeAll();

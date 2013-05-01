@@ -30,6 +30,7 @@ public class EditEntityButtonListener implements MouseListener
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{		
+		System.out.println("TROLOLO");
 		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entity);	
 		new MyJDialog(configurationEntityPanel, _mapPanel.getGlobalPanel());		
 	}
