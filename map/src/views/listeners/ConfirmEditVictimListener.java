@@ -52,9 +52,9 @@ public class ConfirmEditVictimListener implements ActionListener
 		
 		EntityController entitesAssociees = _editVictimPanel.getMap().get(_editVictimPanel.getEntiteAssocieeCombobox().getSelectedItem());
 		
-		if(!ConfirmAddVictimListener.checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
+		if(!ConfirmAddVictimListener.checkInput(((motifsList.length == 0) || (motifsList[0].equals(" "))) ? "" : ((motifsList[0].equals("")) ? "" : motifsList[0]), otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if((motifsList.length == 0 ) && (otherMotif.equals("")))
+			if(((motifsList.length == 0) || (motifsList[0].equals(" "))) && (otherMotif.equals("")))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
 			
 			if(idAnonymat.equals(""))
@@ -64,7 +64,7 @@ public class ConfirmEditVictimListener implements ActionListener
 				new ErrorMessage(_mapPanel, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
 			else
 			if(entitesAssociees == null)
-				new ErrorMessage(_mapPanel, ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+				new ErrorMessage(_mapPanel, "Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
 		}
 		else
 		{
