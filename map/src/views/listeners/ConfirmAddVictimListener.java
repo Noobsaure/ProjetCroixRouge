@@ -6,8 +6,6 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
-import javax.swing.JPanel;
-
 import views.AddVictimPanel;
 import views.ErrorMessage;
 import views.MapPanel;
@@ -24,6 +22,7 @@ public class ConfirmAddVictimListener implements ActionListener
 	public static String EMPTY_MOTIF_MESSAGE = "Veuillez renseigner soit le champ \"Motif\", soit le champ \"Autre motif\".";
 	public static String EMPTY_ID_ANONYMAT_MESSAGE = "Veuillez renseigner le champ \"Id d'anonymat\".";
 	public static String EMPTY_SOINS_MESSAGE = "Veuillez renseigner le champ \"Soins\".";
+	public static String EMPTY_ENTITY_ASSOCIATED_MESSAGE = "Veuillez renseigner le champ \"Entité associée\".";
 	
 	private MapPanel _mapPanel;
 	private SubMenuVictimPanel _subMenu;
@@ -42,9 +41,9 @@ public class ConfirmAddVictimListener implements ActionListener
 	}
 	
 	
-	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, String soins)
+	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, String soins, EntityController entityAssociated)
 	{
-		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && !soins.equals(""));
+		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && !soins.equals("") && (entityAssociated != null));
 	}
 	
 	
@@ -61,16 +60,19 @@ public class ConfirmAddVictimListener implements ActionListener
 		String soins = _addVictimPanel.getSoins().getText();
 		EntityController entitesAssociees = _addVictimPanel.getMap().get((String)_addVictimPanel.getEntiteAssocieeCombobox().getSelectedItem());
 		
-		if(!checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins))
+		if(!checkInput((motifsList.length == 0 ) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if((motifsList.length == 0 ) || (otherMotif.equals("")))
+			if((motifsList.length == 0 ) && (otherMotif.equals("")))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_MOTIF_MESSAGE);
 			else
 			if(idAnonymat.equals(""))
 				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
 			else
 			if(soins.equals(""))
-				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_SOINS_MESSAGE);	
+				new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_SOINS_MESSAGE);
+			else
+			if(entitesAssociees == null)
+				new ErrorMessage(_mapPanel, EMPTY_ENTITY_ASSOCIATED_MESSAGE);
 		}
 		else
 		{
