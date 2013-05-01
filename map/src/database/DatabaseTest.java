@@ -52,9 +52,9 @@ public class DatabaseTest
 			databaseManager.executeQueryInsert(new SQLQueryInsert(table, "('Deret', 'Anthony', '69')"));
 			databaseManager.displayTable(table);
 			
-			// Suppression
-			databaseManager.executeQueryDelete(new SQLQueryDelete(table, "Age = 69"));
-			databaseManager.displayTable(table);
+//			// Suppression
+//			databaseManager.executeQueryDelete(new SQLQueryDelete(table, "Age = 69"));
+//			databaseManager.displayTable(table);
 		}
 		catch(MalformedQueryException e)
 		{

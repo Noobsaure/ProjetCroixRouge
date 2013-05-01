@@ -25,6 +25,7 @@ public class Launcher {
 		
 		_dbm = new DatabaseManager();
 		_dbm.connection("jdbc:mysql://localhost:3306/symfony", "root", "apagos35");
+		_dbm.connectionBack("jdbc:mysql://localhost:3306/symfony", "root", "apagos35");
 
 		//int idOperation =  Integer.parseInt(args[0]);
 		// Lorsque la map sera intégrée à la page symfony : _operation = new OperationController(_dbm, getParameter("idOperation"), getParameter("idOperateur"));

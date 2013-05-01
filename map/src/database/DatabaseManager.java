@@ -19,13 +19,17 @@ public class DatabaseManager
 {
 	private static final int RECONNECTION_PERIOD = 100;
 	
-	private java.sql.Statement _statement;
 	private java.sql.Connection _connection;
+	private java.sql.Connection _connectionBack;
+	private java.sql.Connection _currentConnection;
 	private OperationController _operation;
 	private String _databaseURL;
 	private String _login;
 	private String _password;
-	private int _nbExecutedQueries;
+	private int _nbExecutedQueriesConnection;
+	private int _nbExecutedQueriesConnectionBack;
+	private boolean _connectionReconnected = false;
+	private boolean _connectionBackReconnected = false;
 	
 	/**
 	 * Constructor
@@ -61,28 +65,53 @@ public class DatabaseManager
 			_databaseURL = databaseURL;
 			_login = login;
 			_password = password;
-			_nbExecutedQueries = 0;
+			_nbExecutedQueriesConnection = 0;
 			
 			// Connection a la base de donnees
-			System.out.print("Connection of " + login + " to " + databaseURL + "...");
+			System.out.print("[Connection] Connection of " + login + " to " + databaseURL + "...");
 			_connection = DriverManager.getConnection(databaseURL, login, password);
+			_currentConnection = _connection;
 			System.out.println("Connected");
-			_statement = _connection.createStatement();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			displayError(e);
 		}
 	}
 	
-	public void reconnection()
+	
+	public void connectionBack(String databaseURL, String login, String password)
+	{
+		try
+		{
+			_databaseURL = databaseURL;
+			_login = login;
+			_password = password;
+			_nbExecutedQueriesConnectionBack = 0;
+			
+			// Connection a la base de donnees
+			System.out.print("[Connection de secours] Connection of " + login + " to " + databaseURL + "...");
+			_connectionBack = DriverManager.getConnection(databaseURL, login, password);
+			System.out.println("Connected");
+//			_statement = _connection.createStatement();
+		}
+		catch(SQLException e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
+	
+	private void reconnectionConnection()
 	{
 		try
 		{
 			_connection.close();
 			connection(_databaseURL, _login, _password);
 			
-			_nbExecutedQueries = 0;
+			_connectionReconnected = true;
+			
+			System.out.println("Reconnection (connection principale)!!!");
 		}
 		catch(SQLException e)
 		{
@@ -90,12 +119,63 @@ public class DatabaseManager
 		}
 	}
 	
-	public void updateNbExecutedQueries()
+	private void reconnectionConnectionBack()
 	{
-		_nbExecutedQueries++;
+		try
+		{
+			_connectionBack.close();
+			connectionBack(_databaseURL, _login, _password);
+			
+			_connectionBackReconnected = true;
+			
+			System.out.println("Reconnection (connection de secours)!!!");
+		}
+		catch(SQLException e)
+		{
+			displayError(e);
+		}
+	}
+	
+	private void updateNbExecutedQueriesConnection()
+	{
+		_nbExecutedQueriesConnection++;
 		
-		if(_nbExecutedQueries >= RECONNECTION_PERIOD)
-			reconnection();
+		System.out.println("Nombre requête executée (connection principale) : " + _nbExecutedQueriesConnection);
+		
+		if(_nbExecutedQueriesConnection >= RECONNECTION_PERIOD)
+		{
+			_currentConnection = _connectionBack;
+			_connectionBackReconnected = false;
+		}
+		else
+			if(_nbExecutedQueriesConnection >= (RECONNECTION_PERIOD / 2))
+				if(!_connectionBackReconnected)
+					reconnectionConnectionBack();
+	}
+	
+	private void updateNbExecutedQueriesConnectionBack()
+	{
+		_nbExecutedQueriesConnectionBack++;
+		
+		System.out.println("Nombre requête executée (connection de secours) : " + _nbExecutedQueriesConnectionBack);
+
+		if(_nbExecutedQueriesConnectionBack >= RECONNECTION_PERIOD)
+		{
+			_currentConnection = _connection;
+			_connectionReconnected = false;
+		}
+		else
+			if(_nbExecutedQueriesConnectionBack >= (RECONNECTION_PERIOD / 2))
+				if(!_connectionReconnected)
+					reconnectionConnection();
+	}
+	
+	private void updateNbExecutiionQueries()
+	{
+		if(_currentConnection == _connection)
+			updateNbExecutedQueriesConnection();
+		else
+			updateNbExecutedQueriesConnectionBack();
 	}
 	
 	
@@ -111,10 +191,10 @@ public class DatabaseManager
 		//System.out.println("Execution de la requete : "+query);
 		try
 		{
-			java.sql.Statement statement = _connection.createStatement();
+			java.sql.Statement statement = _currentConnection.createStatement();
+			updateNbExecutiionQueries();
 			result = statement.executeQuery(query.toString());
 			
-			updateNbExecutedQueries();
 		}
 		catch(Exception e)
 		{
@@ -139,11 +219,10 @@ public class DatabaseManager
 		try
 		{			
 			System.out.println("Execution de la requete : " + query);
-			java.sql.Statement statement = _connection.createStatement();
+			java.sql.Statement statement = _currentConnection.createStatement();
+			updateNbExecutiionQueries();
 			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			System.out.println("Requete executee...");
-			
-			updateNbExecutedQueries();
 		}
 		catch(Exception e)
 		{
@@ -168,14 +247,14 @@ public class DatabaseManager
 		try
 		{
 			System.out.println("Execution de la requete : " + query);
-			java.sql.PreparedStatement statement = _connection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
+			java.sql.PreparedStatement statement = _currentConnection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
+			updateNbExecutiionQueries();
 			statement.executeUpdate();
 			
 			ResultSet generatedKeys = statement.getGeneratedKeys();
 			while(generatedKeys.next())
 				lastInserted = generatedKeys.getInt(1);
 			
-			updateNbExecutedQueries();
 			System.out.println("Requete executee...");
 		}
 		catch(Exception e)
@@ -188,28 +267,7 @@ public class DatabaseManager
 	}
 	
 	
-	
-	/**
-	 * 
-	 * @param query
-	 */
-	public void executeQueryDelete(SQLQueryDelete query)
-	{
-		try
-		{
-			//System.out.println("Execution de la requete : " + query);
-			java.sql.Statement statement = _connection.createStatement();
-			statement.executeUpdate(query.toString());
-			System.out.println("Requete executee...");
-			
-			updateNbExecutedQueries();
-		}
-		catch(Exception e)
-		{
-			displayError(e);
-		}		
-	}
-	
+
 	
 	/**
 	 * Stores an image in the database.  
@@ -249,7 +307,7 @@ public class DatabaseManager
 	    	preparedStatement.close();
 	    	fileInputStream.close();
 	    	
-	    	reconnection();
+	    	reconnectionConnection();
 	    }
 	    catch(Exception e)
 	    {
@@ -347,7 +405,21 @@ public class DatabaseManager
 		for(int i = 0; i < e.getStackTrace().length; i++)
 			errorMessage += e.getStackTrace()[i] + "\n";
 		
-		JOptionPane.showMessageDialog(null, errorMessage + _statement);
+		try
+		{
+			java.sql.Statement statement;
+			
+			if(!_connection.isClosed())
+				statement = _connection.createStatement();
+			else
+				statement = _connectionBack.createStatement();
+
+			JOptionPane.showMessageDialog(null, errorMessage + statement);
+		}
+		catch(SQLException e1)
+		{
+			e1.printStackTrace();
+		}
 		
 		System.exit(0);
 	}
