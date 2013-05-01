@@ -19,7 +19,7 @@ public class SubMenuMapListener implements ActionListener
 		_parent = mapPanel;
 		_button = button;
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
@@ -28,10 +28,8 @@ public class SubMenuMapListener implements ActionListener
 		
 		SubMenuMapPanel subMenu = new SubMenuMapPanel(_parent, _button, operationController, databaseManager);
 		
-		_button.setEnabled(false);		
 		_parent.add(subMenu);
 		_parent.setComponentZOrder(subMenu, 0);
-		
 		_parent.repaint();
 		_parent.revalidate();
 	}
