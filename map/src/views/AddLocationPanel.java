@@ -87,7 +87,7 @@ public class AddLocationPanel extends CustomPanelImpl {
 		
 		_internalPanel = new RoundedPanel();
 		_internalPanel.setSize(DIMENSION_PANEL);
-		add(_internalPanel, 1);
+		add(_internalPanel);
 		
 		JLabel title = new JLabel(AddLocationPanel.TITLE);
 		_internalPanel.add(title, BorderLayout.NORTH);
@@ -152,7 +152,7 @@ public class AddLocationPanel extends CustomPanelImpl {
 		/**************************************************************/
 	}
 	
-	public String getName()
+	public String getFieldName()
 	{
 		return _nomTextField.getText();
 	}
@@ -165,6 +165,6 @@ public class AddLocationPanel extends CustomPanelImpl {
 
 	@Override
 	public void updatePanel() {
-		//Pas d'update à faire ici.
+		//Pas d'update ï¿½ faire ici.
 	}
 }
