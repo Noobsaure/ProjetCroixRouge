@@ -99,13 +99,8 @@ public class MapPanel extends JPanel implements Observer, Subject
 
 	public void showAddLocationPanel(int x, int y){
 		Launcher launcher = getGlobalPanel().getLauncher();
-		System.out.println("TROLOLO");
 		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);		
-		add(addLocationPanel);		
-		setComponentZOrder(addLocationPanel, 0);
-
-		repaint();
-		revalidate();
+		new CustomDialog(addLocationPanel, _globalPanel);
 	}
 
 	public GlobalPanel getGlobalPanel() {return _globalPanel;}

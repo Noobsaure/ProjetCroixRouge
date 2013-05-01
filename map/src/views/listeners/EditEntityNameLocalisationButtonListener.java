@@ -8,7 +8,7 @@ import views.ConfigurationEntityPanel;
 import views.EntityPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.EntityController;
 import controllers.LocationController;
 import controllers.OperationController;
@@ -46,7 +46,7 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		
 		if(!checkInput(nomEntity)) {
 			MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
-			new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
+			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		} else {
 			_entity.setName(nomEntity);
 		}

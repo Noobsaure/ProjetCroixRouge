@@ -41,11 +41,12 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import controllers.EntityController;
 import controllers.LocationController;
+import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
 // modifier le listing des localisations
-public class ConfigurationEntityPanel extends JPanel implements Observer
+public class ConfigurationEntityPanel extends CustomPanelImpl implements Observer
 {
 	private static final long serialVersionUID = 1L;
 
@@ -96,9 +97,8 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		setOpaque(false);
 	
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(DIMENSION_PANEL);	
-		centrer();
-		add(_internalPanel, 1);
+		_internalPanel.setSize(DIMENSION_PANEL);
+		add(_internalPanel);
 		
 		JLabel title = new JLabel("Ajouter une entité");
 		_internalPanel.add(title, BorderLayout.NORTH);
@@ -169,7 +169,27 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		Vector<String> comboBoxItems = new Vector<String>();
 		listLocation=_operationController.getLocationList();
 		
-		//System.out.println("taille liste location "+listLocation.size());
+		// On récupère la list des map
+				List<MapController> locatMap;
+				locatMap = _operationController.getMapList();
+				List<LocationController> locatMaplocat;
+				System.out.println("loc : "+locatMap.get(0).getLocationList());
+				System.out.println();
+				for (MapController mapController : locatMap) 
+				{	
+					locatMaplocat =  mapController.getLocationList();
+					System.out.println("map "+mapController.getName());
+					System.out.println("location map "+locatMaplocat.toString());
+					for (LocationController locat : locatMaplocat)
+					{	
+						locat.toString();
+						System.out.println("..........");
+						System.out.println("list locat "+locat.getName());
+					}
+					//System.out.println("list"+mapController.getLocationList().toString());
+				}
+				
+				System.out.println();
 		
 		 for (LocationController location : listLocation){
 				comboBoxItems.add(location.getName());
@@ -209,7 +229,7 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		formPanel.add(_listeEquipierPanel, "2, 10, center, center");
 		
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
-		
+			
 		listEquipiers= _entityController.getTeamMemberList();	
 		
 		for (TeamMemberController team : listEquipiers){
@@ -327,9 +347,9 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		buttonPanel.add(retourEquipierEntiteButton);
 		
 		/**************************************************************/
+		
+		setPreferredSize(_internalPanel.getSize());
 	}
-
-	
 
 	public String getNewName()
 	{
@@ -361,28 +381,6 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 		return _colorChooserPanel.getBackground();
 	}
 	
-
-	
-	private void centrer()
-	{
-		int x = (_mapPanel.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_mapPanel.getHeight() / 2) - (_internalPanel.getHeight() / 2);
-		_internalPanel.setLocation(x, y);
-	}
-	
-	
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-
-		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
-		
-		centrer();
-		
-		repaint();
-		revalidate();
-	}
-
 	@Override
 	public void update() {
 		_listeEquipierPanel.removeAll();
@@ -409,14 +407,9 @@ public class ConfigurationEntityPanel extends JPanel implements Observer
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 	}
+	
+	@Override
+	public void updatePanel() {
+		System.out.println("AHAHAHAHAHAHAHA");
+	}
 }
-
-
-
-
-
-
-
-
-
-

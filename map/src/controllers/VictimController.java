@@ -10,7 +10,7 @@ import java.util.List;
 import observer.Observer;
 import observer.Subject;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -112,7 +112,7 @@ public class VictimController implements Subject {
 		}
 		catch(MalformedQueryException e) { 
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -189,7 +189,7 @@ public class VictimController implements Subject {
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime '"+_idAnonymat+"'", "Une erreur est survenue lors de la mise à jour de la victime '"+_idAnonymat+"' \n " +
 					"Veuillez réessayez.");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -201,7 +201,7 @@ public class VictimController implements Subject {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime","date_sortie='"+datesortie+"',motif_sortie='"+_dbm.addSlashes(motifSortie)+"'","id="+_id));
 		}catch(MalformedQueryException e){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime '"+_idAnonymat+"'.");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		genererFinDePriseEnCharge();
@@ -217,7 +217,7 @@ public class VictimController implements Subject {
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+newLine+
 					"Message : "+message);
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
@@ -230,7 +230,7 @@ public class VictimController implements Subject {
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. Message : "+message);
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		_operation.delVictim(this);
@@ -244,7 +244,7 @@ public class VictimController implements Subject {
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+
 					"Message : "+message);
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 	}
@@ -419,10 +419,10 @@ public class VictimController implements Subject {
 			result.getStatement().close();
 		}catch(SQLException e){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e1){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 

@@ -12,7 +12,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.OperationController;
 
 public class DatabaseManager
@@ -313,7 +313,7 @@ public class DatabaseManager
 	    {
 	    	displayError(e);
 	    	MessagePanel errorPanel = new MessagePanel("Erreur interne - Insertion carte '"+name+"'", "Une erreur interne est survenue lors de l'ajout de la carte'"+name+"'. Veuillez recommencer s'il vous plait.");
-	    	new MyJDialog(errorPanel, _operation.getGlobalPanel());
+	    	new CustomDialog(errorPanel, _operation.getGlobalPanel());
 	    }
 	    
 	    return id;

@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import launcher.Launcher;
 import views.EditVictimPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import views.SubMenuVictimPanel;
 import controllers.VictimController;
 
@@ -33,7 +33,7 @@ public class EditVictimButtonListener implements MouseListener {
 		EditVictimPanel editVictimPanel = new EditVictimPanel(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), _victimCOntroller);		
 		editVictimPanel.addCancelButtonListener(new CancelEditVictimListener(_mapPanel, editVictimPanel));
 		editVictimPanel.addOkButtonListener(new ConfirmEditVictimListener(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), editVictimPanel, _victimCOntroller));
-		new MyJDialog(editVictimPanel, _mapPanel.getGlobalPanel());
+		new CustomDialog(editVictimPanel, _mapPanel.getGlobalPanel());
 	}
 
 	@Override

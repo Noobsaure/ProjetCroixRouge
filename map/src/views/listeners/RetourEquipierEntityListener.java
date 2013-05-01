@@ -10,7 +10,7 @@ import controllers.EntityController;
 import controllers.OperationController;
 import views.ConfigurationEntityPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 
 public class RetourEquipierEntityListener implements ActionListener
 {
@@ -31,7 +31,7 @@ public class RetourEquipierEntityListener implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{	
 		_operationController.removeObserver(_configEntityPanel);
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_configEntityPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_configEntityPanel);
 		dialog.dispose();
 	}
 }

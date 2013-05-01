@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 
 import views.ChoicePanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import views.SubMenuMapPanel;
 import views.buttons.SubMenuMapButton;
 import controllers.EntityController;
@@ -31,7 +31,7 @@ public class ConfirmDelMapListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_confirmDelMapPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_confirmDelMapPanel);
 		dialog.dispose();
 		
 		List<EntityController> _entityList = _map.getEntityListInThisMap();

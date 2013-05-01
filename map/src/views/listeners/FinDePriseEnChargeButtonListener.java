@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import views.EditVictimPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import views.SubMenuVictimPanel;
 import controllers.VictimController;
 
@@ -33,10 +33,10 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 		String motifDeSortie = _editVictimPanel.getMotifTextField().getText();
 		if(motifDeSortie.equals("")) {
 			MessagePanel errorPanel = new MessagePanel("Saisie incomplète", "Un motif de fin de prise en charge doit être renseigné.");
-			new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
+			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		} else {
 			_victimController.finDePriseEnCharge(motifDeSortie);
-			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_editVictimPanel);
+			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_editVictimPanel);
 			dialog.dispose();
 			_subMenu.update();
 		}

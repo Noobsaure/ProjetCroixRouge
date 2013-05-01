@@ -30,7 +30,7 @@ import database.DatabaseManager;
 
 
 
-public class AddEntityPanel extends JPanel {
+public class AddEntityPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -212,6 +212,12 @@ public class AddEntityPanel extends JPanel {
 //
 //		_internalPanel.repaint();
 //		_internalPanel.revalidate();		
+	}
+
+
+	@Override
+	public void updatePanel() {
+		System.out.println("TROLOLO");
 	}
 }
 

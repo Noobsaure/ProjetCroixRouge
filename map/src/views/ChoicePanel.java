@@ -1,11 +1,8 @@
 package views;
 
-import javax.swing.JPanel;
-
 import views.buttons.CustomButton;
 import views.buttons.SubMenuMapButton;
 import views.listeners.CancelButtonListener;
-import views.listeners.ConfirmDelMapListener;
 import controllers.MapController;
 import controllers.OperationController;
 

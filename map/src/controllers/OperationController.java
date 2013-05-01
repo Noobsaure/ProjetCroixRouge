@@ -11,7 +11,7 @@ import observer.Observer;
 import observer.Subject;
 import views.GlobalPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -148,7 +148,7 @@ public class OperationController implements Subject
 			_locationList.add(location);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur lors de la génération de la localisation de base des entitées.");
-			new MyJDialog(errorPanel, _globalPanel);
+			new CustomDialog(errorPanel, _globalPanel);
 		}
 	}
 

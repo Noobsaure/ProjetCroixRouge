@@ -18,7 +18,7 @@ import views.buttons.CustomButton;
 import views.listeners.MessagePanelButtonListener;
 
 
-public class MessagePanel extends JPanel
+public class MessagePanel extends CustomPanelImpl
 {
 	private static final long serialVersionUID = 1L;
 
@@ -115,5 +115,10 @@ public class MessagePanel extends JPanel
 	public JPanel getButtonsPanel()
 	{
 		return _buttonPanel;
+	}
+
+	@Override
+	public void updatePanel() {
+		System.out.println("PROUT");
 	}
 }

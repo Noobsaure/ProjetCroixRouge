@@ -12,7 +12,7 @@ import views.AddVictimPanel;
 import views.GlobalPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import views.SubMenuVictimPanel;
 import controllers.EntityController;
 import controllers.OperationController;
@@ -73,16 +73,16 @@ public class ConfirmAddVictimListener implements ActionListener
 		{
 			if((motifsList.length == 0)  || (motifsList[0].equals(" ")) || (otherMotif.equals(""))) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_MOTIF_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			} else if(idAnonymat.equals("")) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			} else if(soins.equals("")) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_SOINS_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			} else if(entitesAssociees == null) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ENTITY_ASSOCIATED_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			}
 		} else {
 			String name = _addVictimPanel.getNameTextField().getText();
@@ -100,7 +100,7 @@ public class ConfirmAddVictimListener implements ActionListener
 			}
 			catch(ParseException e1) {e1.printStackTrace();}
 			
-			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addVictimPanel);
+			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addVictimPanel);
 			dialog.dispose();
 		}
 	}

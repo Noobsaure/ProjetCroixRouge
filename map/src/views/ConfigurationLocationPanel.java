@@ -26,8 +26,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class ConfigurationLocationPanel extends JPanel
-{
+public class ConfigurationLocationPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -145,5 +144,12 @@ public class ConfigurationLocationPanel extends JPanel
 	public String getInformations()
 	{
 		return _informationsTextArea.getText();
+	}
+
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }

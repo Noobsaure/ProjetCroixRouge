@@ -27,7 +27,7 @@ import database.DatabaseManager;
 
 
 
-public class AddLocationPanel extends JLayeredPane {
+public class AddLocationPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -86,8 +86,7 @@ public class AddLocationPanel extends JLayeredPane {
 		setOpaque(false);
 		
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(DIMENSION_PANEL);	
-		centrer();
+		_internalPanel.setSize(DIMENSION_PANEL);
 		add(_internalPanel, 1);
 		
 		JLabel title = new JLabel(AddLocationPanel.TITLE);
@@ -153,15 +152,6 @@ public class AddLocationPanel extends JLayeredPane {
 		/**************************************************************/
 	}
 	
-	
-	private void centrer()
-	{
-		int x = (_parent.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_internalPanel.getHeight() / 2);
-		_internalPanel.setLocation(x, y);
-	}
-	
-	
 	public String getName()
 	{
 		return _nomTextField.getText();
@@ -170,6 +160,12 @@ public class AddLocationPanel extends JLayeredPane {
 	public String getInformations()
 	{
 		return _informationsTextArea.getText();
+	}
+
+
+	@Override
+	public void updatePanel() {
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	}
 }
 

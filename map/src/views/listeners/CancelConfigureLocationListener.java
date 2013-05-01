@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 
 import views.ConfigurationLocationPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 
 public class CancelConfigureLocationListener implements ActionListener
 {
@@ -25,7 +25,7 @@ public class CancelConfigureLocationListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_configurationLocationPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_configurationLocationPanel);
 		dialog.dispose();
 	}
 }
