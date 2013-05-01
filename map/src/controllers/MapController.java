@@ -90,13 +90,13 @@ public class MapController implements Subject {
 	}
 	
 	public List<LocationController> getLocationList(){
-		List<LocationController> _locationList = new ArrayList<>();
+		List<LocationController> locationList = new ArrayList<>();
 		
 		for(LocationController location : _locationList){
-			_locationList.add(location);
+			locationList.add(location);
 		}
 		
-		return _locationList;
+		return locationList;
 	}
 	
 	public void hideMap(){		
@@ -150,12 +150,11 @@ public class MapController implements Subject {
 
 	public void updateFields() {
 		try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Localisation","carte_id = "+_id));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Carte","id = "+_id));
 
 			while(result.next()){
-				int idLocation = result.getInt("id");
-				if(!_operation.existsInLocationList(idLocation))
-					_locationList.add(_operation.getLocation(idLocation));
+				_name = result.getString("nom");
+				_visibility = result.getBoolean("visibilite");
 			}
 			result.getStatement().close();
 		}catch(SQLException e){

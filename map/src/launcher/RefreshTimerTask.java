@@ -204,10 +204,10 @@ public class RefreshTimerTask extends TimerTask
 			}
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){ 
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur lors de la mise à jour des cartes");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "WHILE Erreur lors de la mise à jour des cartes");
 		}
 		catch(SQLException e2){
-			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur lors de la mise à jour des cartes");
+			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), " TRY Erreur lors de la mise à jour des cartes");
 		}
 	}
 
