@@ -40,7 +40,7 @@ public class RefreshTimerTask extends TimerTask
 		refreshMaps();
 		refreshLocation();
 		refreshVictim();
-
+		
 		_operation.loadTeamMemberIntoEntity();
 		_operation.loadEntityIntoLocation();
 
@@ -190,13 +190,13 @@ public class RefreshTimerTask extends TimerTask
 				int id = result.getInt("id");
 
 				if(!_operation.existsInMapList(id)){
-					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"'"));
+					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Carte", "id='"+id+"'"));
 					while(result2.next()){
 						String name = result2.getString("nom");
 						Boolean visibility = result2.getBoolean("visibilite");
-						MapController map = new MapController(_operation, _dbm , id, name, visibility);
-						System.out.println("Chargement carte "+name+" avec l'id: "+id);
-						_operation.addMap(map);
+						MapController currentMap = _operation.getCurrentMap();
+						new MapController(_operation, _dbm , id, name, visibility);
+						_operation.setCurrentMap(currentMap);
 					}
 					result2.getStatement().close();
 				}

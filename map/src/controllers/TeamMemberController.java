@@ -228,8 +228,6 @@ public class TeamMemberController {
 				if(result.getInt("entite_id") == 0)
 					_available = true;					
 				else{
-					System.out.println("Here");
-					System.out.println(_entity.getName());
 					_available = false;
 				}
 			}
