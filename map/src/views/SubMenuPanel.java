@@ -105,25 +105,8 @@ public class SubMenuPanel extends JPanel
 		super.paintComponent(g);
 		
 		setSize(WIDTH, _mapPanel.getHeight());
-//		setComponentZOrder(_mapPanel, 1);
 
 		revalidate();
 		repaint();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

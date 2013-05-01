@@ -62,8 +62,4 @@ public class EditLocationButtonListener implements MouseListener
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}
-	
-	public void enable(boolean enable) {
-		_enabled = enable;
-	}
 }

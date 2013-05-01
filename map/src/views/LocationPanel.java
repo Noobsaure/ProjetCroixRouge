@@ -180,9 +180,4 @@ public class LocationPanel extends JPanel
 			_iconGearLabel.setIcon(_iconGearOff);
 	}
 	public void addIconMouseListener(MouseListener listener) {_iconGearLabel.addMouseListener(listener);}
-
-	public void enableListeners(boolean enable) {
-		_mouseListener.enable(enable);
-		_iconGearMouseListener.enable(enable);
-	}
 }

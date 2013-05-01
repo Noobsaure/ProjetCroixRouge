@@ -61,6 +61,13 @@ public class Location extends JPanel {
 		_locPanel.moveLocationPanel(x, y);
 	}
 
+	public void setOffsetX(int x) {
+		_offsetX = x;
+	}
+	public void setOffsetY(int y) {
+		_offsetY = y;
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

@@ -130,7 +130,10 @@ public class MapPanel extends JPanel implements Observer {
 	}
 	
 	public void resetLocationOffsets() {
-		
+		for(Location oneLoc : _locations) {
+			oneLoc.setOffsetX(0);
+			oneLoc.setOffsetY(0);
+		}
 	}
 
 	public synchronized void disableLocationHighlight() {
