@@ -7,8 +7,8 @@ import java.util.List;
 
 import observer.Observer;
 import observer.Subject;
-import views.MessagePanel;
 import views.CustomDialog;
+import views.MessagePanel;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -54,7 +54,7 @@ public class LocationController implements Subject {
 			return;
 		}else if(_operation.locationNameAlreadyExist(name)){
 			MessagePanel errorPanel = new MessagePanel("Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée. Veuillez recommencer en utilisant un nom différent.");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return;
 		}
 
@@ -95,7 +95,7 @@ public class LocationController implements Subject {
 		_idMap = idMap;
 		_idOperation = _operation.getId();
 
-		if(_name.compareTo("LocalisationBaseDesEntites") != 0 )
+		if(_name.compareTo("PCM (défaut)") != 0 )
 			operation.getMap(_idMap).addLocation(this);
 
 		_observers = new ArrayList<Observer>();

@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
+
 import observer.Observer;
 import observer.Subject;
 import views.MessagePanel;
