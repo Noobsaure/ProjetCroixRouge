@@ -168,32 +168,31 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 
 		Vector<String> comboBoxItems = new Vector<String>();
 		listLocation=_operationController.getLocationList();
-		
+	/*
 		// On récupère la list des map
-				List<MapController> locatMap;
-				locatMap = _operationController.getMapList();
-				List<LocationController> locatMaplocat;
-				System.out.println("loc : "+locatMap.get(0).getLocationList());
-				System.out.println();
-				for (MapController mapController : locatMap) 
-				{	
-					locatMaplocat =  mapController.getLocationList();
-					System.out.println("map "+mapController.getName());
-					System.out.println("location map "+locatMaplocat.toString());
-					for (LocationController locat : locatMaplocat)
-					{	
-						locat.toString();
-						System.out.println("..........");
-						System.out.println("list locat "+locat.getName());
-					}
-					//System.out.println("list"+mapController.getLocationList().toString());
-				}
-				
-				System.out.println();
-		
-		 for (LocationController location : listLocation){
-				comboBoxItems.add(location.getName());
+		List<MapController> locatMap;
+		locatMap = _operationController.getMapList();
+		List<LocationController> locatMaplocat;
+		for (MapController mapController : locatMap) 
+		{	
+			locatMaplocat =  mapController.getLocationList();
+			//System.out.println("map "+mapController.getName());
+			comboBoxItems.add(mapController.getName());
+			for (LocationController locat : locatMaplocat)
+			{	
+				comboBoxItems.add(locat.getName());
+				//System.out.println("list locat "+locat.getName());
+			}
+			//System.out.println("list"+mapController.getLocationList().toString());
 		}
+		
+		System.out.println();
+	*/
+		 
+		 for (LocationController location : listLocation){
+		 	comboBoxItems.add(location.getName());
+		 }
+		
 
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 
