@@ -4,10 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import views.AddEntityPanel;
 import views.ErrorMessage;
 import views.MapPanel;
+import views.MyJDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -43,7 +45,7 @@ public class ConfirmAddEntityListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		String name = _addEntityPanel.getName();
+		String name = _addEntityPanel.getFieldName();
 		String type = _addEntityPanel.getType();
 		String informations = _addEntityPanel.getInformations();
 		Color colorChosen = _addEntityPanel.getColor();
@@ -63,9 +65,9 @@ public class ConfirmAddEntityListener implements ActionListener
 			EntityController entity = new EntityController(_operationController, _databaseManager, name, type, informations, color);
 			entity.addObserver(_mapPanel.getGlobalPanel());
 			entity.notifyObservers();
-			_mapPanel.remove(_addEntityPanel);
-			_mapPanel.setCurrentPopUp(null);
-			_mapPanel.repaint();
+			
+			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEntityPanel);
+			dialog.dispose();
 		}
 	}
 }

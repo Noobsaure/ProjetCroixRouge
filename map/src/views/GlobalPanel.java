@@ -2,8 +2,11 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Frame;
 
 import javax.swing.JApplet;
+import javax.swing.JDialog;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -80,6 +83,8 @@ public class GlobalPanel extends JApplet implements Observer
 		_menuPanel.setOperation(_operation);
 		update();
 		_menuPanel.getEntitiesPanel().addDropTarget();
+		
+		
 	}
 
 	public void setDragOccurring(boolean dragOccurring) {

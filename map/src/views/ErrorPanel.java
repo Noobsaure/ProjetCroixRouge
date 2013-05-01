@@ -27,16 +27,10 @@ public class ErrorPanel extends JPanel
 	private JPanel _buttonPanel;
 	private CustomButton _okButton;
 	
-	
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public ErrorPanel(JPanel parent, String title, String message)
-	{
+	public ErrorPanel(JPanel parent, String title, String message) {
 		_parent = parent;
 		_title = title;
 		_message = message + "  ";
-		
 		init();
 	}
 	
