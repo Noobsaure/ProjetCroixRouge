@@ -104,7 +104,6 @@ public class LocationController implements Subject {
 	 * @param entity
 	 */
 	public int addEntity(EntityController entity){
-		System.out.println("NOM MAIS ALLO QUOI");
 		Integer result = new Integer(-1);
 
 		java.util.Date date = new java.util.Date();
@@ -225,6 +224,7 @@ public class LocationController implements Subject {
 
 			while(result.next()){
 				_name = _dbm.stripSlashes(result.getString("nom"));
+				_description = _dbm.stripSlashes(result.getString("desc"));
 			}
 			
 			result.getStatement().close();
