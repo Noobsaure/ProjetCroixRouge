@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.TimerTask;
 
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 
 import controllers.EntityController;
 import controllers.LocationController;
@@ -205,11 +205,11 @@ public class RefreshTimerTask extends TimerTask
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){ 
 			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise � jour des cartes");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		catch(SQLException e2){
 			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise � jour des cartes");
-			new MyJDialog(errorPanel, _operation.getGlobalPanel());
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 

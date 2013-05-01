@@ -213,6 +213,12 @@ public class AddEntityPanel extends CustomPanelImpl {
 //		_internalPanel.repaint();
 //		_internalPanel.revalidate();		
 	}
+
+
+	@Override
+	public void updatePanel() {
+		System.out.println("TROLOLO");
+	}
 }
 
 

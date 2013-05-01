@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 import views.AddEntityPanel;
 import views.AddLocationPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 
 public class CancelAddLocationListener implements ActionListener {
 	private MapPanel _mapPanel;
@@ -22,7 +22,7 @@ public class CancelAddLocationListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addLocationPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addLocationPanel);
 		dialog.dispose();
 	}
 }

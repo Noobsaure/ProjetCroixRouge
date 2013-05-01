@@ -9,7 +9,7 @@ import views.AddEntityPanel;
 import views.GlobalPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -57,10 +57,10 @@ public class ConfirmAddEntityListener implements ActionListener
 		{
 			if(name.equals("")) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			} else if((type != null) && type.equals("")) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_TYPE_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			} else if(informations.equals("")) {
 				System.out.println("Informations null");	
 			}
@@ -68,7 +68,7 @@ public class ConfirmAddEntityListener implements ActionListener
 			EntityController entity = new EntityController(_operationController, _databaseManager, name, type, informations, color);
 			entity.addObserver(_mapPanel.getGlobalPanel());
 			entity.notifyObservers();
-			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEntityPanel);
+			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addEntityPanel);
 			dialog.dispose();
 		}
 	}

@@ -8,7 +8,7 @@ import javax.swing.SwingUtilities;
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -30,7 +30,7 @@ public class CancelEquipierEquipierButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{	
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEquipierPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addEquipierPanel);
 		dialog.dispose();
 	}
 }

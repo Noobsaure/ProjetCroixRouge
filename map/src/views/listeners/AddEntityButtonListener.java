@@ -7,7 +7,7 @@ import launcher.Launcher;
 import views.AddEntityPanel;
 import views.GlobalPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 
 public class AddEntityButtonListener implements ActionListener
 {
@@ -24,7 +24,7 @@ public class AddEntityButtonListener implements ActionListener
 	{
 		Launcher launcher = _globalPanel.getLauncher();
 		AddEntityPanel addEntityPanel = new AddEntityPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());		
-		new MyJDialog(addEntityPanel, _globalPanel);
+		new CustomDialog(addEntityPanel, _globalPanel);
 	}
 }
 

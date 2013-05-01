@@ -5,7 +5,7 @@ import java.awt.event.MouseListener;
 
 import views.ChoicePanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import views.SubMenuMapPanel;
 import views.buttons.SubMenuMapButton;
 import controllers.MapController;

@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 import views.ConfigurationLocationPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.LocationController;
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -50,7 +50,7 @@ public class ConfirmConfigureLocationListener implements ActionListener
 		{
 			if(name.equals("")) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète - Le nom ne peut pas être vide.", EMPTY_NAME_MESSAGE);
-				new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
+				new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 			}
 		}
 		else
@@ -58,7 +58,7 @@ public class ConfirmConfigureLocationListener implements ActionListener
 			_locationController.setName(name);
 			_locationController.setDescription(informations);
 			_locationController.notifyObservers();
-			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_configurationLocationPanel);
+			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_configurationLocationPanel);
 			dialog.dispose();
 		}
 	}

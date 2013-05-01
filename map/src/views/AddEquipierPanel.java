@@ -144,4 +144,9 @@ public class AddEquipierPanel extends CustomPanelImpl {
 	{
 		return (int)_typeComboBox.getSelectedIndex();
 	}
+
+	@Override
+	public void updatePanel() {
+		System.out.println("SISISLOL");
+	}
 }

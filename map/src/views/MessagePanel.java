@@ -116,4 +116,9 @@ public class MessagePanel extends CustomPanelImpl
 	{
 		return _buttonPanel;
 	}
+
+	@Override
+	public void updatePanel() {
+		System.out.println("PROUT");
+	}
 }

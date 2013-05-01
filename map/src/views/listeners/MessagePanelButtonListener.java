@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 
 public class MessagePanelButtonListener implements ActionListener
 {
@@ -21,7 +21,7 @@ public class MessagePanelButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_messagePanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_messagePanel);
 		dialog.dispose();
 	}
 }

@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import launcher.Launcher;
 import views.AddVictimPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import views.SubMenuVictimPanel;
 import views.MapPanel;
 
@@ -27,6 +27,6 @@ public class AddVictimButtonListener implements ActionListener
 		AddVictimPanel addVictimPanel = new AddVictimPanel(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager());		
 		addVictimPanel.addCancelButtonListener(new CancelAddVictimListener(_mapPanel, _subMenu, addVictimPanel));
 		addVictimPanel.addOkButtonListener(new ConfirmAddVictimListener(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), addVictimPanel));
-		new MyJDialog(addVictimPanel, _mapPanel.getGlobalPanel());
+		new CustomDialog(addVictimPanel, _mapPanel.getGlobalPanel());
 	}
 }

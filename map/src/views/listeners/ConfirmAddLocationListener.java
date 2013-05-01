@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 import views.AddLocationPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.LocationController;
 import controllers.OperationController;
 import database.DatabaseManager;
@@ -51,11 +51,11 @@ public class ConfirmAddLocationListener implements ActionListener
 		{
 			if(name.equals("")) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
-				new MyJDialog(errorPanel, _mapPanel.getGlobalPanel());
+				new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 			}
 		} else {
 			new LocationController(_operationController, _databaseManager,_x,_y,name,informations);
-			MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addLocationPanel);
+			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addLocationPanel);
 			dialog.dispose();
 		}
 	}

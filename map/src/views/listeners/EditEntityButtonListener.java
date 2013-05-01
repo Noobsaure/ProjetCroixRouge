@@ -6,7 +6,7 @@ import java.awt.event.MouseListener;
 import views.ConfigurationEntityPanel;
 import views.EntityPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -32,7 +32,7 @@ public class EditEntityButtonListener implements MouseListener
 	{		
 		System.out.println("TROLOLO");
 		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entity);	
-		new MyJDialog(configurationEntityPanel, _mapPanel.getGlobalPanel());		
+		new CustomDialog(configurationEntityPanel, _mapPanel.getGlobalPanel());		
 	}
 
 	@Override

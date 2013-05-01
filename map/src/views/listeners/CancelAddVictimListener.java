@@ -10,7 +10,7 @@ import launcher.Launcher;
 
 import views.AddVictimPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import views.SubMenuVictimPanel;
 
 public class CancelAddVictimListener implements ActionListener
@@ -32,7 +32,7 @@ public class CancelAddVictimListener implements ActionListener
 	{
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 		new SubMenuVictimPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addVictimPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addVictimPanel);
 		dialog.dispose();
 	}
 }

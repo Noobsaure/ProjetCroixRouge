@@ -386,14 +386,9 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 	}
+	
+	@Override
+	public void updatePanel() {
+		System.out.println("AHAHAHAHAHAHAHA");
+	}
 }
-
-
-
-
-
-
-
-
-
-

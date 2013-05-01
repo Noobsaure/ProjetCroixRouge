@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
 import views.AddEquipierPanel;
 import views.ConfigurationEntityPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
@@ -48,7 +48,7 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 			_entityController.addTeamMember(_team);
 		}
 		
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEquipierPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addEquipierPanel);
 		dialog.dispose();
 	}
 }

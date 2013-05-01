@@ -145,4 +145,11 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 	{
 		return _informationsTextArea.getText();
 	}
+
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
+	}
 }

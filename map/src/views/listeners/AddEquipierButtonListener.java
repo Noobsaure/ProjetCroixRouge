@@ -8,7 +8,7 @@ import views.ConfigurationEntityPanel;
 import views.GlobalPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.MyJDialog;
+import views.CustomDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -38,14 +38,14 @@ public class AddEquipierButtonListener implements ActionListener {
 		{
 			if (_operationController.getTeamMemberList().size() == 0) {
 				MessagePanel errorPanel = new MessagePanel("Equipier insuffisant", EMPTY_LIST_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			} else {
 				MessagePanel errorPanel = new MessagePanel("Equipier insuffisant", EMPTY_DISPO_MESSAGE);
-				new MyJDialog(errorPanel, _globalPanel);
+				new CustomDialog(errorPanel, _globalPanel);
 			}
 		} else {
 			AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_mapPanel, _operationController, _entityController);
-			new MyJDialog(addEquipierPanel, _globalPanel);
+			new CustomDialog(addEquipierPanel, _globalPanel);
 		}
 	}
 }

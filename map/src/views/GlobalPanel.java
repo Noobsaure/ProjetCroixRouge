@@ -30,7 +30,7 @@ public class GlobalPanel extends JApplet implements Observer
 	private String _idOperateur;
 	private String _idOperation;
 	
-	private List<MyJDialog> _dialogs;
+	private List<CustomDialog> _dialogs;
 
 	public static void main(String[] args)
 	{
@@ -67,7 +67,7 @@ public class GlobalPanel extends JApplet implements Observer
 		GlassPane glassPane = new GlassPane();
 		setGlassPane(glassPane);
 
-		_dialogs = new ArrayList<MyJDialog>();
+		_dialogs = new ArrayList<CustomDialog>();
 		_mapPanel = new MapPanel(this);
 		_mapPanel.addMapPanelListener();
 		getContentPane().add(_mapPanel, BorderLayout.CENTER);
@@ -85,11 +85,9 @@ public class GlobalPanel extends JApplet implements Observer
 		_menuPanel.setOperation(_operation);
 		update();
 		_menuPanel.getEntitiesPanel().addDropTarget();
-		
-		
 	}
 	
-	public void addDialog(MyJDialog dialog) {
+	public void addDialog(CustomDialog dialog) {
 		_dialogs.add(dialog);
 	}
 
@@ -106,8 +104,7 @@ public class GlobalPanel extends JApplet implements Observer
 	public MenuPanel getMenu() {return _menuPanel;}
 
 	public synchronized void update() {
-		for(MyJDialog oneDialog : _dialogs) {
-			System.out.println("UPDATE!!!!!!!!!!!!!!!!!!!!!");
+		for(CustomDialog oneDialog : _dialogs) {
 			oneDialog.update();
 		}
 		_menuPanel.update();

@@ -383,4 +383,9 @@ public class AddVictimPanel extends CustomPanelImpl {
 	{
 		return _map;
 	}
+
+	@Override
+	public void updatePanel() {
+		System.out.println("POUET");
+	}
 }

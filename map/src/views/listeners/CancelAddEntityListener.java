@@ -7,7 +7,7 @@ import javax.swing.SwingUtilities;
 
 import views.AddEntityPanel;
 import views.MapPanel;
-import views.MyJDialog;
+import views.CustomDialog;
 
 public class CancelAddEntityListener implements ActionListener
 {
@@ -21,7 +21,7 @@ public class CancelAddEntityListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEntityPanel);
+		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addEntityPanel);
 		dialog.dispose();
 	}
 }
