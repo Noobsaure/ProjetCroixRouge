@@ -70,7 +70,7 @@ public class EntityMouseListener extends AbstractObserverListener implements Mou
 	}
 
 	public void mouseDragged(MouseEvent e) {
-		if(_dragOccurring) {
+		if(_dragOccurring && isEnabled()) {
 			Point p = (Point) e.getPoint().clone();
 			SwingUtilities.convertPointToScreen(p, _entity);
 			SwingUtilities.convertPointFromScreen(p, _glassPane);

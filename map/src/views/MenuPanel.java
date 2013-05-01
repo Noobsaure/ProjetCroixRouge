@@ -7,15 +7,11 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JButton;
 import javax.swing.JScrollPane;
 
-import views.buttons.AddEntityButton;
-import views.buttons.CustomButton;
-
+import views.listeners.MenuMouseListener;
 import controllers.OperationController;
 
 
@@ -29,6 +25,7 @@ public class MenuPanel extends JPanel
 	private JLabel[] _labels = new JLabel[10];
 	private JPanel _buttonsPanel;
 	private JPanel _entitiesPanel;
+	private MenuMouseListener _menuListener;
 
 	private Color left = Color.black;
 	private Color right = Color.gray;
@@ -47,6 +44,7 @@ public class MenuPanel extends JPanel
 
 	public void setOperation(OperationController operation) {
 		_entitiesPanel = new MenuEntitiesPanel(operation,_globalPanel);
+		((MenuEntitiesPanel) _entitiesPanel).addMenuEntitiesPanelListener();
 		JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBorder(null);
@@ -62,8 +60,9 @@ public class MenuPanel extends JPanel
 	public MenuEntitiesPanel getEntitiesPanel() {return (MenuEntitiesPanel)_entitiesPanel;}
 	public MenuButtonsPanel getButtonsPanel() {return (MenuButtonsPanel)_buttonsPanel;}
 
-	public void enableListeners(boolean enable) {
-		((MenuEntitiesPanel)_entitiesPanel).enableListeners(enable);
+	public void addMenuPanelListener() {
+		_menuListener = new MenuMouseListener(_mapPanel);
+		addMouseListener(_menuListener);
 	}
 
 	public synchronized void update() {

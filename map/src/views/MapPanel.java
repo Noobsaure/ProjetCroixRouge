@@ -31,6 +31,7 @@ public class MapPanel extends JPanel implements Observer, Subject
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
 	private PopUpPanel _currentPopUp;
+
 	private int _x = 0;
 	private int _y = 0;
 	private MapPanelMouseListener _mapListener;
@@ -59,12 +60,6 @@ public class MapPanel extends JPanel implements Observer, Subject
 		addMouseMotionListener(_mapListener);
 	}
 
-	public void removeMapPanelListener()
-	{
-		removeMouseListener(_mapListener);
-		removeMouseMotionListener(_mapListener);
-	}
-
 	public List<Location> getLocations() {return _locations;}
 
 	public MapPanelMouseListener getMapListener() {return _mapListener;}
@@ -75,6 +70,7 @@ public class MapPanel extends JPanel implements Observer, Subject
 		_currentPopUp = currentPopUp;
 		notifyObservers();
 	}
+	public PopUpPanel getCurrentPopUp() {return _currentPopUp;}
 
 	public void moveMap(int x, int y) {
 		if(_map.getWidth() > getWidth()) {
@@ -108,10 +104,8 @@ public class MapPanel extends JPanel implements Observer, Subject
 	}
 
 	public void showAddLocationPanel(int x, int y){
-		removeMapPanelListener();
-
 		Launcher launcher = getGlobalPanel().getLauncher();
-
+		System.out.println("TROLOLO");
 		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);		
 		add(addLocationPanel);		
 		setComponentZOrder(addLocationPanel, 0);

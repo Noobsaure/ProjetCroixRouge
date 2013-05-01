@@ -17,7 +17,6 @@ public class ErrorMessage extends JLayeredPane
 		errorPanel.addOkButtonListener(new ErrorMessageButtonListener(parent, errorPanel));
 		parent.add(errorPanel);
 		parent.setComponentZOrder(errorPanel, 0);
-		
 		parent.repaint();
 		parent.revalidate();
 	}

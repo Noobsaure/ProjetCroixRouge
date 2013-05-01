@@ -96,7 +96,6 @@ public class ConfirmAddVictimListener implements ActionListener
 			}
 			
 			MapPanel mapPanel = (MapPanel)_mapPanel;
-			mapPanel.addMapPanelListener();
 			_mapPanel.setCurrentPopUp(null);
 			_mapPanel.remove(_addVictimPanel);
 			_mapPanel.repaint();

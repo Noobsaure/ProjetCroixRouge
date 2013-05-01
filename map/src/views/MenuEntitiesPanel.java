@@ -22,6 +22,7 @@ import javax.swing.border.TitledBorder;
 import observer.Observer;
 import views.buttons.AddEntityButton;
 import views.listeners.MenuEntitiesPanelDropTargetListener;
+import views.listeners.MenuMouseListener;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -40,12 +41,17 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 	private List<EntityPanel> _availableEntityPanels;
 	private List<EntityPanel> _unavailableEntityPanels;
 
+	private MapPanel _mapPanel;
+
+	private MenuMouseListener _menuListener;
+
 	public MenuEntitiesPanel(OperationController operation, GlobalPanel globalPanel)
 	{
 		super();
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 		_operation = operation;
 		_globalPanel = globalPanel;
+		_mapPanel = _globalPanel.getMapPanel();
 		
 		_availableEntityPanels = new ArrayList<EntityPanel>();
 		_unavailableEntityPanels = new ArrayList<EntityPanel>();
@@ -117,6 +123,11 @@ public class MenuEntitiesPanel extends JPanel implements Observer
 			}
 		}
 		setOpaque(false);	
+	}
+	
+	public void addMenuEntitiesPanelListener() {
+		_menuListener = new MenuMouseListener(_mapPanel);
+		addMouseListener(_menuListener);
 	}
 	
 	public void setListEntitiesContent()

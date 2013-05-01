@@ -68,6 +68,7 @@ public class GlobalPanel extends JApplet implements Observer
 		getContentPane().add(_mapPanel, BorderLayout.CENTER);
 
 		_menuPanel = new MenuPanel(this, _mapPanel);
+		_menuPanel.addMenuPanelListener();
 
 		getContentPane().add(_menuPanel, BorderLayout.WEST);
 

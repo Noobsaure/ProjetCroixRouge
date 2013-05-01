@@ -33,16 +33,13 @@ public class MapPanelMouseListener extends AbstractObserverListener implements M
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		if(isEnabled()) {
+		if(isEnabled() && _addingLocation) {
 			int x = e.getX();
 			int y = e.getY();
-			_mapPanel.disableLocationHighlight();
-			if(_addingLocation) {
-				if(isCoordAwayFromLocs(x, y) && !_mapPanel.getCursor().equals(addableCursor)) {
-					_mapPanel.setCursor(addableCursor);
-				} else if (!isCoordAwayFromLocs(x, y) && !_mapPanel.getCursor().equals(notAddableCursor)){
-					_mapPanel.setCursor(notAddableCursor);
-				}
+			if(isCoordAwayFromLocs(x, y) && !_mapPanel.getCursor().equals(addableCursor)) {
+				_mapPanel.setCursor(addableCursor);
+			} else if (!isCoordAwayFromLocs(x, y) && !_mapPanel.getCursor().equals(notAddableCursor)){
+				_mapPanel.setCursor(notAddableCursor);
 			}
 		}
 	}
@@ -127,18 +124,17 @@ public class MapPanelMouseListener extends AbstractObserverListener implements M
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		_mapPanel.disableLocationHighlight();
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		_mapPanel.disableLocationHighlight();
 	}
 }

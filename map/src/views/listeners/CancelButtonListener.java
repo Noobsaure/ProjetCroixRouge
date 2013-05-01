@@ -22,6 +22,7 @@ public class CancelButtonListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		MapPanel parent = _operation.getGlobalPanel().getMapPanel();
 		parent.remove(_popUp);
+		parent.setCurrentPopUp(null);
 		parent.add(_subMenu);
 		parent.repaint();
 		parent.revalidate();

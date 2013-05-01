@@ -54,8 +54,12 @@ public class LocationPanel extends JPanel
 		_mapPanel = mapPanel;
 		_x = x;
 		_y = y;
-
-		_mouseListener = new LocationPanelMouseListener(_loc);
+		setMinimumSize(new Dimension(200,100));
+		setPreferredSize(new Dimension(200,100));
+		setBounds(_x - 100, _y - 50, 200,100);
+		setVisible(false);
+		setOpaque(false);
+		_mouseListener = new LocationPanelMouseListener(_loc, _mapPanel);
 		addMouseListener(_mouseListener);
 		addMouseMotionListener(_mouseListener);
 		

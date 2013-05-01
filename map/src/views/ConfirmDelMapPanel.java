@@ -9,7 +9,7 @@ import views.listeners.ConfirmDelMapListener;
 import controllers.MapController;
 import controllers.OperationController;
 
-public class ConfirmDelMapPanel extends ErrorPanel
+public class ConfirmDelMapPanel extends ErrorPanel implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 	private JPanel _parent;	
@@ -30,5 +30,11 @@ public class ConfirmDelMapPanel extends ErrorPanel
 		
 		CustomButton okButton = super.getOkButton();
 		addOkButtonListener(new ConfirmDelMapListener(_operation, button, this, _map));
+	}
+
+	@Override
+	public void updatePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }

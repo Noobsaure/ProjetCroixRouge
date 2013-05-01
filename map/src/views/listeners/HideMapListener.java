@@ -36,7 +36,7 @@ public class HideMapListener implements MouseListener {
 		ConfirmDelMapPanel confirmDelMap = new ConfirmDelMapPanel(_operation, _subMenu, _button, _map, title, message);
 		mapPanel.add(confirmDelMap);
 		mapPanel.setComponentZOrder(confirmDelMap, 0);
-
+		mapPanel.setCurrentPopUp(confirmDelMap);
 		mapPanel.repaint();
 		mapPanel.revalidate();
 	}

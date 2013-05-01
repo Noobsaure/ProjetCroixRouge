@@ -36,8 +36,6 @@ public class EditLocationButtonListener implements MouseListener
 		_loc.displayPanel(false);
 		_loc.setHighlight(false);
 
-		_mapPanel.removeMapPanelListener();
-
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
 
 		ConfigurationLocationPanel configurationLocationPanel = new ConfigurationLocationPanel(_mapPanel,

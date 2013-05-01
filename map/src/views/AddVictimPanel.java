@@ -80,7 +80,6 @@ public class AddVictimPanel extends JLayeredPane implements PopUpPanel
 		_operationController = operation;
 		_dbm = dbm;
 		_parent.setCurrentPopUp(this);
-		
 		_map = new HashMap<String, EntityController>();
 		
 		initGui();

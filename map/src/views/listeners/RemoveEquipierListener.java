@@ -34,15 +34,7 @@ public class RemoveEquipierListener implements ActionListener{
 	
 	public void actionPerformed(ActionEvent e)
 	{
-		// on supprime l'équipier de l'entité
 		_entityController.removeTeamMember(_equipier);
-		//_equipier.leaveEntity();
-		
-		
-		// ??????
-		MapPanel mapPanel = (MapPanel)_parent;
-		mapPanel.addMapPanelListener();
-		// *********
 		
 		_parent.remove(_nomEquipierPanel);
 		
@@ -51,8 +43,6 @@ public class RemoveEquipierListener implements ActionListener{
 		_parent.remove(_configEntityPanel);
 		_parent.repaint();
 		_parent.revalidate();
-		
-		System.out.println("fermeture de la fenetre puis ouverture");
 		
 		_parent.add(configurationEntityPanel);
 		_parent.setComponentZOrder(configurationEntityPanel, 0);

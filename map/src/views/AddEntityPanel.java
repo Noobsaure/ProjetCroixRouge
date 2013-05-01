@@ -42,7 +42,7 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Ajouter une entité";
 
-	private MapPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
@@ -57,24 +57,22 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public AddEntityPanel(MapPanel parent, OperationController operation, DatabaseManager dbm)
+	public AddEntityPanel(MapPanel mapPanel, OperationController operation, DatabaseManager dbm)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_operationController = operation;
 		_dbm = dbm;
-
-		_parent.setCurrentPopUp(this);
-		
+		_mapPanel.setCurrentPopUp(this);
 		initGui();
 	}
 	
 	
 	public AddEntityPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, String nom, String type, String informations)
 	{
-		_parent = parent;
+		_mapPanel = parent;
 		_operationController = operation;
 		_dbm = dbm;
-		_parent.setCurrentPopUp(this);
+		_mapPanel.setCurrentPopUp(this);
 		
 		initGui();
 		
@@ -88,7 +86,7 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 	private void initGui()
 	{
 		setLayout(null);
-		setSize(new Dimension(_parent.getWidth(), _parent.getHeight()));
+		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 		
 		_internalPanel = new RoundedPanel();
@@ -167,12 +165,12 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		CustomButton annulerButton = new CustomButton("Annuler");
-		annulerButton.addActionListener(new CancelAddEntityListener(_parent, this));
+		annulerButton.addActionListener(new CancelAddEntityListener(_mapPanel, this));
 		buttonPanel.add(annulerButton);
 		
 		CustomButton okButton = new CustomButton("Ok");
 		buttonPanel.add(okButton);
-		okButton.addActionListener(new ConfirmAddEntityListener(_parent, _operationController, _dbm, this));
+		okButton.addActionListener(new ConfirmAddEntityListener(_mapPanel, _operationController, _dbm, this));
 		/**************************************************************/
 
 		JLabel colorLabel = new JLabel("Couleur :");
@@ -187,8 +185,8 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 	
 	private void centrer()
 	{
-		int x = (_parent.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_parent.getHeight() / 2) - (_internalPanel.getHeight() / 2);
+		int x = (_mapPanel.getWidth() / 2) - (_internalPanel.getWidth() / 2);
+		int y = (_mapPanel.getHeight() / 2) - (_internalPanel.getHeight() / 2);
 		_internalPanel.setLocation(x, y);
 	}
 	

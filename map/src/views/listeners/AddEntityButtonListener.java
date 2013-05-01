@@ -21,11 +21,9 @@ public class AddEntityButtonListener implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
-
 		AddEntityPanel addEntityPanel = new AddEntityPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());		
 		_mapPanel.add(addEntityPanel);		
 		_mapPanel.setComponentZOrder(addEntityPanel, 0);
-
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
 	}

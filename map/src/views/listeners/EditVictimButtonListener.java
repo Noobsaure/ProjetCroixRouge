@@ -12,15 +12,13 @@ import views.MapPanel;
 import views.SubMenuVictimPanel;
 import controllers.VictimController;
 
-public class EditVictimButtonListener implements MouseListener
-{
+public class EditVictimButtonListener implements MouseListener {
 	private MapPanel _mapPanel;
 	private SubMenuVictimPanel _subMenu;
 	private JPanel _panelLabel;
 	private VictimController _victimCOntroller;
 	
-	public EditVictimButtonListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, JPanel panelLabel, VictimController victimCOntroller)
-	{
+	public EditVictimButtonListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, JPanel panelLabel, VictimController victimCOntroller) {
 		_mapPanel = mapPanel;
 		_subMenu = subMenu;
 		_panelLabel = panelLabel;
@@ -28,9 +26,7 @@ public class EditVictimButtonListener implements MouseListener
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0)
-	{
-		_mapPanel.removeMapPanelListener();
+	public void mouseClicked(MouseEvent arg0) {
 		_mapPanel.remove(_subMenu);
 		
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
@@ -45,18 +41,14 @@ public class EditVictimButtonListener implements MouseListener
 		_mapPanel.revalidate();
 	}
 
-
 	@Override
-	public void mouseEntered(MouseEvent arg0)
-	{
+	public void mouseEntered(MouseEvent arg0) {
 		_panelLabel.setBackground(Color.WHITE);
 		_panelLabel.getComponent(0).setForeground(Color.BLACK);
 	}
 
-
 	@Override
-	public void mouseExited(MouseEvent arg0)
-	{
+	public void mouseExited(MouseEvent arg0) {
 		_panelLabel.setBackground(Color.DARK_GRAY);
 		_panelLabel.getComponent(0).setForeground(Color.WHITE);
 	}
