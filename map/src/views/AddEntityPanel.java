@@ -4,17 +4,20 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Frame;
 import java.awt.Graphics;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import views.buttons.CustomButton;
 import views.listeners.CancelAddEntityListener;
@@ -31,7 +34,7 @@ import database.DatabaseManager;
 
 
 
-public class AddEntityPanel extends JLayeredPane implements PopUpPanel
+public class AddEntityPanel extends JPanel implements PopUpPanel
 {
 	private static final long serialVersionUID = 1L;
 
@@ -90,9 +93,8 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 		setOpaque(false);
 		
 		_internalPanel = new RoundedPanel();
-		_internalPanel.setSize(DIMENSION_PANEL);	
-		centrer();
-		add(_internalPanel, 1);
+		_internalPanel.setSize(DIMENSION_PANEL);
+		add(_internalPanel, 0);
 		
 		JLabel title = new JLabel(AddEntityPanel.TITLE);
 		_internalPanel.add(title, BorderLayout.NORTH);
@@ -180,18 +182,11 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 		_colorChooserPanel.addMouseListener(new ColorChooserListener(_colorChooserPanel));
 		_colorChooserPanel.setBackground(Color.BLACK);
 		formPanel.add(_colorChooserPanel, "2, 7, fill, fill");
+		
+		setPreferredSize(_internalPanel.getSize());
 	}
 	
-	
-	private void centrer()
-	{
-		int x = (_mapPanel.getWidth() / 2) - (_internalPanel.getWidth() / 2);
-		int y = (_mapPanel.getHeight() / 2) - (_internalPanel.getHeight() / 2);
-		_internalPanel.setLocation(x, y);
-	}
-	
-	
-	public String getName()
+	public String getFieldName()
 	{
 		return _nomTextField.getText();
 	}
@@ -214,8 +209,6 @@ public class AddEntityPanel extends JLayeredPane implements PopUpPanel
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
-		
-		centrer();
 		
 //		Graphics2D g2d = (Graphics2D) g;
 //        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

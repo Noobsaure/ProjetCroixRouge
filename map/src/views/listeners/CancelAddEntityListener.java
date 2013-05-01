@@ -1,12 +1,15 @@
 package views.listeners;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import views.AddEntityPanel;
 import views.MapPanel;
+import views.MyJDialog;
 
 public class CancelAddEntityListener implements ActionListener
 {
@@ -23,8 +26,7 @@ public class CancelAddEntityListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		_mapPanel.remove(_addEntityPanel);
-		_mapPanel.setCurrentPopUp(null);
-		_mapPanel.repaint();
+		MyJDialog dialog = (MyJDialog) SwingUtilities.getAncestorOfClass(MyJDialog.class,_addEntityPanel);
+		dialog.dispose();
 	}
 }

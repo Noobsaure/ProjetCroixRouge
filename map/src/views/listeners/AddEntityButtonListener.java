@@ -3,29 +3,28 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import observer.Observer;
-
 import launcher.Launcher;
 import views.AddEntityPanel;
+import views.GlobalPanel;
 import views.MapPanel;
+import views.MyJDialog;
 
 public class AddEntityButtonListener implements ActionListener
 {
 	private MapPanel _mapPanel;
+	private GlobalPanel _globalPanel;
 
 	public AddEntityButtonListener(MapPanel mapPanel) {
 		_mapPanel = mapPanel;
+		_globalPanel = mapPanel.getGlobalPanel();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
+		Launcher launcher = _globalPanel.getLauncher();
 		AddEntityPanel addEntityPanel = new AddEntityPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());		
-		_mapPanel.add(addEntityPanel);		
-		_mapPanel.setComponentZOrder(addEntityPanel, 0);
-		_mapPanel.repaint();
-		_mapPanel.revalidate();
+		MyJDialog dialog = new MyJDialog(addEntityPanel, _globalPanel);
 	}
 }
 
