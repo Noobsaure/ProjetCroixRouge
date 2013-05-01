@@ -9,12 +9,8 @@ import java.util.List;
 
 import observer.Observer;
 import observer.Subject;
-<<<<<<< Updated upstream
 import views.MessagePanel;
 import views.MyJDialog;
-=======
-import views.ErrorMessage;
->>>>>>> Stashed changes
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
