@@ -103,13 +103,14 @@ public class LocationController implements Subject {
 	 * @param entity
 	 */
 	public int addEntity(EntityController entity){
+		System.out.println("NOM MAIS ALLO QUOI");
 		Integer result = new Integer(-1);
 
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("LocalisationHistorique", "(NULL,'"+entity.getIdPosCurrent()+"','"+_id+"','"+entity.getId()+"','"+entity.getDateArriveeLocalisation()+"','"+datetime+"')"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("LocalisationHistorique", "(NULL,'"+entity.getLastPosCurrentId()+"','"+_id+"','"+entity.getId()+"','"+entity.getDateArriveeLocalisation()+"','"+datetime+"')"));
 		} catch (MalformedQueryException e) { 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Localisation - Ajout entité" ,"Une erreur est survenue lors de l'ajout de " +
 					"l'entité '"+entity.getName()+"' au point de localisation '" +_name+"'.");

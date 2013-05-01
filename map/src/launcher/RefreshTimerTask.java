@@ -119,7 +119,8 @@ public class RefreshTimerTask extends TimerTask
 					if(othersInformations == null){
 						othersInformations = "";
 					}
-					int entityId = result.getInt("entite_id");	
+					int entityId = result.getInt("entite_id");
+					
 					TeamMemberController equipier = new TeamMemberController(_operation, _dbm, id, name, firstName, phoneNumber, othersInformations, entityId);
 					_operation.addTeamMember(equipier);
 				}
@@ -156,7 +157,6 @@ public class RefreshTimerTask extends TimerTask
 							String infos = result2.getString("infos");
 							java.sql.Timestamp date = result2.getTimestamp("date_depart");
 							String color = result2.getString("couleur");
-
 							EntityController entite = new EntityController(_operation, _dbm, id, statut_id, position_id, date, nom, type, infos, color);
 							_operation.addEntite(entite);
 						}

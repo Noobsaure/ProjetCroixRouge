@@ -22,6 +22,7 @@ public class EntityController implements Subject {
 	private String _infos;
 	private int _id;
 	private java.sql.Timestamp _dateArriveeLocalisation;
+	private int _lastPosCurrentId;
 	private String _color;
 
 	private boolean _available;
@@ -253,7 +254,7 @@ public class EntityController implements Subject {
 	}
 
 	public void setLocation(LocationController location) {	
-		int lastPosCurrentId = _posCurrentId;
+		_lastPosCurrentId = _posCurrentId;
 
 		LocationController loc = _operation.getLocation(_posCurrentId);
 		if(loc != null)	loc.removeEntity(this);
@@ -283,7 +284,7 @@ public class EntityController implements Subject {
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(),"Erreur interne - Changement de position" ,"Impossible de mettre à jour la date d'arrivée à la localisation pour l'entite '"+_name+"'.");
 		}
 
-		genererMessageDeplacement(lastPosCurrentId, idDeplacement);
+		genererMessageDeplacement(idDeplacement);
 		_operation.notifyObservers();
 	}
 
@@ -316,11 +317,11 @@ public class EntityController implements Subject {
 	 * Generate message in database for table "Messages", to alert daybook of the move of the entity.
 	 * @param lastPosCurrentId
 	 */
-	public void genererMessageDeplacement(int lastPosCurrentId,int idDeplacement){
+	public void genererMessageDeplacement(int idDeplacement){
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message =  "'"+_name+"' a quitté '"+_operation.getLocation(lastPosCurrentId).getName()+"' pour '"+_operation.getLocation(_posCurrentId).getName()+"'.";
+		String message =  "'"+_name+"' a quitté '"+_operation.getLocation(_lastPosCurrentId).getName()+"' pour '"+_operation.getLocation(_posCurrentId).getName()+"'.";
 
 		try {
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
@@ -450,5 +451,8 @@ public class EntityController implements Subject {
 		}
 	}
 
+	public int getLastPosCurrentId(){
+		return _lastPosCurrentId;
+	}
 }
 

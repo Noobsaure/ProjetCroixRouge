@@ -43,6 +43,7 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 		if (indexEquipier>=0) 
 		{
 			_team=listEquipiers.get(indexEquipier);
+			System.out.println("Nom équipier : "+_team.getFirstName());
 			_entityController.addTeamMember(_team);
 		}
 		else

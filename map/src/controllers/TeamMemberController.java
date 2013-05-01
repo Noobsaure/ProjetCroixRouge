@@ -87,6 +87,10 @@ public class TeamMemberController {
 
 		try{
 			//Get the id of the line in "EntiteHistorique" table
+			if(_entity == null){
+				System.out.println("OUPS...");
+			}
+			
 			System.out.println("Enite ID = "+_entity.getId());
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "EntiteHistorique", "equipier_id ="+_id+" AND entite_id="
 					+_entity.getId()+" AND date_fin is NULL"));
@@ -212,15 +216,17 @@ public class TeamMemberController {
 				if(_othersInformations == null){
 					_othersInformations = "";
 				}
-				System.out.println("ON UPDATE ENTITE");
-				_entity = _operation.getEntity(result.getInt("entite_id"));
-
+				
+				_temporaryEntityId = result.getInt("entite_id");
+				
 				if(result.getInt("entite_id") == 0)
 					_available = true;					
-				else
+				else{
+					System.out.println("Here");
+					System.out.println(_entity.getName());
 					_available = false;
+				}
 			}
-
 			result.getStatement().close();
 		}catch (SQLException e) { 
 			new ErrorMessage(_operation.getGlobalPanel().getMapPanel(), "Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");

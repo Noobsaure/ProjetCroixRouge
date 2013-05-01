@@ -129,6 +129,7 @@ public class OperationController implements Subject
 				}else if(nom.compareTo("LocalisationBaseDesEntites") == 0){
 					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
 					_locationList.add(location);
+					System.out.println("On ajoute à la LOCATION LIST");
 				}
 			}
 			result.getStatement().close();
@@ -137,13 +138,15 @@ public class OperationController implements Subject
 		
 		for(LocationController location: _locationList){
 			if(location.getName().compareTo("LocalisationBaseDesEntites") == 0){
-				_idPcm= location.getId();				return;
+				_idPcm= location.getId();				
+				return;
 			}
 		}
 		
 		try {
-			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par d��faut toutes les entit��s se trouvent �� cette endroit.',0,0)"));
-			System.out.println("ID PCM = "+_idPcm);
+			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'LocalisationBaseDesEntites','Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.',0,0)"));
+			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "LocalisationBaseDesEntites", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.");
+			_locationList.add(location);
 		} catch (MalformedQueryException e) {
 			new ErrorMessage(_globalPanel.getMapPanel(), "Erreur lors de la génération de la localisation de base des entitées.");
 		}
