@@ -41,6 +41,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import controllers.EntityController;
 import controllers.LocationController;
+import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
@@ -168,7 +169,27 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		Vector<String> comboBoxItems = new Vector<String>();
 		listLocation=_operationController.getLocationList();
 		
-		//System.out.println("taille liste location "+listLocation.size());
+		// On récupère la list des map
+				List<MapController> locatMap;
+				locatMap = _operationController.getMapList();
+				List<LocationController> locatMaplocat;
+				System.out.println("loc : "+locatMap.get(0).getLocationList());
+				System.out.println();
+				for (MapController mapController : locatMap) 
+				{	
+					locatMaplocat =  mapController.getLocationList();
+					System.out.println("map "+mapController.getName());
+					System.out.println("location map "+locatMaplocat.toString());
+					for (LocationController locat : locatMaplocat)
+					{	
+						locat.toString();
+						System.out.println("..........");
+						System.out.println("list locat "+locat.getName());
+					}
+					//System.out.println("list"+mapController.getLocationList().toString());
+				}
+				
+				System.out.println();
 		
 		 for (LocationController location : listLocation){
 				comboBoxItems.add(location.getName());
@@ -208,7 +229,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		formPanel.add(_listeEquipierPanel, "2, 10, center, center");
 		
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
-		
+			
 		listEquipiers= _entityController.getTeamMemberList();	
 		
 		for (TeamMemberController team : listEquipiers){
