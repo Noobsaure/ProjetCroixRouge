@@ -47,10 +47,14 @@ public class LocationController implements Subject {
 		_dbm = dbm;
 		_idMap = operation.getCurrentMap().getId();
 
-		if(name.compareTo("LocalisationBaseDesEntites") == 0){
+		if(name.compareTo("PCM (défaut)") == 0){
 			MessagePanel errorPanel = new MessagePanel("Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation " +
 					"de base pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+			return;
+		}else if(_operation.locationNameAlreadyExist(name)){
+			MessagePanel errorPanel = new MessagePanel("Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée. Veuillez recommencer en utilisant un nom différent.");
+			new MyJDialog(errorPanel, _operation.getGlobalPanel());
 			return;
 		}
 
