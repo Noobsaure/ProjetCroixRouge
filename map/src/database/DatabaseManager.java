@@ -11,8 +11,8 @@ import java.sql.SQLException;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import views.MessagePanel;
 import views.CustomDialog;
+import views.MessagePanel;
 import controllers.OperationController;
 
 public class DatabaseManager
@@ -44,7 +44,8 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("Erreur lors du chargement des pilotes de la base de données.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 	
@@ -75,7 +76,8 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 	
@@ -97,7 +99,8 @@ public class DatabaseManager
 		}
 		catch(SQLException e)
 		{
-			e.printStackTrace();
+			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 	
@@ -115,7 +118,8 @@ public class DatabaseManager
 		}
 		catch(SQLException e)
 		{
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 	
@@ -132,7 +136,8 @@ public class DatabaseManager
 		}
 		catch(SQLException e)
 		{
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 	
@@ -194,11 +199,11 @@ public class DatabaseManager
 			java.sql.Statement statement = _currentConnection.createStatement();
 			updateNbExecutiionQueries();
 			result = statement.executeQuery(query.toString());
-			
 		}
 		catch(Exception e)
 		{
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("La lecture de la base de données à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		
 		return result;
@@ -226,7 +231,8 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("La mise à jour de la base de données à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		
 		return lastInserted;
@@ -259,8 +265,8 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("La mise à jour de la base de données à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		
 		return lastInserted;
@@ -297,6 +303,7 @@ public class DatabaseManager
 	    	preparedStatement.setString(3, name);
 	    	preparedStatement.setBoolean(4, true);
 	    	preparedStatement.setBinaryStream(5, fileInputStream, (int) file.length());
+	    	updateNbExecutiionQueries();
 	    	preparedStatement.executeUpdate();
 	    	
 	    	ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -306,12 +313,9 @@ public class DatabaseManager
 	    	
 	    	preparedStatement.close();
 	    	fileInputStream.close();
-	    	
-	    	reconnectionConnection();
 	    }
 	    catch(Exception e)
 	    {
-	    	displayError(e);
 	    	MessagePanel errorPanel = new MessagePanel("Erreur interne - Insertion carte '"+name+"'", "Une erreur interne est survenue lors de l'ajout de la carte'"+name+"'. Veuillez recommencer s'il vous plait.");
 	    	new CustomDialog(errorPanel, _operation.getGlobalPanel());
 	    }
@@ -341,7 +345,8 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			displayError(e);
+			MessagePanel errorPanel = new MessagePanel("La récupération dans la base de données de l'image '" + name + "' à échouée.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		
 		return image;

@@ -69,22 +69,34 @@ public class ConfirmAddVictimListener implements ActionListener
 		
 		System.out.println("Motifs : " + ((motifsList.length == 0) || (motifsList[0].equals(" "))));
 				
-		if(!checkInput(((motifsList.length == 0) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
+		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if((motifsList.length == 0)  || (motifsList[0].equals(" ")) || (otherMotif.equals(""))) {
+			if(((motifsList.length == 0) || (motifsList[0].equals(" "))) && (otherMotif.equals("")))
+			{
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_MOTIF_MESSAGE);
 				new CustomDialog(errorPanel, _globalPanel);
-			} else if(idAnonymat.equals("")) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
-				new CustomDialog(errorPanel, _globalPanel);
-			} else if(soins.equals("")) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_SOINS_MESSAGE);
-				new CustomDialog(errorPanel, _globalPanel);
-			} else if(entitesAssociees == null) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ENTITY_ASSOCIATED_MESSAGE);
-				new CustomDialog(errorPanel, _globalPanel);
 			}
-		} else {
+			else
+				if(idAnonymat.equals(""))
+				{
+					MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ID_ANONYMAT_MESSAGE);
+					new CustomDialog(errorPanel, _globalPanel);
+				}
+				else
+					if(soins.equals(""))
+					{
+						MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_SOINS_MESSAGE);
+						new CustomDialog(errorPanel, _globalPanel);
+					}
+					else
+						if(entitesAssociees == null)
+						{
+							MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+							new CustomDialog(errorPanel, _globalPanel);
+						}
+		}
+		else
+		{
 			String name = _addVictimPanel.getNameTextField().getText();
 			String prenom = _addVictimPanel.getPrenomTextField().getText();
 			String adress = _addVictimPanel.getAdressTextField().getText();
