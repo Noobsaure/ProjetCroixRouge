@@ -168,9 +168,6 @@ public class VictimController implements Subject {
 			_entity = entity;
 		}
 
-		if(_nom.equals("")){
-			System.out.println("C'est égal à ca");
-		}
 		String query = "surnom = '" + _dbm.addSlashes(_idAnonymat) + "'" +
 				((_nom.equals("")) ? (", nom = ''") : (", nom = '" + _dbm.addSlashes(_nom) + "'")) +
 				((_prenom.equals("")) ? (", prenom = ''") : (", prenom = '" + _dbm.addSlashes(_prenom) + "'")) +

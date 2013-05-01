@@ -58,6 +58,8 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		
 		addAddButtonListener(new AddMapButtonListener(mapPanel,operationController,this));
 		addOkButtonListener(new SwitchMapButtonListener(mapPanel, button, this, operationController));
+		
+		_operationController.addObserver(this);
 	}
 
 	@Override

@@ -61,6 +61,8 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 
 		addAddButtonListener(new AddVictimButtonListener(mapPanel, this));
 		addOkButtonListener(new  OkVictimButtonListener(mapPanel, this));
+		
+		_operationController.addObserver(this);
 	}
 
 	@Override
