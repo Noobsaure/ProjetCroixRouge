@@ -168,19 +168,22 @@ public class VictimController implements Subject {
 			_entity = entity;
 		}
 
+		if(_nom.equals("")){
+			System.out.println("C'est égal à ca");
+		}
 		String query = "surnom = '" + _dbm.addSlashes(_idAnonymat) + "'" +
-				((_nom.equals("")) ? "" : (", nom = '" + _dbm.addSlashes(_nom) + "'")) +
-				((_prenom.equals("")) ? "" : (", prenom = '" + _dbm.addSlashes(_prenom) + "'")) +
-				((_dateDeNaissance == null) ? "" : (", date_naissance = '" + _dateDeNaissance.toString()) + "'") +
-				((_adresse.equals("")) ? "" : (", adresse = '" + _dbm.addSlashes(_adresse) + "'")) +
-				((_statut.equals("")) ? "" : (", statut = '" + _dbm.addSlashes(_statut) + "'")) +
+				((_nom.equals("")) ? (", nom = ''") : (", nom = '" + _dbm.addSlashes(_nom) + "'")) +
+				((_prenom.equals("")) ? (", prenom = ''") : (", prenom = '" + _dbm.addSlashes(_prenom) + "'")) +
+				((_dateDeNaissance == null) ? (", date_naissance = NULL") : (", date_naissance = '" + _dateDeNaissance.toString()) + "'") +
+				((_adresse.equals("")) ? (", adresse = NULL") : (", adresse = '" + _dbm.addSlashes(_adresse) + "'")) +
+				((_statut.equals("")) ? (", statut = ''") : (", statut = '" + _dbm.addSlashes(_statut) + "'")) +
 				", petit_soin = " + _petitSoin +
 				", malaise = " + _malaise +
 				", traumatisme = " + _traumatisme +
 				", inconscient = " + _inconscience +
 				", arret_cardiaque = " + _arretCardiaque +
-				((_atteinteDetails.equals("")) ? "" : (", atteinte_details = '" + _dbm.addSlashes(_atteinteDetails) + "'")) +
-				((_soin.equals("")) ? "" : (", soin = '" + _dbm.addSlashes(_soin) + "'")) +
+				((_atteinteDetails.equals("")) ? (", atteinte_details = NULL") : (", atteinte_details = '" + _dbm.addSlashes(_atteinteDetails) + "'")) +
+				((_soin.equals("")) ? (", soin = NULL") : (", soin = '" + _dbm.addSlashes(_soin) + "'")) +
 				", entite_id = "+_entity.getId()+
 				" WHERE id = " + _id;
 
