@@ -46,7 +46,7 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		int indexLocation = _configPanel.getIndexLocation();
 		
 		if(!checkInput(nomEntity)) {
-			new ErrorMessage(_mapPanel, "Saisie incomplète", EMPTY_NAME_MESSAGE);
+			new ErrorMessage(_mapPanel, "Saisie incomplÃ¨te", EMPTY_NAME_MESSAGE);
 		} else {
 			_entity.setName(nomEntity);
 		}
