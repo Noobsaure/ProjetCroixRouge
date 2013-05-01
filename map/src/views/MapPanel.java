@@ -3,7 +3,6 @@ package views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -14,7 +13,6 @@ import javax.swing.JPanel;
 
 import launcher.Launcher;
 import observer.Observer;
-import observer.Subject;
 import views.listeners.EditLocationButtonListener;
 import views.listeners.MapPanelMouseListener;
 import controllers.LocationController;
@@ -22,33 +20,29 @@ import controllers.MapController;
 import controllers.OperationController;
 
 
-public class MapPanel extends JPanel implements Observer, Subject
-{
+public class MapPanel extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
-
+	
 	private OperationController _operation;
-
+	
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
-
+	
 	private int _x = 0;
 	private int _y = 0;
 	private MapPanelMouseListener _mapListener;
 	
-	private List<Observer> _observers;
-
 	private List<Location> _locations = new ArrayList<Location>();
-
+	
 	public void setOperation(OperationController operation) {
 		_operation = operation;
 	}
-
+	
 	public MapPanel(GlobalPanel globalPanel)
 	{
 		super(true);
 		setLayout(null);
 		_globalPanel = globalPanel;
-		_observers = new ArrayList<Observer>();
 		setBackground(Color.LIGHT_GRAY);
 	}
 
@@ -86,7 +80,6 @@ public class MapPanel extends JPanel implements Observer, Subject
 		}
 		repaint();
 	}
-
 
 	@Override 
 	public void paintComponent(Graphics g)
@@ -177,22 +170,4 @@ public class MapPanel extends JPanel implements Observer, Subject
 		repaint();
 		revalidate();
 	}
-
-	@Override
-	public void addObserver(Observer observer) {
-		_observers.add(observer);		
-	}
-
-	@Override
-	public void removeObserver(Observer observer) {
-		_observers.remove(observer);
-	}
-
-	@Override
-	public void notifyObservers() {
-		for(Observer oneObs : _observers) {
-			oneObs.update();
-		}
-	}
-
 }
