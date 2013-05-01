@@ -49,6 +49,7 @@ public class ConfirmAddVictimListener implements ActionListener
 	
 	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, String soins, EntityController entityAssociated)
 	{
+		System.out.println("OtherMotif : " + (!motif.equals("") || (!otherMotif.equals(""))));
 		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && !soins.equals("") && (entityAssociated != null));
 	}
 	
@@ -66,9 +67,11 @@ public class ConfirmAddVictimListener implements ActionListener
 		String soins = _addVictimPanel.getSoins().getText();
 		EntityController entitesAssociees = _addVictimPanel.getMap().get((String)_addVictimPanel.getEntiteAssocieeCombobox().getSelectedItem());
 		
-		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
+		System.out.println("Motifs : " + ((motifsList.length == 0) || (motifsList[0].equals(" "))));
+				
+		if(!checkInput(((motifsList.length == 0) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if((motifsList.length == 0 ) || (otherMotif.equals(""))) {
+			if((motifsList.length == 0)  || (motifsList[0].equals(" ")) || (otherMotif.equals(""))) {
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_MOTIF_MESSAGE);
 				new MyJDialog(errorPanel, _globalPanel);
 			} else if(idAnonymat.equals("")) {

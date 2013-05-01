@@ -1,33 +1,31 @@
 package database;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Writer;
 import java.sql.Blob;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import views.MessagePanel;
 import views.MyJDialog;
-
 import controllers.OperationController;
 
 public class DatabaseManager
 {
+	private static final int RECONNECTION_PERIOD = 100;
+	
 	private java.sql.Statement _statement;
 	private java.sql.Connection _connection;
 	private OperationController _operation;
 	private String _databaseURL;
 	private String _login;
 	private String _password;
+	private int _nbExecutedQueries;
 	
 	/**
 	 * Constructor
@@ -63,6 +61,7 @@ public class DatabaseManager
 			_databaseURL = databaseURL;
 			_login = login;
 			_password = password;
+			_nbExecutedQueries = 0;
 			
 			// Connection a la base de donnees
 			System.out.print("Connection of " + login + " to " + databaseURL + "...");
@@ -74,6 +73,29 @@ public class DatabaseManager
 		{
 			displayError(e);
 		}
+	}
+	
+	public void reconnection()
+	{
+		try
+		{
+			_connection.close();
+			connection(_databaseURL, _login, _password);
+			
+			_nbExecutedQueries = 0;
+		}
+		catch(SQLException e)
+		{
+			displayError(e);
+		}
+	}
+	
+	public void updateNbExecutedQueries()
+	{
+		_nbExecutedQueries++;
+		
+		if(_nbExecutedQueries >= RECONNECTION_PERIOD)
+			reconnection();
 	}
 	
 	
@@ -91,6 +113,8 @@ public class DatabaseManager
 		{
 			java.sql.Statement statement = _connection.createStatement();
 			result = statement.executeQuery(query.toString());
+			
+			updateNbExecutedQueries();
 		}
 		catch(Exception e)
 		{
@@ -118,6 +142,8 @@ public class DatabaseManager
 			java.sql.Statement statement = _connection.createStatement();
 			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			System.out.println("Requete executee...");
+			
+			updateNbExecutedQueries();
 		}
 		catch(Exception e)
 		{
@@ -149,6 +175,7 @@ public class DatabaseManager
 			while(generatedKeys.next())
 				lastInserted = generatedKeys.getInt(1);
 			
+			updateNbExecutedQueries();
 			System.out.println("Requete executee...");
 		}
 		catch(Exception e)
@@ -174,6 +201,8 @@ public class DatabaseManager
 			java.sql.Statement statement = _connection.createStatement();
 			statement.executeUpdate(query.toString());
 			System.out.println("Requete executee...");
+			
+			updateNbExecutedQueries();
 		}
 		catch(Exception e)
 		{
@@ -220,10 +249,7 @@ public class DatabaseManager
 	    	preparedStatement.close();
 	    	fileInputStream.close();
 	    	
-	    	_operation.pauseTimerTask();
-	    	_connection.close();
-	    	connection(_databaseURL, _login, _password);
-	    	_operation.startTimerTask();
+	    	reconnection();
 	    }
 	    catch(Exception e)
 	    {

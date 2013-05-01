@@ -57,17 +57,17 @@ public class ConfirmEditVictimListener implements ActionListener
 		
 		if(!ConfirmAddVictimListener.checkInput(((motifsList.length == 0) || (motifsList[0].equals(" "))) ? "" : ((motifsList[0].equals("")) ? "" : motifsList[0]), otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if((motifsList.length == 0 ) || (otherMotif.equals(""))) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
+			if((motifsList.length == 0)  || (motifsList[0].equals(" ")) || (otherMotif.equals(""))) {
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
 				new MyJDialog(errorPanel, _globalPanel);
 			} else if(idAnonymat.equals("")) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ID_ANONYMAT_MESSAGE);
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_ID_ANONYMAT_MESSAGE);
 				new MyJDialog(errorPanel, _globalPanel);
 			} else if(soins.equals("")) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
 				new MyJDialog(errorPanel, _globalPanel);
 			} else if(entitesAssociees == null) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplÃ¨te", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
 				new MyJDialog(errorPanel, _globalPanel);
 			}
 		}
