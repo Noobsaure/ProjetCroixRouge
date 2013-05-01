@@ -150,6 +150,8 @@ public class AddLocationPanel extends CustomPanelImpl {
 		buttonPanel.add(okButton);
 		okButton.addActionListener(new ConfirmAddLocationListener(_parent, _operationController, _dbm, this, _x, _y));
 		/**************************************************************/
+		
+		setPreferredSize(_internalPanel.getSize());
 	}
 	
 	public String getFieldName()
