@@ -35,7 +35,7 @@ public class HideMapListener implements MouseListener {
 				"Cette action est irréversible et toutes les entités présentes sur la carte seront ramenées à leur localisation de base.";
 
 		ChoicePanel confirmDelMap = new ChoicePanel(_operation, _subMenu, _button, _map, title, message);
-		new MyJDialog(confirmDelMap, _operation.getGlobalPanel());
+		//new MyJDialog(confirmDelMap, _operation.getGlobalPanel());
 	}
 
 	@Override

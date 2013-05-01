@@ -27,7 +27,7 @@ import controllers.OperationController;
 import controllers.TeamMemberController;
 
 
-public class AddEquipierPanel extends JPanel {
+public class AddEquipierPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -37,7 +37,7 @@ public class AddEquipierPanel extends JPanel {
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static String TITLE = "";
 
-	private MapPanel _parent;
+	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private EntityController _entityController;
 	
@@ -54,9 +54,9 @@ public class AddEquipierPanel extends JPanel {
 	 * @wbp.parser.constructor
 	 */
 	
-	public AddEquipierPanel(MapPanel parent,OperationController operationController, EntityController entityController)
+	public AddEquipierPanel(MapPanel mapPanel,OperationController operationController, EntityController entityController)
 	{
-		_parent = parent;
+		_mapPanel = mapPanel;
 		_operationController = operationController;
 		_entityController=entityController;
 		initGui();
@@ -66,12 +66,12 @@ public class AddEquipierPanel extends JPanel {
 	private void initGui()
 	{
 		setLayout(null);
-		setSize(new Dimension(_parent.getWidth(), _parent.getHeight()));
+		//setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 		
 		_internalPanel = new RoundedPanel();
 		_internalPanel.setSize(new Dimension(400, 180));
-		add(_internalPanel, 1);
+		add(_internalPanel);
 		
 		TITLE = _entityController.getName();
 		
@@ -119,7 +119,7 @@ public class AddEquipierPanel extends JPanel {
 		formPanel.add(_typeComboBox, "2, 2, left, default");
 		
 		CustomButton ajoutButton = new CustomButton("Valider l'ajout d'un équipier à  l'entité");	
-		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_parent, _operationController, _entityController, this));
+		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_mapPanel, _operationController, _entityController, this));
 		
 		formPanel.add(ajoutButton, "2, 4");
 		/**************************************************************/
@@ -133,11 +133,11 @@ public class AddEquipierPanel extends JPanel {
 		
 		CustomButton retourButton = new CustomButton("Retour");
 		buttonPanel.add(retourButton);
-		retourButton.addActionListener(new CancelEquipierEquipierButtonListener(_parent, _operationController, _entityController, this));
+		retourButton.addActionListener(new CancelEquipierEquipierButtonListener(_mapPanel, _operationController, _entityController, this));
 		
 		/**************************************************************/
 	
-		setPreferredSize(_internalPanel.getPreferredSize());
+		setPreferredSize(_internalPanel.getSize());
 	}		
 	
 	public int getIndexEquipier()
@@ -145,13 +145,3 @@ public class AddEquipierPanel extends JPanel {
 		return (int)_typeComboBox.getSelectedIndex();
 	}
 }
-
-
-
-
-
-
-
-
-
-

@@ -2,11 +2,10 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Frame;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JApplet;
-import javax.swing.JDialog;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -30,6 +29,8 @@ public class GlobalPanel extends JApplet implements Observer
 	private String _mdp;
 	private String _idOperateur;
 	private String _idOperation;
+	
+	private List<MyJDialog> _dialogs;
 
 	public static void main(String[] args)
 	{
@@ -66,6 +67,7 @@ public class GlobalPanel extends JApplet implements Observer
 		GlassPane glassPane = new GlassPane();
 		setGlassPane(glassPane);
 
+		_dialogs = new ArrayList<MyJDialog>();
 		_mapPanel = new MapPanel(this);
 		_mapPanel.addMapPanelListener();
 		getContentPane().add(_mapPanel, BorderLayout.CENTER);
@@ -86,10 +88,15 @@ public class GlobalPanel extends JApplet implements Observer
 		
 		
 	}
+	
+	public void addDialog(MyJDialog dialog) {
+		_dialogs.add(dialog);
+	}
 
 	public void setDragOccurring(boolean dragOccurring) {
 		_dragOccurring = dragOccurring;
 	}
+	
 	public boolean isDragOccurring() {
 		return _dragOccurring;
 	}
@@ -99,6 +106,10 @@ public class GlobalPanel extends JApplet implements Observer
 	public MenuPanel getMenu() {return _menuPanel;}
 
 	public synchronized void update() {
+		for(MyJDialog oneDialog : _dialogs) {
+			System.out.println("UPDATE!!!!!!!!!!!!!!!!!!!!!");
+			oneDialog.update();
+		}
 		_menuPanel.update();
 		_mapPanel.update();
 		revalidate();

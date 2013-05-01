@@ -45,7 +45,7 @@ import controllers.OperationController;
 import controllers.TeamMemberController;
 
 // modifier le listing des localisations
-public class ConfigurationEntityPanel extends JPanel implements Observer
+public class ConfigurationEntityPanel extends CustomPanelImpl implements Observer
 {
 	private static final long serialVersionUID = 1L;
 

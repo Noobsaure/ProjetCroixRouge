@@ -37,8 +37,7 @@ import controllers.EntityController;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddVictimPanel extends JPanel
-{
+public class AddVictimPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 	
 	private static final int WIDTH = 600;
