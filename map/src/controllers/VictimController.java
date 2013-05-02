@@ -108,7 +108,7 @@ public class VictimController implements Subject {
 
 			_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
 			operation.addVictim(this);
-			genererMessage("Début de prise en charge de la victime "+_idAnonymat);
+			genererDebutPriseEnChargeMessage();
 		}
 		catch(MalformedQueryException e) { 
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
@@ -213,7 +213,7 @@ public class VictimController implements Subject {
 		String newLine = System.getProperty("line.separator");
 		String message = "La victime \'"+_idAnonymat+"\' est maintenant pris en charge par "+_dbm.addSlashes(_entity.getName())+".";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"','-2',NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+newLine+
 					"Message : "+message);
@@ -227,7 +227,7 @@ public class VictimController implements Subject {
 
 		String message = "La victime '"+_idAnonymat+"' n'est plus prise en charge.";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"','-2',NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -236,11 +236,12 @@ public class VictimController implements Subject {
 		_operation.delVictim(this);
 	}
 
-	public void genererMessage(String message) {
+	public void genererDebutPriseEnChargeMessage() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		String message = "Début de prise en charge de la victime "+_idAnonymat+".";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"','-2',NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+
 					"Message : "+message);

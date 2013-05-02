@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-
 import launcher.RefreshTimerTask;
 import observer.Observer;
 import observer.Subject;
@@ -108,7 +107,7 @@ public class OperationController implements Subject
 
 		}catch(SQLException e) {e.printStackTrace();}
 		catch(MalformedQueryException e1) {e1.printStackTrace();}
-		
+
 	}
 
 	public void loadLocation(){
@@ -135,14 +134,14 @@ public class OperationController implements Subject
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){e1.printStackTrace();}
 		catch(SQLException e2){e2.printStackTrace();}
-		
+
 		for(LocationController location: _locationList){
 			if(location.getName().compareTo("PCM (défaut)") == 0){
 				_idPcm= location.getId();				
 				return;
 			}
 		}
-		
+
 		try {
 			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'PCM (défaut)','Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.',0,0)"));
 			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "PCM (défaut)", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.");
@@ -196,7 +195,7 @@ public class OperationController implements Subject
 					String soin = result.getString("soin");
 					java.sql.Timestamp dateSortiePriseEnCharge = result.getTimestamp("date_sortie");
 					int entityId = result.getInt("entite_id");
-					
+
 					if(dateSortiePriseEnCharge == null);{
 						VictimController victim = new VictimController(this, _dbm, id_victim, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque, entityId);
 						_victimList.add(victim);
@@ -219,7 +218,7 @@ public class OperationController implements Subject
 			entity.loadLocation();
 		}
 	}
-	
+
 	public void showTeamMemberList(){
 		System.out.println(">>>> Liste des equipiers :");
 		for(TeamMemberController equipier : _teamMemberList){
@@ -366,7 +365,7 @@ public class OperationController implements Subject
 
 	public List<MapController> getMapList(){
 		List<MapController> listMap = new ArrayList<MapController>();
-		
+
 		for(MapController map : _mapList){
 			if(map.getVisibility())
 				listMap.add(map);
@@ -376,7 +375,7 @@ public class OperationController implements Subject
 
 	public List<LocationController> getLocationList(){
 		List<LocationController> listLocation = new ArrayList<LocationController>(_locationList);
-	
+
 		return listLocation;
 	}
 
@@ -432,7 +431,7 @@ public class OperationController implements Subject
 	public int getIdOperateur() {
 		return _idOperateur;
 	}
-	
+
 	public LocationController getPcmLocation(){
 		return getLocation(_idPcm);
 	}
@@ -460,7 +459,7 @@ public class OperationController implements Subject
 		}
 		return false;
 	}
-	
+
 	public boolean existsInLocationList(int id) {
 		for(LocationController location : _locationList){
 			if(location.getId() == id)
@@ -492,11 +491,11 @@ public class OperationController implements Subject
 	public Timer getTimerTask(){
 		return _timerTask;
 	}
-	
+
 	public void pauseTimerTask(){
 		_timerTask.cancel();
 	}
-	
+
 	public void startTimerTask(){
 		_timerTask.schedule(new RefreshTimerTask(this, _dbm),0,5000);
 	}
@@ -517,7 +516,30 @@ public class OperationController implements Subject
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
+	public int getAnonymousNumber(){
+		ResultSet result;
+		int idAnonymat= 1;
+
+		try{
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Victime", "operation_id='"+_idOperation+"' ORDER BY id DESC"));
+
+			try{
+				while(result.next()){
+					idAnonymat = result.getInt("id");
+				}
+				result.getStatement().close();
+			}catch(SQLException e){	
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement numéro anonymat","Une erreur est survenue lors de la génération du numéro d'anonymat.");
+				new CustomDialog(errorPanel, _globalPanel);
+			}
+		}catch(MalformedQueryException e1) { 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement Entité" ,"Une erreur est survenue lors de la génération du numéro d'anonymat.");
+			new CustomDialog(errorPanel, _globalPanel);
+		}
+		
+		return idAnonymat;
+	}
 }
 
 

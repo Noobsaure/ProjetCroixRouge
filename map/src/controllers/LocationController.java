@@ -7,8 +7,8 @@ import java.util.List;
 
 import observer.Observer;
 import observer.Subject;
-import views.CustomDialog;
 import views.MessagePanel;
+import views.CustomDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
