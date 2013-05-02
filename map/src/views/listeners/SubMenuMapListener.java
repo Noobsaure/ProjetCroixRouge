@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import views.MapPanel;
 import views.SubMenuMapPanel;
 import controllers.OperationController;
-import database.DatabaseManager;
 
 public class SubMenuMapListener implements ActionListener
 {
@@ -21,11 +20,10 @@ public class SubMenuMapListener implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		OperationController operationController = _parent.getGlobalPanel().getLauncher().getOperationController();
-		DatabaseManager databaseManager = _parent.getGlobalPanel().getLauncher().getDatabaseManager();
 		
-		SubMenuMapPanel subMenu = new SubMenuMapPanel(_parent, operationController, databaseManager);
+		SubMenuMapPanel subMenu = new SubMenuMapPanel(_parent, operationController);
 		
-		_parent.add(subMenu);
+		_parent.openPanel(subMenu);
 		_parent.setComponentZOrder(subMenu, 0);
 		_parent.repaint();
 		_parent.revalidate();

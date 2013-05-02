@@ -17,7 +17,6 @@ import views.listeners.AddMapButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
 import controllers.OperationController;
-import database.DatabaseManager;
 
 public class SubMenuMapPanel extends SubMenuPanel implements Observer
 {
@@ -33,7 +32,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 
 	private List<ThumbnailMapPanel> _thumbnailsList;
 
-	public SubMenuMapPanel(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager)
+	public SubMenuMapPanel(MapPanel mapPanel, OperationController operationController)
 	{
 		super(mapPanel);
 		_mapPanel = mapPanel;

@@ -143,6 +143,24 @@ public class MapPanel extends JPanel implements Observer {
 			oneLoc.setHighlight(false);
 		}
 	}
+	
+	public void openPanel(SubMenuPanel panel) {
+		if(_openedPanel != null) {
+			remove(_openedPanel);
+			_openedPanel = panel;
+			add(_openedPanel);
+		} else {
+			_openedPanel = panel;
+			add(_openedPanel);
+		}
+	}
+	
+	public void closePanel() {
+		if(_openedPanel != null) {
+			remove(_openedPanel);
+			_openedPanel = null;
+		}
+	}
 
 	public synchronized void update()
 	{
