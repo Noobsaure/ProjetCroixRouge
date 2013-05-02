@@ -150,70 +150,48 @@ public class MenuEntitiesPanel extends JPanel {
 				availableEntitiesList.add(oneEntity);
 			else
 				unavailableEntitiesList.add(oneEntity);				
-		}
+		}		
 		
-		int i;
-		boolean differenceFound = false;
-		for(i = 0; (i < _availableEntityPanelsList.size()) && !differenceFound; i++)
+		List<EntityPanel> entityPanelsToDelete = new ArrayList<EntityPanel>();
+		for(EntityPanel oneEntityPanel : _availableEntityPanelsList)
 		{
-			EntityPanel entityPanel = _availableEntityPanelsList.get(i);
-			EntityController entityController = availableEntitiesList.get(i);
-			
-			if(entityPanel.getEntityController() != entityController)
-				differenceFound = true;
+			if(!availableEntitiesList.contains(oneEntityPanel.getEntityController()))
+			{
+				_panelAvailable.remove(oneEntityPanel);
+				entityPanelsToDelete.add(oneEntityPanel);
+			}
+			else
+				availableEntitiesList.remove(oneEntityPanel.getEntityController());
 		}
+		_availableEntityPanelsList.removeAll(entityPanelsToDelete);
 		
-		int nbComponent = _panelAvailable.getComponentCount();
-		for(int j = i; j < nbComponent; j++)
-			_panelAvailable.remove(i);
 		
-		for(int j = i; j < availableEntitiesList.size(); j++)
+		for(EntityController oneEntity : availableEntitiesList)
 		{
-			System.out.println("Boucle 2");
-			_panelAvailable.add(new EntityPanel(this, availableEntitiesList.get(j)));
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelAvailable.add(panel);
+			_availableEntityPanelsList.add(panel);
 		}
 		
+		entityPanelsToDelete.clear();
+		for(EntityPanel oneEntityPanel : _unavailableEntityPanelsList)
+		{
+			if(!unavailableEntitiesList.contains(oneEntityPanel.getEntityController()))
+			{
+				_panelUnavailable.remove(oneEntityPanel);
+				entityPanelsToDelete.add(oneEntityPanel);
+			}
+			else
+				unavailableEntitiesList.remove(oneEntityPanel.getEntityController());
+		}
+		_unavailableEntityPanelsList.removeAll(entityPanelsToDelete);
 		
-//		List<EntityPanel> entityPanelsToDelete = new ArrayList<EntityPanel>();
-//		for(EntityPanel oneEntityPanel : _availableEntityPanelsList)
-//		{
-//			if(!availableEntitiesList.contains(oneEntityPanel.getEntityController()))
-//			{
-//				_panelAvailable.remove(oneEntityPanel);
-//				entityPanelsToDelete.add(oneEntityPanel);
-//			}
-//			else
-//				availableEntitiesList.remove(oneEntityPanel.getEntityController());
-//		}
-//		_availableEntityPanelsList.removeAll(entityPanelsToDelete);
-//		
-//		
-//		for(EntityController oneEntity : availableEntitiesList)
-//		{
-//			EntityPanel panel = new EntityPanel(this, oneEntity);
-//			_panelAvailable.add(panel);
-//			_availableEntityPanelsList.add(panel);
-//		}
-//		
-//		entityPanelsToDelete.clear();
-//		for(EntityPanel oneEntityPanel : _unavailableEntityPanelsList)
-//		{
-//			if(!unavailableEntitiesList.contains(oneEntityPanel.getEntityController()))
-//			{
-//				_panelUnavailable.remove(oneEntityPanel);
-//				entityPanelsToDelete.add(oneEntityPanel);
-//			}
-//			else
-//				unavailableEntitiesList.remove(oneEntityPanel.getEntityController());
-//		}
-//		_unavailableEntityPanelsList.removeAll(entityPanelsToDelete);
-//		
-//		for(EntityController oneEntity : unavailableEntitiesList)
-//		{
-//			EntityPanel panel = new EntityPanel(this, oneEntity);
-//			_panelUnavailable.add(panel);
-//			_unavailableEntityPanelsList.add(panel);
-//		}
+		for(EntityController oneEntity : unavailableEntitiesList)
+		{
+			EntityPanel panel = new EntityPanel(this, oneEntity);
+			_panelUnavailable.add(panel);
+			_unavailableEntityPanelsList.add(panel);
+		}
 		
 		for(EntityPanel onePanel : _availableEntityPanelsList)
 			onePanel.update();
