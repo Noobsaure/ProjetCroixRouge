@@ -165,6 +165,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		List<MapController> locatMap;
 		locatMap = _operationController.getMapList();
 		List<LocationController> locatMaplocat;
+		comboBoxItems.add(_operationController.getLocation(_operationController.getIdPcm()).getName());
 		for (MapController mapController : locatMap) 
 		{	
 			locatMaplocat =  mapController.getLocationList();
@@ -179,7 +180,10 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 
 		// mise par défaut du nom de la localisation
-		model.setSelectedItem(_operationController.getLocation(_entityController.getIdPosCurrent()).getName());
+		LocationController localisationEntite = _operationController.getLocation(_entityController.getIdPosCurrent());
+		String maploca = _operationController.getMap(localisationEntite.getIdMap()).getName();
+		String tempLocaMap = maploca+" => "+ localisationEntite.getName();
+		model.setSelectedItem(tempLocaMap);
 
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "4, 4, fill, default");
