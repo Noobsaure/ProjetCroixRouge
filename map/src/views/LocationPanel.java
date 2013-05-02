@@ -49,11 +49,7 @@ public class LocationPanel extends JPanel
 		_mapPanel = mapPanel;
 		_x = x;
 		_y = y;
-		setMinimumSize(new Dimension(200,100));
-		setPreferredSize(new Dimension(200,100));
-		setBounds(_x - 100, _y - 50, 200,100);
-		setVisible(false);
-		setOpaque(false);
+		setBackground(Color.LIGHT_GRAY);
 		_mouseListener = new LocationPanelMouseListener(_loc);
 		addMouseListener(_mouseListener);
 		addMouseMotionListener(_mouseListener);
@@ -63,23 +59,20 @@ public class LocationPanel extends JPanel
 	
 	public void initGui()
 	{
-		setOpaque(false);
 		setPreferredSize(DIMENSION_PANEL);
 		setBounds(_x - (WIDTH_PANEL / 2), _y - (HEIGHT_PANEL / 2), WIDTH_PANEL, HEIGHT_PANEL);
-		
 		setLayout(new BorderLayout());
 		
 		_entitiesPanel = new JPanel();
-		_entitiesPanel.setOpaque(false);
 		_entitiesPanel.setLayout(new FlowLayout());
-		
+		_entitiesPanel.setBackground(Color.WHITE);
 		JScrollPane _scrollPane = new JScrollPane(_entitiesPanel);
 		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		
 		JPanel southPanel = new JPanel();
-		southPanel.setOpaque(false);
 		southPanel.setLayout(new BorderLayout());
+		southPanel.setBackground(Color.LIGHT_GRAY);
 		
 		_iconGearOn = new ImageIcon(EntityPanel.class.getResource("/ui/gear.png"));
 		_iconGearOff = new ImageIcon(EntityPanel.class.getResource("/ui/gearLight.png"));
@@ -108,16 +101,7 @@ public class LocationPanel extends JPanel
 	{
 		_offsetX = _offsetX + x;
 		_offsetY = _offsetY + y;
-	}
-
-	@Override
-	public void paintComponent(Graphics g)
-	{
-		super.paintComponent(g);
-		
-		setBounds(_offsetX + _x - 100, _offsetY + _y - 50, 200, 100);
-		setForeground(Color.LIGHT_GRAY);
-		g.fillRect(0, 0, getWidth(), getHeight());
+		setBounds(_offsetX + _x - WIDTH_PANEL / 2, _offsetY + _y - HEIGHT_PANEL / 2, WIDTH_PANEL, HEIGHT_PANEL);
 	}
 
 	public void update()
