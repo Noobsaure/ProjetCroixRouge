@@ -27,6 +27,12 @@ public class RefreshTimerTask extends TimerTask
 	private OperationController _operation;
 	private DatabaseManager _dbm;
 	
+	private int _lastVictimId;
+	private int _lastEntityId;
+	private int _lastTeamMemberId;
+	private int _lastMapControllerId;
+	private int _lastLocationId;
+	
 	public RefreshTimerTask(OperationController op,DatabaseManager dbm){
 		super();
 		_operation = op;
@@ -59,10 +65,10 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victime", "operation_id="+_operation.getId()+" AND date_sortie is NULL"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victime", "operation_id="+_operation.getId()+" AND date_sortie is NULL AND id>"+_lastVictimId));
 			while(result.next()){
 				int id = result.getInt("id");
-				System.out.println("1 entrée");
+				
 				if(!_operation.existsInVictimList(id)){
 					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("*","Victime", "id="+id));
 					while(result2.next()){
@@ -81,7 +87,6 @@ public class RefreshTimerTask extends TimerTask
 						boolean arretCardiaque = result2.getBoolean("arret_cardiaque");
 						String atteinteDetails = result2.getString("atteinte_details");
 						String soin = result2.getString("soin");
-						java.sql.Timestamp dateSortiePriseEnCharge = result2.getTimestamp("date_sortie");
 						int entiteId = result2.getInt("entite_id");
 
 						VictimController victim = new VictimController(_operation, _dbm, id, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque,entiteId);
@@ -89,6 +94,7 @@ public class RefreshTimerTask extends TimerTask
 					}
 					result2.getStatement().close();
 				}
+				_lastVictimId = id;
 			}
 			result.getStatement().close();
 		} catch (SQLException e) {e.printStackTrace();}
@@ -107,7 +113,7 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1 AND (operation_id='"+_operation.getId()+"' OR operation_id is NULL)"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1 AND (operation_id='"+_operation.getId()+"' OR operation_id is NULL) AND id>"+_lastTeamMemberId));
 			while(result.next()){
 				int id = result.getInt("id");
 
@@ -124,6 +130,7 @@ public class RefreshTimerTask extends TimerTask
 					TeamMemberController equipier = new TeamMemberController(_operation, _dbm, id, name, firstName, phoneNumber, othersInformations, entityId);
 					_operation.addTeamMember(equipier);
 				}
+				_lastTeamMemberId = id;
 			}
 
 			result.getStatement().close();
@@ -143,7 +150,7 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW ENTITY WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Entite", "operation_id='"+_operation.getId()+"'"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Entite", "operation_id='"+_operation.getId()+"' AND id>"+_lastEntityId));
 			while(result.next()){
 				int id = result.getInt("id");
 				if(!_operation.existsInEnityList(id)){
@@ -160,11 +167,11 @@ public class RefreshTimerTask extends TimerTask
 							EntityController entite = new EntityController(_operation, _dbm, id, statut_id, position_id, date, nom, type, infos, color);
 							_operation.addEntite(entite);
 						}
-
 						result2.getStatement().close();
 
 					}catch(SQLException e2){e2.printStackTrace();}
 				}
+				_lastEntityId = id;
 			}
 
 			result.getStatement().close();
@@ -185,7 +192,7 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW MAPS WHICH ARE IN THE DATABASE */
 
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"' AND visibilite=1"));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"' AND visibilite=1 AND id>"+_lastMapControllerId));
 
 			while(result.next()){
 				int id = result.getInt("id");
@@ -204,11 +211,11 @@ public class RefreshTimerTask extends TimerTask
 			}
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){ 
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise � jour des cartes");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		catch(SQLException e2){
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise � jour des cartes");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
@@ -223,7 +230,7 @@ public class RefreshTimerTask extends TimerTask
 		}
 
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation","operation_id="+_operation.getId()));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation","operation_id="+_operation.getId()+" AND id>"+_lastLocationId));
 
 			while(result.next()){
 				int id = result.getInt("id");
@@ -240,11 +247,52 @@ public class RefreshTimerTask extends TimerTask
 						_operation.addLocation(location);
 					}
 				}
+				_lastLocationId = id;
 			}
 
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){ e1.printStackTrace(); }
 		catch(SQLException e2){ e2.printStackTrace(); }
+	}
+
+	public int get_lastVictimId() {
+		return _lastVictimId;
+	}
+
+	public void set_lastVictimId(int _lastVictimId) {
+		this._lastVictimId = _lastVictimId;
+	}
+
+	public int get_lastEntityId() {
+		return _lastEntityId;
+	}
+
+	public void set_lastEntityId(int _lastEntityId) {
+		this._lastEntityId = _lastEntityId;
+	}
+
+	public int get_lastTeamMemberId() {
+		return _lastTeamMemberId;
+	}
+
+	public void set_lastTeamMemberId(int _lastTeamMemberId) {
+		this._lastTeamMemberId = _lastTeamMemberId;
+	}
+
+	public int get_lastMapControllerId() {
+		return _lastMapControllerId;
+	}
+
+	public void set_lastMapControllerId(int _lastMapControllerId) {
+		this._lastMapControllerId = _lastMapControllerId;
+	}
+
+	public int get_lastLocationId() {
+		return _lastLocationId;
+	}
+
+	public void set_lastLocationId(int _lastLocationId) {
+		this._lastLocationId = _lastLocationId;
 	}
 
 

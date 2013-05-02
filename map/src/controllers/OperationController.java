@@ -31,7 +31,8 @@ public class OperationController implements Subject
 	private MapController _currentMap;
 	private GlobalPanel _globalPanel;
 	private int _idPcm;
-	private Timer _timerTask;
+	private Timer _timer;
+	private RefreshTimerTask _timerTask;
 
 	private DatabaseManager _dbm;
 
@@ -70,6 +71,7 @@ public class OperationController implements Subject
 				TeamMemberController equipier = new TeamMemberController(this, _dbm, id, name, firstName, phoneNumber, othersInformations, entityId);
 				System.out.println("---->Chargement equipier :"+name+" avec l'id: "+id+" "+entityId);
 				_teamMemberList.add(equipier);
+				_timerTask.set_lastEntityId(id);
 			}
 			result.getStatement().close();
 		} catch (SQLException e) {e.printStackTrace();}
@@ -98,6 +100,8 @@ public class OperationController implements Subject
 						EntityController entite = new EntityController(this, _dbm, id, statut_id, position_id, date, nom, type, infos, color);
 						_entityList.add(entite);
 						entite.addObserver(_globalPanel);
+						
+						_timerTask.set_lastEntityId(id);
 					}
 					result2.getStatement().close();
 
@@ -128,8 +132,9 @@ public class OperationController implements Subject
 				}else if(nom.compareTo("PCM (défaut)") == 0){
 					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description);
 					_locationList.add(location);
-					System.out.println("On ajoute à la LOCATION LIST");
 				}
+
+				_timerTask.set_lastLocationId(id);
 			}
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){e1.printStackTrace();}
@@ -162,7 +167,7 @@ public class OperationController implements Subject
 				Boolean visibility = result.getBoolean("visibilite");
 
 				MapController map = new MapController(this, _dbm , id, name, visibility);
-				System.out.println("Chargement carte "+name+" avec l'id: "+id);
+				_timerTask.set_lastMapControllerId(id);
 			}
 
 			result.getStatement().close();
@@ -200,6 +205,8 @@ public class OperationController implements Subject
 						VictimController victim = new VictimController(this, _dbm, id_victim, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque, entityId);
 						_victimList.add(victim);
 					}
+
+					_timerTask.set_lastVictimId(id_victim);
 				}
 			}
 			result.getStatement().close();
@@ -485,11 +492,11 @@ public class OperationController implements Subject
 	}
 
 	public void setTimerTask(Timer timer) {
-		_timerTask = timer;
+		_timer = timer;
 	}
 
 	public Timer getTimerTask(){
-		return _timerTask;
+		return _timer;
 	}
 
 	public void pauseTimerTask(){
@@ -497,7 +504,8 @@ public class OperationController implements Subject
 	}
 
 	public void startTimerTask(){
-		_timerTask.schedule(new RefreshTimerTask(this, _dbm),0,5000);
+		_timerTask = new RefreshTimerTask(this, _dbm);
+		_timer.schedule(_timerTask,0,5000);
 	}
 
 	public boolean existsInVictimList(int id) {
