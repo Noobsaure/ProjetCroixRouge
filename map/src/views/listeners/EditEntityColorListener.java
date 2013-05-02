@@ -7,18 +7,15 @@ import java.awt.event.ActionListener;
 import views.ConfigurationEntityPanel;
 import views.MapPanel;
 import controllers.EntityController;
-import controllers.OperationController;
 
 public class EditEntityColorListener implements ActionListener {
 
 	private MapPanel _mapPanel;
-	private OperationController _operationController;
 	private ConfigurationEntityPanel _configurationEntityPanel;
 	private EntityController _entityController;
 	
-	public EditEntityColorListener (MapPanel mapPanel, OperationController operationController, ConfigurationEntityPanel configurationEntityPanel, EntityController entityController) {
+	public EditEntityColorListener (MapPanel mapPanel, ConfigurationEntityPanel configurationEntityPanel, EntityController entityController) {
 		_mapPanel = mapPanel;
-		_operationController = operationController;
 		_configurationEntityPanel = configurationEntityPanel;
 		_entityController = entityController;
 	}

@@ -3,21 +3,17 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import views.ConfigurationLocationPanel;
-import views.MapPanel;
 import views.CustomDialog;
 
 public class CancelConfigureLocationListener implements ActionListener
 {
-	private MapPanel _mapPanel;
 	private ConfigurationLocationPanel _configurationLocationPanel;
 	
-	public CancelConfigureLocationListener(MapPanel mapPanel, ConfigurationLocationPanel configurationLocationPanel)
+	public CancelConfigureLocationListener(ConfigurationLocationPanel configurationLocationPanel)
 	{
-		_mapPanel = mapPanel;
 		_configurationLocationPanel = configurationLocationPanel;
 	}
 

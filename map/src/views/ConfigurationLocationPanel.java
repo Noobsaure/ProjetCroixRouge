@@ -4,17 +4,14 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import views.buttons.CustomButton;
-import controllers.LocationController;
 import views.listeners.CancelConfigureLocationListener;
 import views.listeners.ConfirmConfigureLocationListener;
 
@@ -23,6 +20,7 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
+import controllers.LocationController;
 import controllers.OperationController;
 import database.DatabaseManager;
 
@@ -39,8 +37,6 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 	protected static final int MIDDLE = ConfigurationLocationPanel.WIDTH / 2;
 
 	private MapPanel _mapPanel;
-	private OperationController _operationController;
-	private DatabaseManager _dbm;
 	
 	private LocationController _locationController;
 	private RoundedPanel _internalPanel;
@@ -51,9 +47,7 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 	public ConfigurationLocationPanel(MapPanel mapPanel, OperationController operation, DatabaseManager dbm, String nom, String informations, LocationController locationController)
 	{
 		_mapPanel = mapPanel;
-		_operationController = operation;
 		_locationController = locationController;
-		_dbm = dbm;
 		
 		initGui();
 		
@@ -127,12 +121,12 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		CustomButton annulerButton = new CustomButton("Annuler");
-		annulerButton.addActionListener(new CancelConfigureLocationListener(_mapPanel, this));
+		annulerButton.addActionListener(new CancelConfigureLocationListener(this));
 		buttonPanel.add(annulerButton);
 		
 		CustomButton okButton = new CustomButton("Ok");
 		buttonPanel.add(okButton);
-		okButton.addActionListener(new ConfirmConfigureLocationListener(_mapPanel, _operationController, _dbm, this, _locationController));
+		okButton.addActionListener(new ConfirmConfigureLocationListener(_mapPanel, this, _locationController));
 		/**************************************************************/
 		
 		setPreferredSize(_internalPanel.getSize());

@@ -27,15 +27,3 @@ public class AddEntityButtonListener implements ActionListener
 		new CustomDialog(addEntityPanel, _globalPanel);
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-

@@ -3,9 +3,6 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import launcher.Launcher;
-import views.AddEntityPanel;
-import views.AddLocationPanel;
 import views.MapPanel;
 
 public class AddLocationButtonListener implements ActionListener{

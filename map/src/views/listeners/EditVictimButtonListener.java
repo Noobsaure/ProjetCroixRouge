@@ -32,7 +32,7 @@ public class EditVictimButtonListener implements MouseListener {
 		
 		EditVictimPanel editVictimPanel = new EditVictimPanel(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), _victimCOntroller);		
 		editVictimPanel.addCancelButtonListener(new CancelEditVictimListener(_mapPanel, editVictimPanel));
-		editVictimPanel.addOkButtonListener(new ConfirmEditVictimListener(_mapPanel, _subMenu, launcher.getOperationController(), launcher.getDatabaseManager(), editVictimPanel, _victimCOntroller));
+		editVictimPanel.addOkButtonListener(new ConfirmEditVictimListener(_mapPanel, editVictimPanel, _victimCOntroller));
 		new CustomDialog(editVictimPanel, _mapPanel.getGlobalPanel());
 	}
 

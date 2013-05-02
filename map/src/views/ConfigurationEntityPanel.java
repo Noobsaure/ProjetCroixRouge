@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.List;
 import java.util.Vector;
 
@@ -19,12 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
-import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import observer.Observer;
 import views.buttons.CustomButton;
 import views.listeners.AddEquipierButtonListener;
 import views.listeners.ColorChooserListener;
@@ -45,8 +42,7 @@ import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
-// modifier le listing des localisations
-public class ConfigurationEntityPanel extends CustomPanelImpl implements Observer
+public class ConfigurationEntityPanel extends CustomPanelImpl
 {
 	private static final long serialVersionUID = 1L;
 
@@ -61,7 +57,6 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 	private EntityController _entityController;
 	private OperationController _operationController;
 
-	private JPanel _background;
 	private RoundedPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
@@ -70,8 +65,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 	private JPanel _colorChooserPanel;
 	private Color colorEntity;
 	private JPanel _listeEquipierPanel;
-
-	private TeamMemberController _teamController; 
+	
 	private static List<TeamMemberController> listEquipiers;
 	private static List<LocationController> listLocation;
 
@@ -85,7 +79,6 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		_mapPanel = parent;
 		_operationController = operationController;
 		_entityController = entityController;
-		_entityController.addObserver(this);
 		initGui();
 	}	
 
@@ -178,23 +171,12 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		for (MapController mapController : locatMap) 
 		{	
 			locatMaplocat =  mapController.getLocationList();
-			//System.out.println("map "+mapController.getName());
 			for (LocationController locat : locatMaplocat)
 			{	
 				String temp = mapController.getName()+" => "+locat.getName();
 				comboBoxItems.add(temp);
-				//System.out.println("list locat "+locat.getName());
 			}
-			//System.out.println("list"+mapController.getLocationList().toString());
-		}
-		
-		System.out.println();
-	
-		 
-	//	 for (LocationController location : listLocation){
-		// 	comboBoxItems.add(location.getName());
-		 //}
-		
+		}		
 
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 
@@ -249,14 +231,14 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController));
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 
 		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
-		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_mapPanel,_operationController, _entityController, this));
+		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_mapPanel,_operationController, _entityController));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 		formPanel.add(AjoutEquipierButton, "4, 12, fill, fill");
 
@@ -299,7 +281,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 
 		CustomButton modifStatusButton = new CustomButton("Valider Modifier status");
-		modifStatusButton.addActionListener(new EditStatusEntityButtonListener(_operationController, _entityController, this));
+		modifStatusButton.addActionListener(new EditStatusEntityButtonListener(_entityController, this));
 		formPanel.add(modifStatusButton, "4, 24");
 
 		JSeparator separator_2 = new JSeparator();
@@ -326,7 +308,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		formPanel.add(_colorChooserPanel, "4, 28, fill, fill");
 
 		CustomButton ModifColorButton = new CustomButton("Valider Modifier couleur");
-		ModifColorButton.addActionListener(new EditEntityColorListener(_mapPanel,_operationController, this, _entityController));
+		ModifColorButton.addActionListener(new EditEntityColorListener(_mapPanel,this, _entityController));
 		formPanel.add(ModifColorButton, "4, 30");
 
 		JSeparator separator_3 = new JSeparator();
@@ -340,7 +322,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
 
 		CustomButton retourEquipierEntiteButton = new CustomButton("Retour");
-		retourEquipierEntiteButton.addActionListener(new RetourEquipierEntityListener(_mapPanel, this,_operationController, _entityController));
+		retourEquipierEntiteButton.addActionListener(new RetourEquipierEntityListener(this));
 		buttonPanel.add(retourEquipierEntiteButton);
 
 		/**************************************************************/
@@ -377,34 +359,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 	public Color getColor() {
 		return _colorChooserPanel.getBackground();
 	}
-
-	@Override
-	public void update() {
-		_listeEquipierPanel.removeAll();
-		listEquipiers= _entityController.getTeamMemberList();
-		for (TeamMemberController team : listEquipiers){
-			JPanel nomEquipierPanel = new JPanel();
-			nomEquipierPanel.setMaximumSize(new Dimension(300, 25));
-			_listeEquipierPanel.add(nomEquipierPanel);
-			nomEquipierPanel.setLayout(new BorderLayout(0, 0));
-
-			JLabel _nomEquipierLabel = new JLabel(team.getName());
-			_nomEquipierLabel.setBorder(new EmptyBorder(5, 6, 5, 0));
-			nomEquipierPanel.add(_nomEquipierLabel, BorderLayout.WEST);
-			_nomEquipierLabel.setPreferredSize(new Dimension(200, 16));
-			_nomEquipierLabel.setSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMaximumSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMinimumSize(new Dimension(200, 16));
-
-			JButton removeEquipierButton = new JButton("X");
-			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
-			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
-			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
-			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
-		}
-	}
-
+	
 	@Override
 	public void updatePanel() {
 		_listeEquipierPanel.removeAll();
@@ -427,7 +382,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController));
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));

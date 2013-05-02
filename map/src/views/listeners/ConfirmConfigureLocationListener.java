@@ -5,12 +5,10 @@ import java.awt.event.ActionListener;
 import javax.swing.SwingUtilities;
 
 import views.ConfigurationLocationPanel;
+import views.CustomDialog;
 import views.MapPanel;
 import views.MessagePanel;
-import views.CustomDialog;
 import controllers.LocationController;
-import controllers.OperationController;
-import database.DatabaseManager;
 
 
 
@@ -19,18 +17,14 @@ public class ConfirmConfigureLocationListener implements ActionListener
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner la champ \"Nom\".";
 
 	private MapPanel _mapPanel;
-	private OperationController _operationController;
 	private LocationController _locationController;
-	private DatabaseManager _databaseManager;
 	private ConfigurationLocationPanel _configurationLocationPanel;
 
 
-	public ConfirmConfigureLocationListener(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager, ConfigurationLocationPanel configurationLocationPanel, LocationController locationController)
+	public ConfirmConfigureLocationListener(MapPanel mapPanel, ConfigurationLocationPanel configurationLocationPanel, LocationController locationController)
 	{
 		_mapPanel = mapPanel;
-		_operationController = operationController;
 		_locationController = locationController;
-		_databaseManager = databaseManager;
 		_configurationLocationPanel = configurationLocationPanel;
 	}
 

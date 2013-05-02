@@ -1,27 +1,20 @@
 package views.listeners;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
-import launcher.Launcher;
-
-import views.buttons.SubMenuMapButton;
 import views.MapPanel;
 import views.SubMenuPanel;
+import views.buttons.SubMenuMapButton;
 import controllers.MapController;
 import controllers.OperationController;
 
 public class SwitchMapButtonListener implements ActionListener
 {
-	private SubMenuMapButton _button;
 	private MapPanel _mapPanel;
 	private SubMenuPanel _subMenuPanel;
 	private JPanel _thumbnailPanel;
@@ -29,7 +22,6 @@ public class SwitchMapButtonListener implements ActionListener
 
 	public SwitchMapButtonListener(MapPanel mapPanel, SubMenuMapButton button, SubMenuPanel subMenuPanel, OperationController operationController)
 	{
-		_button = button;
 		_mapPanel = mapPanel;
 		_subMenuPanel = subMenuPanel;
 		_thumbnailPanel = subMenuPanel.getThumbnailPanel();

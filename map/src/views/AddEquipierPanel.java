@@ -10,8 +10,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
 import views.buttons.CustomButton;
 import views.listeners.AddEquipierDansEntityButtonListener;
@@ -35,27 +33,16 @@ public class AddEquipierPanel extends CustomPanelImpl {
 	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 200);
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static String TITLE = "";
-
-	private MapPanel _mapPanel;
+	
 	private OperationController _operationController;
 	private EntityController _entityController;
-
-
-	private JPanel _background;
+	
 	private RoundedPanel _internalPanel;
-	private JLabel _nomLabel;
-	private JTextField _nomTextField;
 	private JComboBox<String> _typeComboBox;
-	private JTextArea _informationsTextArea;
 	private static List<TeamMemberController> listEquipiers;
 
-	/**
-	 * @wbp.parser.constructor
-	 */
-
-	public AddEquipierPanel(MapPanel mapPanel,OperationController operationController, EntityController entityController)
+	public AddEquipierPanel(OperationController operationController, EntityController entityController)
 	{
-		_mapPanel = mapPanel;
 		_operationController = operationController;
 		_entityController=entityController;
 		initGui();
@@ -115,7 +102,7 @@ public class AddEquipierPanel extends CustomPanelImpl {
 		formPanel.add(_typeComboBox, "2, 2, left, default");
 
 		CustomButton ajoutButton = new CustomButton("Valider l'ajout d'un équipier à  l'entité");	
-		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_mapPanel, _operationController, _entityController, this));
+		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_operationController, _entityController, this));
 
 		formPanel.add(ajoutButton, "2, 4");
 		/**************************************************************/
@@ -129,7 +116,7 @@ public class AddEquipierPanel extends CustomPanelImpl {
 
 		CustomButton retourButton = new CustomButton("Retour");
 		buttonPanel.add(retourButton);
-		retourButton.addActionListener(new CancelEquipierEquipierButtonListener(_mapPanel, _operationController, _entityController, this));
+		retourButton.addActionListener(new CancelEquipierEquipierButtonListener(this));
 
 		/**************************************************************/
 

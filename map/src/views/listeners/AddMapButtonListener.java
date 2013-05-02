@@ -8,8 +8,6 @@ import java.util.StringTokenizer;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 
-import observer.Observer;
-
 import launcher.Launcher;
 import views.ExtensionFileFilter;
 import views.MapPanel;
@@ -21,13 +19,11 @@ import database.DatabaseManager;
 public class AddMapButtonListener implements ActionListener {
 	private MapPanel _mapPanel;
 	private final JFileChooser _fileChooser;
-	private OperationController _operation;
 	private SubMenuMapPanel _subMenu;
 
-	public AddMapButtonListener(MapPanel mapPanel, OperationController operation, SubMenuMapPanel subMenu)
+	public AddMapButtonListener(MapPanel mapPanel, SubMenuMapPanel subMenu)
 	{
 		_mapPanel = mapPanel;
-		_operation = operation;
 		_fileChooser = new JFileChooser();
 		_subMenu = subMenu;
 	}

@@ -9,11 +9,10 @@ import java.util.Date;
 import javax.swing.SwingUtilities;
 
 import views.AddVictimPanel;
+import views.CustomDialog;
 import views.GlobalPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.CustomDialog;
-import views.SubMenuVictimPanel;
 import controllers.EntityController;
 import controllers.OperationController;
 import controllers.VictimController;
@@ -30,17 +29,15 @@ public class ConfirmAddVictimListener implements ActionListener
 	
 	private MapPanel _mapPanel;
 	private GlobalPanel _globalPanel;
-	private SubMenuVictimPanel _subMenu;
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private AddVictimPanel _addVictimPanel;
 	
 	
-	public ConfirmAddVictimListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operationController, DatabaseManager databaseManager, AddVictimPanel addVictimPanel)
+	public ConfirmAddVictimListener(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager, AddVictimPanel addVictimPanel)
 	{
 		_mapPanel = mapPanel;
 		_globalPanel = _mapPanel.getGlobalPanel();
-		_subMenu = subMenu;
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		_addVictimPanel = addVictimPanel;

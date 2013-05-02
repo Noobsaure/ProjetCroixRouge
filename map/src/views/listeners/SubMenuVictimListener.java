@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import views.MapPanel;
-import views.SubMenuPanel;
 import views.SubMenuVictimPanel;
 import controllers.OperationController;
 import database.DatabaseManager;

@@ -4,11 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import views.AddEquipierPanel;
-import views.ConfigurationEntityPanel;
+import views.CustomDialog;
 import views.GlobalPanel;
 import views.MapPanel;
 import views.MessagePanel;
-import views.CustomDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 
@@ -21,15 +20,13 @@ public class AddEquipierButtonListener implements ActionListener {
 	private OperationController _operationController;
 	private MapPanel _mapPanel;
 	private GlobalPanel _globalPanel;
-	private ConfigurationEntityPanel _configEntityPanel;
 
-	public AddEquipierButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController, ConfigurationEntityPanel configEntityPanel) 
+	public AddEquipierButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController) 
 	{
 		_mapPanel = mapPanel;
 		_globalPanel = _mapPanel.getGlobalPanel();
 		_entityController=entityController;
 		_operationController=operationController;
-		_configEntityPanel=configEntityPanel;
 	}
 
 	public void actionPerformed(ActionEvent arg0)
