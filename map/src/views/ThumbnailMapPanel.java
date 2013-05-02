@@ -70,7 +70,7 @@ public class ThumbnailMapPanel extends JPanel {
 		panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panelLabel.add(nameLabel, BorderLayout.CENTER);
 		panelLabel.add(deleteIcon, BorderLayout.EAST);
-		panelLabel.addMouseListener(new RenameMapNameListener(panelLabel, operationController.getCurrentMap()));
+		panelLabel.addMouseListener(new RenameMapNameListener(panelLabel, map));
 		add(panelLabel, BorderLayout.SOUTH);
 	}
 
