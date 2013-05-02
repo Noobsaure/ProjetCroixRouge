@@ -10,12 +10,14 @@ import views.MapPanel;
 import views.MessagePanel;
 import controllers.EntityController;
 import controllers.LocationController;
+import controllers.MapController;
 import controllers.OperationController;
 
 
 public class EditEntityNameLocalisationButtonListener implements ActionListener
 {
 	private String EMPTY_NAME_MESSAGE = "Veuillez renseigner le champ \"Nom\".";
+	private String EMPTY_LOCAT_MESSAGE = "Veuillez choisir une autre localisation.";
 
 	private OperationController _operationController;
 	private MapPanel _mapPanel;
@@ -47,9 +49,32 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 			_entity.setName(nomEntity);
 		}
 		
-		listLocation= _operationController.getLocationList();
-		_location = listLocation.get(_configPanel.getIndexLocation());
-		_entity.setLocation(_location);
+		List<MapController> locatMap;
+		locatMap = _operationController.getMapList();
+		System.out.println("locatmap"+locatMap.toString());
+		List<LocationController> locatMaplocat;
+		System.out.println("index "+_configPanel.getIndexLocation());
+		
+		if (_configPanel.getIndexLocation() != -1)
+			for (MapController mapController : locatMap) 
+			{	
+				locatMaplocat =  mapController.getLocationList();
+				for (LocationController locat : locatMaplocat)
+				{	
+					String temp = mapController.getName()+" => "+locat.getName();
+					System.out.println("temp "+temp);
+					listLocation.add(locat);
+				}
+			}	
+		else
+		{
+		MessagePanel errorPanel = new MessagePanel("localisation ", EMPTY_LOCAT_MESSAGE);
+			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
+		}
+		//System.out.println("liste de localisation "+listLocation.toString());
+		//listLocation= _operationController.getLocationList();
+		//_location = listLocation.get(_configPanel.getIndexLocation()+1);
+		//_entity.setLocation(_location);
 	}
 
 	

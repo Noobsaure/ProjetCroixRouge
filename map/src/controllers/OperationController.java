@@ -189,7 +189,6 @@ public class OperationController implements Subject
 					String prenom = result.getString("prenom");
 					java.sql.Timestamp dateDeNaissance = result.getTimestamp("date_naissance");
 					String adresse = result.getString("adresse");
-					String statut = result.getString("statut");
 					java.sql.Timestamp dateEntree = result.getTimestamp("date_entree");
 					boolean petitSoin = result.getBoolean("petit_soin");
 					boolean malaise = result.getBoolean("malaise");
@@ -521,7 +520,55 @@ public class OperationController implements Subject
 	}
 
 	public boolean locationNameAlreadyExist(String name) {
-		// TODO Auto-generated method stub
+		ResultSet result;
+
+		try{
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("nom", "Localisation", "operation_id='"+_idOperation+"'"));
+
+			try{
+				while(result.next()){
+					if(name.compareTo(result.getString("nom")) == 0){
+						return true;
+					}
+				}
+				result.getStatement().close();
+			}catch(SQLException e){	
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification nom localisation","Une erreur est survenue lors de la vérification de l'unicité du nom de la localisation.");
+				new CustomDialog(errorPanel, _globalPanel);
+			}
+		}catch(MalformedQueryException e1) { 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification nom localisation" ,"Une erreur est survenue lors de la vérification de l'unicité du nom de la localisation.");
+			new CustomDialog(errorPanel, _globalPanel);
+		}
+		
+		return false;
+	}
+	
+	public boolean anonymatAlreadyExist(String anonymat) {
+		ResultSet result;
+		
+		try{
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("surnom", "Victime", "operation_id='"+_idOperation+"'"));
+			
+			try{
+				while(result.next()){
+					String surnom = result.getString("surnom");
+					if( (surnom != null) && (anonymat.compareTo(surnom) == 0)){
+						return true;
+					}
+				}
+				result.getStatement().close();
+			}catch(SQLException e){	
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification numéro anonymat","WHILE Une erreur est survenue lors de la vérification de l'unicité du numéro d'anonymat.");
+				new CustomDialog(errorPanel, _globalPanel);
+				return false;
+			}
+		}catch(MalformedQueryException e1) { 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification numéro anonymat" ,"TRY Une erreur est survenue lors de la vérification de l'unicité du numéro d'anonymat.");
+			new CustomDialog(errorPanel, _globalPanel);
+			return false;
+		}
+		
 		return false;
 	}
 

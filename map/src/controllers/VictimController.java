@@ -52,6 +52,13 @@ public class VictimController implements Subject {
 
 	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon, EntityController entity) throws ParseException
 	{
+		if(operation.anonymatAlreadyExist(anon)){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
+			new CustomDialog(errorPanel, operation.getGlobalPanel());
+			return;
+		}
+		
+		System.out.println("FINI");
 		_operation = operation;
 		_dbm = dbm;
 		_nom = nom;
@@ -77,7 +84,7 @@ public class VictimController implements Subject {
 		_datePriseEnCharge = new java.sql.Timestamp(date.getTime());
 
 		_atteinteDetails = atteinteDetails;
-		_soin = soin;
+		_soin = soin;		
 		_idAnonymat = anon;
 		_entity = entity;
 
@@ -91,7 +98,7 @@ public class VictimController implements Subject {
 					_nom+"','"+
 					_prenom+"',"+
 					((_dateDeNaissance == null) ? "NULL" : ("'" + _dateDeNaissance.toString()) + "'") +","+
-					((_adresse.equals("")) ? "NULL" :("'" + _adresse + "'"))+",'"+
+					((_adresse.equals("")) ? "NULL" :("'" + _adresse + "'"))+","+
 					"NULL,'"+
 					_datePriseEnCharge+"',"+
 					"NULL,'"+
@@ -158,7 +165,13 @@ public class VictimController implements Subject {
 		_dateDeNaissance = dateDeNaissance;
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
-		_idAnonymat = anon;
+		
+		if(_operation.anonymatAlreadyExist(anon)){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}else{
+			_idAnonymat = anon;
+		}
 
 		if(_entity.getId() != entity.getId()){
 			genererChangementEntite();

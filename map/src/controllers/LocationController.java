@@ -135,6 +135,12 @@ public class LocationController implements Subject {
 	}
 
 	public void setName(String name){
+		if(_operation.locationNameAlreadyExist(name)){
+			MessagePanel errorPanel = new MessagePanel("Mise à jour localisation impossible" ,"Nom de la localisation déjà utilisé pour cette opération.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+			return;
+		}
+		
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
