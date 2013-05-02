@@ -22,9 +22,9 @@ public class SubMenuVictimListener implements ActionListener
 		OperationController operationController = _parent.getGlobalPanel().getLauncher().getOperationController();
 		
 		SubMenuVictimPanel subMenu = new SubMenuVictimPanel(_parent, operationController);
-		_parent.add(subMenu);
-		_parent.setComponentZOrder(subMenu, 0);
 		
+		_parent.openPanel(subMenu);
+		_parent.setComponentZOrder(subMenu, 0);
 		_parent.repaint();
 		_parent.revalidate();
 	}

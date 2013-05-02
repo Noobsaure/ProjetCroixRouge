@@ -32,7 +32,6 @@ public class SwitchMapButtonListener implements ActionListener
 	public void actionPerformed(ActionEvent arg0)
 	{
 		JToggleButton buttonSelected = null;
-
 		for(int i = 0; i < _thumbnailPanel.getComponentCount(); i += 2)
 		{
 			ThumbnailMapPanel thumbnail = (ThumbnailMapPanel)_thumbnailPanel.getComponent(i);
@@ -49,7 +48,7 @@ public class SwitchMapButtonListener implements ActionListener
 			_mapPanel.resetLocationOffsets();
 		}
 
-		_mapPanel.remove(_subMenuPanel);
+		_mapPanel.closePanel();
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
 	}
