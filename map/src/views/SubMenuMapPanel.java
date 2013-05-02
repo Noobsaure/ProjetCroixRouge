@@ -22,6 +22,7 @@ import observer.Observer;
 import views.buttons.SubMenuMapButton;
 import views.listeners.AddMapButtonListener;
 import views.listeners.HideMapListener;
+import views.listeners.RenameMapNameListener;
 import views.listeners.SubMenuMapToggleButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
@@ -112,6 +113,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 			panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 			panelLabel.add(nameLabel, BorderLayout.CENTER);
 			panelLabel.add(deleteIcon, BorderLayout.EAST);
+			panelLabel.addMouseListener(new RenameMapNameListener(panelLabel, _operationController.getCurrentMap()));
 			_thumbnailsPanel.add(panelLabel);
 			
 			if(id == currentMapId)
@@ -167,6 +169,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 				panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
 				panelLabel.setBackground(COLOR_BACKGROUND);
 				panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+				panelLabel.addMouseListener(new RenameMapNameListener(panelLabel, _operationController.getCurrentMap()));
 				panelLabel.add(nameLabel, BorderLayout.CENTER);
 				panelLabel.add(deleteIcon, BorderLayout.EAST);
 				_thumbnailsPanel.add(panelLabel);
