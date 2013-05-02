@@ -3,6 +3,7 @@ package views;
 import views.buttons.CustomButton;
 import views.buttons.SubMenuMapButton;
 import views.listeners.CancelButtonListener;
+import views.listeners.ConfirmDelMapListener;
 import controllers.MapController;
 import controllers.OperationController;
 
@@ -23,6 +24,6 @@ public class ChoicePanel extends MessagePanel {
 		super.getButtonsPanel().add(cancelButton);
 		
 		CustomButton okButton = super.getOkButton();
-		//addOkButtonListener(new ConfirmDelMapListener(_operation, button, this, _map));
+		okButton.addActionListener(new ConfirmDelMapListener(_operation, _map));
 	}
 }

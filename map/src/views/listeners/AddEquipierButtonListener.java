@@ -41,7 +41,7 @@ public class AddEquipierButtonListener implements ActionListener {
 				new CustomDialog(errorPanel, _globalPanel);
 			}
 		} else {
-			AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_mapPanel, _operationController, _entityController);
+			AddEquipierPanel addEquipierPanel = new AddEquipierPanel(_operationController, _entityController);
 			new CustomDialog(addEquipierPanel, _globalPanel);
 		}
 	}

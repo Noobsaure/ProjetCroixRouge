@@ -204,11 +204,11 @@ public class RefreshTimerTask extends TimerTask
 			}
 			result.getStatement().close();
 		}catch(MalformedQueryException e1){ 
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise � jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		catch(SQLException e2){
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise � jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}

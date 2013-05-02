@@ -7,13 +7,13 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-
 import observer.Observer;
 import observer.Subject;
 import views.MessagePanel;
 import views.CustomDialog;
 import database.DatabaseManager;
 import database.MalformedQueryException;
+import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
@@ -44,7 +44,7 @@ public class MapController implements Subject {
 		_name = name;
 		_visibility = true;
 		_idOperation = operation.getId();
-		_id = _dbm.storeImage(_dbm.stripSlashes(name), path, _idOperation);
+		_id = _dbm.storeImage(DatabaseManager.stripSlashes(name), path, _idOperation);
 
 		_datas = _dbm.getImage(_id + "", name);
 
@@ -56,7 +56,7 @@ public class MapController implements Subject {
 		_operation = operation;
 		_dbm = dbm;
 		_id = id;
-		_name = _dbm.stripSlashes(name);
+		_name = DatabaseManager.stripSlashes(name);
 		_visibility = visibility;
 		_datas = _dbm.getImage(_id + "", name);
 
@@ -66,6 +66,33 @@ public class MapController implements Subject {
 
 	public String getName(){
 		return _name;
+	}
+
+	public void setName(String name){
+		String lastName = _name;
+		try {
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
+		} catch (MalformedQueryException e) { 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour du nom de la carte '"+_name+"'. Veuillez rééssayer.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+
+		_name = name;
+		genererMessageChangementNom(lastName);
+	}
+
+	private void genererMessageChangementNom(String lastName) {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		
+		String message = "La carte '"+lastName+"' a été renomée en '"+_name+"'.";
+		try {			
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', NULL, '"+_operation.getId()+"','-3',NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+		} catch (MalformedQueryException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+
+					"Message : "+message);
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
 	}
 
 	public int getId() {
