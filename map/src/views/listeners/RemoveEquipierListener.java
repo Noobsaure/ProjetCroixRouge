@@ -12,8 +12,9 @@ public class RemoveEquipierListener implements ActionListener{
 	private TeamMemberController _equipier;
 	private EntityController _entityController;
 	
-	public RemoveEquipierListener(EntityController entityController) {
+	public RemoveEquipierListener(EntityController entityController, TeamMemberController equipier) {
 		_entityController = entityController;
+		_equipier = equipier;
 	}
 	
 	public void actionPerformed(ActionEvent e)

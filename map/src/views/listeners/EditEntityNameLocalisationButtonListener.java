@@ -54,7 +54,7 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		locatMap = _operationController.getMapList();
 		List<LocationController> locatMaplocat;
 		System.out.println("index "+_configPanel.getIndexLocation());
-		
+		listLocation.add(_operationController.getLocation(_operationController.getIdPcm()));
 		if (_configPanel.getIndexLocation() != -1)
 		{
 			for (MapController mapController : locatMap) 
