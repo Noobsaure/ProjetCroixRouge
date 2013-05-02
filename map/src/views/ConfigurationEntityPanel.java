@@ -52,7 +52,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 480);
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Information sur l'entité";
-
+	private JPanel _parent;
 	private MapPanel _mapPanel;
 	private EntityController _entityController;
 	private OperationController _operationController;
@@ -228,7 +228,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController));
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
@@ -260,13 +260,13 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		panel.add(_disponibleStatutRadioButton);
 		_disponibleStatutRadioButton.setPreferredSize(new Dimension(103, 14));
 		
-				_disponibleStatutRadioButton.setSize(new Dimension(50, 23));
-				JradioBoutonGroup.add(_disponibleStatutRadioButton);
-				panel.add(_indisponibleStatutRadioButton);
-				_indisponibleStatutRadioButton.setPreferredSize(new Dimension(143, 14));
-				
-						_indisponibleStatutRadioButton.setSize(new Dimension(100, 23));
-						JradioBoutonGroup.add(_indisponibleStatutRadioButton);
+		_disponibleStatutRadioButton.setSize(new Dimension(50, 23));
+		JradioBoutonGroup.add(_disponibleStatutRadioButton);
+		panel.add(_indisponibleStatutRadioButton);
+		_indisponibleStatutRadioButton.setPreferredSize(new Dimension(143, 14));
+		
+		_indisponibleStatutRadioButton.setSize(new Dimension(100, 23));
+		JradioBoutonGroup.add(_indisponibleStatutRadioButton);
 
 		JLabel lblInformations = new JLabel("Informations :");
 		formPanel.add(lblInformations, "1, 17, left, top");
@@ -379,7 +379,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController));
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
