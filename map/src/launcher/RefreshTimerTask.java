@@ -78,7 +78,6 @@ public class RefreshTimerTask extends TimerTask
 						String prenom = result2.getString("prenom");
 						java.sql.Timestamp dateDeNaissance = result2.getTimestamp("date_naissance");
 						String adresse = result2.getString("adresse");
-						String statut = result2.getString("statut");
 						java.sql.Timestamp dateEntree = result2.getTimestamp("date_entree");
 						boolean petitSoin = result2.getBoolean("petit_soin");
 						boolean malaise = result2.getBoolean("malaise");
@@ -89,7 +88,7 @@ public class RefreshTimerTask extends TimerTask
 						String soin = result2.getString("soin");
 						int entiteId = result2.getInt("entite_id");
 
-						VictimController victim = new VictimController(_operation, _dbm, id, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque,entiteId);
+						VictimController victim = new VictimController(_operation, _dbm, id, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque,entiteId);
 						_operation.addVictim(victim);
 					}
 					result2.getStatement().close();

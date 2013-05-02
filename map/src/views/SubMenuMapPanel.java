@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,12 +28,13 @@ import views.listeners.SubMenuMapToggleButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
 import controllers.OperationController;
+import controllers.VictimController;
 import database.DatabaseManager;
 
 public class SubMenuMapPanel extends SubMenuPanel implements Observer
 {
 	private static final long serialVersionUID = 1L;
-	
+
 	private Map<JToggleButton, MapController> _map;
 	private JPanel _thumbnailsPanel;
 	private JScrollPane _scrollPane;
@@ -41,7 +43,9 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 	private SubMenuMapButton _button;
 	private List<MapController> _listMapsName;
 	private ButtonGroup _group = new ButtonGroup();
-	
+
+	private List<ThumbnailMapPanel> _thumbnailsList;
+
 	public SubMenuMapPanel(MapPanel mapPanel, SubMenuMapButton button, OperationController operationController, DatabaseManager databaseManager)
 	{
 		super(mapPanel, operationController, databaseManager);
@@ -56,10 +60,10 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		_scrollPane.setViewportBorder(null);
 		add(_scrollPane, BorderLayout.CENTER);
-		
+
 		addAddButtonListener(new AddMapButtonListener(mapPanel,this));
 		addOkButtonListener(new SwitchMapButtonListener(mapPanel, button, this, operationController));
-		
+
 		_operationController.addObserver(this);
 	}
 
@@ -68,122 +72,54 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 	{		
 		_thumbnailsPanel.setBackground(SubMenuMapPanel.COLOR_BACKGROUND);
 		_thumbnailsPanel.setLayout(new BoxLayout(_thumbnailsPanel, BoxLayout.PAGE_AXIS));
-		
+		_thumbnailsList = new ArrayList<ThumbnailMapPanel>();
 		_listMapsName = _operationController.getMapList();
-				
-		for(int i = 0; i < _listMapsName.size(); i++)
+
+		for(MapController oneMap : _listMapsName)
 		{
+			ThumbnailMapPanel mapThumbnail = new ThumbnailMapPanel(_mapPanel, this, oneMap, _operationController, _group);
 			int currentMapId = _operationController.getCurrentMap().getId();
-		
-			final int THUMBNAIL_WIDTH = SubMenuPanel.WIDTH - 30;
-			final int THUMBNAIL_HEIGHT = (int)(0.6 * THUMBNAIL_WIDTH);
-			
-			int id = _listMapsName.get(i).getId();
-			ImageIcon icon = _listMapsName.get(i).getImage();
-			Image imageScaled = icon.getImage().getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, Image.SCALE_DEFAULT);
-			ImageIcon iconScaled = new ImageIcon(imageScaled);
-			
-			JToggleButton toggleButton = new JToggleButton();
-			toggleButton.setMaximumSize(new Dimension(THUMBNAIL_WIDTH + 10, THUMBNAIL_HEIGHT + 10));
-			toggleButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-			toggleButton.setIcon(iconScaled);
-			_group.add(toggleButton);
-			toggleButton.addActionListener(new SubMenuMapToggleButtonListener(_listMapsName.get(i), _mapPanel, _operationController));
-			_thumbnailsPanel.add(toggleButton);
-			
-			System.out.println("i : " + i + " id : " + id + ", Name image : " + _listMapsName.get(i).getName());
-			
-			JLabel nameLabel = new JLabel(_listMapsName.get(i).getName());
-			nameLabel.setForeground(Color.WHITE);
-			
-			ImageIcon iconDelete = new ImageIcon(EntityPanel.class.getResource("/ui/delete.png"));
-			Image imageDeleteScaled = iconDelete.getImage().getScaledInstance(12, 16, Image.SCALE_DEFAULT);
-			ImageIcon iconDeleteScaled = new ImageIcon(imageDeleteScaled);
-			
-			JLabel deleteIcon = new JLabel();
-			deleteIcon.setIcon(iconDeleteScaled);
-			deleteIcon.addMouseListener(new HideMapListener(_operationController, this, _button, _listMapsName.get(i)));
-			
-			JPanel panelLabel = new JPanel();
-			panelLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
-			panelLabel.setLayout(new BorderLayout());
-			panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-			panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-			panelLabel.setBackground(COLOR_BACKGROUND);
-			panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			panelLabel.add(nameLabel, BorderLayout.CENTER);
-			panelLabel.add(deleteIcon, BorderLayout.EAST);
-			panelLabel.addMouseListener(new RenameMapNameListener(panelLabel, _operationController.getCurrentMap()));
-			_thumbnailsPanel.add(panelLabel);
-			
-			if(id == currentMapId)
-				toggleButton.setSelected(true);
-			
-			_map.put(toggleButton, _listMapsName.get(i));
+			if(oneMap.getId() == currentMapId) {
+				mapThumbnail.setSelected(true);
+			}
+			_thumbnailsPanel.add(mapThumbnail);
+			_thumbnailsList.add(mapThumbnail);
+			_map.put(mapThumbnail.getToggleButton(), oneMap);
 		}
 	}
 
+	public void setListMapsContent()
+	{
+		List<MapController> listMaps = _operationController.getMapList();
+		
+		List<ThumbnailMapPanel> mapThumbnailsToDelete = new ArrayList<ThumbnailMapPanel>();
+		
+		for(ThumbnailMapPanel oneMapThumbnail : _thumbnailsList) {
+			if(!listMaps.contains(oneMapThumbnail.getMapController())) {
+				_thumbnailsPanel.remove(oneMapThumbnail);
+				mapThumbnailsToDelete.add(oneMapThumbnail);
+			} else {
+				listMaps.remove(oneMapThumbnail.getMapController());
+			}
+		}
+		_thumbnailsList.removeAll(mapThumbnailsToDelete);
+		
+		for(MapController oneMap : listMaps) {
+			ThumbnailMapPanel mapThumbnail = new ThumbnailMapPanel(_mapPanel, this, oneMap, _operationController, _group);
+			int currentMapId = _operationController.getCurrentMap().getId();
+			if(oneMap.getId() == currentMapId) {
+				mapThumbnail.setSelected(true);
+			}
+			_map.put(mapThumbnail.getToggleButton(), oneMap);
+			_thumbnailsPanel.add(mapThumbnail);
+			_thumbnailsList.add(mapThumbnail);
+		}
+	}
+	
 	@Override
 	public synchronized void update()
 	{
-		List<MapController> mapList = _operationController.getMapList();
-		
-		mapList.removeAll(_listMapsName);
-		
-		
-		for(MapController map : mapList){
-			if(!_listMapsName.contains(map)){
-				_listMapsName.add(map);
-				int currentMapId = _operationController.getCurrentMap().getId();
-				
-				final int THUMBNAIL_WIDTH = SubMenuPanel.WIDTH - 30;
-				final int THUMBNAIL_HEIGHT = (int)(0.6 * THUMBNAIL_WIDTH);
-				
-				int id = map.getId();
-				ImageIcon icon = map.getImage();
-				Image imageScaled = icon.getImage().getScaledInstance(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT, Image.SCALE_DEFAULT);
-				ImageIcon iconScaled = new ImageIcon(imageScaled);
-				
-				JToggleButton toggleButton = new JToggleButton();
-				toggleButton.setMaximumSize(new Dimension(THUMBNAIL_WIDTH + 10, THUMBNAIL_HEIGHT + 10));
-				toggleButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-				toggleButton.setIcon(iconScaled);
-				_group.add(toggleButton);
-				toggleButton.addActionListener(new SubMenuMapToggleButtonListener(map, _mapPanel, _operationController));
-				_thumbnailsPanel.add(toggleButton);
-				
-				System.out.println(" id : " + id + ", Name image : " + map.getName());
-				
-				JLabel nameLabel = new JLabel(map.getName());
-				nameLabel.setForeground(Color.WHITE);
-				
-				ImageIcon iconDelete = new ImageIcon(EntityPanel.class.getResource("/ui/delete.png"));
-				Image imageDeleteScaled = iconDelete.getImage().getScaledInstance(12, 16, Image.SCALE_DEFAULT);
-				ImageIcon iconDeleteScaled = new ImageIcon(imageDeleteScaled);
-				
-				JLabel deleteIcon = new JLabel();
-				deleteIcon.setIcon(iconDeleteScaled);
-				deleteIcon.addMouseListener(new HideMapListener(_operationController, this, _button,map));
-				
-				JPanel panelLabel = new JPanel();
-				panelLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
-				panelLabel.setLayout(new BorderLayout());
-				panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-				panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-				panelLabel.setBackground(COLOR_BACKGROUND);
-				panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				panelLabel.addMouseListener(new RenameMapNameListener(panelLabel, _operationController.getCurrentMap()));
-				panelLabel.add(nameLabel, BorderLayout.CENTER);
-				panelLabel.add(deleteIcon, BorderLayout.EAST);
-				_thumbnailsPanel.add(panelLabel);
-				
-				if(id == currentMapId)
-					toggleButton.setSelected(true);
-				
-				_map.put(toggleButton, map);
-			}
-		}
-		
+		setListMapsContent();
 		repaint();
 		revalidate();
 	}

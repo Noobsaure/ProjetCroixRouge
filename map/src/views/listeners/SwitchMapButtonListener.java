@@ -9,6 +9,7 @@ import javax.swing.JToggleButton;
 
 import views.MapPanel;
 import views.SubMenuPanel;
+import views.ThumbnailMapPanel;
 import views.buttons.SubMenuMapButton;
 import controllers.MapController;
 import controllers.OperationController;
@@ -35,9 +36,10 @@ public class SwitchMapButtonListener implements ActionListener
 
 		for(int i = 0; i < _thumbnailPanel.getComponentCount(); i += 2)
 		{
-			JToggleButton toggleButton = (JToggleButton)_thumbnailPanel.getComponent(i);
-			if(toggleButton.isSelected())
-				buttonSelected = toggleButton;
+			ThumbnailMapPanel thumbnail = (ThumbnailMapPanel)_thumbnailPanel.getComponent(i);
+			if(thumbnail.getToggleButton().isSelected()) {
+				buttonSelected = thumbnail.getToggleButton();
+			}
 		}
 
 		Map<JToggleButton, MapController> map = _subMenuPanel.getMapMap();
@@ -47,7 +49,7 @@ public class SwitchMapButtonListener implements ActionListener
 			_operationController.setCurrentMap(mapController);
 			_mapPanel.resetLocationOffsets();
 		}
-		
+
 		_mapPanel.remove(_subMenuPanel);
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
