@@ -23,37 +23,14 @@ public class RemoveEquipierListener implements ActionListener{
 	private EntityController _entityController;
 	private ConfigurationEntityPanel _configEntityPanel;
 	
-	public RemoveEquipierListener(MapPanel mapPanel, JPanel nomEquipierPanel, OperationController operationController ,TeamMemberController equipier, EntityController entityController, ConfigurationEntityPanel configurationEntityPanel)
-	{
-		
-		_mapPanel = mapPanel;
-		_nomEquipierPanel = nomEquipierPanel;
-		_equipier = equipier;
+	public RemoveEquipierListener(EntityController entityController, TeamMemberController equipier) {
 		_entityController = entityController;
-		_operationController = operationController;
-		_configEntityPanel = configurationEntityPanel;
+		_equipier = equipier;
 	}
 	
 	public void actionPerformed(ActionEvent e)
 	{
 		_entityController.removeTeamMember(_equipier);
-		
-		//ne met pas à jour la liste d'équipier dans l'entity
-		System.out.println("dans Remove : "+_entityController.getTeamMemberList().toString());
-		System.out.println("equipier supprimé : "+_equipier.getFirstName());
-		//MapPanel mapPanel = (MapPanel)_parent;
-		//mapPanel.addMapPanelListener();
-		
-		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entityController);
-		
-		_mapPanel.remove(_configEntityPanel);
-		_mapPanel.repaint();
-		_mapPanel.revalidate();
-		
-		System.out.println("fermeture de la fenetre puis ouverture");
-		
-		_mapPanel.add(configurationEntityPanel);
-		_mapPanel.setComponentZOrder(configurationEntityPanel, 0);
 	}
 	
 }
