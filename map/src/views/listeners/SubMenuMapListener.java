@@ -7,17 +7,14 @@ import views.MapPanel;
 import views.SubMenuMapPanel;
 import controllers.OperationController;
 import database.DatabaseManager;
-import views.buttons.SubMenuMapButton;
 
 public class SubMenuMapListener implements ActionListener
 {
 	private MapPanel _parent;
-	private SubMenuMapButton _button;
 	
-	public SubMenuMapListener(MapPanel mapPanel, SubMenuMapButton button)
+	public SubMenuMapListener(MapPanel mapPanel)
 	{
 		_parent = mapPanel;
-		_button = button;
 	}
 	
 	@Override
@@ -26,7 +23,7 @@ public class SubMenuMapListener implements ActionListener
 		OperationController operationController = _parent.getGlobalPanel().getLauncher().getOperationController();
 		DatabaseManager databaseManager = _parent.getGlobalPanel().getLauncher().getDatabaseManager();
 		
-		SubMenuMapPanel subMenu = new SubMenuMapPanel(_parent, _button, operationController, databaseManager);
+		SubMenuMapPanel subMenu = new SubMenuMapPanel(_parent, operationController, databaseManager);
 		
 		_parent.add(subMenu);
 		_parent.setComponentZOrder(subMenu, 0);

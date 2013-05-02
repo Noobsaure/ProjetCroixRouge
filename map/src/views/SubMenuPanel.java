@@ -13,11 +13,8 @@ import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
 import views.buttons.CustomButton;
-import views.listeners.AddMapButtonListener;
 import controllers.MapController;
 import controllers.VictimController;
-import controllers.OperationController;
-import database.DatabaseManager;
 
 public class SubMenuPanel extends JPanel
 {
@@ -28,19 +25,15 @@ public class SubMenuPanel extends JPanel
 	public static final int BUTTON_HEIGHT = 25;
 	
 	private MapPanel _mapPanel;
-	private OperationController _operationController;
-	private DatabaseManager _databaseManager;
 	private JPanel _thumbnailsPanel;
 	private CustomButton _addButton;
 	private CustomButton _okButton;
 	private Map<JToggleButton, MapController> _mapMaps;
 	private Map<JToggleButton, VictimController> _mapVictims;
 	
-	public SubMenuPanel(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager)
+	public SubMenuPanel(MapPanel mapPanel)
 	{
 		_mapPanel = mapPanel;
-		_operationController = operationController;
-		_databaseManager = databaseManager;
 		_thumbnailsPanel = new JPanel();
 		_mapMaps = new HashMap<JToggleButton, MapController>();
 		_mapVictims = new HashMap<JToggleButton, VictimController>();

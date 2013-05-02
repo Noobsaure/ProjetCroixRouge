@@ -27,6 +27,7 @@ public class MapPanel extends JPanel implements Observer {
 	
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
+	private SubMenuPanel _openedPanel;
 	
 	private int _x = 0;
 	private int _y = 0;

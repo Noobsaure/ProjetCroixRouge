@@ -10,7 +10,6 @@ import javax.swing.JToggleButton;
 import views.MapPanel;
 import views.SubMenuPanel;
 import views.ThumbnailMapPanel;
-import views.buttons.SubMenuMapButton;
 import controllers.MapController;
 import controllers.OperationController;
 
@@ -21,7 +20,7 @@ public class SwitchMapButtonListener implements ActionListener
 	private JPanel _thumbnailPanel;
 	private OperationController _operationController;
 
-	public SwitchMapButtonListener(MapPanel mapPanel, SubMenuMapButton button, SubMenuPanel subMenuPanel, OperationController operationController)
+	public SwitchMapButtonListener(MapPanel mapPanel, SubMenuPanel subMenuPanel, OperationController operationController)
 	{
 		_mapPanel = mapPanel;
 		_subMenuPanel = subMenuPanel;

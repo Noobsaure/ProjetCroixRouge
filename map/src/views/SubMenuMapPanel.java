@@ -1,34 +1,22 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
-import javax.swing.border.EmptyBorder;
 
 import observer.Observer;
-import views.buttons.SubMenuMapButton;
 import views.listeners.AddMapButtonListener;
-import views.listeners.HideMapListener;
-import views.listeners.RenameMapNameListener;
-import views.listeners.SubMenuMapToggleButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
 import controllers.OperationController;
-import controllers.VictimController;
 import database.DatabaseManager;
 
 public class SubMenuMapPanel extends SubMenuPanel implements Observer
@@ -40,20 +28,18 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 	private JScrollPane _scrollPane;
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
-	private SubMenuMapButton _button;
 	private List<MapController> _listMapsName;
 	private ButtonGroup _group = new ButtonGroup();
 
 	private List<ThumbnailMapPanel> _thumbnailsList;
 
-	public SubMenuMapPanel(MapPanel mapPanel, SubMenuMapButton button, OperationController operationController, DatabaseManager databaseManager)
+	public SubMenuMapPanel(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager)
 	{
-		super(mapPanel, operationController, databaseManager);
+		super(mapPanel);
 		_mapPanel = mapPanel;
 		_map = super.getMapMap();
 		_thumbnailsPanel = super.getThumbnailPanel();
 		_operationController = operationController;
-		_button = button;
 		displayThumbnail();
 
 		_scrollPane = new JScrollPane(_thumbnailsPanel);
@@ -62,7 +48,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		add(_scrollPane, BorderLayout.CENTER);
 
 		addAddButtonListener(new AddMapButtonListener(mapPanel,this));
-		addOkButtonListener(new SwitchMapButtonListener(mapPanel, button, this, operationController));
+		addOkButtonListener(new SwitchMapButtonListener(mapPanel, this, operationController));
 
 		_operationController.addObserver(this);
 	}
