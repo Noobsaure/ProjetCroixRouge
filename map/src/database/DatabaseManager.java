@@ -193,7 +193,7 @@ public class DatabaseManager
 	public ResultSet executeQuerySelect(SQLQuerySelect query)
 	{
 		ResultSet result = null;
-		//System.out.println("Execution de la requete : "+query);
+		System.out.println("Execution de la requete : "+query);
 		try
 		{
 			java.sql.Statement statement = _currentConnection.createStatement();

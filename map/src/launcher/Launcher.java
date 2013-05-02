@@ -54,7 +54,7 @@ public class Launcher {
 		_operation.setTimer(timer);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>     Tests controlleurs   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		
-	
+	_operation.getAnonymousNumber();
 		
 		System.out.println("\n \n \n>>>>>>>>>>>>>>>>>>>>>>>     Resultats   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		

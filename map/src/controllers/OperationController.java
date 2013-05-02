@@ -70,6 +70,8 @@ public class OperationController implements Subject {
 				TeamMemberController equipier = new TeamMemberController(this, _dbm, id, name, firstName, phoneNumber, othersInformations, entityId);
 				System.out.println("---->Chargement equipier :"+name+" avec l'id: "+id+" "+entityId);
 				_teamMemberList.add(equipier);
+				if(_timerTask == null)
+					System.out.println("TimerTask null ?");
 				_timerTask.set_lastEntityId(id);
 			}
 			result.getStatement().close();
@@ -575,7 +577,7 @@ public class OperationController implements Subject {
 		int idAnonymat= 1;
 
 		try{
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Victime", "operation_id='"+_idOperation+"' ORDER BY id DESC"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Victime", "operation_id='"+_idOperation+"' ORDER BY id DESC LIMIT 1 "));
 
 			try{
 				while(result.next()){
@@ -591,7 +593,7 @@ public class OperationController implements Subject {
 			new CustomDialog(errorPanel, _globalPanel);
 		}
 		
-		return idAnonymat;
+		return (idAnonymat+1);
 	}
 	
 	public void setTimerTask(RefreshTimerTask timerTask){
