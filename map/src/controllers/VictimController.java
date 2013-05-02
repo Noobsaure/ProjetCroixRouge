@@ -163,7 +163,8 @@ public class VictimController {
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
 		
-		if( (_operation.anonymatAlreadyExist(anon) != _id) || (_operation.anonymatAlreadyExist(anon) != -1)){
+		if( (_operation.anonymatAlreadyExist(anon) != _id) && (_operation.anonymatAlreadyExist(anon) != -1)){
+			System.out.println((_operation.anonymatAlreadyExist(anon)));
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}else{
