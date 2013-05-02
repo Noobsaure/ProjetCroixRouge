@@ -130,7 +130,7 @@ public class LocationController {
 	}
 
 	public void setName(String name){
-		if( (_operation.locationNameAlreadyExist(name) != _id) || (_operation.locationNameAlreadyExist(name) != -1) ){
+		if( (_operation.locationNameAlreadyExist(name) != _id) && (_operation.locationNameAlreadyExist(name) != -1) ){
 			MessagePanel errorPanel = new MessagePanel("Mise à jour localisation impossible" ,"Nom de la localisation déjà utilisé pour cette opération.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return;
@@ -193,7 +193,6 @@ public class LocationController {
 
 	public String show() {
 		String result;
-		System.out.println("ON va la... et name = "+_name);
 		result = _name.toUpperCase();
 		result += "Equipes presentes: \n";
 
