@@ -74,8 +74,8 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		_thumbnailsList = new ArrayList<ThumbnailVictimPanel>(); 
 		_group = new ButtonGroup();
 		
-		for(VictimController victim : _listVictimsName){
-			ThumbnailVictimPanel victimThumbnail = new ThumbnailVictimPanel(_mapPanel, this, victim);
+		for(VictimController oneVictim : _listVictimsName){
+			ThumbnailVictimPanel victimThumbnail = new ThumbnailVictimPanel(_mapPanel, this, oneVictim);
 			_thumbnailsPanel.add(victimThumbnail);
 			_thumbnailsList.add(victimThumbnail);
 		}
@@ -101,7 +101,6 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 			ThumbnailVictimPanel victimThumbnail = new ThumbnailVictimPanel(_mapPanel, this, oneVictim);
 			_thumbnailsPanel.add(victimThumbnail);
 			_thumbnailsList.add(victimThumbnail);
-			System.out.println("TROLOLO");
 		}
 	}
 	
@@ -111,6 +110,5 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		setListVictimsContent();
 		revalidate();
 		repaint();
-		
 	}
 }
