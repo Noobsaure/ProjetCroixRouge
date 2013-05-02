@@ -57,7 +57,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	private EntityController _entityController;
 	private OperationController _operationController;
 
-	private RoundedPanel _internalPanel;
+	private JPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
 	private JComboBox<String> _typeComboBox;
@@ -87,7 +87,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 
-		_internalPanel = new RoundedPanel();
+		_internalPanel = new PopUpPanel();
 		_internalPanel.setSize(DIMENSION_PANEL);
 		add(_internalPanel);
 

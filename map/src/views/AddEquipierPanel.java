@@ -37,7 +37,7 @@ public class AddEquipierPanel extends CustomPanelImpl {
 	private OperationController _operationController;
 	private EntityController _entityController;
 	
-	private RoundedPanel _internalPanel;
+	private PopUpPanel _internalPanel;
 	private JComboBox<String> _typeComboBox;
 	private static List<TeamMemberController> listEquipiers;
 
@@ -55,7 +55,7 @@ public class AddEquipierPanel extends CustomPanelImpl {
 		//setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 
-		_internalPanel = new RoundedPanel();
+		_internalPanel = new PopUpPanel();
 		_internalPanel.setSize(new Dimension(400, 180));
 		add(_internalPanel);
 

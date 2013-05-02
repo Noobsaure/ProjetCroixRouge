@@ -22,23 +22,23 @@ import controllers.OperationController;
 
 public class MapPanel extends JPanel implements Observer {
 	private static final long serialVersionUID = 1L;
-	
+
 	private OperationController _operation;
-	
+
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
 	private SubMenuPanel _openedPanel;
-	
+
 	private int _x = 0;
 	private int _y = 0;
 	private MapPanelMouseListener _mapListener;
-	
+
 	private List<Location> _locations = new ArrayList<Location>();
-	
+
 	public void setOperation(OperationController operation) {
 		_operation = operation;
 	}
-	
+
 	public MapPanel(GlobalPanel globalPanel)
 	{
 		super(true);
@@ -55,12 +55,12 @@ public class MapPanel extends JPanel implements Observer {
 	}
 
 	public List<Location> getLocations() {return _locations;}
-	
+
 	public MapPanelMouseListener getMapListener() {return _mapListener;}
-	
+
 	public int get_x() {return _x;}
 	public int get_y() {return _y;}
-	
+
 	public void moveMap(int x, int y) {
 		if(_map.getWidth() > getWidth()) {
 			if(x > 0 && x + _x > 0) {x = -_x;}
@@ -81,7 +81,7 @@ public class MapPanel extends JPanel implements Observer {
 		}
 		repaint();
 	}
-	
+
 	@Override 
 	public void paintComponent(Graphics g)
 	{
@@ -130,11 +130,13 @@ public class MapPanel extends JPanel implements Observer {
 			oneLoc.update();
 		}
 	}
-	
-	public void resetLocationOffsets() {
+
+	public void resetPosition() {
 		for(Location oneLoc : _locations) {
 			oneLoc.setOffsetX(0);
 			oneLoc.setOffsetY(0);
+			_x = 0;
+			_y = 0;
 		}
 	}
 
@@ -144,7 +146,7 @@ public class MapPanel extends JPanel implements Observer {
 			oneLoc.setHighlight(false);
 		}
 	}
-	
+
 	public void openPanel(SubMenuPanel panel) {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
@@ -155,7 +157,7 @@ public class MapPanel extends JPanel implements Observer {
 			add(_openedPanel);
 		}
 	}
-	
+
 	public void closePanel() {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
@@ -183,8 +185,21 @@ public class MapPanel extends JPanel implements Observer {
 				}
 			} else if(image.getIconHeight() > height) {
 				ratio = height/image.getIconHeight();
+				if(image.getIconWidth() < getWidth()) {
+					_x = (int) ((getWidth() - image.getIconWidth()) / 2);
+				}
 			} else if(image.getIconWidth() > width) {
 				ratio = width/image.getIconWidth();
+				if(image.getIconHeight() < getHeight()) {
+					_y = (int) ((getHeight() - image.getIconHeight()) / 2);
+				}
+			} else {
+				if(image.getIconWidth() < getWidth()) {
+					_x = (int) ((getWidth() - image.getIconWidth()) / 2);
+				}
+				if(image.getIconHeight() < getHeight()) {
+					_y = (int) ((getHeight() - image.getIconHeight()) / 2);
+				}
 			}
 
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);

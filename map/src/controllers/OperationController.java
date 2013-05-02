@@ -317,6 +317,7 @@ public class OperationController implements Subject {
 
 	public void addEntite(EntityController entity) {
 		_entityList.add(entity);
+		notifyObservers();
 	}
 
 	public void addTeamMember(TeamMemberController equipier) {
