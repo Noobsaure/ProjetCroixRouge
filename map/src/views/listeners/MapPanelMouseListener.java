@@ -75,7 +75,7 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 					MessagePanel errorPanel = new MessagePanel("Erreur" ,"Point en dehors de la carte.");
 					new CustomDialog(errorPanel, _globalPanel);
 				} else {
-					_mapPanel.showAddLocationPanel(x, y);
+					_mapPanel.showAddLocationPanel(x - _mapPanel.get_x(), y - _mapPanel.get_y());
 					setAddingLocation(false);
 				}
 			} else {
@@ -124,7 +124,7 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		JMenuItem launch = new JMenuItem("Ajouter une localisation");
 		launch.setEnabled(isCoordAwayFromLocs(x,y));
 		jpm.add(launch);
-		launch.addActionListener(new NewLocationListener(_globalPanel,x,y));
+		launch.addActionListener(new NewLocationListener(_globalPanel,x - _mapPanel.get_x(),y - _mapPanel.get_y()));
 		jpm.show(_mapPanel, x, y);
 	}
 
