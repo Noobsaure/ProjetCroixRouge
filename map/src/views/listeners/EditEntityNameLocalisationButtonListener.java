@@ -42,10 +42,12 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String nomEntity = _configPanel.getNewName();
-		int indexLocation = _configPanel.getIndexLocation();
+		/*int indexLocation = _configPanel.getIndexLocation();
 		
+		System.out.println("indexLocation : "+indexLocation);
+		*/
 		if(!checkInput(nomEntity)) {
-			MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
+			MessagePanel errorPanel = new MessagePanel("Saisie incomplÃ¨te", EMPTY_NAME_MESSAGE);
 			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		} else {
 			_entity.setName(nomEntity);

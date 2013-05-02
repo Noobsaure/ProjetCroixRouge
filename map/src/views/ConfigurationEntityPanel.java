@@ -170,7 +170,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 
 		Vector<String> comboBoxItems = new Vector<String>();
 		listLocation=_operationController.getLocationList();
-	/*
+	
 		// On récupère la list des map
 		List<MapController> locatMap;
 		locatMap = _operationController.getMapList();
@@ -179,27 +179,27 @@ public class ConfigurationEntityPanel extends CustomPanelImpl implements Observe
 		{	
 			locatMaplocat =  mapController.getLocationList();
 			//System.out.println("map "+mapController.getName());
-			comboBoxItems.add(mapController.getName());
 			for (LocationController locat : locatMaplocat)
 			{	
-				comboBoxItems.add(locat.getName());
+				String temp = mapController.getName()+" => "+locat.getName();
+				comboBoxItems.add(temp);
 				//System.out.println("list locat "+locat.getName());
 			}
 			//System.out.println("list"+mapController.getLocationList().toString());
 		}
 		
 		System.out.println();
-	*/
+	
 		 
-		 for (LocationController location : listLocation){
-		 	comboBoxItems.add(location.getName());
-		 }
+	//	 for (LocationController location : listLocation){
+		// 	comboBoxItems.add(location.getName());
+		 //}
 		
 
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 
 
-		// mmise par défaut du nom de la localisation
+		// mise par défaut du nom de la localisation
 		model.setSelectedItem(_operationController.getLocation(_entityController.getIdPosCurrent()).getName());
 
 		_typeComboBox = new JComboBox<String>(model);
