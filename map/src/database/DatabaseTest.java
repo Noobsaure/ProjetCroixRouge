@@ -19,7 +19,7 @@ public class DatabaseTest
 //		testQueries();
 //		testImages();
 		
-		final String input = "L'apostr`ophe";
+		final String input = "L'ap\\ostr`oph\\e";
 		final String output = DatabaseManager.addSlashes(input);
 		System.out.println("Test : " + output);
 		System.out.println(DatabaseManager.stripSlashes(output));

@@ -383,7 +383,8 @@ public class DatabaseManager
 
 		if(input != null)
 		{
-			output = input.replace("'", "\\'");
+			output = input.replace("\\", "");
+			output = output.replace("'", "\\'");
 			output = output.replace("`", "\\`");
 		}
 
