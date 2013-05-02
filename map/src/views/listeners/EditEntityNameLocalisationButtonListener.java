@@ -2,6 +2,7 @@ package views.listeners;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import views.ConfigurationEntityPanel;
@@ -24,7 +25,7 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 	private EntityController _entity;
 	private LocationController _location;
 	private ConfigurationEntityPanel _configPanel;
-	private static List<LocationController> listLocation;
+	private static List<LocationController> listLocation = new ArrayList<LocationController>();
 	
 	public EditEntityNameLocalisationButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entity, ConfigurationEntityPanel configPanel)
 	{
@@ -51,11 +52,11 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 		
 		List<MapController> locatMap;
 		locatMap = _operationController.getMapList();
-		System.out.println("locatmap"+locatMap.toString());
 		List<LocationController> locatMaplocat;
 		System.out.println("index "+_configPanel.getIndexLocation());
 		
 		if (_configPanel.getIndexLocation() != -1)
+		{
 			for (MapController mapController : locatMap) 
 			{	
 				locatMaplocat =  mapController.getLocationList();
@@ -65,16 +66,17 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 					System.out.println("temp "+temp);
 					listLocation.add(locat);
 				}
-			}	
+			}
+			_location = listLocation.get(_configPanel.getIndexLocation());
+			System.out.println("liste de localisation "+_location.getName());
+			_entity.setLocation(_location);
+		}
 		else
 		{
 		MessagePanel errorPanel = new MessagePanel("localisation ", EMPTY_LOCAT_MESSAGE);
 			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		}
-		//System.out.println("liste de localisation "+listLocation.toString());
-		//listLocation= _operationController.getLocationList();
-		//_location = listLocation.get(_configPanel.getIndexLocation()+1);
-		//_entity.setLocation(_location);
+		
 	}
 
 	
