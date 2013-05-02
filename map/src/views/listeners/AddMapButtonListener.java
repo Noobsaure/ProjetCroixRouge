@@ -39,8 +39,19 @@ public class AddMapButtonListener implements ActionListener {
 
 		while(tokens.hasMoreTokens())
 			result = tokens.nextToken();
+		
+		String resultWithoutExtension = "";
+		String lastToken = "";
+		
+		StringTokenizer tokensWithoutExtension = new StringTokenizer(result, ".");
+		
+		while(tokensWithoutExtension.hasMoreElements())
+		{
+			resultWithoutExtension += lastToken;
+			lastToken = (String)tokensWithoutExtension.nextElement();
+		}
 
-		return result;
+		return resultWithoutExtension;
 	}
 
 	@Override
