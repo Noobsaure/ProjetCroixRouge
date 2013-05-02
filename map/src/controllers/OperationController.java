@@ -202,7 +202,7 @@ public class OperationController implements Subject
 					int entityId = result.getInt("entite_id");
 
 					if(dateSortiePriseEnCharge == null);{
-						VictimController victim = new VictimController(this, _dbm, id_victim, statut, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque, entityId);
+						VictimController victim = new VictimController(this, _dbm, id_victim, idAnonymat, nom, prenom, adresse, dateDeNaissance, dateEntree, atteinteDetails, soin, petitSoin, malaise, traumatisme, inconscient, arretCardiaque, entityId);
 						_victimList.add(victim);
 					}
 
@@ -547,6 +547,14 @@ public class OperationController implements Subject
 		}
 		
 		return idAnonymat;
+	}
+	
+	public void setTimerTask(RefreshTimerTask timerTask){
+		 _timerTask = timerTask;
+	}
+
+	public void setTimer(Timer timer) {
+		_timer = timer;
 	}
 }
 

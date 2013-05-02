@@ -30,7 +30,8 @@ public class Launcher {
 		//int idOperation =  Integer.parseInt(args[0]);
 		// Lorsque la map sera intégrée à la page symfony : _operation = new OperationController(_dbm, getParameter("idOperation"), getParameter("idOperateur"));
 		_operation = new OperationController(_dbm,idOperation,idOperateur);
-		
+		RefreshTimerTask timerTask = new RefreshTimerTask(_operation, _dbm);
+		_operation.setTimerTask(timerTask);
 		_operation.setGlobalPanel(panel);
 		_dbm.setOperation(_operation);
 		
@@ -52,9 +53,9 @@ public class Launcher {
 		
 
 		Timer timer = new Timer();
-		timer.schedule(new RefreshTimerTask(_operation, _dbm),0,5000);
+		timer.schedule(timerTask,0,5000);
 		
-		_operation.setTimerTask(timer);
+		_operation.setTimer(timer);
 		System.out.println(">>>>>>>>>>>>>>>>>>>>>>>     Tests controlleurs   <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 		
 	
