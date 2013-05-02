@@ -72,6 +72,7 @@ public class OperationController implements Subject {
 				_teamMemberList.add(equipier);
 				if(_timerTask == null)
 					System.out.println("TimerTask null ?");
+				System.out.println("PRINT POUR LE RI");
 				_timerTask.set_lastEntityId(id);
 			}
 			result.getStatement().close();
