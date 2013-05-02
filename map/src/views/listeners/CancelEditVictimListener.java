@@ -3,14 +3,12 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import launcher.Launcher;
-
+import views.CustomDialog;
 import views.EditVictimPanel;
 import views.MapPanel;
-import views.CustomDialog;
 import views.SubMenuVictimPanel;
 
 public class CancelEditVictimListener implements ActionListener

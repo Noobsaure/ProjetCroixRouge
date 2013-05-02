@@ -56,7 +56,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 		_scrollPane.setViewportBorder(null);
 		add(_scrollPane, BorderLayout.CENTER);
 		
-		addAddButtonListener(new AddMapButtonListener(mapPanel,operationController,this));
+		addAddButtonListener(new AddMapButtonListener(mapPanel,this));
 		addOkButtonListener(new SwitchMapButtonListener(mapPanel, button, this, operationController));
 		
 		_operationController.addObserver(this);

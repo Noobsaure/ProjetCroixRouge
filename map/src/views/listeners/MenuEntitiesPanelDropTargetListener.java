@@ -1,10 +1,7 @@
 package views.listeners;
 
 import java.awt.Cursor;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.DropTargetContext;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.dnd.DropTargetEvent;
@@ -12,11 +9,9 @@ import java.awt.dnd.DropTargetListener;
 import java.io.IOException;
 
 import views.AffectedEntityPanel;
-import views.Location;
-import views.GlobalPanel;
 import views.EntityPanel;
+import views.GlobalPanel;
 import views.MenuPanel;
-import views.draganddrop.EntityTransferable;
 
 public class MenuEntitiesPanelDropTargetListener implements DropTargetListener {
 

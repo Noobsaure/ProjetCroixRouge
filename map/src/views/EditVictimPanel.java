@@ -24,12 +24,9 @@ public class EditVictimPanel extends AddVictimPanel
 	public static final String TITLE = "Editer victime";
 
 	private MapPanel _mapPanel;
-	private OperationController _operationController;
-	private DatabaseManager _dbm;
 	private SubMenuVictimPanel _subMenu;
 	private VictimController _victimController;
 	
-	private RoundedPanel _mainPanel;
 	private JList _motifsList;
 	private JTextField _detailsTextArea;
 	private JTextField _idAnonymat;
@@ -43,15 +40,12 @@ public class EditVictimPanel extends AddVictimPanel
 	
 	public EditVictimPanel(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm, VictimController victim)
 	{
-		super(mapPanel, subMenu, operation, dbm);
+		super(mapPanel, operation);
 		
 		_mapPanel = mapPanel;
 		_subMenu = subMenu;
-		_operationController = operation;
-		_dbm = dbm;
 		_victimController = victim;
 		
-		_mainPanel = super.getMainPanel();
 		_motifsList = super.getMotifList();
 		_detailsTextArea = super.getDetailsTextArea();
 		_idAnonymat = super.getIdAnonymat();

@@ -1,13 +1,10 @@
 package views;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 
 import javax.swing.JLabel;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -24,8 +21,6 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import controllers.OperationController;
 import database.DatabaseManager;
-
-
 
 public class AddLocationPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
@@ -44,7 +39,6 @@ public class AddLocationPanel extends CustomPanelImpl {
 	private DatabaseManager _dbm;
 	
 	private int _x, _y;
-	private JPanel _background;
 	private RoundedPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
@@ -77,8 +71,6 @@ public class AddLocationPanel extends CustomPanelImpl {
 		_informationsTextArea.setText(informations);
 	}
 	
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void initGui()
 	{
 		setLayout(null);
@@ -143,7 +135,7 @@ public class AddLocationPanel extends CustomPanelImpl {
 		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
 		
 		CustomButton annulerButton = new CustomButton("Annuler");
-		annulerButton.addActionListener(new CancelAddLocationListener(_parent, this));
+		annulerButton.addActionListener(new CancelAddLocationListener(this));
 		buttonPanel.add(annulerButton);
 		
 		CustomButton okButton = new CustomButton("Ok");

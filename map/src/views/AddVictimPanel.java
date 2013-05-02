@@ -33,7 +33,6 @@ import com.toedter.calendar.JDateChooser;
 
 import controllers.EntityController;
 import controllers.OperationController;
-import database.DatabaseManager;
 
 public class AddVictimPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
@@ -46,10 +45,8 @@ public class AddVictimPanel extends CustomPanelImpl {
 	
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
-	private DatabaseManager _dbm;
 	
 	private RoundedPanel _mainPanel;
-	private SubMenuVictimPanel _subMenu;
 	private JLabel _title;
 	private JList _motifsList;
 	private JTextField _detailsTextArea;
@@ -69,12 +66,10 @@ public class AddVictimPanel extends CustomPanelImpl {
 	private Map<String, EntityController> _map;
 	
 	
-	public AddVictimPanel(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm)
+	public AddVictimPanel(MapPanel mapPanel, OperationController operation)
 	{
 		_mapPanel = mapPanel;
-		_subMenu = subMenu;
 		_operationController = operation;
-		_dbm = dbm;
 		_map = new HashMap<String, EntityController>();
 		
 		initGui();

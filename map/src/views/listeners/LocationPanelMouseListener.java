@@ -5,17 +5,14 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 import views.Location;
-import views.MapPanel;
 
 public class LocationPanelMouseListener implements MouseListener, MouseMotionListener {
 
 	private Location _loc;
-	private MapPanel _mapPanel;
 	private boolean _enabled;
 
-	public LocationPanelMouseListener(Location loc, MapPanel mapPanel) {
+	public LocationPanelMouseListener(Location loc) {
 		_loc = loc;
-		_mapPanel = mapPanel;
 	}
 
 	@Override

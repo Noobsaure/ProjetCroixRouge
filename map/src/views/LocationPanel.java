@@ -6,13 +6,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.ScrollPane;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -22,7 +20,6 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
-import views.listeners.EditLocationButtonListener;
 import views.listeners.LocationPanelMouseListener;
 import controllers.EntityController;
 
@@ -44,9 +41,7 @@ public class LocationPanel extends JPanel
 	private JLabel _locationName;
 	private ImageIcon _iconGearOn,_iconGearOff;
 	private LocationPanelMouseListener _mouseListener;
-	private EditLocationButtonListener _iconGearMouseListener;
 	private List<AffectedEntityPanel> _affectedEntityPanels;
-	private JScrollPane _scrollPane;
 
 	public LocationPanel(Location loc, MapPanel mapPanel, int x, int y)
 	{
@@ -59,7 +54,7 @@ public class LocationPanel extends JPanel
 		setBounds(_x - 100, _y - 50, 200,100);
 		setVisible(false);
 		setOpaque(false);
-		_mouseListener = new LocationPanelMouseListener(_loc, _mapPanel);
+		_mouseListener = new LocationPanelMouseListener(_loc);
 		addMouseListener(_mouseListener);
 		addMouseMotionListener(_mouseListener);
 		
@@ -154,7 +149,6 @@ public class LocationPanel extends JPanel
 		int hgap = (_entitiesPanel.getWidth() - 2 * AffectedEntityPanel.WIDTH) / 3;
 		int vgap = (_entitiesPanel.getHeight() - 2 * AffectedEntityPanel.HEIGHT) / 3;
 		int x = hgap, y = vgap;
-		int i = 1; int j = 0;
 		
 		for(AffectedEntityPanel oneEntity : _affectedEntityPanels)
 		{

@@ -3,10 +3,8 @@ package views.listeners;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import views.Location;
-import views.LocationPanel;
-import views.MapPanel;
 import views.GlobalPanel;
+import views.MapPanel;
 
 public class NewLocationListener implements ActionListener {
 

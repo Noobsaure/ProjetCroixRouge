@@ -3,7 +3,6 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.util.Vector;
 
 import javax.swing.DefaultComboBoxModel;
@@ -70,8 +69,7 @@ public class AddEntityPanel extends CustomPanelImpl {
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void initGui()
-	{
+	private void initGui() {
 		setLayout(null);
 		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
@@ -192,7 +190,7 @@ public class AddEntityPanel extends CustomPanelImpl {
 
 	@Override
 	public void updatePanel() {
-		//Rien à update ici.
+		//Rien Ã  update ici.
 	}
 }
 

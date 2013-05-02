@@ -20,7 +20,6 @@ public class EditLocationButtonListener implements MouseListener
 	private LocationPanel _locationPanel;
 	private Location _loc;
 	private MapPanel _mapPanel;
-	private boolean _enabled = true;
 
 	public EditLocationButtonListener(OperationController operationController, LocationPanel locationPanel, MapPanel mapPanel, LocationController locationController)
 	{

@@ -7,16 +7,13 @@ import java.util.List;
 import javax.swing.SwingUtilities;
 
 import views.AddEquipierPanel;
-import views.ConfigurationEntityPanel;
-import views.MapPanel;
 import views.CustomDialog;
 import controllers.EntityController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
 public class AddEquipierDansEntityButtonListener implements ActionListener {
-
-	private MapPanel _parent;
+	
 	private AddEquipierPanel _addEquipierPanel;
 	private OperationController _operationController;
 	private EntityController _entityController;
@@ -24,8 +21,7 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 	private static List<TeamMemberController> listEquipiers;
 
 
-	public AddEquipierDansEntityButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel) {
-		_parent = mapPanel;
+	public AddEquipierDansEntityButtonListener(OperationController operationController, EntityController entityController,  AddEquipierPanel addEquipierPanel) {
 		_addEquipierPanel = addEquipierPanel;
 		_operationController = operationController;
 		_entityController = entityController;
