@@ -7,17 +7,15 @@ import java.util.List;
 
 import javax.swing.ImageIcon;
 
-import observer.Observer;
-import observer.Subject;
-import views.MessagePanel;
 import views.CustomDialog;
+import views.MessagePanel;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
-public class MapController implements Subject {
+public class MapController {
 	private OperationController _operation;
 	private DatabaseManager _dbm;
 
@@ -28,8 +26,7 @@ public class MapController implements Subject {
 	private ImageIcon _datas;
 
 	private List<LocationController> _locationList = new ArrayList<LocationController>();
-
-	private List<Observer> _listObservers = new ArrayList<Observer>();
+	
 	/**
 	 * Construct a new MapController which is not in the database with the name and the path of the file.
 	 * @param operation
@@ -152,23 +149,6 @@ public class MapController implements Subject {
 		result += _id;
 
 		return result;
-	}
-
-	@Override
-	public void addObserver(Observer observer){
-		_listObservers.add(observer);
-	}
-
-	@Override
-	public void removeObserver(Observer observer){
-		_listObservers.remove(observer);
-	}
-
-	@Override
-	public void notifyObservers() {
-		for(Observer observer : _listObservers){
-			observer.update();
-		}
 	}
 
 	public void updateFields() {

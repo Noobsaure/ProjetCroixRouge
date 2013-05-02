@@ -66,8 +66,6 @@ public class ConfirmAddEntityListener implements ActionListener
 			}
 		} else {
 			EntityController entity = new EntityController(_operationController, _databaseManager, name, type, informations, color);
-			entity.addObserver(_mapPanel.getGlobalPanel());
-			entity.notifyObservers();
 			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addEntityPanel);
 			dialog.dispose();
 		}

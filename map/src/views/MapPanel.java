@@ -55,12 +55,12 @@ public class MapPanel extends JPanel implements Observer {
 	}
 
 	public List<Location> getLocations() {return _locations;}
-
+	
 	public MapPanelMouseListener getMapListener() {return _mapListener;}
-
+	
 	public int get_x() {return _x;}
 	public int get_y() {return _y;}
-
+	
 	public void moveMap(int x, int y) {
 		if(_map.getWidth() > getWidth()) {
 			if(x > 0 && x + _x > 0) {x = -_x;}
@@ -81,7 +81,7 @@ public class MapPanel extends JPanel implements Observer {
 		}
 		repaint();
 	}
-
+	
 	@Override 
 	public void paintComponent(Graphics g)
 	{
@@ -164,6 +164,7 @@ public class MapPanel extends JPanel implements Observer {
 
 	public synchronized void update()
 	{
+		System.out.println("TROLOLOLOLO");
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();

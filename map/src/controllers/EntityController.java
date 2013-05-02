@@ -16,7 +16,7 @@ import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
-public class EntityController implements Subject {
+public class EntityController {
 	private OperationController _operation;	
 	private DatabaseManager _dbm;
 
@@ -193,14 +193,14 @@ public class EntityController implements Subject {
 		if(teamMember.joinEntity(this)){
 			_teamMemberList.add(teamMember);
 		}
-		notifyObservers();
+		_operation.notifyObservers();
 	}
 
 	public void removeTeamMember(TeamMemberController teamMember){
 		if(teamMember.leaveEntity()){
 			_teamMemberList.remove(teamMember);
 		}
-		notifyObservers();
+		_operation.notifyObservers();
 	}
 
 	public List<TeamMemberController> getTeamMemberList(){
@@ -388,23 +388,6 @@ public class EntityController implements Subject {
 			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
-		}
-	}
-	
-	@Override
-	public void addObserver(Observer observer) {
-		_observers.add(observer);
-	}
-
-	@Override
-	public void removeObserver(Observer observer) {
-		_observers.remove(observer);
-	}
-
-	@Override
-	public void notifyObservers() {
-		for(Observer oneObserver : _observers) {
-			oneObserver.update();
 		}
 	}
 

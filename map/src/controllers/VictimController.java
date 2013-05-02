@@ -8,16 +8,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import observer.Observer;
-import observer.Subject;
-import views.MessagePanel;
 import views.CustomDialog;
+import views.MessagePanel;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
-public class VictimController implements Subject {
+public class VictimController {
 
 	private Integer _id;
 	private OperationController _operation;
@@ -37,8 +36,7 @@ public class VictimController implements Subject {
 	private String _soin;
 	private String _idAnonymat; // champ d'anonymisation d'une victime
 	private EntityController _entity;
-
-	private List<Observer> _listObservers = new ArrayList<Observer>();
+	
 	/**
 	 * Constructor for creation of a victim which is not in the database
 	 * @param operation The current operation
@@ -361,25 +359,6 @@ public class VictimController implements Subject {
 	public void setSoin(String soin) {
 		_soin = soin;
 	}
-
-
-	@Override
-	public void addObserver(Observer observer) {
-
-	}
-
-	@Override
-	public void removeObserver(Observer observer) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void notifyObservers() {
-		// TODO Auto-generated method stub
-
-	}
-
 
 	public void updateFields() {
 		try{

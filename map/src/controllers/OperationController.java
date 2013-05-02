@@ -18,8 +18,7 @@ import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 
 
-public class OperationController implements Subject
-{
+public class OperationController implements Subject {
 
 	private static int _idOperation;
 	private static int _idOperateur;
@@ -99,7 +98,6 @@ public class OperationController implements Subject
 
 						EntityController entite = new EntityController(this, _dbm, id, statut_id, position_id, date, nom, type, infos, color);
 						_entityList.add(entite);
-						entite.addObserver(_globalPanel);
 						
 						_timerTask.set_lastEntityId(id);
 					}

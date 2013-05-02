@@ -6,16 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import observer.Observer;
-import observer.Subject;
-import views.MessagePanel;
 import views.CustomDialog;
+import views.MessagePanel;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
 import database.SQLQueryUpdate;
 
-public class LocationController implements Subject {
+public class LocationController {
 	private OperationController _operation;
 	private DatabaseManager _dbm;
 
@@ -26,8 +25,6 @@ public class LocationController implements Subject {
 	private float  _coordY;
 	private String _name;
 	private String _description;
-
-	private List<Observer> _observers = new ArrayList<Observer>();
 
 	private List<EntityController> _entityList = new ArrayList<EntityController>();
 
@@ -97,8 +94,6 @@ public class LocationController implements Subject {
 
 		if(_name.compareTo("PCM (défaut)") != 0 )
 			operation.getMap(_idMap).addLocation(this);
-
-		_observers = new ArrayList<Observer>();
 	}
 
 
@@ -201,25 +196,6 @@ public class LocationController implements Subject {
 		}
 
 		return result;
-	}
-
-	@Override
-	public void addObserver(Observer observer) {
-		_observers.add(observer);
-	}
-
-
-	@Override
-	public void removeObserver(Observer observer) {
-		_observers.remove(observer);
-	}
-
-
-	@Override
-	public void notifyObservers() {
-		for(Observer oneObserver : _observers) {
-			oneObserver.update();
-		}
 	}
 
 	public void updateFields() {
