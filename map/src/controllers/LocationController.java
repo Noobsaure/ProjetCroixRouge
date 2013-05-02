@@ -49,7 +49,7 @@ public class LocationController {
 					"de base pour toutes les entités. Veuillez rééssayer en donnant un nom différent.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return;
-		}else if(_operation.locationNameAlreadyExist(name)){
+		}else if(_operation.locationNameAlreadyExist(name) != -1){
 			MessagePanel errorPanel = new MessagePanel("Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée. Veuillez recommencer en utilisant un nom différent.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return;
@@ -130,7 +130,7 @@ public class LocationController {
 	}
 
 	public void setName(String name){
-		if(_operation.locationNameAlreadyExist(name)){
+		if( (_operation.locationNameAlreadyExist(name) != _id) && (_operation.locationNameAlreadyExist(name) != -1) ){
 			MessagePanel errorPanel = new MessagePanel("Mise à jour localisation impossible" ,"Nom de la localisation déjà utilisé pour cette opération.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return;
@@ -154,7 +154,7 @@ public class LocationController {
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-3', "+_operation.getId()+",NULL, NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-3', "+_operation.getId()+",NULL, NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
@@ -193,7 +193,6 @@ public class LocationController {
 
 	public String show() {
 		String result;
-		System.out.println("ON va la... et name = "+_name);
 		result = _name.toUpperCase();
 		result += "Equipes presentes: \n";
 

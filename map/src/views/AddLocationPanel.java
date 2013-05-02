@@ -39,7 +39,7 @@ public class AddLocationPanel extends CustomPanelImpl {
 	private DatabaseManager _dbm;
 	
 	private int _x, _y;
-	private RoundedPanel _internalPanel;
+	private PopUpPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
 	private JTextArea _informationsTextArea;
@@ -77,7 +77,7 @@ public class AddLocationPanel extends CustomPanelImpl {
 		setSize(new Dimension(_parent.getWidth(), _parent.getHeight()));
 		setOpaque(false);
 		
-		_internalPanel = new RoundedPanel();
+		_internalPanel = new PopUpPanel();
 		_internalPanel.setSize(DIMENSION_PANEL);
 		add(_internalPanel);
 		

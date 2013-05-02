@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,31 +22,31 @@ import controllers.MapController;
 import controllers.OperationController;
 
 
-public class MapPanel extends JPanel implements Observer {
+public class MapPanel extends JPanel implements Observer, ComponentListener {
 	private static final long serialVersionUID = 1L;
-	
+
 	private OperationController _operation;
-	
+
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
 	private SubMenuPanel _openedPanel;
-	
+
 	private int _x = 0;
 	private int _y = 0;
 	private MapPanelMouseListener _mapListener;
-	
+
 	private List<Location> _locations = new ArrayList<Location>();
-	
+
 	public void setOperation(OperationController operation) {
 		_operation = operation;
 	}
-	
+
 	public MapPanel(GlobalPanel globalPanel)
 	{
 		super(true);
 		setLayout(null);
 		_globalPanel = globalPanel;
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.BLACK);
 	}
 
 	public void addMapPanelListener()
@@ -55,12 +57,12 @@ public class MapPanel extends JPanel implements Observer {
 	}
 
 	public List<Location> getLocations() {return _locations;}
-	
+
 	public MapPanelMouseListener getMapListener() {return _mapListener;}
-	
+
 	public int get_x() {return _x;}
 	public int get_y() {return _y;}
-	
+
 	public void moveMap(int x, int y) {
 		if(_map.getWidth() > getWidth()) {
 			if(x > 0 && x + _x > 0) {x = -_x;}
@@ -81,7 +83,7 @@ public class MapPanel extends JPanel implements Observer {
 		}
 		repaint();
 	}
-	
+
 	@Override 
 	public void paintComponent(Graphics g)
 	{
@@ -124,16 +126,25 @@ public class MapPanel extends JPanel implements Observer {
 			_locations.add(location);
 			add(locPanel);
 			add(location);
+			setComponentZOrder(locPanel, 0);
 		}
 		for(Location oneLoc : _locations) {
 			oneLoc.update();
 		}
 	}
-	
-	public void resetLocationOffsets() {
+
+	public void resetPosition() {
 		for(Location oneLoc : _locations) {
 			oneLoc.setOffsetX(0);
 			oneLoc.setOffsetY(0);
+			_x = 0;
+			_y = 0;
+		}
+	}
+
+	public void setLocationsMapXY(int x, int y) {
+		for(Location oneLoc : _locations) {
+			oneLoc.setMapXY(x,y);
 		}
 	}
 
@@ -143,7 +154,7 @@ public class MapPanel extends JPanel implements Observer {
 			oneLoc.setHighlight(false);
 		}
 	}
-	
+
 	public void openPanel(SubMenuPanel panel) {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
@@ -154,7 +165,7 @@ public class MapPanel extends JPanel implements Observer {
 			add(_openedPanel);
 		}
 	}
-	
+
 	public void closePanel() {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
@@ -164,7 +175,6 @@ public class MapPanel extends JPanel implements Observer {
 
 	public synchronized void update()
 	{
-		System.out.println("TROLOLOLOLO");
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
@@ -186,14 +196,63 @@ public class MapPanel extends JPanel implements Observer {
 			} else if(image.getIconWidth() > width) {
 				ratio = width/image.getIconWidth();
 			}
-
+			
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
+			
+			if(_map.getWidth() < getWidth()) {
+				_x = (int) ((getWidth() - _map.getWidth()) / 2);
+			} else {
+				_x = Math.min(_x, 0);
+			}
+			if(_map.getHeight() < getHeight()) {
+				_y = (int) ((getHeight() - _map.getHeight()) / 2);
+			} else {
+				_y = Math.min(_y, 0);
+			}
+			setLocationsMapXY(_x, _y);
 		} else {
 			_map = null;
 		}
 		updateLocations();
 		repaint();
 		revalidate();
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		if(_map != null) {
+			if(_map.getWidth() < getWidth()) {
+				_x = (int) ((getWidth() - _map.getWidth()) / 2);
+			} else {
+				_x = Math.min(_x, 0);
+			}
+			if(_map.getHeight() < getHeight()) {
+				_y = (int) ((getHeight() - _map.getHeight()) / 2);
+			} else {
+				_y = Math.min(_y, 0);
+			}
+			setLocationsMapXY(_x, _y);
+			repaint();
+			revalidate();
+		}
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }

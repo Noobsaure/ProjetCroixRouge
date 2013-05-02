@@ -46,7 +46,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	
-	private RoundedPanel _mainPanel;
+	private PopUpPanel _mainPanel;
 	private JLabel _title;
 	private JList _motifsList;
 	private JTextField _detailsTextArea;
@@ -85,7 +85,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 		/**************************************************************\
 		 * 						Panneau principal
 		\**************************************************************/
-		_mainPanel = new RoundedPanel();
+		_mainPanel = new PopUpPanel();
 		_mainPanel.setSize(DIMENSION_PANEL);
 		add(_mainPanel);
 		/**************************************************************/
@@ -333,7 +333,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 	}
 		
 
-	public RoundedPanel getMainPanel()
+	public PopUpPanel getMainPanel()
 	{
 		return _mainPanel;
 	}

@@ -8,9 +8,11 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import views.CustomDialog;
 import views.GlobalPanel;
 import views.Location;
 import views.MapPanel;
+import views.MessagePanel;
 
 public class MapPanelMouseListener implements MouseListener, MouseMotionListener {
 
@@ -69,14 +71,24 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		int y = e.getY();
 		if(_addingLocation) {
 			if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
-				_mapPanel.showAddLocationPanel(x, y);
-				setAddingLocation(false);
+				if(!isCoordWithinMap(x, y)) {
+					MessagePanel errorPanel = new MessagePanel("Erreur" ,"Point en dehors de la carte.");
+					new CustomDialog(errorPanel, _globalPanel);
+				} else {
+					_mapPanel.showAddLocationPanel(x - _mapPanel.get_x(), y - _mapPanel.get_y());
+					setAddingLocation(false);
+				}
 			} else {
-				setAddingLocation(false);		
+				setAddingLocation(false);
 			}
 		}
 		else if(e.getButton() == MouseEvent.BUTTON3) {
-			displayJPopMenu(x,y);
+			if(!isCoordWithinMap(x, y)) {
+				MessagePanel errorPanel = new MessagePanel("Erreur" ,"Point en dehors de la carte.");
+				new CustomDialog(errorPanel, _globalPanel);
+			} else {
+				displayJPopMenu(x,y);
+			}
 		}
 	}
 
@@ -99,7 +111,7 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		for(Location loc : _mapPanel.getLocations()) {
 			int dx = Math.abs(x - loc.get_x());
 			int dy = Math.abs(y - loc.get_y());
-			if(dx < 32 && dy < 32) {
+			if(dx < Location._iconLoc.getIconWidth() && dy < Location._iconLoc.getIconHeight()) {
 				res = false;
 				break;
 			}
@@ -112,7 +124,7 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		JMenuItem launch = new JMenuItem("Ajouter une localisation");
 		launch.setEnabled(isCoordAwayFromLocs(x,y));
 		jpm.add(launch);
-		launch.addActionListener(new NewLocationListener(_globalPanel,x,y));
+		launch.addActionListener(new NewLocationListener(_globalPanel,x - _mapPanel.get_x(),y - _mapPanel.get_y()));
 		jpm.show(_mapPanel, x, y);
 	}
 

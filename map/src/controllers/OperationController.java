@@ -70,6 +70,9 @@ public class OperationController implements Subject {
 				TeamMemberController equipier = new TeamMemberController(this, _dbm, id, name, firstName, phoneNumber, othersInformations, entityId);
 				System.out.println("---->Chargement equipier :"+name+" avec l'id: "+id+" "+entityId);
 				_teamMemberList.add(equipier);
+				if(_timerTask == null)
+					System.out.println("TimerTask null ?");
+				System.out.println("PRINT POUR LE RI");
 				_timerTask.set_lastEntityId(id);
 			}
 			result.getStatement().close();
@@ -315,6 +318,7 @@ public class OperationController implements Subject {
 
 	public void addEntite(EntityController entity) {
 		_entityList.add(entity);
+		notifyObservers();
 	}
 
 	public void addTeamMember(TeamMemberController equipier) {
@@ -517,16 +521,16 @@ public class OperationController implements Subject {
 		_mapList.remove(mapController);
 	}
 
-	public boolean locationNameAlreadyExist(String name) {
+	public int locationNameAlreadyExist(String name) {
 		ResultSet result;
-
+		
 		try{
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("nom", "Localisation", "operation_id='"+_idOperation+"'"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`", "Localisation", "operation_id='"+_idOperation+"'"));
 
 			try{
 				while(result.next()){
 					if(name.compareTo(result.getString("nom")) == 0){
-						return true;
+						return result.getInt("id");
 					}
 				}
 				result.getStatement().close();
@@ -539,35 +543,35 @@ public class OperationController implements Subject {
 			new CustomDialog(errorPanel, _globalPanel);
 		}
 		
-		return false;
+		return -1;
 	}
 	
-	public boolean anonymatAlreadyExist(String anonymat) {
+	public int anonymatAlreadyExist(String anonymat) {
 		ResultSet result;
 		
 		try{
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("surnom", "Victime", "operation_id='"+_idOperation+"'"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`surnom`", "Victime", "operation_id='"+_idOperation+"'"));
 			
 			try{
 				while(result.next()){
 					String surnom = result.getString("surnom");
 					if( (surnom != null) && (anonymat.compareTo(surnom) == 0)){
-						return true;
+						return result.getInt("id");
 					}
 				}
 				result.getStatement().close();
 			}catch(SQLException e){	
-				MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification numéro anonymat","WHILE Une erreur est survenue lors de la vérification de l'unicité du numéro d'anonymat.");
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification numéro anonymat","Une erreur est survenue lors de la vérification de l'unicité du numéro d'anonymat.");
 				new CustomDialog(errorPanel, _globalPanel);
-				return false;
+				return -1;
 			}
 		}catch(MalformedQueryException e1) { 
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification numéro anonymat" ,"TRY Une erreur est survenue lors de la vérification de l'unicité du numéro d'anonymat.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification numéro anonymat" ,"Une erreur est survenue lors de la vérification de l'unicité du numéro d'anonymat.");
 			new CustomDialog(errorPanel, _globalPanel);
-			return false;
+			return -1;
 		}
 		
-		return false;
+		return -1;
 	}
 
 	public int getAnonymousNumber(){
@@ -575,11 +579,11 @@ public class OperationController implements Subject {
 		int idAnonymat= 1;
 
 		try{
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Victime", "operation_id='"+_idOperation+"' ORDER BY id DESC"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Victime", "operation_id='"+_idOperation+"' ORDER BY id DESC LIMIT 1 "));
 
 			try{
 				while(result.next()){
-					idAnonymat = result.getInt("id");
+					idAnonymat = result.getInt("id") +1;
 				}
 				result.getStatement().close();
 			}catch(SQLException e){	
@@ -589,6 +593,10 @@ public class OperationController implements Subject {
 		}catch(MalformedQueryException e1) { 
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement Entité" ,"Une erreur est survenue lors de la génération du numéro d'anonymat.");
 			new CustomDialog(errorPanel, _globalPanel);
+		}
+		
+		while(anonymatAlreadyExist(String.valueOf(idAnonymat)) != -1){
+			idAnonymat++;
 		}
 		
 		return idAnonymat;

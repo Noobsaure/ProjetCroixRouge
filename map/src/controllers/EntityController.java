@@ -342,7 +342,7 @@ public class EntityController {
 		String message =  "'"+_name+"' a quitté '"+_operation.getLocation(_lastPosCurrentId).getName()+"' pour '"+_operation.getLocation(_posCurrentId).getName()+"'.";
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -368,7 +368,7 @@ public class EntityController {
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -383,7 +383,7 @@ public class EntityController {
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-1',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
