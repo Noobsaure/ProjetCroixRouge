@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.dnd.DropTarget;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -19,7 +20,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import observer.Observer;
 import views.buttons.AddEntityButton;
 import views.listeners.MenuEntitiesPanelDropTargetListener;
 import views.listeners.MenuMouseListener;
@@ -36,8 +36,8 @@ public class MenuEntitiesPanel extends JPanel {
 	private JPanel _panelUnavailable;
 	private JPanel _panelDropHere;
 
-	private List<EntityPanel> _availableEntityPanels;
-	private List<EntityPanel> _unavailableEntityPanels;
+	private List<EntityPanel> _availableEntityPanelsList;
+	private List<EntityPanel> _unavailableEntityPanelsList;
 
 	private MapPanel _mapPanel;
 
@@ -51,8 +51,8 @@ public class MenuEntitiesPanel extends JPanel {
 		_globalPanel = globalPanel;
 		_mapPanel = _globalPanel.getMapPanel();
 		
-		_availableEntityPanels = new ArrayList<EntityPanel>();
-		_unavailableEntityPanels = new ArrayList<EntityPanel>();
+		_availableEntityPanelsList = new ArrayList<EntityPanel>();
+		_unavailableEntityPanelsList = new ArrayList<EntityPanel>();
 		
 		_panelAvailable = new JPanel();
 		_panelAvailable.setLayout(new BoxLayout(_panelAvailable, BoxLayout.Y_AXIS));
@@ -109,21 +109,29 @@ public class MenuEntitiesPanel extends JPanel {
 		_panelAvailable.add(panelAddButton);
 		
 		List<EntityController> listEntities = _operation.getEntityList();
-		for(EntityController oneEntity : listEntities) {
+
+		Collections.sort(listEntities, new EntityComparator());
+		
+		for(EntityController oneEntity : listEntities)
+		{
 			if(oneEntity.isAvailable()) {
 				EntityPanel panel = new EntityPanel(this, oneEntity);
 				_panelAvailable.add(panel);
-				_availableEntityPanels.add(panel);
-			} else {
+				_availableEntityPanelsList.add(panel);
+			}
+			else
+			{
 				EntityPanel panel = new EntityPanel(this, oneEntity);
 				_panelUnavailable.add(panel);
-				_unavailableEntityPanels.add(panel);				
+				_unavailableEntityPanelsList.add(panel);				
 			}
 		}
+
 		setOpaque(false);	
 	}
 	
-	public void addMenuEntitiesPanelListener() {
+	public void addMenuEntitiesPanelListener()
+	{
 		_menuListener = new MenuMouseListener(_mapPanel);
 		addMouseListener(_menuListener);
 	}
@@ -131,71 +139,107 @@ public class MenuEntitiesPanel extends JPanel {
 	public void setListEntitiesContent()
 	{
 		List<EntityController> listEntities = _operation.getEntityList();
-		List<EntityController> availableEntities = new ArrayList<EntityController>();
-		List<EntityController> unavailableEntities = new ArrayList<EntityController>();
+		List<EntityController> availableEntitiesList = new ArrayList<EntityController>();
+		List<EntityController> unavailableEntitiesList = new ArrayList<EntityController>();
 		
-		for(EntityController oneEntity : listEntities) {
-			if(oneEntity.isAvailable()) {
-				availableEntities.add(oneEntity);
-			} else {
-				unavailableEntities.add(oneEntity);				
-			}
+		Collections.sort(listEntities, new EntityComparator());
+
+		for(EntityController oneEntity : listEntities)
+		{
+			if(oneEntity.isAvailable())
+				availableEntitiesList.add(oneEntity);
+			else
+				unavailableEntitiesList.add(oneEntity);				
 		}
 		
-		List<EntityPanel> entityPanelsToDelete = new ArrayList<EntityPanel>();
-		for(EntityPanel oneEntityPanel : _availableEntityPanels) {
-			if(!availableEntities.contains(oneEntityPanel.getEntityController())) {
-				_panelAvailable.remove(oneEntityPanel);
-				entityPanelsToDelete.add(oneEntityPanel);
-			} else {
-				availableEntities.remove(oneEntityPanel.getEntityController());
-			}
-		}
-		_availableEntityPanels.removeAll(entityPanelsToDelete);
-		
-		for(EntityController oneEntity : availableEntities) {
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelAvailable.add(panel);
-			_availableEntityPanels.add(panel);
+		int i;
+		boolean differenceFound = false;
+		for(i = 0; (i < _availableEntityPanelsList.size()) && !differenceFound; i++)
+		{
+			EntityPanel entityPanel = _availableEntityPanelsList.get(i);
+			EntityController entityController = availableEntitiesList.get(i);
+			
+			if(entityPanel.getEntityController() != entityController)
+				differenceFound = true;
 		}
 		
-		entityPanelsToDelete.clear();
-		for(EntityPanel oneEntityPanel : _unavailableEntityPanels) {
-			if(!unavailableEntities.contains(oneEntityPanel.getEntityController())) {
-				_panelUnavailable.remove(oneEntityPanel);
-				entityPanelsToDelete.add(oneEntityPanel);
-			} else {
-				unavailableEntities.remove(oneEntityPanel.getEntityController());
-			}
-		}
-		_unavailableEntityPanels.removeAll(entityPanelsToDelete);
+		int nbComponent = _panelAvailable.getComponentCount();
+		for(int j = i; j < nbComponent; j++)
+			_panelAvailable.remove(i);
 		
-		for(EntityController oneEntity : unavailableEntities) {
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelUnavailable.add(panel);
-			_unavailableEntityPanels.add(panel);
+		for(int j = i; j < availableEntitiesList.size(); j++)
+		{
+			System.out.println("Boucle 2");
+			_panelAvailable.add(new EntityPanel(this, availableEntitiesList.get(j)));
 		}
 		
-		for(EntityPanel onePanel : _availableEntityPanels) {
+		
+//		List<EntityPanel> entityPanelsToDelete = new ArrayList<EntityPanel>();
+//		for(EntityPanel oneEntityPanel : _availableEntityPanelsList)
+//		{
+//			if(!availableEntitiesList.contains(oneEntityPanel.getEntityController()))
+//			{
+//				_panelAvailable.remove(oneEntityPanel);
+//				entityPanelsToDelete.add(oneEntityPanel);
+//			}
+//			else
+//				availableEntitiesList.remove(oneEntityPanel.getEntityController());
+//		}
+//		_availableEntityPanelsList.removeAll(entityPanelsToDelete);
+//		
+//		
+//		for(EntityController oneEntity : availableEntitiesList)
+//		{
+//			EntityPanel panel = new EntityPanel(this, oneEntity);
+//			_panelAvailable.add(panel);
+//			_availableEntityPanelsList.add(panel);
+//		}
+//		
+//		entityPanelsToDelete.clear();
+//		for(EntityPanel oneEntityPanel : _unavailableEntityPanelsList)
+//		{
+//			if(!unavailableEntitiesList.contains(oneEntityPanel.getEntityController()))
+//			{
+//				_panelUnavailable.remove(oneEntityPanel);
+//				entityPanelsToDelete.add(oneEntityPanel);
+//			}
+//			else
+//				unavailableEntitiesList.remove(oneEntityPanel.getEntityController());
+//		}
+//		_unavailableEntityPanelsList.removeAll(entityPanelsToDelete);
+//		
+//		for(EntityController oneEntity : unavailableEntitiesList)
+//		{
+//			EntityPanel panel = new EntityPanel(this, oneEntity);
+//			_panelUnavailable.add(panel);
+//			_unavailableEntityPanelsList.add(panel);
+//		}
+		
+		for(EntityPanel onePanel : _availableEntityPanelsList)
 			onePanel.update();
-		}
 		
-		for(EntityPanel onePanel : _unavailableEntityPanels) {
+		for(EntityPanel onePanel : _unavailableEntityPanelsList)
 			onePanel.update();
-		}
 	}
 	
-	public void addDropTarget() {
+	
+	public void addDropTarget()
+	{
 		_panelDropHere.setDropTarget(new DropTarget(this, new MenuEntitiesPanelDropTargetListener(_globalPanel)));
 	}
 	
-	public GlobalPanel getGlobalPanel() {return _globalPanel;}
+	public GlobalPanel getGlobalPanel()
+	{
+		return _globalPanel;
+	}
 	
 	public OperationController getOperationController()
 	{
 		return _operation;
 	}
 
+	
+	
 	public void update()
 	{
 		setListEntitiesContent();	
