@@ -19,7 +19,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import observer.Observer;
 import views.buttons.AddEntityButton;
 import views.listeners.MenuEntitiesPanelDropTargetListener;
 import views.listeners.MenuMouseListener;

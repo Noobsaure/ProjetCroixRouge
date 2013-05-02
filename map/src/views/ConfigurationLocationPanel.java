@@ -39,7 +39,7 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 	private MapPanel _mapPanel;
 	
 	private LocationController _locationController;
-	private RoundedPanel _internalPanel;
+	private PopUpPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
 	private JTextArea _informationsTextArea;	
@@ -63,7 +63,7 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 		
-		_internalPanel = new RoundedPanel();
+		_internalPanel = new PopUpPanel();
 		_internalPanel.setSize(DIMENSION_PANEL);
 		add(_internalPanel);
 		

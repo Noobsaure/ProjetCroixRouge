@@ -65,9 +65,9 @@ public class ConfirmAddEntityListener implements ActionListener
 				System.out.println("Informations null");	
 			}
 		} else {
-			EntityController entity = new EntityController(_operationController, _databaseManager, name, type, informations, color);
 			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addEntityPanel);
 			dialog.dispose();
+			new EntityController(_operationController, _databaseManager, name, type, informations, color);
 		}
 	}
 }

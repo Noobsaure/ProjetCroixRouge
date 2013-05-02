@@ -40,7 +40,7 @@ public class AddEntityPanel extends CustomPanelImpl {
 	private OperationController _operationController;
 	private DatabaseManager _dbm;
 	
-	private RoundedPanel _internalPanel;
+	private PopUpPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
 	private JComboBox<String> _typeComboBox;
@@ -74,7 +74,7 @@ public class AddEntityPanel extends CustomPanelImpl {
 		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 		
-		_internalPanel = new RoundedPanel();
+		_internalPanel = new PopUpPanel();
 		_internalPanel.setSize(DIMENSION_PANEL);
 		add(_internalPanel, 0);
 		

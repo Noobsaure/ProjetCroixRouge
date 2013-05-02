@@ -49,6 +49,7 @@ public class SubMenuMapToggleButtonListener implements ActionListener {
 		newMap.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
 		_mapPanel.setMap(newMap);
 		_operationController.setCurrentMap(_mapController);
+		_mapPanel.resetPosition();
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
 	}

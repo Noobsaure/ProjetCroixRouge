@@ -8,9 +8,11 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import views.CustomDialog;
 import views.GlobalPanel;
 import views.Location;
 import views.MapPanel;
+import views.MessagePanel;
 
 public class MapPanelMouseListener implements MouseListener, MouseMotionListener {
 
@@ -69,14 +71,24 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		int y = e.getY();
 		if(_addingLocation) {
 			if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
-				_mapPanel.showAddLocationPanel(x, y);
-				setAddingLocation(false);
+				if(!isCoordWithinMap(x, y)) {
+					MessagePanel errorPanel = new MessagePanel("Erreur" ,"Point en dehors de la carte.");
+					new CustomDialog(errorPanel, _globalPanel);
+				} else {
+					_mapPanel.showAddLocationPanel(x, y);
+					setAddingLocation(false);
+				}
 			} else {
-				setAddingLocation(false);		
+				setAddingLocation(false);
 			}
 		}
 		else if(e.getButton() == MouseEvent.BUTTON3) {
-			displayJPopMenu(x,y);
+			if(!isCoordWithinMap(x, y)) {
+				MessagePanel errorPanel = new MessagePanel("Erreur" ,"Point en dehors de la carte.");
+				new CustomDialog(errorPanel, _globalPanel);
+			} else {
+				displayJPopMenu(x,y);
+			}
 		}
 	}
 

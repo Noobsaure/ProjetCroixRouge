@@ -26,6 +26,7 @@ public class MessagePanel extends CustomPanelImpl
 	private String _title;
 	private JPanel _buttonPanel;
 	private CustomButton _okButton;
+	private PopUpPanel _internalPanel;
 	
 	public MessagePanel(String title, String message) {
 		_title = title;
@@ -41,17 +42,19 @@ public class MessagePanel extends CustomPanelImpl
 	
 	public void init()
 	{
+		setLayout(new BorderLayout());
 		setOpaque(false);
 		
-		RoundedPanel popupPanel = new RoundedPanel();
 		JLabel messageLabel = new JLabel(_message);
-		
-		// Dimensions de la popup
 		FontMetrics metrics = getFontMetrics(messageLabel.getFont());
 		int width = metrics.stringWidth(_message) + 70;
 		int height = metrics.getHeight() + 120;
-		setSize(new Dimension(width, height));
-		popupPanel.setLayout(new BorderLayout(0, 0));
+
+		_internalPanel = new PopUpPanel();
+		_internalPanel.setSize(width,height);
+		add(_internalPanel, BorderLayout.CENTER);
+		setPreferredSize(_internalPanel.getSize());
+		_internalPanel.setLayout(new BorderLayout());
 		
 		String[] listSubStrings = new String[_message.length()];
 		
@@ -77,13 +80,13 @@ public class MessagePanel extends CustomPanelImpl
 		JLabel titleLabel = new JLabel(_title);
 		titleLabel.setBorder(new EmptyBorder(5, 0, 8, 0));
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		popupPanel.add(titleLabel, BorderLayout.NORTH);
+		_internalPanel.add(titleLabel, BorderLayout.NORTH);
 		
 		// Icone
 		JLabel iconLabel = new JLabel();
 		iconLabel.setBorder(new EmptyBorder(0, 10, 0, 10));
 		iconLabel.setIcon(new ImageIcon(MessagePanel.class.getResource("/ui/error.png")));
-		popupPanel.add(iconLabel, BorderLayout.WEST);
+		_internalPanel.add(iconLabel, BorderLayout.WEST);
 		
 		// Message
 		JPanel panel = new JPanel();
@@ -92,19 +95,19 @@ public class MessagePanel extends CustomPanelImpl
 		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 		for(int i = 0; i < listSubStrings.length; i++)
 			panel.add(new JLabel(listSubStrings[i]));
-		popupPanel.add(panel, BorderLayout.CENTER);
+		_internalPanel.add(panel, BorderLayout.CENTER);
 		
 		// Bouton Ok
 		_buttonPanel = new JPanel();
 		_buttonPanel.setBorder(new EmptyBorder(0, 0, 10, 0));
 		_buttonPanel.setOpaque(false);
-		popupPanel.add(_buttonPanel, BorderLayout.SOUTH);
+		_internalPanel.add(_buttonPanel, BorderLayout.SOUTH);
 		
 		_okButton = new CustomButton("Ok");
 		_okButton.addActionListener(new MessagePanelButtonListener(this));
 		_buttonPanel.add(_okButton);
 		
-		add(popupPanel);
+		add(_internalPanel);
 	}	
 	
 	public CustomButton getOkButton()
