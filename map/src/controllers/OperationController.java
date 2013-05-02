@@ -583,7 +583,7 @@ public class OperationController implements Subject {
 
 			try{
 				while(result.next()){
-					idAnonymat = result.getInt("id");
+					idAnonymat = result.getInt("id") +1;
 				}
 				result.getStatement().close();
 			}catch(SQLException e){	
@@ -595,7 +595,11 @@ public class OperationController implements Subject {
 			new CustomDialog(errorPanel, _globalPanel);
 		}
 		
-		return (idAnonymat+1);
+		while(anonymatAlreadyExist(String.valueOf(idAnonymat)) != -1){
+			idAnonymat++;
+		}
+		
+		return idAnonymat;
 	}
 	
 	public void setTimerTask(RefreshTimerTask timerTask){
