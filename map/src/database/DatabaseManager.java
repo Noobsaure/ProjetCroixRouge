@@ -202,6 +202,7 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
+			displayError(e);
 			MessagePanel errorPanel = new MessagePanel("La lecture de la base de données à échouée.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
@@ -231,6 +232,7 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
+			displayError(e);
 			MessagePanel errorPanel = new MessagePanel("La mise à jour de la base de données à échouée.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
@@ -265,6 +267,7 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
+			displayError(e);
 			MessagePanel errorPanel = new MessagePanel("La mise à jour de la base de données à échouée.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
@@ -316,6 +319,7 @@ public class DatabaseManager
 	    }
 	    catch(Exception e)
 	    {
+	    	displayError(e);
 	    	MessagePanel errorPanel = new MessagePanel("Erreur interne - Insertion carte '"+name+"'", "Une erreur interne est survenue lors de l'ajout de la carte'"+name+"'. Veuillez recommencer s'il vous plait.");
 	    	new CustomDialog(errorPanel, _operation.getGlobalPanel());
 	    }

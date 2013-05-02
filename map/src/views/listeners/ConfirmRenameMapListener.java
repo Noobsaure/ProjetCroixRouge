@@ -42,7 +42,11 @@ public class ConfirmRenameMapListener implements KeyListener
 			case KeyEvent.VK_ENTER:
 				JTextField textField = (JTextField)_labelPanel.getComponent(0);
 				if((textField != null) && !textField.equals(""))
-					replaceNewLabel(textField.getText());
+				{
+					String newName = textField.getText();
+					replaceNewLabel(newName);
+					_mapController.setName(newName);
+				}
 				break;
 		}
 	}
