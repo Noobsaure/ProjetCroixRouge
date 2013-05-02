@@ -20,7 +20,6 @@ import observer.Observer;
 import views.listeners.AddVictimButtonListener;
 import views.listeners.EditVictimButtonListener;
 import views.listeners.OkVictimButtonListener;
-import views.listeners.SwitchMapButtonListener;
 import controllers.OperationController;
 import controllers.VictimController;
 import database.DatabaseManager;
@@ -40,6 +39,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 	private DatabaseManager _databaseManager;
 	private ButtonGroup _group;
 	private List<VictimController> _listVictimsName;
+	private List<ThumbnailVictimPanel> _thumbnailsList;
 	
 	public SubMenuVictimPanel(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager)
 	{
@@ -61,60 +61,56 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 		_scrollPane.setViewportBorder(null);
 		add(_scrollPane, BorderLayout.CENTER);
 
-		addAddButtonListener(new AddVictimButtonListener(mapPanel, this));
-		addOkButtonListener(new  OkVictimButtonListener(mapPanel, this));
+		addAddButtonListener(new AddVictimButtonListener(mapPanel));
+		addOkButtonListener(new OkVictimButtonListener(mapPanel, this));
 		
 		_operationController.addObserver(this);
 	}
 
 	@Override
-	public void displayThumbnail()
+	public synchronized void displayThumbnail()
 	{		
-		 _listVictimsName = _operationController.getVictimList();
+		_listVictimsName = _operationController.getVictimList();
+		_thumbnailsList = new ArrayList<ThumbnailVictimPanel>(); 
 		_group = new ButtonGroup();
 		
 		for(VictimController victim : _listVictimsName){
-			int id = victim.getId();
-
-			JLabel nameLabel = new JLabel("(" + victim.getIdAnonymat() + ") " + victim.getPrenom() + " " + victim.getNom());
-			nameLabel.setForeground(Color.WHITE);
-			JPanel panelLabel = new JPanel();
-			panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-			panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-			panelLabel.setBackground(COLOR_BACKGROUND);
-			panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-			panelLabel.add(nameLabel);
-			panelLabel.addMouseListener(new EditVictimButtonListener(_mapPanel, this, panelLabel, victim));
-			_thumbnailsPanel.add(panelLabel);
+			ThumbnailVictimPanel victimThumbnail = new ThumbnailVictimPanel(_mapPanel, this, victim);
+			_thumbnailsPanel.add(victimThumbnail);
+			_thumbnailsList.add(victimThumbnail);
 		}
 	}
 
+	public void setListVictimsContent()
+	{
+		List<VictimController> listVictims = _operationController.getVictimList();
+		
+		List<ThumbnailVictimPanel> victimThumbnailsToDelete = new ArrayList<ThumbnailVictimPanel>();
+		
+		for(ThumbnailVictimPanel oneVictimThumbnail : _thumbnailsList) {
+			if(!listVictims.contains(oneVictimThumbnail.getVictimController())) {
+				_thumbnailsPanel.remove(oneVictimThumbnail);
+				victimThumbnailsToDelete.add(oneVictimThumbnail);
+			} else {
+				listVictims.remove(oneVictimThumbnail.getVictimController());
+			}
+		}
+		_thumbnailsList.removeAll(victimThumbnailsToDelete);
+		
+		for(VictimController oneVictim : listVictims) {
+			ThumbnailVictimPanel victimThumbnail = new ThumbnailVictimPanel(_mapPanel, this, oneVictim);
+			_thumbnailsPanel.add(victimThumbnail);
+			_thumbnailsList.add(victimThumbnail);
+			System.out.println("TROLOLO");
+		}
+	}
+	
 	@Override
 	public synchronized void update()
 	{
-		List<VictimController> victimeList = new ArrayList<>();
+		setListVictimsContent();
+		revalidate();
+		repaint();
 		
-		victimeList = _operationController.getVictimList();
-		
-		for(VictimController victime : victimeList){
-			if(!_listVictimsName.contains(victime)){
-				victimeList.add(victime);
-				int id = victime.getId();
-
-				JLabel nameLabel = new JLabel("(" + victime.getIdAnonymat() + ") " + victime.getPrenom() + " " + victime.getNom());
-				nameLabel.setForeground(Color.WHITE);
-				JPanel panelLabel = new JPanel();
-				panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-				panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-				panelLabel.setBackground(COLOR_BACKGROUND);
-				panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-				panelLabel.add(nameLabel);
-				panelLabel.addMouseListener(new EditVictimButtonListener(_mapPanel, this, panelLabel, victime));
-				_thumbnailsPanel.add(panelLabel);
-			}
-		}
-		
-		_thumbnailsPanel.repaint();
-		_thumbnailsPanel.revalidate();
 	}
 }

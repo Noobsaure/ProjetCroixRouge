@@ -67,9 +67,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	private JPanel _listeEquipierPanel;
 	
 	private static List<TeamMemberController> listEquipiers;
-	private static List<LocationController> listLocation;
-
-
+	
 	JRadioButton _disponibleStatutRadioButton = new JRadioButton("Disponible");
 	JRadioButton _indisponibleStatutRadioButton = new JRadioButton("Indisponible");
 
@@ -162,8 +160,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		formPanel.add(typeLabel, "1, 4, left, default");
 
 		Vector<String> comboBoxItems = new Vector<String>();
-		listLocation=_operationController.getLocationList();
-	
+		
 		// On récupère la list des map
 		List<MapController> locatMap;
 		locatMap = _operationController.getMapList();

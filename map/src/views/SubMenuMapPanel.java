@@ -126,6 +126,9 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 	{
 		List<MapController> mapList = _operationController.getMapList();
 		
+		mapList.removeAll(_listMapsName);
+		
+		
 		for(MapController map : mapList){
 			if(!_listMapsName.contains(map)){
 				_listMapsName.add(map);
@@ -177,7 +180,8 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 				_map.put(toggleButton, map);
 			}
 		}
-		_thumbnailsPanel.repaint();
-		_thumbnailsPanel.revalidate();
-	}	
+		
+		repaint();
+		revalidate();
+	}
 }

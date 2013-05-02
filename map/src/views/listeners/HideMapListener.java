@@ -5,7 +5,6 @@ import java.awt.event.MouseListener;
 
 import views.ChoicePanel;
 import views.CustomDialog;
-import views.MapPanel;
 import views.SubMenuMapPanel;
 import views.buttons.SubMenuMapButton;
 import controllers.MapController;
@@ -27,9 +26,6 @@ public class HideMapListener implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		_operation.getGlobalPanel().getMapPanel().remove(_subMenu);
-		
-		MapPanel mapPanel = _operation.getGlobalPanel().getMapPanel();
 		String title = "Confirmation suppression map : " + _map.getName();
 		String message = "Êtes-vous sur de vouloir supprimer la carte '"+_map.getName()+"'. " +
 				"Cette action est irréversible et toutes les entités présentes sur la carte seront ramenées à leur localisation de base.";

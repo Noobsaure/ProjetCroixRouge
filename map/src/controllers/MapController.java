@@ -44,7 +44,7 @@ public class MapController implements Subject {
 		_name = name;
 		_visibility = true;
 		_idOperation = operation.getId();
-		_id = _dbm.storeImage(_dbm.stripSlashes(name), path, _idOperation);
+		_id = _dbm.storeImage(DatabaseManager.stripSlashes(name), path, _idOperation);
 
 		_datas = _dbm.getImage(_id + "", name);
 
@@ -56,7 +56,7 @@ public class MapController implements Subject {
 		_operation = operation;
 		_dbm = dbm;
 		_id = id;
-		_name = _dbm.stripSlashes(name);
+		_name = DatabaseManager.stripSlashes(name);
 		_visibility = visibility;
 		_datas = _dbm.getImage(_id + "", name);
 
