@@ -126,7 +126,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 		
 		_motifsList = new JList();
 		_motifsList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Arrêt cardiaque", "Inconscience", "Malaise", "Petit soin", "Traumatisme", " "};
+			String[] values = new String[] {"Arrêt cardiaque", "Inconscience", "Malaise", "Petit soin", "Traumatisme", "(Autre motif)"};
 			public int getSize() {
 				return values.length;
 			}

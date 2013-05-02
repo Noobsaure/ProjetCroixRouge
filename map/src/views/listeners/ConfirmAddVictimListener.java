@@ -66,9 +66,9 @@ public class ConfirmAddVictimListener implements ActionListener
 		
 		System.out.println("Motifs : " + ((motifsList.length == 0) || (motifsList[0].equals(" "))));
 				
-		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
+		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals("(Autre motif)"))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if(((motifsList.length == 0) || (motifsList[0].equals(" "))) && (otherMotif.equals("")))
+			if(((motifsList.length == 0) || (motifsList[0].equals("(Autre motif)"))) && (otherMotif.equals("")))
 			{
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_MOTIF_MESSAGE);
 				new CustomDialog(errorPanel, _globalPanel);

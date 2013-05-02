@@ -48,7 +48,7 @@ public class ConfirmEditVictimListener implements ActionListener
 		
 		if(!ConfirmAddVictimListener.checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
 		{
-			if(((motifsList.length == 0) || (motifsList[0].equals(" "))) && (otherMotif.equals("")))
+			if(((motifsList.length == 0) || (motifsList[0].equals("(Autre motif)"))) && (otherMotif.equals("")))
 			{
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_MOTIF_MESSAGE);
 				new CustomDialog(errorPanel, _globalPanel);
