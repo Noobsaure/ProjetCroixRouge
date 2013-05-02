@@ -156,7 +156,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 		panel.add(lblIdentifiantDanonymat);
 		
 		_idAnonymat = new JTextField();
-		_idAnonymat.setText("Victime");
+		_idAnonymat.setText("Victime" + _operationController.getAnonymousNumber());
 		panel.add(_idAnonymat);
 		_idAnonymat.setColumns(10);
 		
