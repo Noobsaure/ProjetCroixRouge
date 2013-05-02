@@ -232,7 +232,8 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
+
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController, team));
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
@@ -383,7 +384,9 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_mapPanel, nomEquipierPanel, _operationController, team, _entityController, this));
+
+			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController, team));
+			
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
