@@ -51,9 +51,10 @@ public class ConfirmConfigureLocationListener implements ActionListener
 		{
 			_locationController.setName(name);
 			_locationController.setDescription(informations);
-			_locationController.notifyObservers();
+			_mapPanel.getGlobalPanel().getLauncher().getOperationController().notifyObservers();
 			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_configurationLocationPanel);
 			dialog.dispose();
+			
 		}
 	}
 }

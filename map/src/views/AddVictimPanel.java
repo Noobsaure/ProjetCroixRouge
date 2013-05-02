@@ -126,7 +126,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 		
 		_motifsList = new JList();
 		_motifsList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Arrêt cardiaque", "Inconscience", "Malaise", "Petit soin", "Traumatisme", " "};
+			String[] values = new String[] {"Arrêt cardiaque", "Inconscience", "Malaise", "Petit soin", "Traumatisme", "(Autre motif)"};
 			public int getSize() {
 				return values.length;
 			}
@@ -156,7 +156,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 		panel.add(lblIdentifiantDanonymat);
 		
 		_idAnonymat = new JTextField();
-		_idAnonymat.setText("Victime");
+		_idAnonymat.setText("Victime" + _operationController.getAnonymousNumber());
 		panel.add(_idAnonymat);
 		_idAnonymat.setColumns(10);
 		

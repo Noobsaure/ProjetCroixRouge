@@ -44,10 +44,10 @@ public class ConfirmAddVictimListener implements ActionListener
 	}
 	
 	
-	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, String soins, EntityController entityAssociated)
+	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, EntityController entityAssociated)
 	{
 		System.out.println("OtherMotif : " + (!motif.equals("") || (!otherMotif.equals(""))));
-		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && !soins.equals("") && (entityAssociated != null));
+		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && (entityAssociated != null));
 	}
 	
 	
@@ -66,9 +66,9 @@ public class ConfirmAddVictimListener implements ActionListener
 		
 		System.out.println("Motifs : " + ((motifsList.length == 0) || (motifsList[0].equals(" "))));
 				
-		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
+		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals("(Autre motif)"))) ? "" : motifsList[0], otherMotif, idAnonymat, entitesAssociees))
 		{
-			if(((motifsList.length == 0) || (motifsList[0].equals(" "))) && (otherMotif.equals("")))
+			if(((motifsList.length == 0) || (motifsList[0].equals("(Autre motif)"))) && (otherMotif.equals("")))
 			{
 				MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_MOTIF_MESSAGE);
 				new CustomDialog(errorPanel, _globalPanel);
@@ -100,11 +100,11 @@ public class ConfirmAddVictimListener implements ActionListener
 			
 			Date dateDeNaissanceDate = _addVictimPanel.getDateDeNaissanceDatePicker().getDate();
 			Timestamp dateDeNaissance = null;
-			if(dateDeNaissanceDate != null) {
+			if(dateDeNaissanceDate != null)
 				dateDeNaissance = new Timestamp(dateDeNaissanceDate.getYear(),  dateDeNaissanceDate.getMonth(), dateDeNaissanceDate.getDate(), dateDeNaissanceDate.getHours(), dateDeNaissanceDate.getMinutes(), dateDeNaissanceDate.getSeconds(), 0);
-			}
 			
-			try	{
+			try
+			{
 				new VictimController(_operationController, _databaseManager, name, prenom, motifsList, adress, dateDeNaissance, otherMotif, soins, idAnonymat, entitesAssociees);
 			}
 			catch(ParseException e1) {e1.printStackTrace();}

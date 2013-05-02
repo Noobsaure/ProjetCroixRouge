@@ -27,7 +27,7 @@ public class CancelEditVictimListener implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		Launcher launcher = _mapPanel.getGlobalPanel().getLauncher();
-		new SubMenuVictimPanel(_mapPanel, launcher.getOperationController(), launcher.getDatabaseManager());
+		new SubMenuVictimPanel(_mapPanel, launcher.getOperationController());
 		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_editVictimPanel);
 		dialog.dispose();
 	}

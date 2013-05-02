@@ -145,7 +145,7 @@ public class DatabaseManager
 	{
 		_nbExecutedQueriesConnection++;
 
-		System.out.println("Nombre requête executée (connection principale) : " + _nbExecutedQueriesConnection);
+		//System.out.println("Nombre requête executée (connection principale) : " + _nbExecutedQueriesConnection);
 
 		if(_nbExecutedQueriesConnection >= RECONNECTION_PERIOD)
 		{
@@ -193,7 +193,7 @@ public class DatabaseManager
 	public ResultSet executeQuerySelect(SQLQuerySelect query)
 	{
 		ResultSet result = null;
-		System.out.println("Execution de la requete : "+query);
+		//System.out.println("Execution de la requete : "+query);
 		try
 		{
 			java.sql.Statement statement = _currentConnection.createStatement();
@@ -224,11 +224,11 @@ public class DatabaseManager
 
 		try
 		{			
-			System.out.println("Execution de la requete : " + query);
+			//System.out.println("Execution de la requete : " + query);
 			java.sql.Statement statement = _currentConnection.createStatement();
 			updateNbExecutiionQueries();
 			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
-			System.out.println("Requete executee...");
+			//System.out.println("Requete executee...");
 		}
 		catch(Exception e)
 		{
@@ -254,7 +254,7 @@ public class DatabaseManager
 
 		try
 		{
-			System.out.println("Execution de la requete : " + query);
+			//System.out.println("Execution de la requete : " + query);
 			java.sql.PreparedStatement statement = _currentConnection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			updateNbExecutiionQueries();
 			statement.executeUpdate();
@@ -263,7 +263,7 @@ public class DatabaseManager
 			while(generatedKeys.next())
 				lastInserted = generatedKeys.getInt(1);
 
-			System.out.println("Requete executee...");
+			//System.out.println("Requete executee...");
 		}
 		catch(Exception e)
 		{

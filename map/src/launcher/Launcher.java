@@ -1,12 +1,8 @@
 package launcher;
 
-import java.util.List;
 import java.util.Timer;
 
 import views.GlobalPanel;
-import controllers.EntityController;
-import controllers.LocationController;
-import controllers.MapController;
 import controllers.OperationController;
 import database.DatabaseManager;
 import database.MalformedQueryException;

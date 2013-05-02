@@ -27,6 +27,7 @@ public class MapPanel extends JPanel implements Observer {
 	
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
+	private SubMenuPanel _openedPanel;
 	
 	private int _x = 0;
 	private int _y = 0;
@@ -54,12 +55,12 @@ public class MapPanel extends JPanel implements Observer {
 	}
 
 	public List<Location> getLocations() {return _locations;}
-
+	
 	public MapPanelMouseListener getMapListener() {return _mapListener;}
-
+	
 	public int get_x() {return _x;}
 	public int get_y() {return _y;}
-
+	
 	public void moveMap(int x, int y) {
 		if(_map.getWidth() > getWidth()) {
 			if(x > 0 && x + _x > 0) {x = -_x;}
@@ -80,7 +81,7 @@ public class MapPanel extends JPanel implements Observer {
 		}
 		repaint();
 	}
-
+	
 	@Override 
 	public void paintComponent(Graphics g)
 	{
@@ -142,9 +143,28 @@ public class MapPanel extends JPanel implements Observer {
 			oneLoc.setHighlight(false);
 		}
 	}
+	
+	public void openPanel(SubMenuPanel panel) {
+		if(_openedPanel != null) {
+			remove(_openedPanel);
+			_openedPanel = panel;
+			add(_openedPanel);
+		} else {
+			_openedPanel = panel;
+			add(_openedPanel);
+		}
+	}
+	
+	public void closePanel() {
+		if(_openedPanel != null) {
+			remove(_openedPanel);
+			_openedPanel = null;
+		}
+	}
 
 	public synchronized void update()
 	{
+		System.out.println("TROLOLOLOLO");
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();

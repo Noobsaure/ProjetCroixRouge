@@ -18,7 +18,7 @@ public class SubMenuMapButton extends CustomButton
 		setMaximumSize(new Dimension(150,25));
 		setPreferredSize(new Dimension(150,25));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
-		addActionListener(new SubMenuMapListener(mapPanel, this));
+		addActionListener(new SubMenuMapListener(mapPanel));
 	}
 	
 	@Override

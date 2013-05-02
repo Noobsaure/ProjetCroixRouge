@@ -20,8 +20,7 @@ public class OkVictimButtonListener implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent arg0)
 	{
-		_mapPanel.remove(_subMenu);
-		
+		_mapPanel.closePanel();
 		_mapPanel.repaint();
 		_mapPanel.revalidate();
 	}
