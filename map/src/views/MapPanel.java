@@ -77,10 +77,8 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			_y = _y + y;
 		} else {
 			y = 0;
-		}			
-		for(Location oneLoc : _locations) {
-			oneLoc.setMapXY(_x, _y);
 		}
+		setLocationsMapXY(_x, _y);
 		repaint();
 	}
 
