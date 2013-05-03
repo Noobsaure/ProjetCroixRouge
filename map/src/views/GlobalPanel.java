@@ -89,6 +89,10 @@ public class GlobalPanel extends JApplet implements Observer
 	public void addDialog(CustomDialog dialog) {
 		_dialogs.add(dialog);
 	}
+	
+	public void removeDialog(CustomDialog dialog) {
+		_dialogs.remove(dialog);
+	}
 
 	public void setDragOccurring(boolean dragOccurring) {
 		_dragOccurring = dragOccurring;
@@ -103,6 +107,13 @@ public class GlobalPanel extends JApplet implements Observer
 	public MenuPanel getMenu() {return _menuPanel;}
 
 	public synchronized void update() {
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println("SIZE = "+_dialogs.size());
+		System.out.println();
+		System.out.println();
+		System.out.println();
 		for(CustomDialog oneDialog : _dialogs) {
 			oneDialog.update();
 		}
