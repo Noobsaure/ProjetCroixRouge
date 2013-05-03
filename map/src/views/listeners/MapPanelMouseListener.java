@@ -103,6 +103,9 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 	public boolean getAddingLocation() {return _addingLocation;}
 
 	private boolean isCoordWithinMap(int x, int y) {
+		if(_mapPanel.getMap() == null) {
+			return false;
+		}
 		return x >= _mapPanel.get_x() && y >= _mapPanel.get_y() && x < _mapPanel.get_x() + _mapPanel.getMap().getWidth() && y < _mapPanel.get_y() + _mapPanel.getMap().getHeight();
 	}
 
