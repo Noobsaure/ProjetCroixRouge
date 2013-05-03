@@ -64,7 +64,7 @@ public class MenuPanel extends JPanel {
 		addMouseListener(_menuListener);
 	}
 
-	public synchronized void update() {
+	public void update() {
 		if(_entitiesPanel != null) {
 			((MenuEntitiesPanel)_entitiesPanel).update();
 		}

@@ -237,8 +237,6 @@ public class MenuEntitiesPanel extends JPanel {
 		return _operation;
 	}
 
-	
-	
 	public void update()
 	{
 		setListEntitiesContent();	

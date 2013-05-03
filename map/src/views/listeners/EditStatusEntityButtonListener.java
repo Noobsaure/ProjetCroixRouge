@@ -18,7 +18,6 @@ public class EditStatusEntityButtonListener implements ActionListener
 		_configPanel=configPanel;
 	}
 
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 
