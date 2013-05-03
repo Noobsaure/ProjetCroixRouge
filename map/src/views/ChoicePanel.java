@@ -12,7 +12,7 @@ public class ChoicePanel extends MessagePanel {
 	private OperationController _operation;
 	private MapController _map;
 
-	public ChoicePanel(OperationController operation, SubMenuPanel subMenu, MapController map, String title, String message)
+	public ChoicePanel(OperationController operation, SubMenuPanelImpl subMenu, MapController map, String title, String message)
 	{
 		super(title, message);
 		

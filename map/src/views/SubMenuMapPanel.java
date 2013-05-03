@@ -12,14 +12,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 
-import observer.Observer;
 import views.listeners.AddMapButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
 import controllers.OperationController;
 
-public class SubMenuMapPanel extends SubMenuPanel implements Observer
-{
+public class SubMenuMapPanel extends SubMenuPanelImpl {
 	private static final long serialVersionUID = 1L;
 
 	private Map<JToggleButton, MapController> _map;
@@ -48,8 +46,6 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 
 		addAddButtonListener(new AddMapButtonListener(mapPanel,this));
 		addOkButtonListener(new SwitchMapButtonListener(mapPanel, this, operationController));
-
-		_operationController.addObserver(this);
 	}
 
 	@Override
@@ -102,7 +98,7 @@ public class SubMenuMapPanel extends SubMenuPanel implements Observer
 	}
 	
 	@Override
-	public synchronized void update()
+	public void update()
 	{
 		setListMapsContent();
 		repaint();

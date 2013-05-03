@@ -29,7 +29,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
-	private SubMenuPanel _openedPanel;
+	private SubMenuPanelImpl _openedPanel;
 
 	private int _x = 0;
 	private int _y = 0;
@@ -79,7 +79,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			y = 0;
 		}			
 		for(Location oneLoc : _locations) {
-			oneLoc.moveLocation(x,y);
+			oneLoc.setMapXY(_x, _y);
 		}
 		repaint();
 	}
@@ -134,17 +134,15 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 	}
 
 	public void resetPosition() {
-		for(Location oneLoc : _locations) {
-			oneLoc.setOffsetX(0);
-			oneLoc.setOffsetY(0);
-			_x = 0;
-			_y = 0;
-		}
+		_x = 0;
+		_y = 0;
+		centerMap();
 	}
 
 	public void setLocationsMapXY(int x, int y) {
 		for(Location oneLoc : _locations) {
 			oneLoc.setMapXY(x,y);
+			oneLoc.getLocPanel().setMapXY(x,y);
 		}
 	}
 
@@ -155,7 +153,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 	}
 
-	public void openPanel(SubMenuPanel panel) {
+	public void openPanel(SubMenuPanelImpl panel) {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
 			_openedPanel = panel;
@@ -170,6 +168,24 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
 			_openedPanel = null;
+		}
+	}
+	
+	private void centerMap() {
+		if(_map != null) {
+			if(_map.getWidth() < getWidth()) {
+				_x = (int) ((getWidth() - _map.getWidth()) / 2);
+			} else {
+				_x = Math.min(_x, 0);
+			}
+			if(_map.getHeight() < getHeight()) {
+				_y = (int) ((getHeight() - _map.getHeight()) / 2);
+			} else {
+				_y = Math.min(_y, 0);
+			}
+			setLocationsMapXY(_x, _y);
+			repaint();
+			revalidate();
 		}
 	}
 
@@ -196,25 +212,17 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			} else if(image.getIconWidth() > width) {
 				ratio = width/image.getIconWidth();
 			}
-			
+
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
-			
-			if(_map.getWidth() < getWidth()) {
-				_x = (int) ((getWidth() - _map.getWidth()) / 2);
-			} else {
-				_x = Math.min(_x, 0);
-			}
-			if(_map.getHeight() < getHeight()) {
-				_y = (int) ((getHeight() - _map.getHeight()) / 2);
-			} else {
-				_y = Math.min(_y, 0);
-			}
-			setLocationsMapXY(_x, _y);
 		} else {
 			_map = null;
 		}
+		if(_openedPanel != null) {
+			_openedPanel.update();
+		}
 		updateLocations();
+		centerMap();
 		repaint();
 		revalidate();
 	}
@@ -233,21 +241,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if(_map != null) {
-			if(_map.getWidth() < getWidth()) {
-				_x = (int) ((getWidth() - _map.getWidth()) / 2);
-			} else {
-				_x = Math.min(_x, 0);
-			}
-			if(_map.getHeight() < getHeight()) {
-				_y = (int) ((getHeight() - _map.getHeight()) / 2);
-			} else {
-				_y = Math.min(_y, 0);
-			}
-			setLocationsMapXY(_x, _y);
-			repaint();
-			revalidate();
-		}
+		centerMap();
 	}
 
 	@Override

@@ -9,15 +9,12 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import observer.Observer;
 import views.listeners.AddVictimButtonListener;
 import views.listeners.OkVictimButtonListener;
 import controllers.OperationController;
 import controllers.VictimController;
-import database.DatabaseManager;
 
-public class SubMenuVictimPanel extends SubMenuPanel implements Observer
-{
+public class SubMenuVictimPanel extends SubMenuPanelImpl {
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel _thumbnailsPanel;
@@ -46,8 +43,6 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 
 		addAddButtonListener(new AddVictimButtonListener(mapPanel));
 		addOkButtonListener(new OkVictimButtonListener(mapPanel, this));
-		
-		_operationController.addObserver(this);
 	}
 
 	@Override
@@ -87,7 +82,7 @@ public class SubMenuVictimPanel extends SubMenuPanel implements Observer
 	}
 	
 	@Override
-	public synchronized void update()
+	public void update()
 	{
 		setListVictimsContent();
 		revalidate();

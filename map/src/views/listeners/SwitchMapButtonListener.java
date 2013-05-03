@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import views.MapPanel;
-import views.SubMenuPanel;
+import views.SubMenuPanelImpl;
 import views.ThumbnailMapPanel;
 import controllers.MapController;
 import controllers.OperationController;
@@ -16,11 +16,11 @@ import controllers.OperationController;
 public class SwitchMapButtonListener implements ActionListener
 {
 	private MapPanel _mapPanel;
-	private SubMenuPanel _subMenuPanel;
+	private SubMenuPanelImpl _subMenuPanel;
 	private JPanel _thumbnailPanel;
 	private OperationController _operationController;
 
-	public SwitchMapButtonListener(MapPanel mapPanel, SubMenuPanel subMenuPanel, OperationController operationController)
+	public SwitchMapButtonListener(MapPanel mapPanel, SubMenuPanelImpl subMenuPanel, OperationController operationController)
 	{
 		_mapPanel = mapPanel;
 		_subMenuPanel = subMenuPanel;
@@ -45,7 +45,6 @@ public class SwitchMapButtonListener implements ActionListener
 
 		if(mapController != null) {
 			_operationController.setCurrentMap(mapController);
-			_mapPanel.resetPosition();
 		}
 		
 		_mapPanel.closePanel();

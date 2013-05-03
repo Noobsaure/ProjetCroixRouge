@@ -26,7 +26,7 @@ public class MapController {
 	private ImageIcon _datas;
 
 	private List<LocationController> _locationList = new ArrayList<LocationController>();
-	
+
 	/**
 	 * Construct a new MapController which is not in the database with the name and the path of the file.
 	 * @param operation
@@ -45,11 +45,10 @@ public class MapController {
 
 		_datas = _dbm.getImage(_id + "", name);
 
-		_operation.addMap(this);
-		_operation.setCurrentMap(this);
+		_operation.addCurrentMap(this);
 	}
 
-	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility){
+	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility, boolean display){
 		_operation = operation;
 		_dbm = dbm;
 		_id = id;
@@ -58,7 +57,9 @@ public class MapController {
 		_datas = _dbm.getImage(_id + "", name);
 
 		_operation.addMap(this);
-		_operation.setCurrentMap(this);
+		if(display) {
+			_operation.setCurrentMap(this);
+		}
 	}
 
 	public String getName(){
@@ -81,7 +82,7 @@ public class MapController {
 	private void genererMessageChangementNom(String lastName) {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		
+
 		String message = "La carte '"+lastName+"' a été renomée en '"+_name+"'.";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
@@ -102,22 +103,22 @@ public class MapController {
 
 	public List<EntityController> getEntityListInThisMap(){
 		List<EntityController> _entityList = new ArrayList<EntityController>();
-		
+
 		for(LocationController location : _locationList){
 			if(location.getEntityList().size() != 0){
 				_entityList.addAll(location.getEntityList());
 			}
 		}
-		
+
 		return _entityList;
 	}
-	
+
 	public List<LocationController> getLocationList(){
 		List<LocationController> locationList = new ArrayList<>(_locationList);
-		
+
 		return locationList;
 	}
-	
+
 	public void hideMap(){		
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte","visibilite = 0","id="+_id));
@@ -125,7 +126,7 @@ public class MapController {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Supression carte", "Erreur lors de la supression de la carte '"+_name+"'. Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
+
 		_visibility = false;
 		_operation.removeMap(this);
 		if(_operation.getMapList().size() != 0)
@@ -133,7 +134,7 @@ public class MapController {
 		else
 			_operation.setCurrentMap(null);
 	}
-	
+
 	public ImageIcon getImage()
 	{
 		return _datas;
