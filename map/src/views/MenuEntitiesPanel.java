@@ -60,6 +60,7 @@ public class MenuEntitiesPanel extends JPanel {
 		_panelAvailable.setBorder(new TitledBorder(new LineBorder(new Color(255, 255, 255), 2), "Disponible", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(255, 255, 255)));
 		
 		_panelUnavailable = new JPanel();
+		_panelUnavailable.setLayout(new BoxLayout(_panelUnavailable, BoxLayout.Y_AXIS));
 		_panelUnavailable.setAlignmentX(Component.LEFT_ALIGNMENT);
 		_panelUnavailable.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 0));
 		_panelUnavailable.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, Short.MAX_VALUE));
