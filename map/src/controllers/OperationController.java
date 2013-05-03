@@ -580,16 +580,44 @@ public class OperationController implements Subject {
 		return -1;
 	}
 
+	public int entityNameAlreadyExist(String nomEntite) {
+		ResultSet result;
+		
+		try{
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`", "Entite", "operation_id='"+_idOperation+"'"));
+			
+			try{
+				while(result.next()){
+					String nom = result.getString("nom");
+					if( (nom != null) && (nomEntite.compareTo(nom) == 0)){
+						return result.getInt("id");
+					}
+				}
+				result.getStatement().close();
+			}catch(SQLException e){	
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification nom entité","Une erreur est survenue lors de la vérification de l'unicité du nom de l'entité.");
+				new CustomDialog(errorPanel, _globalPanel);
+				return -1;
+			}
+		}catch(MalformedQueryException e1) { 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Verification numéro anonymat" ,"Une erreur est survenue lors de la vérification de l'unicité du nom de l'entité");
+			new CustomDialog(errorPanel, _globalPanel);
+			return -1;
+		}
+		
+		return -1;
+	}
+	
 	public int getAnonymousNumber(){
 		ResultSet result;
 		int idAnonymat= 1;
 
 		try{
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Victime", "operation_id='"+_idOperation+"' ORDER BY id DESC LIMIT 1 "));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("COUNT( * )", "Victime", "operation_id='"+_idOperation+"'"));
 
 			try{
 				while(result.next()){
-					idAnonymat = result.getInt("id") +1;
+					idAnonymat = result.getInt(1) +1;
 				}
 				result.getStatement().close();
 			}catch(SQLException e){	
