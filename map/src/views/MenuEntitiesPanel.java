@@ -171,14 +171,10 @@ public class MenuEntitiesPanel extends JPanel {
 		
 		int nbComponent = _panelAvailable.getComponentCount();
 		for(int j = i; (j < nbComponent); j++)
-		{
-			System.out.println("Remove (available) : " + j);
 			_panelAvailable.remove(i);
-		}
 		
 		for(int j = i - 1; j < availableEntitiesList.size(); j++)
 		{
-			System.out.println("Add (available) : " + j + " " + availableEntitiesList.get(j).getName());
 			EntityPanel newEntityPanel = new EntityPanel(this, availableEntitiesList.get(j));
 			_panelAvailable.add(newEntityPanel); 
 			newAvailableEntityPanelsList.add(newEntityPanel);
@@ -206,21 +202,16 @@ public class MenuEntitiesPanel extends JPanel {
 		
 		int nbComponentUnavailable = _panelUnavailable.getComponentCount();
 		for(int j = k; (j < nbComponentUnavailable); j++)
-		{
-			System.out.println("Remove (unavailable) : " + j);
 			_panelUnavailable.remove(k);
-		}
 		
 		for(int j = k; j < unavailableEntitiesList.size(); j++)
 		{
-			System.out.println("Add (unavailable) : " + j + " " + unavailableEntitiesList.get(j).getName());
 			EntityPanel newEntityPanel = new EntityPanel(this, unavailableEntitiesList.get(j));
 			_panelUnavailable.add(newEntityPanel); 
 			newUnavailableEntityPanelsList.add(newEntityPanel);
 		}
 		
 		_unavailableEntityPanelsList = newUnavailableEntityPanelsList;
-		
 		
 		for(EntityPanel onePanel : _availableEntityPanelsList)
 			onePanel.update();
