@@ -114,9 +114,9 @@ public class EntityController {
 		_id = id;
 		_stateId = stateId;
 		_posCurrentId = positionId;
-		_name = _dbm.stripSlashes(name);
+		_name = DatabaseManager.stripSlashes(name);
 		_type = type;
-		_infos = _dbm.stripSlashes(infos);
+		_infos = DatabaseManager.stripSlashes(infos);
 		_dateArriveeLocalisation = dateArriveeLocalisation;
 		_color = color;
 

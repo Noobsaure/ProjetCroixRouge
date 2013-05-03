@@ -20,7 +20,7 @@ public class Location extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private int _x,_y;
+	private int _x,_y,_mapX,_mapY;
 	private int _offsetX = 0;
 	private int _offsetY = 0;
 	private boolean _dragOver = false;
@@ -33,29 +33,31 @@ public class Location extends JPanel {
 	private LocationMouseListener _mouseListener;
 	private JLabel _entitiesCount;
 	
-	public Location(GlobalPanel gPanel, LocationController locationController) {
+	public Location(GlobalPanel globalPanel, LocationController locationController) {
 		super();
 		setLayout(new BorderLayout());
 		_locationController = locationController;
 		_name = _locationController.getName();
+		_mapX = globalPanel.getMapPanel().get_x();
+		_mapY = globalPanel.getMapPanel().get_y();
 		_x = (int) _locationController.getX();
 		_y = (int) _locationController.getY();
 		_entitiesCount = new JLabel(_locationController.getEntityList().size()+"",SwingConstants.CENTER);
 		_entitiesCount.setForeground(Color.WHITE);
 		_entitiesCount.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
 		add(_entitiesCount, BorderLayout.CENTER);
-		setBounds(_x - _iconLoc.getIconWidth() / 2, _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
+		setBounds(_x + _mapX - _iconLoc.getIconWidth() / 2, _y + _mapY - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
 		setOpaque(false);
-		_mouseListener = new LocationMouseListener(this, gPanel);
+		_mouseListener = new LocationMouseListener(this, globalPanel);
 		addMouseListener(_mouseListener);
 		addMouseMotionListener(_mouseListener);
-		setDropTarget(new DropTarget(this, new LocationDropTargetListener(this, gPanel)));		
+		setDropTarget(new DropTarget(this, new LocationDropTargetListener(this, globalPanel)));		
 	}
 	
 	public void moveLocation(int x, int y) {
 		_offsetX = _offsetX + x;
 		_offsetY = _offsetY + y;
-		setBounds(_offsetX + _x - _iconLoc.getIconWidth() / 2, _offsetY + _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
+		setBounds(_offsetX + _mapX + _x - _iconLoc.getIconWidth() / 2, _offsetY + _mapY + _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
 		_locPanel.moveLocationPanel(x, y);
 	}
 
@@ -64,6 +66,12 @@ public class Location extends JPanel {
 	}
 	public void setOffsetY(int y) {
 		_offsetY = y;
+	}
+	
+	public void setMapXY(int x, int y) {
+		_mapX = x;
+		_mapY = y;
+		setBounds(_offsetX + _mapX + _x - _iconLoc.getIconWidth() / 2, _offsetY + _mapY + _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
 	}
 	
 	@Override

@@ -101,7 +101,7 @@ public class AddEquipierPanel extends CustomPanelImpl {
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "2, 2, left, default");
 
-		CustomButton ajoutButton = new CustomButton("Valider l'ajout d'un équipier à  l'entité");	
+		CustomButton ajoutButton = new CustomButton("Valider l'ajout d'un Ã©quipier Ã  l'entitÃ©");	
 		ajoutButton.addActionListener(new AddEquipierDansEntityButtonListener(_operationController, _entityController, this));
 
 		formPanel.add(ajoutButton, "2, 4");

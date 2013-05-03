@@ -1,11 +1,11 @@
 package database;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import views.EntityComparator;
+import controllers.EntityController;
 
 public class DatabaseTest
 {
@@ -23,6 +23,19 @@ public class DatabaseTest
 		final String output = DatabaseManager.addSlashes(input);
 		System.out.println("Test : " + output);
 		System.out.println(DatabaseManager.stripSlashes(output));
+		
+		final String table = "symfony";
+		DatabaseManager databaseManager = new DatabaseManager();
+		databaseManager.connection(_urlBase + table, _user, _password);
+		
+		ArrayList<EntityController> listEntites = new ArrayList<EntityController>();
+		listEntites.add(new EntityController(null, databaseManager, 0, 0, 0, null, "Florian", null, null, null));
+		listEntites.add(new EntityController(null, databaseManager, 0, 0, 0, null, "Dorian", null, null, null));
+		listEntites.add(new EntityController(null, databaseManager, 0, 0, 0, null, "Fouad", null, null, null));
+		Collections.sort(listEntites, new EntityComparator());
+		
+		for(EntityController entite : listEntites)
+			System.out.println("Name : " + entite.getName());
 	}
 	
 	

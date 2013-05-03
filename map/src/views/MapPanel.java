@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,7 @@ import controllers.MapController;
 import controllers.OperationController;
 
 
-public class MapPanel extends JPanel implements Observer {
+public class MapPanel extends JPanel implements Observer, ComponentListener {
 	private static final long serialVersionUID = 1L;
 
 	private OperationController _operation;
@@ -44,7 +46,7 @@ public class MapPanel extends JPanel implements Observer {
 		super(true);
 		setLayout(null);
 		_globalPanel = globalPanel;
-		setBackground(Color.LIGHT_GRAY);
+		setBackground(Color.BLACK);
 	}
 
 	public void addMapPanelListener()
@@ -140,6 +142,12 @@ public class MapPanel extends JPanel implements Observer {
 		}
 	}
 
+	public void setLocationsMapXY(int x, int y) {
+		for(Location oneLoc : _locations) {
+			oneLoc.setMapXY(x,y);
+		}
+	}
+
 	public synchronized void disableLocationHighlight() {
 		for(Location oneLoc : _locations) {
 			oneLoc.displayPanel(false);
@@ -185,30 +193,66 @@ public class MapPanel extends JPanel implements Observer {
 				}
 			} else if(image.getIconHeight() > height) {
 				ratio = height/image.getIconHeight();
-				if(image.getIconWidth() < getWidth()) {
-					_x = (int) ((getWidth() - image.getIconWidth()) / 2);
-				}
 			} else if(image.getIconWidth() > width) {
 				ratio = width/image.getIconWidth();
-				if(image.getIconHeight() < getHeight()) {
-					_y = (int) ((getHeight() - image.getIconHeight()) / 2);
-				}
-			} else {
-				if(image.getIconWidth() < getWidth()) {
-					_x = (int) ((getWidth() - image.getIconWidth()) / 2);
-				}
-				if(image.getIconHeight() < getHeight()) {
-					_y = (int) ((getHeight() - image.getIconHeight()) / 2);
-				}
 			}
-
+			
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
+			
+			if(_map.getWidth() < getWidth()) {
+				_x = (int) ((getWidth() - _map.getWidth()) / 2);
+			} else {
+				_x = Math.min(_x, 0);
+			}
+			if(_map.getHeight() < getHeight()) {
+				_y = (int) ((getHeight() - _map.getHeight()) / 2);
+			} else {
+				_y = Math.min(_y, 0);
+			}
+			setLocationsMapXY(_x, _y);
 		} else {
 			_map = null;
 		}
 		updateLocations();
 		repaint();
 		revalidate();
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {
+		if(_map != null) {
+			if(_map.getWidth() < getWidth()) {
+				_x = (int) ((getWidth() - _map.getWidth()) / 2);
+			} else {
+				_x = Math.min(_x, 0);
+			}
+			if(_map.getHeight() < getHeight()) {
+				_y = (int) ((getHeight() - _map.getHeight()) / 2);
+			} else {
+				_y = Math.min(_y, 0);
+			}
+			setLocationsMapXY(_x, _y);
+			repaint();
+			revalidate();
+		}
+	}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		// TODO Auto-generated method stub
+
 	}
 }
