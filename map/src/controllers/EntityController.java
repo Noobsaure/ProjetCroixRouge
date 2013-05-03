@@ -73,7 +73,7 @@ public class EntityController {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation du statut pour l'entité '"+name+"'.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-
+		
 		//Creation of the entity in database
 		int result2;
 
@@ -416,7 +416,7 @@ public class EntityController {
 							_available = result2.getBoolean("dispo");
 							_state = result2.getString("infos");
 						}
-						result2.close();
+						result2.getStatement().close();
 					}catch(SQLException e){
 						MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs du statut de l'entité '"+_name+"'.");
 						new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -435,7 +435,7 @@ public class EntityController {
 							int idEquipier = result2.getInt("id");
 							_teamMemberList.add(_operation.getEquipier(idEquipier));
 						}
-						result2.close();
+						result2.getStatement().close();
 					}catch (SQLException e) { 
 						MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour entité", "Une erreur est survenue lors de la récupération des attributs de composition de l'équipe '"+_name+"'.");
 						new CustomDialog(errorPanel, _operation.getGlobalPanel());

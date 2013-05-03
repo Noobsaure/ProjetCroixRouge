@@ -224,11 +224,13 @@ public class DatabaseManager
 
 		try
 		{			
-			System.out.println("Execution de la requete : " + query);
+			//System.out.println("Execution de la requete : " + query);
 			java.sql.Statement statement = _currentConnection.createStatement();
 			updateNbExecutiionQueries();
 			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			//System.out.println("Requete executee...");
+
+			statement.close();
 		}
 		catch(Exception e)
 		{
@@ -263,6 +265,7 @@ public class DatabaseManager
 			while(generatedKeys.next())
 				lastInserted = generatedKeys.getInt(1);
 
+			statement.close();
 			//System.out.println("Requete executee...");
 		}
 		catch(Exception e)

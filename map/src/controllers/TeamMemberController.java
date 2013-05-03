@@ -45,7 +45,7 @@ public class TeamMemberController {
 		_phoneNumber = phoneNumber;
 		_othersInformations = othersInformations;		
 		_temporaryEntityId = entityId;
-		
+
 		if (entityId == 0)
 			_available = true;
 		else
@@ -92,11 +92,6 @@ public class TeamMemberController {
 
 		try{
 			//Get the id of the line in "EntiteHistorique" table
-			if(_entity == null){
-				System.out.println("OUPS...");
-			}
-			
-			System.out.println("Enite ID = "+_entity.getId());
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "EntiteHistorique", "equipier_id ="+_id+" AND entite_id="
 					+_entity.getId()+" AND date_fin is NULL"));
 
@@ -117,6 +112,7 @@ public class TeamMemberController {
 				else{
 					return false;
 				}
+				result.getStatement().close();
 			}catch(SQLException e){ System.err.println("EntityController#removeTeamMember(): Error on finding entityHistory_id for teamMemberId "+_id+" and entity ID "+_entity.getId()); }
 
 		}catch(MalformedQueryException e){e = new MalformedQueryException("EntityController#removeTeamMember() : Error creation history");}
@@ -222,9 +218,9 @@ public class TeamMemberController {
 				if(_othersInformations == null){
 					_othersInformations = "";
 				}
-				
+
 				_temporaryEntityId = result.getInt("entite_id");
-				
+
 				if(result.getInt("entite_id") == 0)
 					_available = true;					
 				else{
