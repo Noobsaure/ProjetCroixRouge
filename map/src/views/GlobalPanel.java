@@ -40,12 +40,12 @@ public class GlobalPanel extends JApplet implements Observer
 	@Override
 	public void init()
 	{
-//		String _serveur = getParameter("serveur");
-//		String _port = getParameter("port");
-//		String _login = getParameter("login");
-//		String _mdp = getParameter("mdp");
-//		int _idOperation = Integer.parseInt(getParameter("idOperation"));
-//		int _idOperateur = Integer.parseInt(getParameter("idOperateur"));
+		String _serveur = getParameter("serveur");
+		String _port = getParameter("port");
+		String _login = getParameter("login");
+		String _mdp = getParameter("mdp");
+		int _idOperation = Integer.parseInt(getParameter("idOperation"));
+		int _idOperateur = Integer.parseInt(getParameter("idOperateur"));
 		
 		try
 		{
@@ -75,8 +75,8 @@ public class GlobalPanel extends JApplet implements Observer
 
 		getContentPane().add(_menuPanel, BorderLayout.WEST);
 
-//		_launcher = new Launcher(this, _serveur, _port, _login, _mdp, _idOperation, _idOperateur);
-		_launcher = new Launcher(this, "localhost", "3306", "root", "apagos35", 1, 1);
+		_launcher = new Launcher(this, _serveur, _port, _login, _mdp, _idOperation, _idOperateur);
+		//_launcher = new Launcher(this, "localhost", "3306", "root", "apagos35", 1, 1);
 		_operation = _launcher.getOperationController();
 		_operation.addObserver(this);
 		_mapPanel.setOperation(_operation);

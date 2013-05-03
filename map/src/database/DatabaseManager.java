@@ -224,7 +224,7 @@ public class DatabaseManager
 
 		try
 		{			
-			//System.out.println("Execution de la requete : " + query);
+			System.out.println("Execution de la requete : " + query);
 			java.sql.Statement statement = _currentConnection.createStatement();
 			updateNbExecutiionQueries();
 			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
