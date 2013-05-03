@@ -169,7 +169,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 	}
 	
-	private void centerMap() {
+	public void centerMap() {
 		if(_map != null) {
 			if(_map.getWidth() < getWidth()) {
 				_x = (int) ((getWidth() - _map.getWidth()) / 2);
@@ -244,7 +244,6 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	@Override
 	public void componentShown(ComponentEvent e) {
-		// TODO Auto-generated method stub
-
+		centerMap();
 	}
 }

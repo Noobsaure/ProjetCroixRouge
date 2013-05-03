@@ -101,6 +101,8 @@ public class GlobalPanel extends JApplet implements Observer
 	public boolean isDragOccurring() {
 		return _dragOccurring;
 	}
+	
+	public void centerMap() {_mapPanel.centerMap();}
 
 	public Launcher getLauncher() {return _launcher;}
 	public MapPanel getMapPanel() {return _mapPanel;}
