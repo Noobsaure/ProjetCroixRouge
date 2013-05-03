@@ -459,6 +459,13 @@ public class EntityController {
 		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) ){
 			_operation.getLocation(_posCurrentId).addEntityList(this);
 		}
+		else if( _posCurrentId == _operation.getIdPcm()){
+			for(LocationController location : _operation.getLocationList()){
+				if(location.getEntityList().contains(this)){
+					location.removeEntity(this);
+				}
+			}
+		}
 	}
 
 	public int getLastPosCurrentId(){
