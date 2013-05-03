@@ -178,11 +178,16 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 
-
+		String maploca;
 		// mise par défaut du nom de la localisation
 		LocationController localisationEntite = _operationController.getLocation(_entityController.getIdPosCurrent());
-		String maploca = _operationController.getMap(localisationEntite.getIdMap()).getName();
-		String tempLocaMap = maploca+" => "+ localisationEntite.getName();
+		if(localisationEntite.getId() == _operationController.getIdPcm()){
+			maploca= "";
+		}
+		else{
+			maploca = _operationController.getMap(localisationEntite.getIdMap()).getName()+" -> ";
+		}
+		String tempLocaMap = maploca+localisationEntite.getName();
 		model.setSelectedItem(tempLocaMap);
 
 		_typeComboBox = new JComboBox<String>(model);
