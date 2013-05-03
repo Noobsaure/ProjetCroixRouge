@@ -268,6 +268,10 @@ public class VictimController {
 	public void setIdAnonymat(String idAnonymat) {
 		_idAnonymat = idAnonymat;
 	}
+	
+	public EntityController getEntiteAssociee() {
+		return _entity;
+	}
 
 	public String getNom() {
 		return _nom;

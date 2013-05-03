@@ -76,7 +76,7 @@ public class GlobalPanel extends JApplet implements Observer
 
 		getContentPane().add(_menuPanel, BorderLayout.WEST);
 
-		//_launcher = new Launcher(this, _serveur, _port, _login, _mdp, _idOperation, _idOperateur);
+//		_launcher = new Launcher(this, _serveur, _port, _login, _mdp, _idOperation, _idOperateur);
 		_launcher = new Launcher(this, "localhost", "3306", "root", "apagos35", 1, 1);
 		_operation = _launcher.getOperationController();
 		_operation.addObserver(this);

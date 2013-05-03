@@ -3,6 +3,7 @@ package views;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JTextArea;
@@ -36,6 +37,7 @@ public class EditVictimPanel extends AddVictimPanel
 	private JTextField _adressTextField;
 	private JDateChooser _dateDeNaissanceDatePicker;
 	private JTextField _motifTextField;
+	private JComboBox _entiteAssociee;
 	
 	
 	public EditVictimPanel(MapPanel mapPanel, SubMenuVictimPanel subMenu, OperationController operation, DatabaseManager dbm, VictimController victim)
@@ -54,6 +56,7 @@ public class EditVictimPanel extends AddVictimPanel
 		_prenomTextField = super.getPrenomTextField();
 		_adressTextField = super.getAdressTextField();
 		_dateDeNaissanceDatePicker = super.getDateDeNaissanceDatePicker();
+		_entiteAssociee = super.getEntiteAssocieeCombobox();
 		
 		initFields();
 	}
@@ -84,6 +87,7 @@ public class EditVictimPanel extends AddVictimPanel
 		_prenomTextField.setText(_victimController.getPrenom());
 		_adressTextField.setText(_victimController.getAdresse());
 		_dateDeNaissanceDatePicker.setDate(_victimController.getDateDeNaissance());
+		_entiteAssociee.setSelectedItem(_victimController.getEntiteAssociee());
 		
 		JLabel finDePriseEnChargeLabel = new JLabel("Motif fin de prise ne charge :");
 		GridBagConstraints gbc_finDePriseEnChargeLabel = new GridBagConstraints();

@@ -369,6 +369,10 @@ public class AddVictimPanel extends CustomPanelImpl {
 	{
 		return _idAnonymat;
 	}
+	public JComboBox getEntiteAssociee()
+	{
+		return _entiteAssocieeCombobox;
+	}
 	
 	public Map<String, EntityController> getMap()
 	{
