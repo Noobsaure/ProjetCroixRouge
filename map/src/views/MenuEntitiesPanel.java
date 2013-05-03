@@ -150,48 +150,77 @@ public class MenuEntitiesPanel extends JPanel {
 				availableEntitiesList.add(oneEntity);
 			else
 				unavailableEntitiesList.add(oneEntity);				
-		}		
+		}
 		
-		List<EntityPanel> entityPanelsToDelete = new ArrayList<EntityPanel>();
-		for(EntityPanel oneEntityPanel : _availableEntityPanelsList)
+		int i;	
+		boolean differenceFound = false;
+		List<EntityPanel> newAvailableEntityPanelsList = new ArrayList<>();
+		for(i = 0; (i < _availableEntityPanelsList.size()) && (i < availableEntitiesList.size()) && !differenceFound; i++)
 		{
-			if(!availableEntitiesList.contains(oneEntityPanel.getEntityController()))
-			{
-				_panelAvailable.remove(oneEntityPanel);
-				entityPanelsToDelete.add(oneEntityPanel);
-			}
+			EntityPanel entityPanel = _availableEntityPanelsList.get(i);
+			EntityController entityController = availableEntitiesList.get(i);
+			
+			if(entityPanel.getEntityController() != entityController)
+				differenceFound = true;
 			else
-				availableEntitiesList.remove(oneEntityPanel.getEntityController());
-		}
-		_availableEntityPanelsList.removeAll(entityPanelsToDelete);
-		
-		
-		for(EntityController oneEntity : availableEntitiesList)
-		{
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelAvailable.add(panel);
-			_availableEntityPanelsList.add(panel);
+				newAvailableEntityPanelsList.add(entityPanel);
 		}
 		
-		entityPanelsToDelete.clear();
-		for(EntityPanel oneEntityPanel : _unavailableEntityPanelsList)
+		if((_availableEntityPanelsList.size() == 0) || (availableEntitiesList.size() == 0))
+			i = 1;
+		
+		int nbComponent = _panelAvailable.getComponentCount();
+		for(int j = i; (j < nbComponent); j++)
 		{
-			if(!unavailableEntitiesList.contains(oneEntityPanel.getEntityController()))
-			{
-				_panelUnavailable.remove(oneEntityPanel);
-				entityPanelsToDelete.add(oneEntityPanel);
-			}
+			System.out.println("Remove (available) : " + j);
+			_panelAvailable.remove(i);
+		}
+		
+		for(int j = i - 1; j < availableEntitiesList.size(); j++)
+		{
+			System.out.println("Add (available) : " + j + " " + availableEntitiesList.get(j).getName());
+			EntityPanel newEntityPanel = new EntityPanel(this, availableEntitiesList.get(j));
+			_panelAvailable.add(newEntityPanel); 
+			newAvailableEntityPanelsList.add(newEntityPanel);
+		}
+		
+		_availableEntityPanelsList = newAvailableEntityPanelsList;
+		
+		
+		int k;	
+		differenceFound = false;
+		List<EntityPanel> newUnavailableEntityPanelsList = new ArrayList<>();
+		for(k = 0; (k < _unavailableEntityPanelsList.size()) && (k < unavailableEntitiesList.size()) && !differenceFound; k++)
+		{
+			EntityPanel entityPanel = _unavailableEntityPanelsList.get(k);
+			EntityController entityController = unavailableEntitiesList.get(k);
+			
+			if(entityPanel.getEntityController() != entityController)
+				differenceFound = true;
 			else
-				unavailableEntitiesList.remove(oneEntityPanel.getEntityController());
+				newUnavailableEntityPanelsList.add(entityPanel);
 		}
-		_unavailableEntityPanelsList.removeAll(entityPanelsToDelete);
 		
-		for(EntityController oneEntity : unavailableEntitiesList)
+		if((_unavailableEntityPanelsList.size() > 0) && (unavailableEntitiesList.size() > 0))
+			k--;
+		
+		int nbComponentUnavailable = _panelUnavailable.getComponentCount();
+		for(int j = k; (j < nbComponentUnavailable); j++)
 		{
-			EntityPanel panel = new EntityPanel(this, oneEntity);
-			_panelUnavailable.add(panel);
-			_unavailableEntityPanelsList.add(panel);
+			System.out.println("Remove (unavailable) : " + j);
+			_panelUnavailable.remove(k);
 		}
+		
+		for(int j = k; j < unavailableEntitiesList.size(); j++)
+		{
+			System.out.println("Add (unavailable) : " + j + " " + unavailableEntitiesList.get(j).getName());
+			EntityPanel newEntityPanel = new EntityPanel(this, unavailableEntitiesList.get(j));
+			_panelUnavailable.add(newEntityPanel); 
+			newUnavailableEntityPanelsList.add(newEntityPanel);
+		}
+		
+		_unavailableEntityPanelsList = newUnavailableEntityPanelsList;
+		
 		
 		for(EntityPanel onePanel : _availableEntityPanelsList)
 			onePanel.update();
