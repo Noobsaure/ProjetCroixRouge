@@ -136,14 +136,13 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 	public void resetPosition() {
 		_x = 0;
 		_y = 0;
-		for(Location oneLoc : _locations) {
-			oneLoc.setMapXY(_x, _y);
-		}
+		centerMap();
 	}
 
 	public void setLocationsMapXY(int x, int y) {
 		for(Location oneLoc : _locations) {
 			oneLoc.setMapXY(x,y);
+			oneLoc.getLocPanel().setMapXY(x,y);
 		}
 	}
 
@@ -169,6 +168,24 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
 			_openedPanel = null;
+		}
+	}
+	
+	private void centerMap() {
+		if(_map != null) {
+			if(_map.getWidth() < getWidth()) {
+				_x = (int) ((getWidth() - _map.getWidth()) / 2);
+			} else {
+				_x = Math.min(_x, 0);
+			}
+			if(_map.getHeight() < getHeight()) {
+				_y = (int) ((getHeight() - _map.getHeight()) / 2);
+			} else {
+				_y = Math.min(_y, 0);
+			}
+			setLocationsMapXY(_x, _y);
+			repaint();
+			revalidate();
 		}
 	}
 
@@ -198,18 +215,6 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
-
-			if(_map.getWidth() < getWidth()) {
-				_x = (int) ((getWidth() - _map.getWidth()) / 2);
-			} else {
-				_x = Math.min(_x, 0);
-			}
-			if(_map.getHeight() < getHeight()) {
-				_y = (int) ((getHeight() - _map.getHeight()) / 2);
-			} else {
-				_y = Math.min(_y, 0);
-			}
-			setLocationsMapXY(_x, _y);
 		} else {
 			_map = null;
 		}
@@ -217,6 +222,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			_openedPanel.update();
 		}
 		updateLocations();
+		centerMap();
 		repaint();
 		revalidate();
 	}
@@ -235,21 +241,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	@Override
 	public void componentResized(ComponentEvent e) {
-		if(_map != null) {
-			if(_map.getWidth() < getWidth()) {
-				_x = (int) ((getWidth() - _map.getWidth()) / 2);
-			} else {
-				_x = Math.min(_x, 0);
-			}
-			if(_map.getHeight() < getHeight()) {
-				_y = (int) ((getHeight() - _map.getHeight()) / 2);
-			} else {
-				_y = Math.min(_y, 0);
-			}
-			setLocationsMapXY(_x, _y);
-			repaint();
-			revalidate();
-		}
+		centerMap();
 	}
 
 	@Override

@@ -45,7 +45,6 @@ public class SwitchMapButtonListener implements ActionListener
 
 		if(mapController != null) {
 			_operationController.setCurrentMap(mapController);
-			_mapPanel.resetPosition();
 		}
 		
 		_mapPanel.closePanel();

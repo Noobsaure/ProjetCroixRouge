@@ -34,7 +34,7 @@ public class LocationPanel extends JPanel
 	private JPanel _entitiesPanel;
 	private MapPanel _mapPanel;
 	private boolean _displayed;
-	private int _offsetX, _offsetY;
+	private int _mapX, _mapY;
 	private int _x, _y;
 	private JLabel _iconGearLabel;
 	private JLabel _locationName;
@@ -96,11 +96,11 @@ public class LocationPanel extends JPanel
 		setVisible(false);
 	}
 
-	public void moveLocationPanel(int x, int y)
+	public void setMapXY(int x, int y)
 	{
-		_offsetX = _offsetX + x;
-		_offsetY = _offsetY + y;
-		setBounds(_offsetX + _x - WIDTH_PANEL / 2, _offsetY + _y - HEIGHT_PANEL / 2, WIDTH_PANEL, HEIGHT_PANEL);
+		_mapX = x;
+		_mapY = y;
+		setBounds(_mapX + _x - WIDTH_PANEL / 2, _mapY + _y - HEIGHT_PANEL / 2, WIDTH_PANEL, HEIGHT_PANEL);
 	}
 
 	public void update()
