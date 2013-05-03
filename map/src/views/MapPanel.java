@@ -189,7 +189,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 	}
 
-	public synchronized void update()
+	public void update()
 	{
 		Launcher launcher = _globalPanel.getLauncher();
 		OperationController controller = launcher.getOperationController();

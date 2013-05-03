@@ -107,13 +107,6 @@ public class GlobalPanel extends JApplet implements Observer
 	public MenuPanel getMenu() {return _menuPanel;}
 
 	public synchronized void update() {
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println("SIZE = "+_dialogs.size());
-		System.out.println();
-		System.out.println();
-		System.out.println();
 		for(CustomDialog oneDialog : _dialogs) {
 			oneDialog.update();
 		}
