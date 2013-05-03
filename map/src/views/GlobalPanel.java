@@ -89,6 +89,10 @@ public class GlobalPanel extends JApplet implements Observer
 	public void addDialog(CustomDialog dialog) {
 		_dialogs.add(dialog);
 	}
+	
+	public void removeDialog(CustomDialog dialog) {
+		_dialogs.remove(dialog);
+	}
 
 	public void setDragOccurring(boolean dragOccurring) {
 		_dragOccurring = dragOccurring;
@@ -97,6 +101,8 @@ public class GlobalPanel extends JApplet implements Observer
 	public boolean isDragOccurring() {
 		return _dragOccurring;
 	}
+	
+	public void centerMap() {_mapPanel.centerMap();}
 
 	public Launcher getLauncher() {return _launcher;}
 	public MapPanel getMapPanel() {return _mapPanel;}
