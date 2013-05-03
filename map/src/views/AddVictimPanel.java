@@ -267,7 +267,7 @@ public class AddVictimPanel extends CustomPanelImpl {
 		for(int i = 0; i < entitiesListObjects.length; i++)
 		{
 			EntityController entityController = ((EntityController)entitiesListObjects[i]);
-			String string = entityController.getId() + " - " + entityController.getName();
+			String string = entityController.getName();
 			entitiesList[i] = string;
 			_map.put(string, entityController);
 		}
