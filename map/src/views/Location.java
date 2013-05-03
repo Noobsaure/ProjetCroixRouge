@@ -21,8 +21,6 @@ public class Location extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private int _x,_y,_mapX,_mapY;
-	private int _offsetX = 0;
-	private int _offsetY = 0;
 	private boolean _dragOver = false;
 	private String _name;
 	private boolean _highlighted = false;
@@ -54,24 +52,10 @@ public class Location extends JPanel {
 		setDropTarget(new DropTarget(this, new LocationDropTargetListener(this, globalPanel)));		
 	}
 	
-	public void moveLocation(int x, int y) {
-		_offsetX = _offsetX + x;
-		_offsetY = _offsetY + y;
-		setBounds(_offsetX + _mapX + _x - _iconLoc.getIconWidth() / 2, _offsetY + _mapY + _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
-		_locPanel.moveLocationPanel(x, y);
-	}
-
-	public void setOffsetX(int x) {
-		_offsetX = x;
-	}
-	public void setOffsetY(int y) {
-		_offsetY = y;
-	}
-	
 	public void setMapXY(int x, int y) {
 		_mapX = x;
 		_mapY = y;
-		setBounds(_offsetX + _mapX + _x - _iconLoc.getIconWidth() / 2, _offsetY + _mapY + _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
+		setBounds(_mapX + _x - _iconLoc.getIconWidth() / 2, _mapY + _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
 	}
 	
 	@Override

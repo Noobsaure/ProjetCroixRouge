@@ -20,9 +20,9 @@ public class ThumbnailVictimPanel extends JPanel {
 		_victim = victim;
 		JLabel nameLabel = new JLabel("(" + victim.getIdAnonymat() + ") " + victim.getPrenom() + " " + victim.getNom());
 		nameLabel.setForeground(Color.WHITE);
-		setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-		setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-		setBackground(SubMenuPanel.COLOR_BACKGROUND);
+		setMaximumSize(new Dimension(SubMenuPanelImpl.WIDTH - 20, SubMenuPanelImpl.BUTTON_HEIGHT));
+		setPreferredSize(new Dimension(SubMenuPanelImpl.WIDTH - 20, SubMenuPanelImpl.BUTTON_HEIGHT));
+		setBackground(SubMenuPanelImpl.COLOR_BACKGROUND);
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(nameLabel);
 		addMouseListener(new EditVictimButtonListener(mapPanel, subMenu, this, victim));

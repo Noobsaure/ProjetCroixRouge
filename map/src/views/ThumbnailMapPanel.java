@@ -29,9 +29,9 @@ public class ThumbnailMapPanel extends JPanel {
 	public ThumbnailMapPanel(MapPanel mapPanel, SubMenuMapPanel subMenu, MapController map, OperationController operationController, ButtonGroup group) {
 		_map = map;
 		setLayout(new BorderLayout());
-		setBackground(SubMenuPanel.COLOR_BACKGROUND);
+		setBackground(SubMenuPanelImpl.COLOR_BACKGROUND);
 		setMaximumSize(new Dimension());
-		final int THUMBNAIL_WIDTH = SubMenuPanel.WIDTH - 30;
+		final int THUMBNAIL_WIDTH = SubMenuPanelImpl.WIDTH - 30;
 		final int THUMBNAIL_HEIGHT = (int)(0.6 * THUMBNAIL_WIDTH);
 		
 		setMaximumSize(new Dimension(THUMBNAIL_WIDTH+10, THUMBNAIL_HEIGHT+35));
@@ -64,9 +64,9 @@ public class ThumbnailMapPanel extends JPanel {
 		JPanel panelLabel = new JPanel();
 		panelLabel.setBorder(new EmptyBorder(0, 0, 0, 15));
 		panelLabel.setLayout(new BorderLayout());
-		panelLabel.setMaximumSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-		panelLabel.setPreferredSize(new Dimension(SubMenuPanel.WIDTH - 20, SubMenuPanel.BUTTON_HEIGHT));
-		panelLabel.setBackground(SubMenuPanel.COLOR_BACKGROUND);
+		panelLabel.setMaximumSize(new Dimension(SubMenuPanelImpl.WIDTH - 20, SubMenuPanelImpl.BUTTON_HEIGHT));
+		panelLabel.setPreferredSize(new Dimension(SubMenuPanelImpl.WIDTH - 20, SubMenuPanelImpl.BUTTON_HEIGHT));
+		panelLabel.setBackground(SubMenuPanelImpl.COLOR_BACKGROUND);
 		panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panelLabel.add(nameLabel, BorderLayout.CENTER);
 		panelLabel.add(deleteIcon, BorderLayout.EAST);

@@ -201,9 +201,7 @@ public class RefreshTimerTask extends TimerTask
 					while(result2.next()){
 						String name = result2.getString("nom");
 						Boolean visibility = result2.getBoolean("visibilite");
-						MapController currentMap = _operation.getCurrentMap();
-						new MapController(_operation, _dbm , id, name, visibility);
-						_operation.setCurrentMap(currentMap);
+						new MapController(_operation, _dbm , id, name, visibility, false);
 					}
 					result2.getStatement().close();
 				}

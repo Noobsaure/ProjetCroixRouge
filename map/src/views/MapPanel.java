@@ -29,7 +29,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	private BufferedImage _map;
 	private GlobalPanel _globalPanel;
-	private SubMenuPanel _openedPanel;
+	private SubMenuPanelImpl _openedPanel;
 
 	private int _x = 0;
 	private int _y = 0;
@@ -79,7 +79,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			y = 0;
 		}			
 		for(Location oneLoc : _locations) {
-			oneLoc.moveLocation(x,y);
+			oneLoc.setMapXY(_x, _y);
 		}
 		repaint();
 	}
@@ -134,11 +134,10 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 	}
 
 	public void resetPosition() {
+		_x = 0;
+		_y = 0;
 		for(Location oneLoc : _locations) {
-			oneLoc.setOffsetX(0);
-			oneLoc.setOffsetY(0);
-			_x = 0;
-			_y = 0;
+			oneLoc.setMapXY(_x, _y);
 		}
 	}
 
@@ -155,7 +154,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 	}
 
-	public void openPanel(SubMenuPanel panel) {
+	public void openPanel(SubMenuPanelImpl panel) {
 		if(_openedPanel != null) {
 			remove(_openedPanel);
 			_openedPanel = panel;
@@ -196,10 +195,10 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			} else if(image.getIconWidth() > width) {
 				ratio = width/image.getIconWidth();
 			}
-			
+
 			_map = new BufferedImage((int)(image.getIconWidth() * ratio), (int)(image.getIconHeight()*ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*ratio), (int)(image.getIconHeight()*ratio), null);
-			
+
 			if(_map.getWidth() < getWidth()) {
 				_x = (int) ((getWidth() - _map.getWidth()) / 2);
 			} else {
@@ -213,6 +212,9 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			setLocationsMapXY(_x, _y);
 		} else {
 			_map = null;
+		}
+		if(_openedPanel != null) {
+			_openedPanel.update();
 		}
 		updateLocations();
 		repaint();

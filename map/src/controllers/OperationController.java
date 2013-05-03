@@ -167,7 +167,7 @@ public class OperationController implements Subject {
 				String name = result.getString("nom");
 				Boolean visibility = result.getBoolean("visibilite");
 
-				MapController map = new MapController(this, _dbm , id, name, visibility);
+				MapController map = new MapController(this, _dbm , id, name, visibility, true);
 				_timerTask.set_lastMapControllerId(id);
 			}
 
@@ -327,6 +327,12 @@ public class OperationController implements Subject {
 
 	public void addMap(MapController map){
 		_mapList.add(map);
+	}
+	
+	public void addCurrentMap(MapController map){
+		_mapList.add(map);
+		_currentMap = map;
+		notifyObservers();
 	}
 
 	public void addLocation(LocationController location){
