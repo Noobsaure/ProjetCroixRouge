@@ -426,6 +426,7 @@ public class EntityController {
 				_stateId = result.getInt("statut_id");
 				_name = _dbm.stripSlashes(result.getString("nom"));
 				_dateArriveeLocalisation = result.getTimestamp("date_depart");
+				_lastPosCurrentId = _posCurrentId; 
 				_posCurrentId = result.getInt("pos_courante_id");
 
 				try {
@@ -478,13 +479,8 @@ public class EntityController {
 		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) ){
 			_operation.getLocation(_posCurrentId).addEntityList(this);
 		}
-		else if( _posCurrentId == _operation.getIdPcm()){
-			for(LocationController location : _operation.getLocationList()){
-				if(location.getEntityList().contains(this)){
-					System.out.println("ON remove l'entite de la localisation : "+location.getName()+" Nouvelle localisation est "+_operation.getLocation(_posCurrentId).getName());
-					location.removeEntity(this);
-				}
-			}
+		if(_operation.getLocation(_lastPosCurrentId).getEntityList().contains(this)){
+			_operation.getLocation(_lastPosCurrentId).removeEntity(this);
 		}
 	}
 

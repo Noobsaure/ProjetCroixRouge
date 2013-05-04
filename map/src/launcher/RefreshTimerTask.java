@@ -82,7 +82,11 @@ public class RefreshTimerTask extends TimerTask
 			refreshLocation();
 			refreshVictim();
 			
+
+			System.out.println("%%%%% REFRESH TEAM MEMBER IN ENTITY %%%%%");
 			_operation.loadTeamMemberIntoEntity();
+
+			System.out.println("%%%%% REFRESH ENTITY MEMBER IN LOCATION %%%%%");
 			_operation.loadEntityIntoLocation();
 	
 			_operation.notifyObservers();
