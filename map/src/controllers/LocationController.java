@@ -202,7 +202,6 @@ public class LocationController {
 				_name = _dbm.stripSlashes(result.getString("nom"));
 				_description = _dbm.stripSlashes(result.getString("desc"));
 			}
-			
 			result.getStatement().close();
 		}catch(SQLException e){
 			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
@@ -229,5 +228,12 @@ public class LocationController {
 		_entityList.add(entityController);		
 	}
 
+	public void simpleRemoveEntity(EntityController entity){
+		_entityList.remove(entity);
+	}
+	
+	public void simpleAddEntity(EntityController entity){
+		_entityList.add(entity);
+	}
 
 }		

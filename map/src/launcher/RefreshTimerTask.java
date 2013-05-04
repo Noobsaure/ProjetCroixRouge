@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
+import com.sun.org.apache.bcel.internal.generic.LCONST;
+
 import views.MessagePanel;
 import views.CustomDialog;
 
@@ -63,7 +65,6 @@ public class RefreshTimerTask extends TimerTask
 		try {
 			while(result.next()){
 				test = result.getTimestamp("last_modified");
-				System.out.println("Lastmodified : "+test);
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -71,8 +72,6 @@ public class RefreshTimerTask extends TimerTask
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());		
 		}
 		
-		System.out.println("Date locale : "+_lastmodified);
-		System.out.println("Date BDD :"+test);
 		
 		if(_lastmodified.before(test)){
 			System.out.println("On refresh");
@@ -87,11 +86,29 @@ public class RefreshTimerTask extends TimerTask
 			_operation.loadTeamMemberIntoEntity();
 
 			System.out.println("%%%%% REFRESH ENTITY MEMBER IN LOCATION %%%%%");
-			_operation.loadEntityIntoLocation();
+			//_operation.loadEntityIntoLocation();
+			for(LocationController location : _operation.getLocationList()){
+				System.out.println("=========================== Entity at location "+location.getName()+" =====================");
+				for(EntityController entity : location.getEntityList()){
+					System.out.println("Entite "+entity.getName());
+				}
+			}
+			refreshLoadEntityIntoLocation();
 	
 			_operation.notifyObservers();
 			
 			_lastmodified = test;
+		}
+	}
+
+	private void refreshLoadEntityIntoLocation(){
+		for(EntityController entity : _operation.getEntityList()){
+			int lastPoint = entity.getRemoveFromThisPoint();
+			int newPoint = entity.getIdPosCurrent();
+			if( lastPoint != -1){
+				_operation.getLocation(lastPoint).simpleRemoveEntity(entity);
+				_operation.getLocation(newPoint).simpleAddEntity(entity);
+			}
 		}
 	}
 

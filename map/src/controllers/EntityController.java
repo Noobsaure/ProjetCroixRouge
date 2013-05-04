@@ -27,14 +27,13 @@ public class EntityController {
 	private int _id;
 	private java.sql.Timestamp _dateArriveeLocalisation;
 	private int _lastPosCurrentId;
+	private int _removeFromThisPoint =-1;
 	private String _color;
 
 	private boolean _available;
 	private String _state;
 	private int _stateId;
-
-	private List<Observer> _observers = new ArrayList<Observer>();
-
+	
 	private int _posCurrentId;
 
 	private List<TeamMemberController> _teamMemberList = new ArrayList<TeamMemberController>();
@@ -426,9 +425,14 @@ public class EntityController {
 				_stateId = result.getInt("statut_id");
 				_name = _dbm.stripSlashes(result.getString("nom"));
 				_dateArriveeLocalisation = result.getTimestamp("date_depart");
-				_lastPosCurrentId = _posCurrentId; 
-				_posCurrentId = result.getInt("pos_courante_id");
-
+				
+				if(result.getInt("pos_courante_id") != _posCurrentId){
+					_removeFromThisPoint = _posCurrentId;
+					_posCurrentId = result.getInt("pos_courante_id");
+				}else{
+					_removeFromThisPoint = -1;
+				}
+				
 				try {
 					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("dispo", "Statut", "id='"+_stateId+"'"));
 					try{
@@ -479,13 +483,15 @@ public class EntityController {
 		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) ){
 			_operation.getLocation(_posCurrentId).addEntityList(this);
 		}
-		if(_operation.getLocation(_lastPosCurrentId).getEntityList().contains(this)){
-			_operation.getLocation(_lastPosCurrentId).removeEntity(this);
-		}
 	}
 
 	public int getLastPosCurrentId(){
 		return _lastPosCurrentId;
+	}
+
+
+	public int getRemoveFromThisPoint() {
+		return _removeFromThisPoint;
 	}
 }
 
