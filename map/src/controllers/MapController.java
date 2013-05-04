@@ -174,4 +174,8 @@ public class MapController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
+
+	public void simpleAddLocation(LocationController locationController) {
+		_locationList.add(locationController);
+	}
 }

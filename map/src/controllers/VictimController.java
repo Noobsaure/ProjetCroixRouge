@@ -111,7 +111,7 @@ public class VictimController {
 			_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
 			operation.addVictim(this);
 	
-			genererDebutPriseEnChargeMessage();			
+			genererDebutPriseEnChargeMessage();		
 
 			_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		}
@@ -202,6 +202,9 @@ public class VictimController {
 					"Veuillez réessayez.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
+		
+
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	public void finDePriseEnCharge(String motifSortie){
@@ -216,7 +219,6 @@ public class VictimController {
 		}
 
 		genererFinDePriseEnCharge();
-		
 		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 

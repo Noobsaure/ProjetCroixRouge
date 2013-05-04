@@ -267,11 +267,11 @@ public class DatabaseManager
 //			java.sql.PreparedStatement statementUnlock = _currentConnection.prepareStatement("UNLOCK TABLES");
 //			statementUnlock.execute();
 
-//			ResultSet generatedKeys = statement.getGeneratedKeys();
-//			while(generatedKeys.next())
-//				lastInserted = generatedKeys.getInt(1);
-//			
-//			generatedKeys.close();
+			ResultSet generatedKeys = statement.getGeneratedKeys();
+			while(generatedKeys.next())
+				lastInserted = generatedKeys.getInt(1);
+			
+			generatedKeys.close();
 			statement.close();
 		}
 		catch(Exception e)
