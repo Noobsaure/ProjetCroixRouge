@@ -45,7 +45,7 @@ public class Launcher {
 				
 		_operation.notifyObservers();
 
-		timerTask.set_lastmodified(_dbm.getCurrentTime());
+		timerTask.set_lastmodified(_operation.getLastModified());
 		
 		Timer timer = new Timer();
 		timer.schedule(timerTask,0,5000);

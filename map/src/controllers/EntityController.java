@@ -124,7 +124,7 @@ public class EntityController {
 		_color = color;
 
 		ResultSet result;
-		System.out.println("State ID:"+_stateId);
+		
 		//On va regarder le statut pour indiquer la disponibilite de l'equipe
 		try {
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("`dispo`,`infos`", "Statut", "id='"+stateId+"'"));

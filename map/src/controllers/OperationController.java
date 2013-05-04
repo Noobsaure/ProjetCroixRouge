@@ -84,7 +84,6 @@ public class OperationController implements Subject {
 					while(result2.next()){
 						int id = result2.getInt("id");
 						int statut_id = result2.getInt("statut_id");
-						System.out.println("Statut id pour l'entite ID : "+id);
 						int position_id = result2.getInt("pos_courante_id");
 						String nom = result2.getString("nom");
 						String type = result2.getString("type");
@@ -609,6 +608,28 @@ public class OperationController implements Subject {
 		_timer = timer;
 	}
 
+	public java.sql.Timestamp getLastModified(){
+		ResultSet result = null;
+		java.sql.Timestamp date = new java.sql.Timestamp(1);
+		try{
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("last_modified", "Operation" , "id='"+_idOperation+"'"));
+		}catch(MalformedQueryException e){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la récupération du champ 'last_modified' de l'operation");
+			new CustomDialog(errorPanel, _globalPanel);
+		}		
+		try {
+			while(result.next()){
+				date = result.getTimestamp("last_modified");
+			}
+			result.close();
+		} catch (SQLException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la récupération du champ 'last_modified' de l'operation");
+			new CustomDialog(errorPanel, _globalPanel);		
+		}
+		
+		return date;
+	}
+	
 	public void setLastModified() {
 		java.sql.Timestamp timestamp = _dbm.getCurrentTime();
 		_timerTask.set_lastmodified(timestamp);
