@@ -43,18 +43,20 @@ public class ConfirmConfigureLocationListener implements ActionListener
 		if(!checkInput(name, informations))
 		{
 			if(name.equals("")) {
-				MessagePanel errorPanel = new MessagePanel("Saisie incomplète - Le nom ne peut pas être vide.", EMPTY_NAME_MESSAGE);
+				MessagePanel errorPanel = new MessagePanel("Saisie incomplï¿½te - Le nom ne peut pas ï¿½tre vide.", EMPTY_NAME_MESSAGE);
 				new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 			}
-		}
-		else
-		{
-			_locationController.setName(name);
-			_locationController.setDescription(informations);
+		} else {
+			if(!name.equals(_locationController.getName())) {
+				_locationController.setName(name);
+			}
+			if(!informations.equals(_locationController.getDescription())) {
+				_locationController.setDescription(informations);
+			}
 			_mapPanel.getGlobalPanel().getLauncher().getOperationController().notifyObservers();
 			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_configurationLocationPanel);
 			dialog.dispose();
-			
+
 		}
 	}
 }
