@@ -64,18 +64,17 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 				for (LocationController locat : locatMaplocat)
 				{	
 					String temp = mapController.getName()+" => "+locat.getName();
-					System.out.println("temp "+temp);
 					listLocation.add(locat);
 				}
 			}
 			_location = listLocation.get(_configPanel.getIndexLocation());
-			System.out.println("liste de localisation "+_location.getName());
 			
 			if(_operationController.getLocation(_entity.getIdPosCurrent()) != _location)
 				_entity.setLocation(_location);
 		}
 		else
 		{
+			System.out.println("trololo");
 		MessagePanel errorPanel = new MessagePanel("localisation ", EMPTY_LOCAT_MESSAGE);
 			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		}
