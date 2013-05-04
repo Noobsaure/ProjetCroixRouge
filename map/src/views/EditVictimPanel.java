@@ -2,6 +2,8 @@ package views;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -14,6 +16,7 @@ import views.listeners.FinDePriseEnChargeButtonListener;
 
 import com.toedter.calendar.JDateChooser;
 
+import controllers.EntityController;
 import controllers.OperationController;
 import controllers.VictimController;
 import database.DatabaseManager;
@@ -87,7 +90,22 @@ public class EditVictimPanel extends AddVictimPanel
 		_prenomTextField.setText(_victimController.getPrenom());
 		_adressTextField.setText(_victimController.getAdresse());
 		_dateDeNaissanceDatePicker.setDate(_victimController.getDateDeNaissance());
-		_entiteAssociee.setSelectedItem(_victimController.getEntiteAssociee());
+		
+		Map<String, EntityController> map = super.getMap();
+		Set<String> keys = map.keySet();
+		EntityController entiteAssociee = _victimController.getEntiteAssociee();
+		String stringEntiteAssociee = "";
+		for(String key : keys)
+		{
+			if(map.get(key) == entiteAssociee)
+				stringEntiteAssociee = key;
+		}
+		
+		for(int i = 0; i < _entiteAssociee.getItemCount(); i++)
+		{
+			if((String)_entiteAssociee.getItemAt(i) == stringEntiteAssociee)
+				_entiteAssociee.setSelectedItem(stringEntiteAssociee);
+		}
 		
 		JLabel finDePriseEnChargeLabel = new JLabel("Motif fin de prise ne charge :");
 		GridBagConstraints gbc_finDePriseEnChargeLabel = new GridBagConstraints();

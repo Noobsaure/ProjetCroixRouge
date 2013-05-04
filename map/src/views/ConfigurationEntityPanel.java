@@ -22,6 +22,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import sun.org.mozilla.javascript.tools.shell.JSConsole;
 import views.buttons.CustomButton;
 import views.listeners.AddEquipierButtonListener;
 import views.listeners.ColorChooserListener;
@@ -41,6 +42,7 @@ import controllers.LocationController;
 import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
+import javax.swing.ScrollPaneConstants;
 
 public class ConfigurationEntityPanel extends CustomPanelImpl
 {
@@ -210,39 +212,22 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		formPanel.add(separator, "1, 8, 4, 1");
 		JLabel listeEquipierLabel = new JLabel("Liste Equipiers:");
 		formPanel.add(listeEquipierLabel, "1, 10, left, top");
-
+		
 		_listeEquipierPanel = new JPanel();
-		_listeEquipierPanel.setPreferredSize(new Dimension(270, 160));
-		_listeEquipierPanel.setMinimumSize(new Dimension(210, 160));
-		_listeEquipierPanel.setSize(new Dimension(200, 140));
-		formPanel.add(_listeEquipierPanel, "4, 10, center, center");
+//		_listeEquipierPanel.setPreferredSize(new Dimension(270, 160));
+//		_listeEquipierPanel.setMinimumSize(new Dimension(210, 160));
+//		_listeEquipierPanel.setSize(new Dimension(200, 140));
+		
+		JScrollPane scrollPane = new JScrollPane(_listeEquipierPanel);
+		scrollPane.setPreferredSize(new Dimension(270, 160));
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		
+		formPanel.add(scrollPane, "4, 10, center, center");
 
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
 
-		listEquipiers= _entityController.getTeamMemberList();	
-
-		for (TeamMemberController team : listEquipiers){
-			JPanel nomEquipierPanel = new JPanel();
-			nomEquipierPanel.setMaximumSize(new Dimension(300, 25));
-			_listeEquipierPanel.add(nomEquipierPanel);
-			nomEquipierPanel.setLayout(new BorderLayout(0, 0));
-
-			JLabel _nomEquipierLabel = new JLabel(team.getName());
-			_nomEquipierLabel.setBorder(new EmptyBorder(5, 6, 5, 0));
-			nomEquipierPanel.add(_nomEquipierLabel, BorderLayout.WEST);
-			_nomEquipierLabel.setPreferredSize(new Dimension(200, 16));
-			_nomEquipierLabel.setSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMaximumSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMinimumSize(new Dimension(200, 16));
-
-			JButton removeEquipierButton = new JButton("X");
-			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
-
-			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController, team));
-			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
-			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
-			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
-		}
+		setEquipiersList();
 
 		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
 		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_mapPanel,_operationController, _entityController));
@@ -367,12 +352,10 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		return _colorChooserPanel.getBackground();
 	}
 	
-	@Override
-	public void updatePanel() {
-		_listeEquipierPanel.removeAll();
-		
+	private void setEquipiersList()
+	{
 		listEquipiers= _entityController.getTeamMemberList();	
-		
+
 		for (TeamMemberController team : listEquipiers){
 			JPanel nomEquipierPanel = new JPanel();
 			nomEquipierPanel.setMaximumSize(new Dimension(300, 25));
@@ -382,20 +365,23 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 			JLabel _nomEquipierLabel = new JLabel(team.getName());
 			_nomEquipierLabel.setBorder(new EmptyBorder(5, 6, 5, 0));
 			nomEquipierPanel.add(_nomEquipierLabel, BorderLayout.WEST);
-			_nomEquipierLabel.setPreferredSize(new Dimension(200, 16));
-			_nomEquipierLabel.setSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMaximumSize(new Dimension(200, 16));
-			_nomEquipierLabel.setMinimumSize(new Dimension(200, 16));
 
 			JButton removeEquipierButton = new JButton("X");
 			removeEquipierButton.setBorder(new EmptyBorder(5, 0, 5, 0));
 
 			removeEquipierButton.addActionListener(new RemoveEquipierListener(_entityController, team));
-			
 			nomEquipierPanel.add(removeEquipierButton, BorderLayout.EAST);
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
-			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
+	}
+	
+	@Override
+	public void updatePanel() {
+		_listeEquipierPanel.removeAll();
+		
+		listEquipiers= _entityController.getTeamMemberList();	
+		
+		setEquipiersList();
 		
 		revalidate();
 		repaint();

@@ -271,7 +271,8 @@ public class AddVictimPanel extends CustomPanelImpl {
 			entitiesList[i] = string;
 			_map.put(string, entityController);
 		}
-			_entiteAssocieeCombobox = new JComboBox(entitiesList);
+		
+		_entiteAssocieeCombobox = new JComboBox(entitiesList);
 		GridBagConstraints gbc_entiteAssocieeCombobox = new GridBagConstraints();
 		gbc_entiteAssocieeCombobox.insets = new Insets(0, 0, 0, 5);
 		gbc_entiteAssocieeCombobox.fill = GridBagConstraints.HORIZONTAL;
