@@ -41,6 +41,7 @@ public class DatabaseManager
 		try
 		{
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
+//			Class.forName("org.postgresql.Driver").newInstance();
 			System.out.println("Driver charge");
 		}
 		catch(Exception e)
@@ -262,17 +263,19 @@ public class DatabaseManager
 			updateNbExecutiionQueries();
 			_currentConnection.setAutoCommit(false);
 			
-			java.sql.PreparedStatement statementLock = _currentConnection.prepareStatement("LOCK TABLES " + query.getTables().replace(",", " WRITE ,") + " WRITE");
-			statementLock.execute();
+//			java.sql.PreparedStatement statementLock = _currentConnection.prepareStatement("LOCK TABLES " + query.getTables().replace(",", " WRITE ,") + " WRITE");
+//			statementLock.execute();
+//			_currentConnection.commit();
 	
 //			System.out.println("Execution de la requete : " + lockTables);
 			java.sql.PreparedStatement statement = _currentConnection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			statement.executeUpdate();
-			
-			java.sql.PreparedStatement statementUnlock = _currentConnection.prepareStatement("UNLOCK TABLES");
-			statementUnlock.execute();
-			
 			_currentConnection.commit();
+			
+//			java.sql.PreparedStatement statementUnlock = _currentConnection.prepareStatement("UNLOCK TABLES");
+//			statementUnlock.execute();
+//			
+//			_currentConnection.commit();
 
 			ResultSet generatedKeys = statement.getGeneratedKeys();
 			while(generatedKeys.next())
