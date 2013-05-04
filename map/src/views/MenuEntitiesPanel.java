@@ -1,6 +1,5 @@
 package views;
 
-import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
@@ -243,14 +242,8 @@ public class MenuEntitiesPanel extends JPanel {
 	}
 	
 	public static void removeEntityFromPanel(JPanel panel, int i) {
-		/*EntityPanel entityPanel = (EntityPanel)(panel.getComponent(i));
-		entityPanel.getEntityMouseListener().mouseReleased(new MouseEvent(entityPanel, MouseEvent.MOUSE_RELEASED,));*/
-		try {
-			(new Robot()).mouseRelease(MouseEvent.BUTTON1);
-		} catch (AWTException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		EntityPanel entityPanel = (EntityPanel)(panel.getComponent(i));
+		entityPanel.getEntityMouseListener().stopDrag();
 		panel.remove(i);
 		
 	}
