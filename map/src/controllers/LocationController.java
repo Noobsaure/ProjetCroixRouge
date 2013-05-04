@@ -69,7 +69,7 @@ public class LocationController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
-		operation.getCurrentMap().addLocation(this);
+		operation.getCurrentMap().simpleAddLocation(this);
 		operation.addLocation(this);
 		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}

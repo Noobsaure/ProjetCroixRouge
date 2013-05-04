@@ -99,9 +99,9 @@ public class EntityController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		_operation.addEntite(this);
 		genererMessageCreation();
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 
@@ -174,6 +174,7 @@ public class EntityController {
 		try {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+_dbm.addSlashes(infos)+"')"));
 			_stateId = result;
+			System.out.println("State ID "+_stateId);
 		} catch (MalformedQueryException e) { 
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de statut" ,"Impossible de créér un nouveau statut pour l'entite '"+_name+"'. Veuillez réessayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -190,8 +191,8 @@ public class EntityController {
 		_state = infos;
 		_operation.notifyObservers();
 
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		genererMessageStatut();
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	/**
