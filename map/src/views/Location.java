@@ -82,6 +82,7 @@ public class Location extends JPanel {
 		_name = _locationController.getName();
 		_locPanel.update();
 		_entitiesCount.setText(_locationController.getEntityList().size()+"");
+		repaint();
 	}
 
 	public LocationPanel getLocPanel() {return _locPanel;}
