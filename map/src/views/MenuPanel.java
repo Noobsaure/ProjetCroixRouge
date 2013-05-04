@@ -10,6 +10,7 @@ import java.awt.Graphics2D;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 import views.listeners.MenuMouseListener;
 import controllers.OperationController;
@@ -17,7 +18,7 @@ import controllers.OperationController;
 
 public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	public static final int LEFT_PANEL_WIDTH = 170;
+	public static final int LEFT_PANEL_WIDTH = 190;
 
 	private GlobalPanel _globalPanel;
 	private MapPanel _mapPanel;

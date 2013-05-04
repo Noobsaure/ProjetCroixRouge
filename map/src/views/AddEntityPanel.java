@@ -47,6 +47,9 @@ public class AddEntityPanel extends CustomPanelImpl {
 	private JTextArea _informationsTextArea;
 	private JPanel _colorChooserPanel;
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public AddEntityPanel(MapPanel mapPanel, OperationController operation, DatabaseManager dbm)
 	{
 		_mapPanel = mapPanel;
