@@ -27,8 +27,9 @@ public class GlobalPanel extends JApplet implements Observer
 	private String _port;
 	private String _login;
 	private String _mdp;
-	private String _idOperateur;
-	private String _idOperation;
+	private int _idOperateur;
+	private int _idOperation;
+	private String _databaseName;
 	
 	private List<CustomDialog> _dialogs;
 
@@ -40,12 +41,13 @@ public class GlobalPanel extends JApplet implements Observer
 	@Override
 	public void init()
 	{
-		String _serveur = getParameter("serveur");
-		String _port = getParameter("port");
-		String _login = getParameter("login");
-		String _mdp = getParameter("mdp");
-		int _idOperation = Integer.parseInt(getParameter("idOperation"));
-		int _idOperateur = Integer.parseInt(getParameter("idOperateur"));
+		_serveur = getParameter("serveur");
+		_port = getParameter("port");
+		_login = getParameter("login");
+		_mdp = getParameter("mdp");
+		_idOperation = Integer.parseInt(getParameter("idOperation"));
+		_idOperateur = Integer.parseInt(getParameter("idOperateur"));
+		_databaseName = getParameter("database_name");
 		
 		try
 		{
@@ -75,7 +77,7 @@ public class GlobalPanel extends JApplet implements Observer
 
 		getContentPane().add(_menuPanel, BorderLayout.WEST);
 
-		_launcher = new Launcher(this, _serveur, _port, _login, _mdp, _idOperation, _idOperateur);
+		_launcher = new Launcher(this, _serveur, _port, _login, _mdp, _idOperation, _idOperateur, _databaseName);
 		_operation = _launcher.getOperationController();
 		_operation.addObserver(this);
 		_mapPanel.setOperation(_operation);
