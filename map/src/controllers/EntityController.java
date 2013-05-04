@@ -3,14 +3,10 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-
-import observer.Observer;
-import observer.Subject;
-import views.MessagePanel;
 import views.CustomDialog;
+import views.MessagePanel;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
@@ -73,7 +69,7 @@ public class EntityController {
 		int result;
 
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,NULL,'1','"+datetime+"','Creation entite')"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,NULL,'1','"+datetime+"','Création entité')"));
 			_stateId = result;
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation du statut pour l'entité '"+name+"'.");
@@ -128,12 +124,19 @@ public class EntityController {
 		_color = color;
 
 		ResultSet result;
-
+		System.out.println("State ID:"+_stateId);
 		//On va regarder le statut pour indiquer la disponibilite de l'equipe
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("dispo", "Statut", "id='"+stateId+"'"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`dispo`,`infos`", "Statut", "id='"+stateId+"'"));
 			try{
 				while(result.next()){
+					_state = result.getString("infos");
+					if(_state != null){
+						_state = _dbm.stripSlashes(_state);
+					}
+					else if( (_state == null) || (_state.compareTo("Création entité") == 0) ){
+						_state=" ";
+					}
 					_available = result.getBoolean("dispo");
 				}
 				result.getStatement().close();
@@ -497,6 +500,10 @@ public class EntityController {
 
 	public int getRemoveFromThisPoint() {
 		return _removeFromThisPoint;
+	}
+	
+	public String getInformationsStatut(){
+		return _state;
 	}
 }
 

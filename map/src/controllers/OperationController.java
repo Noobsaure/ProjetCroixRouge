@@ -84,6 +84,7 @@ public class OperationController implements Subject {
 					while(result2.next()){
 						int id = result2.getInt("id");
 						int statut_id = result2.getInt("statut_id");
+						System.out.println("Statut id pour l'entite ID : "+id);
 						int position_id = result2.getInt("pos_courante_id");
 						String nom = result2.getString("nom");
 						String type = result2.getString("type");

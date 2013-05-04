@@ -267,7 +267,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		JScrollPane textAreaScrollPane = new JScrollPane();
 		formPanel.add(textAreaScrollPane, "4, 17, 1, 6, fill, fill");
 
-		_informationsTextArea = new JTextArea();
+		_informationsTextArea = new JTextArea(_entityController.getInformationsStatut());
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 
 		CustomButton modifStatusButton = new CustomButton("Valider Modifier status");
