@@ -38,6 +38,7 @@ public class SubMenuVictimPanel extends SubMenuPanelImpl {
 
 		_scrollPane = new JScrollPane(_thumbnailsPanel);
 		_scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		_scrollPane.setBorder(null);
 		_scrollPane.setViewportBorder(null);
 		add(_scrollPane, BorderLayout.CENTER);
 
