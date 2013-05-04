@@ -47,7 +47,8 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 			MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
 			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		} else {
-			_entity.setName(nomEntity);
+			if(_entity.getName().compareTo(nomEntity) != 0)
+				_entity.setName(nomEntity);
 		}
 		
 		List<MapController> locatMap;
@@ -69,7 +70,9 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 			}
 			_location = listLocation.get(_configPanel.getIndexLocation());
 			System.out.println("liste de localisation "+_location.getName());
-			_entity.setLocation(_location);
+			
+			if(_operationController.getLocation(_entity.getIdPosCurrent()) != _location)
+				_entity.setLocation(_location);
 		}
 		else
 		{

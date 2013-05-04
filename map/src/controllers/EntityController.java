@@ -383,7 +383,11 @@ public class EntityController {
 			disponibility = "indisponible";
 		}
 
-		String message =  "'"+_name+"' est maintenant "+disponibility+" (Informations: "+_state+" ).";
+		String message =  "'"+_name+"' est maintenant "+disponibility;
+		
+		if(_state != null){
+			message +=" (Informations: "+_state+" ).";
+		}
 
 		try {
 			int id = _operation.getId();
