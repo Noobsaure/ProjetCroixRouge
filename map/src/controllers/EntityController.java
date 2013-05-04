@@ -481,6 +481,7 @@ public class EntityController {
 		else if( _posCurrentId == _operation.getIdPcm()){
 			for(LocationController location : _operation.getLocationList()){
 				if(location.getEntityList().contains(this)){
+					System.out.println("ON remove l'entite de la localisation : "+location.getName()+" Nouvelle localisation est "+_operation.getLocation(_posCurrentId).getName());
 					location.removeEntity(this);
 				}
 			}

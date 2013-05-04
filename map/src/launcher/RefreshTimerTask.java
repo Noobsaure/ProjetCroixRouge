@@ -34,6 +34,7 @@ public class RefreshTimerTask extends TimerTask
 	}
 
 	public void set_lastmodified(java.sql.Timestamp _lastmodified) {
+		_lastmodified.setNanos(0);
 		this._lastmodified = _lastmodified;
 	}
 
@@ -52,16 +53,17 @@ public class RefreshTimerTask extends TimerTask
 	@Override
 	public void run() {
 		ResultSet result = null;
-		java.sql.Timestamp date = _lastmodified;
+		java.sql.Timestamp test = new java.sql.Timestamp(1);
 		try{
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("last_modified", "Operation" , "id = "+_operation.getId()));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("last_modified", "Operation" , "id='"+_operation.getId()+"'"));
 		}catch(MalformedQueryException e){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la récupération du champ 'last_modified' de l'operation");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}		
 		try {
 			while(result.next()){
-				date = result.getTimestamp("last_modified");
+				test = result.getTimestamp("last_modified");
+				System.out.println("Lastmodified : "+test);
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -69,7 +71,10 @@ public class RefreshTimerTask extends TimerTask
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());		
 		}
 		
-		if(_lastmodified.before(date)){
+		System.out.println("Date locale : "+_lastmodified);
+		System.out.println("Date BDD :"+test);
+		
+		if(_lastmodified.before(test)){
 			System.out.println("On refresh");
 			refreshTeamMember();
 			refreshEntity();
@@ -82,7 +87,7 @@ public class RefreshTimerTask extends TimerTask
 	
 			_operation.notifyObservers();
 			
-			_lastmodified = date;
+			_lastmodified = test;
 		}
 	}
 
