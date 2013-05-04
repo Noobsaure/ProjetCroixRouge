@@ -252,8 +252,8 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		JSeparator separator_1 = new JSeparator();
 		formPanel.add(separator_1, "1, 13, 4, 1");
 
-		JLabel _statusLabel = new JLabel("Status :");
-		formPanel.add(_statusLabel, "1, 15");
+		JLabel _statutLabel = new JLabel("Statut :");
+		formPanel.add(_statutLabel, "1, 15");
 
 		/**************************************************************\
 		 * 					Buttons radio Dispo/Indispo
