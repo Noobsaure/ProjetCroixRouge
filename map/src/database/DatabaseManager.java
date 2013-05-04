@@ -77,8 +77,7 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+			displayError(e);
 		}
 	}
 
@@ -426,21 +425,7 @@ public class DatabaseManager
 		for(int i = 0; i < e.getStackTrace().length; i++)
 			errorMessage += e.getStackTrace()[i] + "\n";
 
-		try
-		{
-			java.sql.Statement statement;
-
-			if(!_connection.isClosed())
-				statement = _connection.createStatement();
-			else
-				statement = _connectionBack.createStatement();
-
-			JOptionPane.showMessageDialog(null, errorMessage + statement);
-		}
-		catch(SQLException e1)
-		{
-			e1.printStackTrace();
-		}
+		JOptionPane.showMessageDialog(null, errorMessage);
 
 		System.exit(0);
 	}
