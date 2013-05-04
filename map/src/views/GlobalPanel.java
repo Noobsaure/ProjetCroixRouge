@@ -47,7 +47,7 @@ public class GlobalPanel extends JApplet implements Observer
 		_mdp = getParameter("mdp");
 		_idOperation = Integer.parseInt(getParameter("idOperation"));
 		_idOperateur = Integer.parseInt(getParameter("idOperateur"));
-		_databaseName = getParameter("database_name");
+		_databaseName = getParameter("database");
 		
 		try
 		{
