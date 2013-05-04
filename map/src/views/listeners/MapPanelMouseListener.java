@@ -111,10 +111,11 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 
 	private boolean isCoordAwayFromLocs(int x, int y) {
 		boolean res = true;
+		int mx = _mapPanel.get_x();
+		int my = _mapPanel.get_y();
 		for(Location loc : _mapPanel.getLocations()) {
-			int dx = Math.abs(x - (loc.get_x() + _mapPanel.get_x()));
-			int dy = Math.abs(y - (loc.get_y() + _mapPanel.get_x()));
-			System.out.println("DX = "+dx + " ; DY = "+dy);
+			int dx = Math.abs(x - (loc.get_x() + mx));
+			int dy = Math.abs(y - (loc.get_y() + my));
 			if(dx < Location._iconLoc.getIconWidth() && dy < Location._iconLoc.getIconHeight()) {
 				res = false;
 				break;
