@@ -7,7 +7,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -199,7 +198,7 @@ public class DatabaseManager
 		try
 		{
 			updateNbExecutiionQueries();
-			java.sql.Statement statement = _currentConnection.createStatement();
+			java.sql.Statement statement = _currentConnection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, ResultSet.CLOSE_CURSORS_AT_COMMIT);
 			result = statement.executeQuery(query.toString());
 		}
 		catch(Exception e)
@@ -228,7 +227,7 @@ public class DatabaseManager
 		{			
 			updateNbExecutiionQueries();
 			_currentConnection.setAutoCommit(true);
-			java.sql.Statement statement = _currentConnection.createStatement();
+			java.sql.Statement statement = _currentConnection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, ResultSet.CLOSE_CURSORS_AT_COMMIT);
 			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			statement.close();
 		}
@@ -263,16 +262,17 @@ public class DatabaseManager
 //			statementLock.execute();
 	
 //			System.out.println("Execution de la requete : " + lockTables);
-			java.sql.PreparedStatement statement = _currentConnection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
-			statement.executeUpdate();
+			java.sql.Statement statement = _currentConnection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY, ResultSet.CLOSE_CURSORS_AT_COMMIT);
+			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			
 //			java.sql.PreparedStatement statementUnlock = _currentConnection.prepareStatement("UNLOCK TABLES");
 //			statementUnlock.execute();
 
-			ResultSet generatedKeys = statement.getGeneratedKeys();
-			while(generatedKeys.next())
-				lastInserted = generatedKeys.getInt(1);
-
+//			ResultSet generatedKeys = statement.getGeneratedKeys();
+//			while(generatedKeys.next())
+//				lastInserted = generatedKeys.getInt(1);
+//			
+//			generatedKeys.close();
 			statement.close();
 		}
 		catch(Exception e)
@@ -318,12 +318,13 @@ public class DatabaseManager
 	    	preparedStatement.setBinaryStream(5, fileInputStream, (int) file.length());
 	    	updateNbExecutiionQueries();
 	    	preparedStatement.executeUpdate();
+	    	_connection.commit();
 	    	
 	    	ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
 	    	while(generatedKeys.next())
 				id = generatedKeys.getInt(1);
-	    	_connection.commit();
 	    	
+	    	generatedKeys.close();
 	    	preparedStatement.close();
 	    	fileInputStream.close();
 	    }

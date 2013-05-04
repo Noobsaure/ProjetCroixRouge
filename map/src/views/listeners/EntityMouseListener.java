@@ -52,16 +52,15 @@ public class EntityMouseListener implements MouseListener, MouseMotionListener{
 		}
 	}
 
-
 	public void mouseReleased(MouseEvent e) {
 		if(_dragOccurring && e.getButton() == MouseEvent.BUTTON1) {
 			_glassPane.setCursor(Cursor.getDefaultCursor());
 			setDragOccurring(false);
 			_entity.getTransferHandler().exportAsDrag(_entity, e, TransferHandler.MOVE);
 			Point location = (Point)e.getPoint().clone();
-			SwingUtilities.convertPointToScreen(location, _entity);
+			/*SwingUtilities.convertPointToScreen(location, _entity);
 			SwingUtilities.convertPointFromScreen(location, _glassPane);
-			_glassPane.setLocation(location);
+			_glassPane.setLocation(location);*/
 			_glassPane.setImage(null);
 			_glassPane.setVisible(false);
 		}
@@ -90,6 +89,13 @@ public class EntityMouseListener implements MouseListener, MouseMotionListener{
 	public void setDragOccurring(boolean dragOccurring) {
 		_dragOccurring = dragOccurring;
 		_globalPanel.setDragOccurring(dragOccurring);
+	}
+	
+	public void stopDrag() {
+		_glassPane.setCursor(Cursor.getDefaultCursor());
+		setDragOccurring(false);
+		_glassPane.setImage(null);
+		_glassPane.setVisible(false);
 	}
 
 	@Override

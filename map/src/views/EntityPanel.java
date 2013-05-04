@@ -35,6 +35,7 @@ public class EntityPanel extends JPanel
 	private ImageIcon _iconGearOn;
 	private ImageIcon _iconGearOff;
 	private OperationController _operationController;
+	private EntityMouseListener _mouseListener;
 
 	private EntityController _entity;
 
@@ -80,8 +81,8 @@ public class EntityPanel extends JPanel
 		_iconPanel.setLayout(new BorderLayout(0, 0));
 
 		_iconLocation = new JLabel();
-		IconLocationMouseListener mouseListener = new IconLocationMouseListener(this, (GlassPane)entitiesPanel.getGlobalPanel().getGlassPane(), entitiesPanel.getGlobalPanel());
-		_iconLocation.addMouseListener(mouseListener);
+		IconLocationMouseListener iconLocMouseListener = new IconLocationMouseListener(this, (GlassPane)entitiesPanel.getGlobalPanel().getGlassPane(), entitiesPanel.getGlobalPanel());
+		_iconLocation.addMouseListener(iconLocMouseListener);
 		if(_entity.getIdPosCurrent() == _operationController.getIdPcm()) {
 			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_off.png")));
 		} else {
@@ -99,9 +100,9 @@ public class EntityPanel extends JPanel
 
 		add(_iconPanel,BorderLayout.EAST);
 
-		EntityMouseListener listener = new EntityMouseListener(this, (GlassPane)entitiesPanel.getGlobalPanel().getGlassPane(), entitiesPanel.getGlobalPanel());
-		_entityName.addMouseListener(listener);
-		_entityName.addMouseMotionListener(listener);
+		_mouseListener = new EntityMouseListener(this, (GlassPane)entitiesPanel.getGlobalPanel().getGlassPane(), entitiesPanel.getGlobalPanel());
+		_entityName.addMouseListener(_mouseListener);
+		_entityName.addMouseMotionListener(_mouseListener);
 
 		setTransferHandler(new EntityTransferHandler());
 	}
@@ -124,6 +125,8 @@ public class EntityPanel extends JPanel
 			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_on.png")));
 		}
 	}
+	
+	public EntityMouseListener getEntityMouseListener() {return _mouseListener;}
 
 	@Override
 	public void paintComponent(Graphics g)
