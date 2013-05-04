@@ -227,13 +227,9 @@ public class DatabaseManager
 		try
 		{			
 			updateNbExecutiionQueries();
-			_currentConnection.setAutoCommit(false);
-			//System.out.println("Execution de la requete : " + query);
+			_currentConnection.setAutoCommit(true);
 			java.sql.Statement statement = _currentConnection.createStatement();
 			lastInserted = statement.executeUpdate(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
-			_currentConnection.commit();
-			//System.out.println("Requete executee...");
-
 			statement.close();
 		}
 		catch(Exception e)
@@ -261,28 +257,23 @@ public class DatabaseManager
 		try
 		{
 			updateNbExecutiionQueries();
-			_currentConnection.setAutoCommit(false);
+			_currentConnection.setAutoCommit(true);
 			
 //			java.sql.PreparedStatement statementLock = _currentConnection.prepareStatement("LOCK TABLES " + query.getTables().replace(",", " WRITE ,") + " WRITE");
 //			statementLock.execute();
-//			_currentConnection.commit();
 	
 //			System.out.println("Execution de la requete : " + lockTables);
 			java.sql.PreparedStatement statement = _currentConnection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
 			statement.executeUpdate();
-			_currentConnection.commit();
 			
 //			java.sql.PreparedStatement statementUnlock = _currentConnection.prepareStatement("UNLOCK TABLES");
 //			statementUnlock.execute();
-//			
-//			_currentConnection.commit();
 
 			ResultSet generatedKeys = statement.getGeneratedKeys();
 			while(generatedKeys.next())
 				lastInserted = generatedKeys.getInt(1);
 
 			statement.close();
-			//System.out.println("Requete executee...");
 		}
 		catch(Exception e)
 		{
