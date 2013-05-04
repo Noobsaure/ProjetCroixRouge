@@ -48,7 +48,6 @@ public class MenuPanel extends JPanel {
 		JScrollPane scrollPane = new JScrollPane(_entitiesPanel);
 		scrollPane.setViewportBorder(null);
 		scrollPane.setBorder(null);
-		scrollPane.setViewportView(_entitiesPanel);
 		add(scrollPane, BorderLayout.CENTER);
 
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
