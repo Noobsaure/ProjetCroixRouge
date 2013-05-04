@@ -216,29 +216,15 @@ public class MenuEntitiesPanel extends JPanel {
 
 		_unavailableEntityPanelsList = newUnavailableEntityPanelsList;
 
-		System.out.println();
-		System.out.println("AVAILABLE");
-		System.out.println();
+		
 		for(EntityPanel onePanel : _availableEntityPanelsList) {
 			onePanel.update();
-			if(onePanel.getEntityController().isAvailable()) {
-				System.out.println(onePanel.getEntityController().getName() + " EST DISPONIBLE");
-			} else {
-				System.out.println(onePanel.getEntityController().getName() + " N'EST PAS DISPONIBLE");
-			}
 		}
-		System.out.println();
-		System.out.println("UNAVAILABLE");
-		System.out.println();
+	
 		for(EntityPanel onePanel : _unavailableEntityPanelsList) {
 			onePanel.update();
-			if(onePanel.getEntityController().isAvailable()) {
-				System.out.println(onePanel.getEntityController().getName() + " EST DISPONIBLE");
-			} else {
-				System.out.println(onePanel.getEntityController().getName() + " N'EST PAS DISPONIBLE");
-			}
 		}
-		System.out.println();
+		
 	}
 	
 	public static void removeEntityFromPanel(JPanel panel, int i) {

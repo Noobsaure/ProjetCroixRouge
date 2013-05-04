@@ -30,13 +30,13 @@ public class RefreshTimerTask extends TimerTask
 	private OperationController _operation;
 	private DatabaseManager _dbm;
 	
-	private java.sql.Timestamp _lastmodified;
-	public java.sql.Timestamp get_lastmodified() {
+	private java.sql.Time _lastmodified;
+	
+	public java.sql.Time get_lastmodified() {
 		return _lastmodified;
 	}
 
-	public void set_lastmodified(java.sql.Timestamp _lastmodified) {
-		_lastmodified.setNanos(0);
+	public void set_lastmodified(java.sql.Time _lastmodified) {
 		this._lastmodified = _lastmodified;
 	}
 
@@ -55,7 +55,7 @@ public class RefreshTimerTask extends TimerTask
 	@Override
 	public void run() {
 		ResultSet result = null;
-		java.sql.Timestamp test = new java.sql.Timestamp(1);
+		java.sql.Time date = new java.sql.Time(1);
 		try{
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("last_modified", "Operation" , "id='"+_operation.getId()+"'"));
 		}catch(MalformedQueryException e){
@@ -64,7 +64,7 @@ public class RefreshTimerTask extends TimerTask
 		}		
 		try {
 			while(result.next()){
-				test = result.getTimestamp("last_modified");
+				date = result.getTime("last_modified");
 			}
 			result.close();
 		} catch (SQLException e) {
@@ -72,8 +72,10 @@ public class RefreshTimerTask extends TimerTask
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());		
 		}
 		
+		System.out.println("Mon last modified: "+_lastmodified);
+		System.out.println("Last modified serveur: "+date);
 		
-		if(_lastmodified.before(test)){
+		if(_lastmodified.before(date)){
 			System.out.println("On refresh");
 			refreshTeamMember();
 			refreshEntity();
@@ -81,23 +83,12 @@ public class RefreshTimerTask extends TimerTask
 			refreshLocation();
 			refreshVictim();
 			
-
-			System.out.println("%%%%% REFRESH TEAM MEMBER IN ENTITY %%%%%");
 			_operation.loadTeamMemberIntoEntity();
-
-			System.out.println("%%%%% REFRESH ENTITY MEMBER IN LOCATION %%%%%");
-			//_operation.loadEntityIntoLocation();
-			for(LocationController location : _operation.getLocationList()){
-				System.out.println("=========================== Entity at location "+location.getName()+" =====================");
-				for(EntityController entity : location.getEntityList()){
-					System.out.println("Entite "+entity.getName());
-				}
-			}
 			refreshLoadEntityIntoLocation();
 	
 			_operation.notifyObservers();
 			
-			_lastmodified = test;
+			_lastmodified = date;
 		}
 	}
 
@@ -113,7 +104,6 @@ public class RefreshTimerTask extends TimerTask
 	}
 
 	private void refreshVictim() {
-		System.out.println("%%%%% REFRESH VICTIM LIST %%%%%");
 		/* UPDATE TEAMMEMBER ALREADY IN THE LIST */		
 		List<VictimController> victimList = _operation.getVictimList();
 
@@ -159,7 +149,6 @@ public class RefreshTimerTask extends TimerTask
 	}
 
 	public void refreshTeamMember(){
-		System.out.println("%%%%% REFRESH TEAMMEMBER LIST %%%%%");
 		/* UPDATE TEAMMEMBER ALREADY IN THE LIST */		
 		List<TeamMemberController> teamMemberList = _operation.getTeamMemberList();
 
@@ -191,7 +180,6 @@ public class RefreshTimerTask extends TimerTask
 	}	
 
 	public void refreshEntity(){
-		System.out.println("%%%%% REFRESH ENTITY LIST %%%%%");
 		/* UPDATE ENTITY ALREADY IN THE LIST */
 		List<EntityController> entityList = _operation.getEntityList();
 
@@ -233,7 +221,6 @@ public class RefreshTimerTask extends TimerTask
 	}
 
 	public void refreshMaps(){
-		System.out.println("%%%%% REFRESH MAPS LIST %%%%%");
 		/* UPDATE MAPS ALREADY IN THE LIST */
 		List<MapController> mapList = _operation.getMapList();
 
@@ -271,7 +258,6 @@ public class RefreshTimerTask extends TimerTask
 	}
 
 	public void refreshLocation(){
-		System.out.println("%%%%% REFRESH LOCATION LIST %%%%%");
 		/* UPDATE MAPS ALREADY IN THE LIST */
 		List<LocationController> locationList = _operation.getLocationList();
 

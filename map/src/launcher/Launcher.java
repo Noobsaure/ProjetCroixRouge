@@ -5,6 +5,7 @@ import java.util.Timer;
 
 import views.GlobalPanel;
 import controllers.OperationController;
+import controllers.TeamMemberController;
 import database.DatabaseManager;
 import database.MalformedQueryException;
 
@@ -30,7 +31,7 @@ public class Launcher {
 		// Lorsque la map sera intégrée à la page symfony : _operation = new OperationController(_dbm, getParameter("idOperation"), getParameter("idOperateur"));
 		_operation = new OperationController(_dbm,idOperation,idOperateur);
 		RefreshTimerTask timerTask = new RefreshTimerTask(_operation, _dbm);
-		timerTask.set_lastmodified(new java.sql.Timestamp(new Date().getTime()));
+		
 		_operation.setTimerTask(timerTask);
 		_operation.setGlobalPanel(panel);
 		_dbm.setOperation(_operation);
@@ -46,7 +47,7 @@ public class Launcher {
 				
 		_operation.notifyObservers();
 
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		timerTask.set_lastmodified(_dbm.getCurrentTime());
 		
 		Timer timer = new Timer();
 		timer.schedule(timerTask,0,5000);

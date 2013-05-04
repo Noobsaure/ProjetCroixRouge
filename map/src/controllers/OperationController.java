@@ -608,7 +608,7 @@ public class OperationController implements Subject {
 	}
 
 	public void setLastModified(Timestamp timestamp) {
-		_timerTask.set_lastmodified(timestamp);
+		_timerTask.set_lastmodified(_dbm.getCurrentTime());
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Operation", "last_modified ='"+timestamp+"'", "id="+_idOperation));
 		}catch(MalformedQueryException e){
@@ -616,6 +616,7 @@ public class OperationController implements Subject {
 			new CustomDialog(errorPanel, _globalPanel);
 		}
 	}
+
 }
 
 
