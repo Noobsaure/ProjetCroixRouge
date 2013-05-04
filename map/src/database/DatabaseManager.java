@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.util.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -427,5 +429,24 @@ public class DatabaseManager
 		JOptionPane.showMessageDialog(null, errorMessage);
 
 		System.exit(0);
+	}
+	
+	public Time getCurrentTime(){
+		ResultSet result = null;
+		Time currentTime = new Time(new Date().getTime());
+		try {
+			result = executeQuerySelect(new SQLQuerySelect("CURRENT_TIME()","Operation LIMIT 1"));
+		} catch (MalformedQueryException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la recupération de l'heure du serveur");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+		try {
+			while(result.next()){
+				currentTime = result.getTime(1);
+			}
+		} catch (SQLException e) {
+		}
+		
+		return currentTime;
 	}
 }

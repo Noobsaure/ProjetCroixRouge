@@ -63,8 +63,5 @@ public class LocationDropTargetListener implements DropTargetListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-
 	}
-
 }

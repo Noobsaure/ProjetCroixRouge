@@ -103,9 +103,6 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	public void updateLocations() {
 		List<LocationController> listLocations = _operation.getMapLocationList();
-		System.out.println();
-		System.out.println("TAILLE = "+listLocations.size());
-		System.out.println();
 		List<Location> listLocationsToDelete = new ArrayList<Location>();
 		for(Location oneLoc : _locations) {
 			if(!listLocations.contains(oneLoc.getLocationController())) {

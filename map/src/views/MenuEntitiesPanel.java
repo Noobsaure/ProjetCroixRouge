@@ -4,9 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Robot;
 import java.awt.dnd.DropTarget;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -174,7 +172,7 @@ public class MenuEntitiesPanel extends JPanel {
 
 		int nbComponent = _panelAvailable.getComponentCount();
 		for(int j = i; (j < nbComponent); j++)
-			_panelAvailable.remove(i);
+			removeEntityFromPanel(_panelAvailable, i);
 
 		for(int j = i - 1; j < availableEntitiesList.size(); j++)
 		{
@@ -205,7 +203,7 @@ public class MenuEntitiesPanel extends JPanel {
 
 		int nbComponentUnavailable = _panelUnavailable.getComponentCount();
 		for(int j = k; (j < nbComponentUnavailable); j++)
-			_panelUnavailable.remove(k);
+			removeEntityFromPanel(_panelUnavailable, k);
 
 		for(int j = k; j < unavailableEntitiesList.size(); j++)
 		{
@@ -216,29 +214,15 @@ public class MenuEntitiesPanel extends JPanel {
 
 		_unavailableEntityPanelsList = newUnavailableEntityPanelsList;
 
-		System.out.println();
-		System.out.println("AVAILABLE");
-		System.out.println();
+		
 		for(EntityPanel onePanel : _availableEntityPanelsList) {
 			onePanel.update();
-			if(onePanel.getEntityController().isAvailable()) {
-				System.out.println(onePanel.getEntityController().getName() + " EST DISPONIBLE");
-			} else {
-				System.out.println(onePanel.getEntityController().getName() + " N'EST PAS DISPONIBLE");
-			}
 		}
-		System.out.println();
-		System.out.println("UNAVAILABLE");
-		System.out.println();
+	
 		for(EntityPanel onePanel : _unavailableEntityPanelsList) {
 			onePanel.update();
-			if(onePanel.getEntityController().isAvailable()) {
-				System.out.println(onePanel.getEntityController().getName() + " EST DISPONIBLE");
-			} else {
-				System.out.println(onePanel.getEntityController().getName() + " N'EST PAS DISPONIBLE");
-			}
 		}
-		System.out.println();
+		
 	}
 	
 	public static void removeEntityFromPanel(JPanel panel, int i) {

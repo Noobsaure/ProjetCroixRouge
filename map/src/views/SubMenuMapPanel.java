@@ -50,7 +50,7 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 
 	@Override
 	public void displayThumbnail()
-	{		
+	{
 		_thumbnailsPanel.setBackground(SubMenuMapPanel.COLOR_BACKGROUND);
 		_thumbnailsPanel.setLayout(new BoxLayout(_thumbnailsPanel, BoxLayout.PAGE_AXIS));
 		_thumbnailsList = new ArrayList<ThumbnailMapPanel>();
@@ -72,9 +72,9 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 	public void setListMapsContent()
 	{
 		List<MapController> listMaps = _operationController.getMapList();
-		
+
 		List<ThumbnailMapPanel> mapThumbnailsToDelete = new ArrayList<ThumbnailMapPanel>();
-		
+
 		for(ThumbnailMapPanel oneMapThumbnail : _thumbnailsList) {
 			if(!listMaps.contains(oneMapThumbnail.getMapController())) {
 				_thumbnailsPanel.remove(oneMapThumbnail);
@@ -84,7 +84,7 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 			}
 		}
 		_thumbnailsList.removeAll(mapThumbnailsToDelete);
-		
+
 		for(MapController oneMap : listMaps) {
 			ThumbnailMapPanel mapThumbnail = new ThumbnailMapPanel(_mapPanel, this, oneMap, _operationController, _group);
 			int currentMapId = _operationController.getCurrentMap().getId();
@@ -96,7 +96,7 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 			_thumbnailsList.add(mapThumbnail);
 		}
 	}
-	
+
 	@Override
 	public void update()
 	{

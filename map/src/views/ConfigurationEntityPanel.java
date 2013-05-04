@@ -20,9 +20,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.border.EmptyBorder;
 
-import sun.org.mozilla.javascript.tools.shell.JSConsole;
 import views.buttons.CustomButton;
 import views.listeners.AddEquipierButtonListener;
 import views.listeners.ColorChooserListener;
@@ -42,7 +42,6 @@ import controllers.LocationController;
 import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
-import javax.swing.ScrollPaneConstants;
 
 public class ConfigurationEntityPanel extends CustomPanelImpl
 {
@@ -54,7 +53,6 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 480);
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Information sur l'entité";
-	private JPanel _parent;
 	private MapPanel _mapPanel;
 	private EntityController _entityController;
 	private OperationController _operationController;
