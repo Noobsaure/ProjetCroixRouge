@@ -36,9 +36,10 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		if(_addingLocation) {
 			int x = e.getX();
 			int y = e.getY();
-			if(isCoordAwayFromLocs(x, y) && !_mapPanel.getCursor().equals(addableCursor)) {
+			boolean away = isCoordAwayFromLocs(x, y);
+			if(away && !_mapPanel.getCursor().equals(addableCursor)) {
 				_mapPanel.setCursor(addableCursor);
-			} else if (!isCoordAwayFromLocs(x, y) && !_mapPanel.getCursor().equals(notAddableCursor)){
+			} else if (!away && !_mapPanel.getCursor().equals(notAddableCursor)){
 				_mapPanel.setCursor(notAddableCursor);
 			}
 		}
@@ -57,7 +58,7 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 	public void mousePressed(MouseEvent e) {
 		int x = e.getX();
 		int y = e.getY();
-		if(e.getButton() == MouseEvent.BUTTON1 && isCoordAwayFromLocs(x, y)) {
+		if(e.getButton() == MouseEvent.BUTTON1) {
 			_x = x;
 			_y = y;
 			_moving = true;
@@ -81,8 +82,7 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 			} else {
 				setAddingLocation(false);
 			}
-		}
-		else if(e.getButton() == MouseEvent.BUTTON3) {
+		} else if(e.getButton() == MouseEvent.BUTTON3) {
 			if(!isCoordWithinMap(x, y)) {
 				MessagePanel errorPanel = new MessagePanel("Erreur" ,"Point en dehors de la carte.");
 				new CustomDialog(errorPanel, _globalPanel);
@@ -112,8 +112,9 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 	private boolean isCoordAwayFromLocs(int x, int y) {
 		boolean res = true;
 		for(Location loc : _mapPanel.getLocations()) {
-			int dx = Math.abs(x - loc.get_x());
-			int dy = Math.abs(y - loc.get_y());
+			int dx = Math.abs(x - (loc.get_x() + _mapPanel.get_x()));
+			int dy = Math.abs(y - (loc.get_y() + _mapPanel.get_x()));
+			System.out.println("DX = "+dx + " ; DY = "+dy);
 			if(dx < Location._iconLoc.getIconWidth() && dy < Location._iconLoc.getIconHeight()) {
 				res = false;
 				break;
