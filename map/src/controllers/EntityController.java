@@ -101,7 +101,7 @@ public class EntityController {
 
 		_operation.addEntite(this);
 		genererMessageCreation();
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 
@@ -192,7 +192,7 @@ public class EntityController {
 		_operation.notifyObservers();
 
 		genererMessageStatut();
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class EntityController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_color = newColor;
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	public void setLocation(LocationController location) {	
@@ -312,8 +312,9 @@ public class EntityController {
 		}
 
 		genererMessageDeplacement(idDeplacement);
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 		_operation.notifyObservers();
+		_operation.setLastModified();
 	}
 
 	public void setName(String newName){
@@ -332,7 +333,7 @@ public class EntityController {
 		_name = newName;
 		
 		genererMessageChangementDeNom(tmp);
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	private void genererMessageChangementDeNom(String tmp) {

@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -607,8 +608,9 @@ public class OperationController implements Subject {
 		_timer = timer;
 	}
 
-	public void setLastModified(Timestamp timestamp) {
-		_timerTask.set_lastmodified(_dbm.getCurrentTime());
+	public void setLastModified() {
+		java.sql.Timestamp timestamp = _dbm.getCurrentTime();
+		_timerTask.set_lastmodified(timestamp);
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Operation", "last_modified ='"+timestamp+"'", "id="+_idOperation));
 		}catch(MalformedQueryException e){

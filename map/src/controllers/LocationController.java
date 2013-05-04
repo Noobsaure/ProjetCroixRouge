@@ -71,7 +71,7 @@ public class LocationController {
 
 		operation.getCurrentMap().simpleAddLocation(this);
 		operation.addLocation(this);
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class LocationController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_entityList.add(entity);
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 		return result;
 	}
 
@@ -147,7 +147,7 @@ public class LocationController {
 		}
 
 		genererMessageChangementDeNom(name);
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 		_name = name;
 	}
 
@@ -221,7 +221,7 @@ public class LocationController {
 		}
 
 		_description = informations;
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	public void addEntityList(EntityController entityController) {

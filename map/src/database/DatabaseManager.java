@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.swing.ImageIcon;
@@ -428,9 +429,9 @@ public class DatabaseManager
 		System.exit(0);
 	}
 	
-	public Time getCurrentTime(){
+	public Timestamp getCurrentTime(){
 		ResultSet result = null;
-		Time currentTime = new Time(new Date().getTime());
+		java.sql.Timestamp currentTime = new java.sql.Timestamp(1);
 		try {
 			result = executeQuerySelect(new SQLQuerySelect("CURRENT_TIME()","Operation LIMIT 1"));
 		} catch (MalformedQueryException e) {
@@ -439,7 +440,7 @@ public class DatabaseManager
 		}
 		try {
 			while(result.next()){
-				currentTime = result.getTime(1);
+				currentTime = result.getTimestamp(1);
 			}
 		} catch (SQLException e) {
 		}
