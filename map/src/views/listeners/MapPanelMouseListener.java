@@ -116,7 +116,7 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		for(Location loc : _mapPanel.getLocations()) {
 			int dx = Math.abs(x - (loc.get_x() + mx));
 			int dy = Math.abs(y - (loc.get_y() + my));
-			if(dx < Location._iconLoc.getIconWidth() && dy < Location._iconLoc.getIconHeight()) {
+			if(dx < Location._iconLocWidth && dy < Location._iconLocHeight) {
 				res = false;
 				break;
 			}
