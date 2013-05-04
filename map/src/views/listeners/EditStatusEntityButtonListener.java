@@ -11,7 +11,7 @@ public class EditStatusEntityButtonListener implements ActionListener
 {
 	private EntityController _entity;
 	private ConfigurationEntityPanel _configPanel;
-	
+
 	public EditStatusEntityButtonListener(EntityController entity, ConfigurationEntityPanel configPanel)
 	{
 		_entity = entity;
@@ -23,11 +23,8 @@ public class EditStatusEntityButtonListener implements ActionListener
 
 		boolean boolStatut=_configPanel.getStatutDispo();
 		String textInfos = _configPanel.getInformations();
-		
-		_entity.setAvailable(boolStatut, textInfos);
-				
+		if(_entity.getStatut() != boolStatut || !_entity.getInformationsStatut().equals(textInfos)) {
+			_entity.setAvailable(boolStatut, textInfos);
+		}
 	}
-
-	
 }
-
