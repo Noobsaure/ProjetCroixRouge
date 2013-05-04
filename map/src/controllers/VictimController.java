@@ -176,8 +176,8 @@ public class VictimController {
 		}
 
 		if(_entity.getId() != entity.getId()){
-			genererChangementEntite();
 			_entity = entity;
+			genererChangementEntite();
 		}
 
 		String query = "surnom = '" + _dbm.addSlashes(_idAnonymat) + "'" +
@@ -225,13 +225,12 @@ public class VictimController {
 	private void genererChangementEntite() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		String newLine = System.getProperty("line.separator");
+		
 		String message = "La victime \'"+_idAnonymat+"\' est maintenant prise en charge par "+_dbm.addSlashes(_entity.getName())+".";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime "+newLine+
-					"Message : "+message);
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime .Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		

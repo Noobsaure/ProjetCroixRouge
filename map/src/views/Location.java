@@ -26,6 +26,8 @@ public class Location extends JPanel {
 	private boolean _highlighted = false;
 	public static final ImageIcon _iconLoc = new ImageIcon(EntityPanel.class.getResource("/ui/rouge.png"));
 	public static final ImageIcon _iconLocDragOver = new ImageIcon(EntityPanel.class.getResource("/ui/vert.png"));
+	public static final int _iconLocWidth = _iconLoc.getIconWidth();
+	public static final int _iconLocHeight = _iconLoc.getIconHeight();
 	private LocationPanel _locPanel;
 	private LocationController _locationController;
 	private LocationMouseListener _mouseListener;
