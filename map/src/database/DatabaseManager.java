@@ -45,8 +45,7 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			MessagePanel errorPanel = new MessagePanel("Erreur lors du chargement des pilotes de la base de données.");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+			JOptionPane.showMessageDialog(null, "Erreur lors du chargement des pilotes de la base de données.");
 		}
 	}
 
@@ -77,7 +76,7 @@ public class DatabaseManager
 		}
 		catch(Exception e)
 		{
-			displayError(e);
+			JOptionPane.showMessageDialog(null, "La connection à la base de données à échouée. Veuillez réessayer.");
 		}
 	}
 
