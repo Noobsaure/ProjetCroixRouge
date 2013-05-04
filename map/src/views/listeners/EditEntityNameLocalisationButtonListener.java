@@ -26,7 +26,7 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 	private LocationController _location;
 	private ConfigurationEntityPanel _configPanel;
 	private static List<LocationController> listLocation = new ArrayList<LocationController>();
-	
+
 	public EditEntityNameLocalisationButtonListener(MapPanel mapPanel, OperationController operationController, EntityController entity, ConfigurationEntityPanel configPanel)
 	{
 		_operationController = operationController;
@@ -50,7 +50,7 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 			if(_entity.getName().compareTo(nomEntity) != 0)
 				_entity.setName(nomEntity);
 		}
-		
+
 		List<MapController> locatMap;
 		locatMap = _operationController.getMapList();
 		List<LocationController> locatMaplocat;
@@ -68,18 +68,17 @@ public class EditEntityNameLocalisationButtonListener implements ActionListener
 				}
 			}
 			_location = listLocation.get(_configPanel.getIndexLocation());
-			
+
 			if(_operationController.getLocation(_entity.getIdPosCurrent()) != _location)
 				_entity.setLocation(_location);
 		}
 		else
 		{
-			System.out.println("trololo");
-		MessagePanel errorPanel = new MessagePanel("localisation ", EMPTY_LOCAT_MESSAGE);
+			MessagePanel errorPanel = new MessagePanel("localisation ", EMPTY_LOCAT_MESSAGE);
 			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		}
-		
+
 	}
 
-	
+
 }
