@@ -72,7 +72,7 @@ public class TeamMemberController {
 			System.out.println("ENTITY A CHANGE: Elle est maintenant ---> "+_entity.getName());
 			_available = false;
 
-			_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+			_operation.setLastModified();
 			
 			return true;
 		}
@@ -118,7 +118,7 @@ public class TeamMemberController {
 		_entity = null;
 		_available = true;
 		
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 		
 		return true;
 	}

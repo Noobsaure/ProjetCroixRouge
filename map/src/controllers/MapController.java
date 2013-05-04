@@ -47,7 +47,7 @@ public class MapController {
 		_datas = _dbm.getImage(_id + "", name);
 
 		_operation.addCurrentMap(this);
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility, boolean display){
@@ -79,7 +79,7 @@ public class MapController {
 
 		_name = name;
 		genererMessageChangementNom(lastName);
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	private void genererMessageChangementNom(String lastName) {
@@ -137,7 +137,7 @@ public class MapController {
 		else
 			_operation.setCurrentMap(null);
 		
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	public ImageIcon getImage()
@@ -174,7 +174,7 @@ public class MapController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	public void simpleAddLocation(LocationController locationController) {

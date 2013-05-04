@@ -30,13 +30,13 @@ public class RefreshTimerTask extends TimerTask
 	private OperationController _operation;
 	private DatabaseManager _dbm;
 	
-	private java.sql.Time _lastmodified;
+	private java.sql.Timestamp _lastmodified;
 	
-	public java.sql.Time get_lastmodified() {
+	public java.sql.Timestamp get_lastmodified() {
 		return _lastmodified;
 	}
 
-	public void set_lastmodified(java.sql.Time _lastmodified) {
+	public void set_lastmodified(java.sql.Timestamp _lastmodified) {
 		this._lastmodified = _lastmodified;
 	}
 
@@ -55,7 +55,7 @@ public class RefreshTimerTask extends TimerTask
 	@Override
 	public void run() {
 		ResultSet result = null;
-		java.sql.Time date = new java.sql.Time(1);
+		java.sql.Timestamp date = new java.sql.Timestamp(1);
 		try{
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("last_modified", "Operation" , "id='"+_operation.getId()+"'"));
 		}catch(MalformedQueryException e){
@@ -64,7 +64,7 @@ public class RefreshTimerTask extends TimerTask
 		}		
 		try {
 			while(result.next()){
-				date = result.getTime("last_modified");
+				date = result.getTimestamp("last_modified");
 			}
 			result.close();
 		} catch (SQLException e) {

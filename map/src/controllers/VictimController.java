@@ -113,7 +113,7 @@ public class VictimController {
 	
 			genererDebutPriseEnChargeMessage();		
 
-			_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+			_operation.setLastModified();
 		}
 		catch(MalformedQueryException e) { 
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
@@ -204,7 +204,7 @@ public class VictimController {
 		}
 		
 
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	public void finDePriseEnCharge(String motifSortie){
@@ -219,7 +219,7 @@ public class VictimController {
 		}
 
 		genererFinDePriseEnCharge();
-		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		_operation.setLastModified();
 	}
 
 	private void genererChangementEntite() {
