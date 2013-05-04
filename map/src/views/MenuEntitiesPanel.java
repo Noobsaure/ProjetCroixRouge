@@ -1,10 +1,13 @@
 package views;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Robot;
 import java.awt.dnd.DropTarget;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -237,6 +240,19 @@ public class MenuEntitiesPanel extends JPanel {
 			}
 		}
 		System.out.println();
+	}
+	
+	public static void removeEntityFromPanel(JPanel panel, int i) {
+		/*EntityPanel entityPanel = (EntityPanel)(panel.getComponent(i));
+		entityPanel.getEntityMouseListener().mouseReleased(new MouseEvent(entityPanel, MouseEvent.MOUSE_RELEASED,));*/
+		try {
+			(new Robot()).mouseRelease(MouseEvent.BUTTON1);
+		} catch (AWTException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		panel.remove(i);
+		
 	}
 
 

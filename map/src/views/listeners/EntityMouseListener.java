@@ -90,6 +90,18 @@ public class EntityMouseListener implements MouseListener, MouseMotionListener{
 		_dragOccurring = dragOccurring;
 		_globalPanel.setDragOccurring(dragOccurring);
 	}
+	
+	/*public void stopDrag() {
+		_glassPane.setCursor(Cursor.getDefaultCursor());
+		setDragOccurring(false);
+		_entity.getTransferHandler().exportAsDrag(_entity, e, TransferHandler.MOVE);
+		Point location = (Point)e.getPoint().clone();
+		SwingUtilities.convertPointToScreen(location, _entity);
+		SwingUtilities.convertPointFromScreen(location, _glassPane);
+		_glassPane.setLocation(location);
+		_glassPane.setImage(null);
+		_glassPane.setVisible(false);
+	}*/
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
