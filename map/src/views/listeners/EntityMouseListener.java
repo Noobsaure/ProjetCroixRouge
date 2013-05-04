@@ -52,7 +52,6 @@ public class EntityMouseListener implements MouseListener, MouseMotionListener{
 		}
 	}
 
-
 	public void mouseReleased(MouseEvent e) {
 		if(_dragOccurring && e.getButton() == MouseEvent.BUTTON1) {
 			_glassPane.setCursor(Cursor.getDefaultCursor());

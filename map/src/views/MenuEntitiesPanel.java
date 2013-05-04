@@ -177,7 +177,7 @@ public class MenuEntitiesPanel extends JPanel {
 		for(int j = i - 1; j < availableEntitiesList.size(); j++)
 		{
 			EntityPanel newEntityPanel = new EntityPanel(this, availableEntitiesList.get(j));
-			_panelAvailable.add(newEntityPanel); 
+			_panelAvailable.add(newEntityPanel);
 			newAvailableEntityPanelsList.add(newEntityPanel);
 		}
 
@@ -219,22 +219,14 @@ public class MenuEntitiesPanel extends JPanel {
 		System.out.println();
 		for(EntityPanel onePanel : _availableEntityPanelsList) {
 			onePanel.update();
-			if(onePanel.getEntityController().isAvailable()) {
-				System.out.println(onePanel.getEntityController().getName() + " EST DISPONIBLE");
-			} else {
-				System.out.println(onePanel.getEntityController().getName() + " N'EST PAS DISPONIBLE");
-			}
+			System.out.println(onePanel.getEntityController().getName());
 		}
 		System.out.println();
 		System.out.println("UNAVAILABLE");
 		System.out.println();
 		for(EntityPanel onePanel : _unavailableEntityPanelsList) {
 			onePanel.update();
-			if(onePanel.getEntityController().isAvailable()) {
-				System.out.println(onePanel.getEntityController().getName() + " EST DISPONIBLE");
-			} else {
-				System.out.println(onePanel.getEntityController().getName() + " N'EST PAS DISPONIBLE");
-			}
+			System.out.println(onePanel.getEntityController().getName());
 		}
 		System.out.println();
 	}
