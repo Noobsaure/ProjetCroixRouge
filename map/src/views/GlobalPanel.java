@@ -117,4 +117,10 @@ public class GlobalPanel extends JApplet implements Observer
 		revalidate();
 		repaint();
 	}
+	
+	@Override
+	public void destroy() {
+		super.destroy();
+		_operation.pauseTimerTask();
+	}
 }
