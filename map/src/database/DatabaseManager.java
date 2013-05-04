@@ -429,11 +429,11 @@ public class DatabaseManager
 		System.exit(0);
 	}
 	
-	public Timestamp getCurrentTime(){
+	public java.sql.Timestamp getCurrentTime(){
 		ResultSet result = null;
 		java.sql.Timestamp currentTime = new java.sql.Timestamp(1);
 		try {
-			result = executeQuerySelect(new SQLQuerySelect("CURRENT_TIME()","Operation LIMIT 1"));
+			result = executeQuerySelect(new SQLQuerySelect("NOW()","Operation LIMIT 1"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la recupération de l'heure du serveur");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());

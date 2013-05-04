@@ -2,6 +2,7 @@ package launcher;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
@@ -36,8 +37,8 @@ public class RefreshTimerTask extends TimerTask
 		return _lastmodified;
 	}
 
-	public void set_lastmodified(java.sql.Timestamp _lastmodified) {
-		this._lastmodified = _lastmodified;
+	public void set_lastmodified(Timestamp timestamp) {
+		_lastmodified = timestamp;
 	}
 
 	private int _lastVictimId;
@@ -54,23 +55,7 @@ public class RefreshTimerTask extends TimerTask
 
 	@Override
 	public void run() {
-		ResultSet result = null;
-		java.sql.Timestamp date = new java.sql.Timestamp(1);
-		try{
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("last_modified", "Operation" , "id='"+_operation.getId()+"'"));
-		}catch(MalformedQueryException e){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la récupération du champ 'last_modified' de l'operation");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());
-		}		
-		try {
-			while(result.next()){
-				date = result.getTimestamp("last_modified");
-			}
-			result.close();
-		} catch (SQLException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la récupération du champ 'last_modified' de l'operation");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());		
-		}
+		java.sql.Timestamp date = _operation.getLastModified();
 		
 		System.out.println("Mon last modified: "+_lastmodified);
 		System.out.println("Last modified serveur: "+date);
