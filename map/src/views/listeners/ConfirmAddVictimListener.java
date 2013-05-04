@@ -46,7 +46,6 @@ public class ConfirmAddVictimListener implements ActionListener
 	
 	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, EntityController entityAssociated)
 	{
-		System.out.println("OtherMotif : " + (!motif.equals("") || (!otherMotif.equals(""))));
 		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && (entityAssociated != null));
 	}
 	
@@ -63,8 +62,6 @@ public class ConfirmAddVictimListener implements ActionListener
 		String idAnonymat = _addVictimPanel.getIdAnonymat().getText();
 		String soins = _addVictimPanel.getSoins().getText();
 		EntityController entitesAssociees = _addVictimPanel.getMap().get((String)_addVictimPanel.getEntiteAssocieeCombobox().getSelectedItem());
-		
-		System.out.println("Motifs : " + ((motifsList.length == 0) || (motifsList[0].equals(" "))));
 				
 		if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals("(Autre motif)"))) ? "" : motifsList[0], otherMotif, idAnonymat, entitesAssociees))
 		{
