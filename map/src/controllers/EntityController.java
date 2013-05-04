@@ -285,7 +285,6 @@ public class EntityController {
 		if(loc != null)	loc.removeEntity(this);
 
 		if(location == null){
-			System.err.println("EntityController, la localisation est nulle au setLocation ! Bizarre???");
 			_posCurrentId = _operation.getIdPcm();
 		}else{
 			_posCurrentId = location.getId();
@@ -318,8 +317,8 @@ public class EntityController {
 	}
 
 	public void setName(String newName){
-		if( (_operation.locationNameAlreadyExist(newName) != _id) && (_operation.locationNameAlreadyExist(newName) != -1) ){
-			MessagePanel errorPanel = new MessagePanel("Mise à jour localisation impossible" ,"Nom de la localisation déjà utilisé pour cette opération.");
+		if( (_operation.entityNameAlreadyExist(newName) != _id) && (_operation.entityNameAlreadyExist(newName) != -1) ){
+			MessagePanel errorPanel = new MessagePanel("Mise à jour localisation impossible" ,"Le nom de cette entité est déjà utilisée. Veuillez recommencer en utilisant un nom différent.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return;
 		}
