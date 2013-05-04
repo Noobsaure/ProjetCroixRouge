@@ -427,6 +427,7 @@ public class EntityController {
 
 	public void updateFields() {
 		ResultSet result;
+		
 		try {
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("statut_id, nom, date_depart, pos_courante_id", "Entite", "id="+_id));
 			while(result.next()){
@@ -442,9 +443,9 @@ public class EntityController {
 				}
 				
 				try {
-					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("dispo", "Statut", "id='"+_stateId+"'"));
+					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("`infos`,`dispo`", "Statut", "id='"+_stateId+"'"));
 					try{
-						while(result.next()){
+						while(result2.next()){
 							_available = result2.getBoolean("dispo");
 							_state = result2.getString("infos");
 						}
