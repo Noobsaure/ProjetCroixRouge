@@ -32,7 +32,7 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 	{
 		String motifDeSortie = _editVictimPanel.getMotifTextField().getText();
 		if(motifDeSortie.equals("")) {
-			MessagePanel errorPanel = new MessagePanel("Saisie incomplète", "Un motif de fin de prise en charge doit être renseigné.");
+			MessagePanel errorPanel = new MessagePanel("Saisie incomplÃ¨te", "Un motif de fin de prise en charge doit Ãªtre renseignÃ©.");
 			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		} else {
 			_victimController.finDePriseEnCharge(motifDeSortie);
