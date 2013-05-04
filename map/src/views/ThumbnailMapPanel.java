@@ -25,6 +25,7 @@ public class ThumbnailMapPanel extends JPanel {
 
 	private MapController _map;
 	private JToggleButton _toggleButton;
+	private JLabel _nameLabel;
 
 	public ThumbnailMapPanel(MapPanel mapPanel, SubMenuMapPanel subMenu, MapController map, OperationController operationController, ButtonGroup group) {
 		_map = map;
@@ -50,8 +51,8 @@ public class ThumbnailMapPanel extends JPanel {
 		_toggleButton.addActionListener(new SubMenuMapToggleButtonListener(_map, mapPanel, operationController));
 		add(_toggleButton, BorderLayout.CENTER);
 
-		JLabel nameLabel = new JLabel(map.getName());
-		nameLabel.setForeground(Color.WHITE);
+		JLabel _nameLabel = new JLabel(map.getName());
+		_nameLabel.setForeground(Color.WHITE);
 
 		ImageIcon iconDelete = new ImageIcon(EntityPanel.class.getResource("/ui/delete.png"));
 		Image imageDeleteScaled = iconDelete.getImage().getScaledInstance(12, 16, Image.SCALE_DEFAULT);
@@ -68,7 +69,7 @@ public class ThumbnailMapPanel extends JPanel {
 		panelLabel.setPreferredSize(new Dimension(SubMenuPanelImpl.WIDTH - 20, SubMenuPanelImpl.BUTTON_HEIGHT));
 		panelLabel.setBackground(SubMenuPanelImpl.COLOR_BACKGROUND);
 		panelLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panelLabel.add(nameLabel, BorderLayout.CENTER);
+		panelLabel.add(_nameLabel, BorderLayout.CENTER);
 		panelLabel.add(deleteIcon, BorderLayout.EAST);
 		panelLabel.addMouseListener(new RenameMapNameListener(panelLabel, map));
 		add(panelLabel, BorderLayout.SOUTH);
@@ -83,4 +84,6 @@ public class ThumbnailMapPanel extends JPanel {
 	}
 	
 	public MapController getMapController() {return _map;}
+	
+	public void update() {_nameLabel.setText(_map.getName());}
 }

@@ -96,6 +96,10 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 			_thumbnailsPanel.add(mapThumbnail);
 			_thumbnailsList.add(mapThumbnail);
 		}
+		
+		for(ThumbnailMapPanel oneThumbnail : _thumbnailsList) {
+			oneThumbnail.update();
+		}
 	}
 
 	@Override
