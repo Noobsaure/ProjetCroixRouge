@@ -226,7 +226,7 @@ public class VictimController {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 		String newLine = System.getProperty("line.separator");
-		String message = "La victime \'"+_idAnonymat+"\' est maintenant pris en charge par "+_dbm.addSlashes(_entity.getName())+".";
+		String message = "La victime \'"+_idAnonymat+"\' est maintenant prise en charge par "+_dbm.addSlashes(_entity.getName())+".";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {

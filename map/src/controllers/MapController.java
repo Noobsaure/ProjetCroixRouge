@@ -173,6 +173,8 @@ public class MapController {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
+
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	public void simpleAddLocation(LocationController locationController) {

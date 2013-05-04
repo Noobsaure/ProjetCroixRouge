@@ -271,8 +271,8 @@ public class DatabaseManager
 			while(generatedKeys.next())
 				lastInserted = generatedKeys.getInt(1);
 			
-			generatedKeys.close();
-			statement.close();
+//			generatedKeys.close();
+//			statement.close();
 		}
 		catch(Exception e)
 		{
