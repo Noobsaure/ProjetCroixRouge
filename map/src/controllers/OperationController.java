@@ -591,7 +591,7 @@ public class OperationController implements Subject {
 			new CustomDialog(errorPanel, _globalPanel);
 		}
 		
-		while(anonymatAlreadyExist(String.valueOf(idAnonymat)) != -1){
+		while(anonymatAlreadyExist("Victime"+String.valueOf(idAnonymat)) != -1){
 			idAnonymat++;
 		}
 		
