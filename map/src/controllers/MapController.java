@@ -136,7 +136,7 @@ public class MapController {
 			_operation.setCurrentMap(_operation.getMapList().get(_operation.getMapList().size()-1));
 		else
 			_operation.setCurrentMap(null);
-		
+
 		_operation.setLastModified();
 	}
 
@@ -172,6 +172,22 @@ public class MapController {
 		}catch(MalformedQueryException e){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+
+		if(!_visibility){
+
+			List<EntityController> _entityList = this.getEntityListInThisMap();
+
+			for(EntityController entity : _entityList){
+				entity.setLocation(_operation.getLocation(_operation.getIdPcm()));
+			}
+
+			_operation.removeMap(this);
+
+			if(_operation.getMapList().size() != 0)
+				_operation.setCurrentMap(_operation.getMapList().get(_operation.getMapList().size()-1));
+			else
+				_operation.setCurrentMap(null);
 		}
 	}
 

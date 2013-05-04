@@ -433,7 +433,7 @@ public class DatabaseManager
 		ResultSet result = null;
 		java.sql.Timestamp currentTime = new java.sql.Timestamp(1);
 		try {
-			result = executeQuerySelect(new SQLQuerySelect("NOW()","Operation LIMIT 1"));
+			result = executeQuerySelect(new SQLQuerySelect("CURRENT_TIMESTAMP()","Operation LIMIT 1"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la recupération de l'heure du serveur");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -443,6 +443,8 @@ public class DatabaseManager
 				currentTime = result.getTimestamp(1);
 			}
 		} catch (SQLException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la recupération de l'heure du serveur");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		
 		return currentTime;
