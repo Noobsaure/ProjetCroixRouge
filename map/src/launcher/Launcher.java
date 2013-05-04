@@ -48,7 +48,7 @@ public class Launcher {
 		timerTask.set_lastmodified(_operation.getLastModified());
 		
 		Timer timer = new Timer();
-		timer.schedule(timerTask,0,5000);
+		timer.schedule(timerTask,0,1000);
 		
 		_operation.setTimer(timer);
 		
