@@ -479,9 +479,9 @@ public class EntityController {
 		if( (_posCurrentId != _operation.getIdPcm()) && (!_operation.getLocation(_posCurrentId).getEntityList().contains(this)) ){
 			_operation.getLocation(_posCurrentId).addEntityList(this);
 		}
-		if(_operation.getLocation(_lastPosCurrentId).getEntityList().contains(this)){
-			_operation.getLocation(_lastPosCurrentId).removeEntity(this);
-		}
+//		if(_operation.getLocation(_lastPosCurrentId).getEntityList().contains(this)){
+//			_operation.getLocation(_lastPosCurrentId).removeEntity(this);
+//		}
 	}
 
 	public int getLastPosCurrentId(){
