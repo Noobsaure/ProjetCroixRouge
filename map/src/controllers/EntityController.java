@@ -3,6 +3,7 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -99,6 +100,7 @@ public class EntityController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		_operation.addEntite(this);
 		genererMessageCreation();
 	}
@@ -188,6 +190,8 @@ public class EntityController {
 		_available = state;
 		_state = infos;
 		_operation.notifyObservers();
+
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		genererMessageStatut();
 	}
 
@@ -271,6 +275,7 @@ public class EntityController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_color = newColor;
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	public void setLocation(LocationController location) {	
@@ -307,6 +312,7 @@ public class EntityController {
 		}
 
 		genererMessageDeplacement(idDeplacement);
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		_operation.notifyObservers();
 	}
 
@@ -324,7 +330,9 @@ public class EntityController {
 		}
 		String tmp = _name;
 		_name = newName;
+		
 		genererMessageChangementDeNom(tmp);
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	private void genererMessageChangementDeNom(String tmp) {
@@ -413,7 +421,7 @@ public class EntityController {
 	public void updateFields() {
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Entite", "id="+_id));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("statut_id, nom, date_depart, pos_courante_id", "Entite", "id="+_id));
 			while(result.next()){
 				_stateId = result.getInt("statut_id");
 				_name = _dbm.stripSlashes(result.getString("nom"));

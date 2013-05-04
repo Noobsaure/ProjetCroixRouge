@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 import views.MessagePanel;
 import views.CustomDialog;
@@ -18,8 +19,6 @@ public class TeamMemberController {
 	private int _id;
 	private String _name;
 	private String _firstName;
-	private String _phoneNumber;
-	private String _othersInformations;
 	private EntityController _entity;
 	private boolean _available;
 
@@ -30,20 +29,16 @@ public class TeamMemberController {
 	 * @param id Id in the database
 	 * @param name Name in the database
 	 * @param firstName First name in the database
-	 * @param phoneNumber Phone number in the database
-	 * @param othersInformations Others informations about the team-member in the database.
 	 * @param entityId Id of the entity which team member belongs.
 	 * @param available
 	 */
-	public TeamMemberController(OperationController operation, DatabaseManager dbm, int id, String name, String firstName, String phoneNumber, String othersInformations, int entityId){
+	public TeamMemberController(OperationController operation, DatabaseManager dbm, int id, String name, String firstName, int entityId){
 		_operation = operation;
 		_dbm = dbm;
 
 		_id = id;
 		_name = name;
-		_firstName = firstName;
-		_phoneNumber = phoneNumber;
-		_othersInformations = othersInformations;		
+		_firstName = firstName;		
 		_temporaryEntityId = entityId;
 
 		if (entityId == 0)
@@ -76,6 +71,9 @@ public class TeamMemberController {
 			_entity = entity;
 			System.out.println("ENTITY A CHANGE: Elle est maintenant ---> "+_entity.getName());
 			_available = false;
+
+			_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+			
 			return true;
 		}
 		else{
@@ -119,6 +117,9 @@ public class TeamMemberController {
 
 		_entity = null;
 		_available = true;
+		
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
+		
 		return true;
 	}
 
@@ -127,13 +128,7 @@ public class TeamMemberController {
 		String result;
 		result = "Nom :"+_name+"\t";
 		result += "Prenom:"+_firstName+"\t";
-		result += "Tel: "+_phoneNumber+"\t";
-		System.out.println("1");
-		if(_othersInformations.length() != 0){
-			System.out.println("2");
-			result+= "Informations supplementaires :"+_othersInformations+"\n";
-		}
-		System.out.println("3");
+		
 		result += "Disponibilite : "+_available+"\n";
 		if(_entity != null){
 			result += "Entite : "+_entity.getName();
@@ -160,22 +155,6 @@ public class TeamMemberController {
 	 */
 	public String getFirstName() {
 		return _firstName;
-	}
-
-
-	/**
-	 * @return the _tel
-	 */
-	public String getPhoneNumber() {
-		return _phoneNumber;
-	}
-
-
-	/**
-	 * @return the _autres
-	 */
-	public String getOthersInformation() {
-		return _othersInformations;
 	}
 
 	/**
@@ -209,15 +188,10 @@ public class TeamMemberController {
 	public void updateFields() {
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "id="+_id));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`prenom`,`entite_id`","Equipier", "id="+_id));
 			while(result.next()){
 				_name = result.getString("nom");
 				_firstName = result.getString("prenom");
-				_phoneNumber = result.getString("tel");
-				_othersInformations = result.getString("autres");
-				if(_othersInformations == null){
-					_othersInformations = "";
-				}
 
 				_temporaryEntityId = result.getInt("entite_id");
 

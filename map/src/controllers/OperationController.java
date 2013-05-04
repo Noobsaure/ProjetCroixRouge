@@ -2,6 +2,7 @@ package controllers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -16,6 +17,7 @@ import database.DatabaseManager;
 import database.MalformedQueryException;
 import database.SQLQueryInsert;
 import database.SQLQuerySelect;
+import database.SQLQueryUpdate;
 
 
 public class OperationController implements Subject {
@@ -54,25 +56,14 @@ public class OperationController implements Subject {
 		ResultSet result;
 
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1 AND (operation_id='"+_idOperation+"' OR operation_id is NULL)"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`,`prenom`,`entite_id`","Equipier", "enActivite=1 AND (operation_id='"+_idOperation+"' OR operation_id is NULL)"));
 			while(result.next()){
 				int id = result.getInt("id");
 				String name = result.getString("nom");
 				String firstName = result.getString("prenom");
-				String phoneNumber = result.getString("tel");
-				String othersInformations = result.getString("autres");
-				if(othersInformations == null){
-					othersInformations = "";
-				}
 				int entityId = result.getInt("entite_id");
-				System.out.println("EntiteID : "+entityId);
-
-				TeamMemberController equipier = new TeamMemberController(this, _dbm, id, name, firstName, phoneNumber, othersInformations, entityId);
-				System.out.println("---->Chargement equipier :"+name+" avec l'id: "+id+" "+entityId);
+				TeamMemberController equipier = new TeamMemberController(this, _dbm, id, name, firstName, entityId);
 				_teamMemberList.add(equipier);
-				if(_timerTask == null)
-					System.out.println("TimerTask null ?");
-				System.out.println("PRINT POUR LE RI");
 				_timerTask.set_lastEntityId(id);
 			}
 			result.getStatement().close();
@@ -160,7 +151,7 @@ public class OperationController implements Subject {
 
 	public void loadMaps(){
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Carte", "operation_id='"+_idOperation+"' AND visibilite=1"));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`,`visibilite`", "Carte", "operation_id='"+_idOperation+"' AND visibilite=1"));
 
 			while(result.next()){
 				int id = result.getInt("id");
@@ -223,33 +214,6 @@ public class OperationController implements Subject {
 	public void loadEntityIntoLocation(){
 		for(EntityController entity : _entityList){
 			entity.loadLocation();
-		}
-	}
-
-	public void showTeamMemberList(){
-		System.out.println(">>>> Liste des equipiers :");
-		for(TeamMemberController equipier : _teamMemberList){
-			System.out.println(equipier.show());
-		}
-	}
-
-	public void showEntityList(){
-		System.out.println("\n||||||||||||||  Liste des entites |||||||||||||||||");
-		for(EntityController entite : _entityList){
-			System.out.println(entite.show());
-		}
-	}
-
-	public void showLocation() {
-		System.out.println(">>>> Liste des localisations :");
-		for(LocationController location :  _locationList){
-			System.out.println(location.show());
-		}}
-
-	public void showMaps(){
-		System.out.println(">>>> Liste des cartes :");
-		for(MapController map :  _mapList){
-			System.out.println(map.show());
 		}
 	}
 
@@ -421,7 +385,6 @@ public class OperationController implements Subject {
 	@Override
 	public synchronized void notifyObservers() {
 		for(Observer oneObserver : _observers) {
-			System.out.println("on notifie");
 			oneObserver.update();
 		}
 	}
@@ -642,6 +605,16 @@ public class OperationController implements Subject {
 
 	public void setTimer(Timer timer) {
 		_timer = timer;
+	}
+
+	public void setLastModified(Timestamp timestamp) {
+		_timerTask.set_lastmodified(timestamp);
+		try{
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Operation", "last_modified ='"+timestamp+"'", "id="+_idOperation));
+		}catch(MalformedQueryException e){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour du champ 'last_modified' de l'operation");
+			new CustomDialog(errorPanel, _globalPanel);
+		}
 	}
 }
 

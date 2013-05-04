@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import observer.Observer;
@@ -109,7 +110,10 @@ public class VictimController {
 
 			_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
 			operation.addVictim(this);
-			genererDebutPriseEnChargeMessage();
+	
+			genererDebutPriseEnChargeMessage();			
+
+			_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		}
 		catch(MalformedQueryException e) { 
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
@@ -212,6 +216,8 @@ public class VictimController {
 		}
 
 		genererFinDePriseEnCharge();
+		
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	private void genererChangementEntite() {
@@ -226,6 +232,7 @@ public class VictimController {
 					"Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
+		
 	}
 
 	private void genererFinDePriseEnCharge() {
@@ -277,104 +284,53 @@ public class VictimController {
 		return _nom;
 	}
 
-	public void setNom(String nom) {
-		_nom = nom;
-	}
-
 	public String getPrenom() {
 		return _prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		_prenom = prenom;
 	}
 
 	public Timestamp getDateDeNaissance() {
 		return _dateDeNaissance;
 	}
 
-	public void setNom(Timestamp dateDeNaissance) {
-		_dateDeNaissance = dateDeNaissance;
-	}
-
 	public String getAdresse() {
 		return _adresse;
-	}
-
-	public void setAdresse(String adresse) {
-		_adresse = adresse;
 	}
 
 	public Timestamp getDateEntree() {
 		return _datePriseEnCharge;
 	}
 
-	public void setDateEntree(Timestamp dateEntree) {
-		_datePriseEnCharge = dateEntree;
-	}
-
 	public Timestamp getDateSortie() {
 		return _dateSortie;
-	}
-
-	public void setDateSortie(Timestamp dateSortie) {
-		_dateSortie = dateSortie;
 	}
 
 	public boolean getPetitSoin() {
 		return _petitSoin;
 	}
 
-	public void setPetitSoin(Boolean petitSoin) {
-		_petitSoin = petitSoin;
-	}
-
 	public boolean getMalaise() {
 		return _malaise;
-	}
-
-	public void setMalaise(Boolean malaise) {
-		_malaise = malaise;
 	}
 
 	public boolean getTraumatisme() {
 		return _traumatisme;
 	}
 
-	public void setTraumatisme(Boolean traumatisme) {
-		_traumatisme = traumatisme;
-	}
-
 	public boolean getInconscience() {
 		return _inconscience;
-	}
-
-	public void setInconscience(Boolean inconscience) {
-		_inconscience = inconscience;
 	}
 
 	public boolean getArretCardiaque() {
 		return _arretCardiaque;
 	}
 
-	public void setArretCardiaque(Boolean arretCardiaque) {
-		_arretCardiaque = arretCardiaque;
-	}
 
 	public String getAtteinteDetails() {
 		return _atteinteDetails;
 	}
 
-	public void setAtteinteDetails(String atteinteDetails) {
-		_atteinteDetails = atteinteDetails;
-	}
-
 	public String getSoin() {
 		return _soin;
-	}
-
-	public void setSoin(String soin) {
-		_soin = soin;
 	}
 
 	public void updateFields() {

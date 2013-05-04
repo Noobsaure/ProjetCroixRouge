@@ -3,6 +3,7 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -46,6 +47,7 @@ public class MapController {
 		_datas = _dbm.getImage(_id + "", name);
 
 		_operation.addCurrentMap(this);
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility, boolean display){
@@ -77,6 +79,7 @@ public class MapController {
 
 		_name = name;
 		genererMessageChangementNom(lastName);
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	private void genererMessageChangementNom(String lastName) {
@@ -133,6 +136,8 @@ public class MapController {
 			_operation.setCurrentMap(_operation.getMapList().get(_operation.getMapList().size()-1));
 		else
 			_operation.setCurrentMap(null);
+		
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	public ImageIcon getImage()
@@ -154,7 +159,7 @@ public class MapController {
 
 	public void updateFields() {
 		try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Carte","id = "+_id));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("nom , visibilite","Carte","id = "+_id));
 
 			while(result.next()){
 				_name = result.getString("nom");

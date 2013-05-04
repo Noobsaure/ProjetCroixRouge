@@ -3,6 +3,7 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import observer.Observer;
@@ -70,6 +71,7 @@ public class LocationController {
 
 		operation.getCurrentMap().addLocation(this);
 		operation.addLocation(this);
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	/**
@@ -116,7 +118,7 @@ public class LocationController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_entityList.add(entity);
-
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		return result;
 	}
 
@@ -145,6 +147,7 @@ public class LocationController {
 		}
 
 		genererMessageChangementDeNom(name);
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 		_name = name;
 	}
 
@@ -191,21 +194,9 @@ public class LocationController {
 		return _idMap;
 	}
 
-	public String show() {
-		String result;
-		result = _name.toUpperCase();
-		result += "Equipes presentes: \n";
-
-		for(EntityController entite : _entityList){
-			result += entite.getName();
-		}
-
-		return result;
-	}
-
 	public void updateFields() {
 		try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Localisation","id = "+_id));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`","Localisation","id = "+_id));
 
 			while(result.next()){
 				_name = _dbm.stripSlashes(result.getString("nom"));
@@ -231,6 +222,7 @@ public class LocationController {
 		}
 
 		_description = informations;
+		_operation.setLastModified(new java.sql.Timestamp(new Date().getTime()));
 	}
 
 	public void addEntityList(EntityController entityController) {

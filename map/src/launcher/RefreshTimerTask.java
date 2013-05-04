@@ -2,6 +2,7 @@ package launcher;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -27,6 +28,15 @@ public class RefreshTimerTask extends TimerTask
 	private OperationController _operation;
 	private DatabaseManager _dbm;
 	
+	private java.sql.Timestamp _lastmodified;
+	public java.sql.Timestamp get_lastmodified() {
+		return _lastmodified;
+	}
+
+	public void set_lastmodified(java.sql.Timestamp _lastmodified) {
+		this._lastmodified = _lastmodified;
+	}
+
 	private int _lastVictimId;
 	private int _lastEntityId;
 	private int _lastTeamMemberId;
@@ -41,16 +51,39 @@ public class RefreshTimerTask extends TimerTask
 
 	@Override
 	public void run() {
-		refreshTeamMember();
-		refreshEntity();
-		refreshMaps();
-		refreshLocation();
-		refreshVictim();
+		ResultSet result = null;
+		java.sql.Timestamp date = _lastmodified;
+		try{
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("last_modified", "Operation" , "id = "+_operation.getId()));
+		}catch(MalformedQueryException e){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la récupération du champ 'last_modified' de l'operation");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}		
+		try {
+			while(result.next()){
+				date = result.getTimestamp("last_modified");
+			}
+			result.close();
+		} catch (SQLException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la récupération du champ 'last_modified' de l'operation");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());		
+		}
 		
-		_operation.loadTeamMemberIntoEntity();
-		_operation.loadEntityIntoLocation();
-
-		_operation.notifyObservers();	
+		if(_lastmodified.before(date)){
+			System.out.println("On refresh");
+			refreshTeamMember();
+			refreshEntity();
+			refreshMaps();
+			refreshLocation();
+			refreshVictim();
+			
+			_operation.loadTeamMemberIntoEntity();
+			_operation.loadEntityIntoLocation();
+	
+			_operation.notifyObservers();
+			
+			_lastmodified = date;
+		}
 	}
 
 	private void refreshVictim() {
@@ -72,7 +105,6 @@ public class RefreshTimerTask extends TimerTask
 				if(!_operation.existsInVictimList(id)){
 					ResultSet result2 = _dbm.executeQuerySelect(new SQLQuerySelect("*","Victime", "id="+id));
 					while(result2.next()){
-						System.out.println("VICTIME EN PLUS	");
 						String idAnonymat = result2.getString("surnom");
 						String nom = result2.getString("nom");
 						String prenom = result2.getString("prenom");
@@ -112,21 +144,16 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Equipier", "enActivite=1 AND (operation_id='"+_operation.getId()+"' OR operation_id is NULL) AND id>"+_lastTeamMemberId));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`,`prenom`,`entite_id`","Equipier", "enActivite=1 AND (operation_id='"+_operation.getId()+"' OR operation_id is NULL) AND id>"+_lastTeamMemberId));
 			while(result.next()){
 				int id = result.getInt("id");
 
 				if(!_operation.existsInTeamMemberList(id)){
 					String name = result.getString("nom");
 					String firstName = result.getString("prenom");
-					String phoneNumber = result.getString("tel");
-					String othersInformations = result.getString("autres");
-					if(othersInformations == null){
-						othersInformations = "";
-					}
 					int entityId = result.getInt("entite_id");
 					
-					TeamMemberController equipier = new TeamMemberController(_operation, _dbm, id, name, firstName, phoneNumber, othersInformations, entityId);
+					TeamMemberController equipier = new TeamMemberController(_operation, _dbm, id, name, firstName, entityId);
 					_operation.addTeamMember(equipier);
 				}
 				_lastTeamMemberId = id;
