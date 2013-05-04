@@ -100,8 +100,7 @@ public class DatabaseManager
 		}
 		catch(SQLException e)
 		{
-			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+			JOptionPane.showMessageDialog(null, "La connection à la base de données à échouée. Veuillez réessayer.");
 		}
 	}
 
@@ -119,8 +118,7 @@ public class DatabaseManager
 		}
 		catch(SQLException e)
 		{
-			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+			JOptionPane.showMessageDialog(null, "La connection à la base de données à échouée. Veuillez réessayer.");
 		}
 	}
 
@@ -137,8 +135,7 @@ public class DatabaseManager
 		}
 		catch(SQLException e)
 		{
-			MessagePanel errorPanel = new MessagePanel("La connection à la base de données à échouée.");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+			JOptionPane.showMessageDialog(null, "La connection à la base de données à échouée. Veuillez réessayer.");
 		}
 	}
 
