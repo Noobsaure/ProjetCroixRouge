@@ -361,7 +361,6 @@ public class OperationController implements Subject {
 					listLocation.add(location);
 			}
 		}
-
 		return listLocation;
 	}
 

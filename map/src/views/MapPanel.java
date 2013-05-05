@@ -117,9 +117,9 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 		_locations.removeAll(listLocationsToDelete);
 		for(LocationController oneLoc : listLocations) {
-			int x = (int) oneLoc.getX();
-			int y = (int) oneLoc.getY();
-			Location location = new Location(_globalPanel, oneLoc);
+			int x = (int) (oneLoc.getX() * getRatio());
+			int y = (int) (oneLoc.getY() * getRatio());
+			Location location = new Location(_globalPanel, oneLoc, x, y);
 			LocationPanel locPanel = new LocationPanel(location, this, x, y);
 			locPanel.addIconMouseListener(new EditLocationButtonListener(_operation,locPanel,_globalPanel.getMapPanel(),oneLoc));
 			location.setLocPanel(locPanel);
