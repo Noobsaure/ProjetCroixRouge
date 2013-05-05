@@ -84,7 +84,6 @@ public class MapController {
 
 		_name = name;
 		genererMessageChangementNom(lastName);
-		_operation.setLastModified();
 	}
 
 	private void genererMessageChangementNom(String lastName) {
@@ -99,6 +98,8 @@ public class MapController {
 					"Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
+
+		_operation.setLastModified();
 	}
 	
 	private void genererMessageSuppressionMap() {
