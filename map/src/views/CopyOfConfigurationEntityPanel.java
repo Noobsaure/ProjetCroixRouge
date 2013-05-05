@@ -1,10 +1,10 @@
 package views;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,19 +32,13 @@ import views.listeners.EditEntityNameButtonListener;
 import views.listeners.EditStatusEntityButtonListener;
 import views.listeners.RemoveEquipierListener;
 import views.listeners.RetourEquipierEntityListener;
-
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
-
 import controllers.EntityController;
 import controllers.LocationController;
 import controllers.MapController;
 import controllers.OperationController;
 import controllers.TeamMemberController;
 
-public class ConfigurationEntityPanel extends CustomPanelImpl
+public class CopyOfConfigurationEntityPanel extends CustomPanelImpl
 {
 	private static final long serialVersionUID = 1L;
 
@@ -53,7 +47,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	public static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 480);
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
-	public static final String TITLE = "Information sur l'entité";
+	public static final String TITLE = "Informations sur l'entité";
 	private MapPanel _mapPanel;
 	private EntityController _entityController;
 	private OperationController _operationController;
@@ -74,7 +68,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 	JTextArea _informationsTextArea;
 
-	public ConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController) {
+	public CopyOfConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController) {
 		_mapPanel = parent;
 		_operationController = operationController;
 		_entityController = entityController;
@@ -95,62 +89,23 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		JLabel title = new JLabel("Ajouter une entité");
 		_internalPanel.add(title, BorderLayout.NORTH);
 
-		JPanel formPanel = new JPanel();
-		formPanel.setPreferredSize(new Dimension(380, 600));
-		_internalPanel.add(formPanel, BorderLayout.CENTER);
-
-		formPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("100px:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
-				ColumnSpec.decode("270px:grow"),
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("100px:grow"),},
-			new RowSpec[] {
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("27px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				RowSpec.decode("25px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				RowSpec.decode("27px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("27px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+		JPanel nameLocPanel = new JPanel();
+		nameLocPanel.setLayout(new GridLayout(2,3));
+		_internalPanel.add(nameLocPanel, BorderLayout.CENTER);
 
 		/**************************************************************\
 		 * 							Nom
 		\**************************************************************/
 		_nomLabel = new JLabel("Nom:");
-		formPanel.add(_nomLabel, "1, 2, left, default");
+		nameLocPanel.add(_nomLabel);
 
 		_nomTextField = new JTextField(_entityController.getName());
-		formPanel.add(_nomTextField, "4, 2");
+		nameLocPanel.add(_nomTextField);
+		
+		CustomButton editNameEntityButton = new CustomButton("Ok");
+		editNameEntityButton.addActionListener(new EditEntityNameButtonListener(_mapPanel, _entityController, this));
+		nameLocPanel.add(editNameEntityButton);
+		
 		/**************************************************************/
 
 
@@ -158,7 +113,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		 * 						Localisation
 		\**************************************************************/
 		JLabel typeLabel = new JLabel("Localisation:");
-		formPanel.add(typeLabel, "1, 4, left, default");
+		nameLocPanel.add(typeLabel);
 
 		Vector<String> comboBoxItems = new Vector<String>();
 		
@@ -194,11 +149,6 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		_typeComboBox = new JComboBox<String>(model);
 		formPanel.add(_typeComboBox, "4, 4, fill, default");
 
-		CustomButton editNameEntityButton = new CustomButton("Ok");
-		editNameEntityButton.setAlignmentX(0.5f);
-		editNameEntityButton.addActionListener(new EditEntityNameButtonListener(_mapPanel, _entityController, this));
-		formPanel.add(editNameEntityButton, "4, 5");
-
 		CustomButton editLocationEntityButton = new CustomButton("Ok");
 		editLocationEntityButton.setAlignmentX(0.5f);
 		editLocationEntityButton.addActionListener(new EditEntityLocationButtonListener(_mapPanel, _operationController, _entityController, this));
@@ -217,9 +167,6 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		formPanel.add(listeEquipierLabel, "1, 10, left, top");
 		
 		_listeEquipierPanel = new JPanel();
-//		_listeEquipierPanel.setPreferredSize(new Dimension(270, 160));
-//		_listeEquipierPanel.setMinimumSize(new Dimension(210, 160));
-//		_listeEquipierPanel.setSize(new Dimension(200, 140));
 		
 		JScrollPane scrollPane = new JScrollPane(_listeEquipierPanel);
 		scrollPane.setPreferredSize(new Dimension(270, 160));
