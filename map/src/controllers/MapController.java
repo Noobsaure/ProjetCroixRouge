@@ -69,6 +69,11 @@ public class MapController {
 	}
 
 	public void setName(String name){
+		
+		if(_name.equals(name)){
+			return;
+		}
+		
 		String lastName = _name;
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
@@ -79,7 +84,6 @@ public class MapController {
 
 		_name = name;
 		genererMessageChangementNom(lastName);
-		_operation.setLastModified();
 	}
 
 	private void genererMessageChangementNom(String lastName) {
@@ -90,7 +94,23 @@ public class MapController {
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message de changement nom de la carte. "+
+					"Message : "+message);
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+
+		_operation.setLastModified();
+	}
+	
+	private void genererMessageSuppressionMap() {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+
+		String message = "La carte '"+_name+"' a été supprimée.";
+		try {			
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+		} catch (MalformedQueryException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la suppression de la carte. "+
 					"Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
@@ -137,7 +157,8 @@ public class MapController {
 		else
 			_operation.setCurrentMap(null);
 
-		_operation.setLastModified();
+		genererMessageSuppressionMap();
+		_operation.setLastModified();		
 	}
 
 	public ImageIcon getImage()

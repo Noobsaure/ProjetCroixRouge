@@ -202,7 +202,6 @@ public class VictimController {
 					"Veuillez réessayez.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
 
 		_operation.setLastModified();
 	}
@@ -225,24 +224,26 @@ public class VictimController {
 	private void genererChangementEntite() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		
+		int idMessage;
 		String message = "La victime \'"+_idAnonymat+"\' est maintenant prise en charge par "+_dbm.addSlashes(_entity.getName())+".";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			genererVictimeMessage(idMessage);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime .Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-		
 	}
 
 	private void genererFinDePriseEnCharge() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-
+		int idMessage;
+		
 		String message = "La victime '"+_idAnonymat+"' n'est plus prise en charge.";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
+			genererVictimeMessage(idMessage);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -254,17 +255,28 @@ public class VictimController {
 	public void genererDebutPriseEnChargeMessage() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		int idMessage;
+		
 		String message = "Début de prise en charge de la victime "+_idAnonymat+".";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			genererVictimeMessage(idMessage);
 		} catch (MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime "+
-					"Message : "+message);
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
-
 	}
 
+
+	private void genererVictimeMessage(int idMessage) {
+		try {			
+			_dbm.executeQueryInsert(new SQLQueryInsert("victimes_messages" ,"('"+idMessage+"','"+_id+"')"));
+		} catch (MalformedQueryException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de l'insertion du message pour la victime '"+_nom+"' dans la table d'association.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+	}
+	
 	public Integer getId() {
 		return _id;
 	}
