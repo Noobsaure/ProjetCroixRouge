@@ -14,6 +14,7 @@ import views.MessagePanel;
 import views.CustomDialog;
 import views.SubMenuVictimPanel;
 import controllers.EntityController;
+import controllers.OperationController;
 import controllers.VictimController;
 
 public class FinDePriseEnChargeButtonListener implements ActionListener
@@ -22,6 +23,7 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 	private SubMenuVictimPanel _subMenu;
 	private VictimController _victimController;
 	private EditVictimPanel _editVictimPanel;
+	private OperationController _operation;
 
 	public FinDePriseEnChargeButtonListener(MapPanel mapPanel, SubMenuVictimPanel subMenu, VictimController victimController, EditVictimPanel editVictimPanel)
 	{
@@ -29,6 +31,13 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 		_subMenu = subMenu;
 		_victimController = victimController;
 		_editVictimPanel = editVictimPanel;
+		
+		_operation = _mapPanel.getGlobalPanel().getLauncher().getOperationController();
+	}
+	
+	public boolean checkInput(String motif, String otherMotif, String idAnonymat, String soins, EntityController entityAssociated)
+	{
+		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnonymat != null) && !soins.equals("") && (entityAssociated != null) && ((_operation.anonymatAlreadyExist(idAnonymat) == -1) || (_operation.anonymatAlreadyExist(idAnonymat) == _victimController.getId())));
 	}
 
 	@Override
@@ -52,7 +61,7 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 			
 			EntityController entitesAssociees = _editVictimPanel.getMap().get(_editVictimPanel.getEntiteAssocieeCombobox().getSelectedItem());
 			
-			if(!ConfirmEditVictimListener.checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
+			if(!checkInput(((motifsList.length == 0 ) || (motifsList[0].equals(" "))) ? "" : motifsList[0], otherMotif, idAnonymat, soins, entitesAssociees))
 			{
 				if(((motifsList.length == 0) || (motifsList[0].equals("(Autre motif)"))) && (otherMotif.equals("")))
 				{
@@ -66,17 +75,23 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 						new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 					}
 					else
-						if(soins.equals(""))
+						if((_operation.anonymatAlreadyExist(idAnonymat) != -1) || (_operation.anonymatAlreadyExist(idAnonymat) != _victimController.getId()))
 						{
-							MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
-							new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
+							MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
+							new CustomDialog(errorPanel, _operation.getGlobalPanel());
 						}
 						else
-							if(entitesAssociees == null)
+							if(soins.equals(""))
 							{
-								MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+								MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
 								new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 							}
+							else
+								if(entitesAssociees == null)
+								{
+									MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+									new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
+								}
 			}
 			else
 			{
