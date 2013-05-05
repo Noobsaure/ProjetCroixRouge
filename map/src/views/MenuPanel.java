@@ -18,7 +18,7 @@ import controllers.OperationController;
 
 public class MenuPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	public static final int LEFT_PANEL_WIDTH = 190;
+	public static final int LEFT_PANEL_WIDTH = 200;
 
 	private GlobalPanel _globalPanel;
 	private MapPanel _mapPanel;

@@ -37,7 +37,7 @@ import controllers.OperationController;
 public class AddVictimPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 	
-	private static final int WIDTH = 600;
+	private static final int WIDTH = 650;
 	private static final int HEIGHT = 470;
 	private static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	private static final Dimension DIMENSION_FORM_PANEL = new Dimension(WIDTH- 20, 200);

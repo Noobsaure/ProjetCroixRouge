@@ -77,6 +77,7 @@ public class EntityPanel extends JPanel
 
 		// Panel pour l'ajout de l'icone carte et config de l'entité
 		_iconPanel = new JPanel();
+		_iconPanel.setBorder(new EmptyBorder(0, 0, 0, 10));
 		_iconPanel.setBackground(Color.WHITE);
 		_iconPanel.setLayout(new BorderLayout(0, 0));
 
