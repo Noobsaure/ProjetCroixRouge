@@ -37,17 +37,28 @@ public class MapController {
 	 * @param visibility
 	 */
 	public MapController(OperationController operation, DatabaseManager dbm, String name, String path){
-		_operation = operation;
 		_dbm = dbm;
-		_name = name;
-		_visibility = true;
 		_idOperation = operation.getId();
+		_operation = operation;
 		_id = _dbm.storeImage(_dbm.stripSlashes(name), path, _idOperation);
-
-		_datas = _dbm.getImage(_id + "", name);
-
-		_operation.addCurrentMap(this);
-		_operation.setLastModified();
+		
+		if(_id == -1)
+		{
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Insertion carte '"+name+"'", "Le fichier '"+name+"' n'est pas une image. Veuillez recommencer avec un autre fichier s'il vous plait.");
+	    	new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+		else
+		{
+			_dbm = dbm;
+			_name = name;
+			_visibility = true;
+			_idOperation = operation.getId();
+	
+			_datas = _dbm.getImage(_id + "", name);
+	
+			_operation.addCurrentMap(this);
+			_operation.setLastModified();
+		}
 	}
 
 	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility, boolean display){

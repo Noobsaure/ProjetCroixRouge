@@ -297,34 +297,38 @@ public class DatabaseManager
 		
 	    try
 	    {
-	    	final String tables = "Carte(id, operation_id, nom, visibilite, image)";
-	    	final String values = "(?, ?, ?, ?, ?)";
-	    	final SQLQueryInsert query = new SQLQueryInsert(tables, values);
-	    	
-	    	File file = new File(imagePath);
-	    	FileInputStream fileInputStream = new FileInputStream(file);
-	    	PreparedStatement preparedStatement = null;
-	    	
-	    	// Insertion de l'image
-	    	_connection.setAutoCommit(false);
-			
-	    	preparedStatement = _connection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
-	    	preparedStatement.setInt(1, 0);
-	    	preparedStatement.setInt(2, idOperation);
-	    	preparedStatement.setString(3, name);
-	    	preparedStatement.setBoolean(4, true);
-	    	preparedStatement.setBinaryStream(5, fileInputStream, (int) file.length());
-	    	updateNbExecutiionQueries();
-	    	preparedStatement.executeUpdate();
-	    	_connection.commit();
-	    	
-	    	ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-	    	while(generatedKeys.next())
-				id = generatedKeys.getInt(1);
-	    	
-	    	generatedKeys.close();
-	    	preparedStatement.close();
-	    	fileInputStream.close();
+	    	ImageIcon image = new ImageIcon(imagePath);	    	
+	    	if(image.getIconWidth() != -1)
+	    	{
+		    	final String tables = "Carte(id, operation_id, nom, visibilite, image)";
+		    	final String values = "(?, ?, ?, ?, ?)";
+		    	final SQLQueryInsert query = new SQLQueryInsert(tables, values);
+		    	
+		    	File file = new File(imagePath);
+		    	FileInputStream fileInputStream = new FileInputStream(file);
+		    	PreparedStatement preparedStatement = null;
+		    	
+		    	// Insertion de l'image
+		    	_connection.setAutoCommit(false);
+				
+		    	preparedStatement = _connection.prepareStatement(query.toString(), java.sql.Statement.RETURN_GENERATED_KEYS);
+		    	preparedStatement.setInt(1, 0);
+		    	preparedStatement.setInt(2, idOperation);
+		    	preparedStatement.setString(3, name);
+		    	preparedStatement.setBoolean(4, true);
+		    	preparedStatement.setBinaryStream(5, fileInputStream, (int) file.length());
+		    	updateNbExecutiionQueries();
+		    	preparedStatement.executeUpdate();
+		    	_connection.commit();
+		    	
+		    	ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+		    	while(generatedKeys.next())
+					id = generatedKeys.getInt(1);
+		    	
+		    	generatedKeys.close();
+		    	preparedStatement.close();
+		    	fileInputStream.close();
+	    	}
 	    }
 	    catch(Exception e)
 	    {
