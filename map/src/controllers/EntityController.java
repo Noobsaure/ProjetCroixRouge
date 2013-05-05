@@ -80,7 +80,7 @@ public class EntityController {
 		int result2;
 
 		try {
-			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+_dbm.addSlashes(name)+"','"+datetime+"','"+type+"','"+color+"','"+_dbm.addSlashes(infos)+"')"));
+			result2 = _dbm.executeQueryInsert(new SQLQueryInsert("Entite", "(NULL,'"+_stateId+"','"+_posCurrentId+"',"+operation.getIdOperateur()+",'"+idOperation+"','"+DatabaseManager.addSlashes(name)+"','"+datetime+"','"+type+"','"+color+"','"+DatabaseManager.addSlashes(infos)+"')"));
 			_id = result2;
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation Entite" ,"Une erreur est survenue lors de la creation de l'entité \""+name+"\".");
@@ -132,7 +132,7 @@ public class EntityController {
 				while(result.next()){
 					_state = result.getString("infos");
 					if(_state != null){
-						_state = _dbm.stripSlashes(_state);
+						_state = DatabaseManager.stripSlashes(_state);
 					}
 					else if( (_state == null) || (_state.compareTo("Création entité") == 0) ){
 						_state=" ";
@@ -175,7 +175,7 @@ public class EntityController {
 
 		//Create new status for the entity and update of the variable class "_available" and "stateId"
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+_dbm.addSlashes(infos)+"')"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Statut" ,"(NULL,"+_id+","+state+",'"+datetime+"','"+DatabaseManager.addSlashes(infos)+"')"));
 			_stateId = result;
 			System.out.println("State ID "+_stateId);
 		} catch (MalformedQueryException e) { 
@@ -329,14 +329,14 @@ public class EntityController {
 			return;
 		}
 		try{
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "nom='"+_dbm.addSlashes(newName)+"'","id ="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "nom='"+DatabaseManager.addSlashes(newName)+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Entité - Changement de nom" ,"Impossible de mettre à jour le nom pour l'entite \""+_name+"\". Veuillez recommencer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		String tmp = _name;
 		_name = newName;
-		
+		_operation.notifyObservers();
 		genererMessageChangementDeNom(tmp);
 		_operation.setLastModified();
 	}
@@ -348,7 +348,7 @@ public class EntityController {
 		String message =  "\""+tmp+"\" a été renommée en \""+_name+"\".";
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-4', "+_operation.getId()+",NULL, NULL, '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-4', "+_operation.getId()+",NULL, NULL, '"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -367,7 +367,7 @@ public class EntityController {
 		String message =  "\""+_name+"\" a quitté \""+_operation.getLocation(_lastPosCurrentId).getName()+"\" pour \""+_operation.getLocation(_posCurrentId).getName()+"\".";
 
 		try {
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+", '-1', "+_operation.getId()+",NULL, '"+idDeplacement+"', '"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -397,7 +397,7 @@ public class EntityController {
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -412,7 +412,7 @@ public class EntityController {
 
 		try {
 			int id = _operation.getId();
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"',0)"));
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2',"+_operation.getIdOperateur()+",'-4',"+id+",NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"',0)"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur generation message" ,"Une erreur est survenue lors de la génération du message pour la main courante. "+
 					"Message : "+message);
@@ -435,7 +435,7 @@ public class EntityController {
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("statut_id, nom, date_depart, pos_courante_id", "Entite", "id="+_id));
 			while(result.next()){
 				_stateId = result.getInt("statut_id");
-				_name = _dbm.stripSlashes(result.getString("nom"));
+				_name = DatabaseManager.stripSlashes(result.getString("nom"));
 				_dateArriveeLocalisation = result.getTimestamp("date_depart");
 				
 				if(result.getInt("pos_courante_id") != _posCurrentId){
