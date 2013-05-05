@@ -61,6 +61,7 @@ public class SubMenuVictimPanel extends SubMenuPanelImpl {
 
 	public void setListVictimsContent()
 	{
+		System.out.println("HELLO");
 		List<VictimController> listVictims = _operationController.getVictimList();
 		
 		List<ThumbnailVictimPanel> victimThumbnailsToDelete = new ArrayList<ThumbnailVictimPanel>();
@@ -79,6 +80,10 @@ public class SubMenuVictimPanel extends SubMenuPanelImpl {
 			ThumbnailVictimPanel victimThumbnail = new ThumbnailVictimPanel(_mapPanel, this, oneVictim);
 			_thumbnailsPanel.add(victimThumbnail);
 			_thumbnailsList.add(victimThumbnail);
+		}
+		
+		for(ThumbnailVictimPanel thumbnailVictimPanel : _thumbnailsList){
+			thumbnailVictimPanel.update();
 		}
 	}
 	

@@ -15,19 +15,23 @@ public class ThumbnailVictimPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private VictimController _victim;
+	private JLabel _nameLabel;
 
 	public ThumbnailVictimPanel(MapPanel mapPanel, SubMenuVictimPanel subMenu, VictimController victim) {
 		_victim = victim;
-		JLabel nameLabel = new JLabel("(" + victim.getIdAnonymat() + ") " + victim.getPrenom() + " " + victim.getNom());
-		nameLabel.setForeground(Color.WHITE);
+		_nameLabel = new JLabel("(" + _victim.getIdAnonymat() + ") " + _victim.getPrenom() + " " + _victim.getNom());
+		_nameLabel.setForeground(Color.WHITE);
 		setMaximumSize(new Dimension(SubMenuPanelImpl.WIDTH - 20, SubMenuPanelImpl.BUTTON_HEIGHT));
 		setPreferredSize(new Dimension(SubMenuPanelImpl.WIDTH - 20, SubMenuPanelImpl.BUTTON_HEIGHT));
 		setBackground(SubMenuPanelImpl.COLOR_BACKGROUND);
 		setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(nameLabel);
+		add(_nameLabel);
 		addMouseListener(new EditVictimButtonListener(mapPanel, subMenu, this, victim));
 	}
 	
 	public VictimController getVictimController() {return _victim;}
 
+	public void update(){
+		_nameLabel.setText("(" + _victim.getIdAnonymat() + ") " + _victim.getPrenom() + " " + _victim.getNom());
+	}
 }
