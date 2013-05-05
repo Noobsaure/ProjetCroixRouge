@@ -40,8 +40,8 @@ public class Location extends JPanel {
 		_name = _locationController.getName();
 		_mapX = globalPanel.getMapPanel().get_x();
 		_mapY = globalPanel.getMapPanel().get_y();
-		_x = (int) _locationController.getX();
-		_y = (int) _locationController.getY();
+		_x = (int) (_locationController.getX() * globalPanel.getMapPanel().getRatio());
+		_y = (int) (_locationController.getY() * globalPanel.getMapPanel().getRatio());
 		_entitiesCount = new JLabel(_locationController.getEntityList().size()+"",SwingConstants.CENTER);
 		_entitiesCount.setForeground(Color.WHITE);
 		_entitiesCount.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
