@@ -64,7 +64,7 @@ public class LocationController {
 			_description = description;
 			_id = result;
 		}catch(MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Création localisation" ,"La localisation "+_name+" n'a pas pu être ajouté dans la base de données." +
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Création localisation" ,"La localisation \""+_name+"\" n'a pas pu être ajouté dans la base de données." +
 					"Veuillez réessayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
@@ -113,8 +113,7 @@ public class LocationController {
 		try {
 			result = _dbm.executeQueryInsert(new SQLQueryInsert("LocalisationHistorique", "(NULL,'"+entity.getLastPosCurrentId()+"','"+_id+"','"+entity.getId()+"','"+entity.getDateArriveeLocalisation()+"','"+datetime+"')"));
 		} catch (MalformedQueryException e) { 
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Localisation - Ajout entité" ,"Une erreur est survenue lors de l'ajout de " +
-					"l'entité '"+entity.getName()+"' au point de localisation '" +_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Localisation - Ajout entité" ,"Une erreur est survenue lors de l'ajout de l'entité \""+entity.getName()+"\" au point de localisation \"" +_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_entityList.add(entity);
@@ -141,8 +140,7 @@ public class LocationController {
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Localisation - Changement de nom" ,"Une erreur est survenue lors de la mise à jour du nom de la localisation " +
-					"'"+_name+"' vers '"+name+"'. Veuillez rééssayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Localisation - Changement de nom" ,"Une erreur est survenue lors de la mise à jour du nom de la localisation \""+_name+"\" vers \""+name+"\". Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
@@ -204,10 +202,10 @@ public class LocationController {
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
-			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation \""+_name+"\"", "Une erreur est survenue lors de la mise à jour des attributs de la localisation \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e1){
-			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation '"+_name+"'", "Une erreur est survenue lors de la mise à jour des attributs de la localisation'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation \""+_name+"\"", "Une erreur est survenue lors de la mise à jour des attributs de la localisation \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
@@ -236,4 +234,10 @@ public class LocationController {
 		_entityList.add(entity);
 	}
 
+	public boolean equals(LocationController location){
+		if(location.getId() == _id){
+			return true;
+		}
+		return false;
+	}
 }		

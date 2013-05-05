@@ -116,7 +116,7 @@ public class VictimController {
 			_operation.setLastModified();
 		}
 		catch(MalformedQueryException e) { 
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation victime","Impossible de creer la victime '"+_idAnonymat+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Creation victime","Impossible de creer la victime \""+_idAnonymat+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
@@ -198,8 +198,7 @@ public class VictimController {
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
 		} catch (MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime '"+_idAnonymat+"'", "Une erreur est survenue lors de la mise à jour de la victime '"+_idAnonymat+"' \n " +
-					"Veuillez réessayez.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime \""+_idAnonymat+"\"", "Une erreur est survenue lors de la mise à jour de la victime \""+_idAnonymat+"\". Veuillez réessayez.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
@@ -213,7 +212,7 @@ public class VictimController {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime","date_sortie='"+datesortie+"',motif_sortie='"+_dbm.addSlashes(motifSortie)+"'","id="+_id));
 		}catch(MalformedQueryException e){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime '"+_idAnonymat+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime \""+_idAnonymat+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
@@ -225,12 +224,12 @@ public class VictimController {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 		int idMessage;
-		String message = "La victime \'"+_idAnonymat+"\' est maintenant prise en charge par "+_dbm.addSlashes(_entity.getName())+".";
+		String message = "La victime \""+_idAnonymat+"\" est maintenant prise en charge par \""+_dbm.addSlashes(_entity.getName())+"\".";
 		try {			
 			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 			genererVictimeMessage(idMessage);
 		} catch (MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime .Message : "+message);
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
@@ -240,7 +239,7 @@ public class VictimController {
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 		int idMessage;
 		
-		String message = "La victime '"+_idAnonymat+"' n'est plus prise en charge.";
+		String message = "La victime \""+_idAnonymat+"\" n'est plus prise en charge.";
 		try {			
 			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
 			genererVictimeMessage(idMessage);
@@ -272,7 +271,7 @@ public class VictimController {
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("victimes_messages" ,"('"+idMessage+"','"+_id+"')"));
 		} catch (MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de l'insertion du message pour la victime '"+_nom+"' dans la table d'association.");
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de l'insertion du message pour la victime \""+_nom+"\" dans la table d'association.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
@@ -371,10 +370,10 @@ public class VictimController {
 			}			
 			result.getStatement().close();
 		}catch(SQLException e){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime \""+_nom+" "+_prenom+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e1){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime '"+_nom+" "+_prenom+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime", "Une erreur est survenue lors de la mise à jour des attributs de la victime \""+_nom+" "+_prenom+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}

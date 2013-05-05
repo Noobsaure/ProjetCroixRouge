@@ -57,7 +57,7 @@ public class TeamMemberController {
 			try{
 				_dbm.executeQueryInsert(new SQLQueryInsert("EntiteHistorique", "(NULL,"+_id+","+entityId+",'"+datetime+"',NULL)"));	
 			}catch(MalformedQueryException e){
-				MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de \""+_firstName+" "+_name+"\" à l'équipe \""+entity.getName()+"\".");
 				new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			}
 
@@ -65,11 +65,10 @@ public class TeamMemberController {
 			try{
 				_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id="+entityId+", operation_id='"+_operation.getId()+"'","id = "+_id));
 			}catch(MalformedQueryException e){ 
-				MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de "+_firstName+" "+_name+" à l'équipe "+entity.getName()+".");
+				MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'assignation de \""+_firstName+" "+_name+"\" à l'équipe \""+entity.getName()+"\".");
 				new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			}
 			_entity = entity;
-			System.out.println("ENTITY A CHANGE: Elle est maintenant ---> "+_entity.getName());
 			_available = false;
 
 			_operation.setLastModified();
@@ -77,7 +76,7 @@ public class TeamMemberController {
 			return true;
 		}
 		else{
-			MessagePanel errorPanel = new MessagePanel(_firstName+" "+_name+" est déjà assigné à l'entité "+_entity.getName()+". Il doit d'abord quitter cette équipe pour être réassigné");
+			MessagePanel errorPanel = new MessagePanel("\""+_firstName+" "+_name+"\" est déjà assigné à l'entité \""+_entity.getName()+"\". Il doit d'abord quitter cette équipe pour être réassigné");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return false;
 		}
@@ -90,8 +89,7 @@ public class TeamMemberController {
 
 		try{
 			//Get the id of the line in "EntiteHistorique" table
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "EntiteHistorique", "equipier_id ="+_id+" AND entite_id="
-					+_entity.getId()+" AND date_fin is NULL"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "EntiteHistorique", "equipier_id ="+_id+" AND entite_id="+_entity.getId()+" AND date_fin is NULL"));
 
 			try{
 				if(result.next()){
@@ -103,7 +101,7 @@ public class TeamMemberController {
 					try{
 						_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id=NULL, operation_id=NULL","id="+_id));	
 					}catch(MalformedQueryException e){
-						MessagePanel errorPanel = new MessagePanel("Erreur interne - Base de donnees" ,"Une erreur est survenue lors de la desafectation de l'entite_id à l'équipier "+_firstName+" "+_name);
+						MessagePanel errorPanel = new MessagePanel("Erreur interne - Base de donnees" ,"Une erreur est survenue lors de la désafectation de l'entité à l'équipier \""+_firstName+" "+_name+"\".");
 						new CustomDialog(errorPanel, _operation.getGlobalPanel());
 					}
 				}
@@ -124,7 +122,6 @@ public class TeamMemberController {
 	}
 
 	public String show(){
-		System.out.println("On est ici pour l'equipier : "+_firstName);
 		String result;
 		result = "Nom :"+_name+"\t";
 		result += "Prenom:"+_firstName+"\t";
@@ -203,10 +200,10 @@ public class TeamMemberController {
 			}
 			result.getStatement().close();
 		}catch (SQLException e) { 
-			MessagePanel errorPanel = new MessagePanel("Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur dans la mise à jour des attributs de l'équipier \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e1) {
-			MessagePanel errorPanel = new MessagePanel("Erreur dans la mise à jour des attributs de l'équipier '"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur dans la mise à jour des attributs de l'équipier \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}		
 	}

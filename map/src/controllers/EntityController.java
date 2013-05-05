@@ -274,7 +274,7 @@ public class EntityController {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "couleur='"+newColor+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite '"+_name+"'. Veuillez réessayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Impossible de mettre à jour la couleur pour l'entite \""+_name+"\". Veuillez réessayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		_color = newColor;
@@ -282,6 +282,10 @@ public class EntityController {
 	}
 
 	public void setLocation(LocationController location) {	
+		if(_operation.getLocation(_posCurrentId).equals(location)){
+			return;
+		}
+		
 		_lastPosCurrentId = _posCurrentId;
 
 		LocationController loc = _operation.getLocation(_posCurrentId);
@@ -296,7 +300,7 @@ public class EntityController {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "pos_courante_id ="+_posCurrentId,"id ="+_id));
 		}catch(MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de position" ,"Impossible de mettre à jour la position courante pour l'entite '"+_name+"'. L'entité a été ramené à '"+_operation.getPcmLocation().getName()+"'. Veuillez la repositionner." );
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de position" ,"Impossible de mettre à jour la position courante pour l'entite \""+_name+"\". L'entité a été ramené à \""+_operation.getPcmLocation().getName()+"\". Veuillez la repositionner." );
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			_posCurrentId = _operation.getIdPcm();
 		}
@@ -309,7 +313,7 @@ public class EntityController {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Entite", "date_depart ='"+_dateArriveeLocalisation+"'","id ="+_id));
 		}catch(MalformedQueryException e) {
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de position" ,"Impossible de mettre à jour la date d'arrivée à la localisation pour l'entite '"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Changement de position" ,"Impossible de mettre à jour la date d'arrivée à la localisation pour l'entite \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 

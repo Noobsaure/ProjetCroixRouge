@@ -78,7 +78,7 @@ public class MapController {
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour du nom de la carte '"+_name+"'. Veuillez rééssayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour du nom de la carte \""+_name+"\". Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
@@ -90,7 +90,7 @@ public class MapController {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message = "La carte '"+lastName+"' a été renomée en '"+_name+"'.";
+		String message = "La carte \""+lastName+"\" a été renommée en \""+_name+"\".";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
