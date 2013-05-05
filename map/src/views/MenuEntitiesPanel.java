@@ -102,7 +102,7 @@ public class MenuEntitiesPanel extends JPanel {
 		JPanel panelAddButton = new JPanel();
 		panelAddButton.setLayout(new BorderLayout());
 		panelAddButton.setBackground(Color.BLACK);
-		panelAddButton.setBorder(new EmptyBorder(0, 10, 2, 10));
+		panelAddButton.setBorder(new EmptyBorder(0, 15, 2, 15));
 		panelAddButton.setMinimumSize(new Dimension(WIDTH_PANEL_ADD_BUTTON, HEIGHT_BUTTON));
 		panelAddButton.setMaximumSize(new Dimension(WIDTH_PANEL_ADD_BUTTON, HEIGHT_BUTTON));
 		AddEntityButton addButton = new AddEntityButton(_globalPanel.getMapPanel(), "+");
