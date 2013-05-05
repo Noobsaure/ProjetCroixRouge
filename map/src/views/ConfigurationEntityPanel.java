@@ -1,10 +1,11 @@
 package views;
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
@@ -32,12 +33,6 @@ import views.listeners.EditEntityNameButtonListener;
 import views.listeners.EditStatusEntityButtonListener;
 import views.listeners.RemoveEquipierListener;
 import views.listeners.RetourEquipierEntityListener;
-
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
-
 import controllers.EntityController;
 import controllers.LocationController;
 import controllers.MapController;
@@ -51,28 +46,27 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	protected static final int WIDTH = 400;
 	protected static final int HEIGHT = 680;
 	public static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
-	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 480);
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
-	public static final String TITLE = "Information sur l'entité";
+	public static final String TITLE = "Informations sur l'entité";
 	private MapPanel _mapPanel;
 	private EntityController _entityController;
 	private OperationController _operationController;
 
-	private JPanel _internalPanel;
-	private JLabel _nomLabel;
 	private JTextField _nomTextField;
-	private JComboBox<String> _typeComboBox;
 	public ButtonGroup JradioBoutonGroup = new ButtonGroup();
 	private JPanel _colorChooserPanel;
-	private Color colorEntity;
+	private Color _colorEntity;
 	private JPanel _listeEquipierPanel;
 	
 	private static List<TeamMemberController> listEquipiers;
+	private static ArrayList<LocationController> listLocations;
 	
 	JRadioButton _disponibleStatutRadioButton = new JRadioButton("Disponible");
 	JRadioButton _indisponibleStatutRadioButton = new JRadioButton("Indisponible");
 
 	JTextArea _informationsTextArea;
+
+	private JComboBox<String> _typeComboBox;
 
 	public ConfigurationEntityPanel(MapPanel parent,OperationController operationController, EntityController entityController) {
 		_mapPanel = parent;
@@ -88,121 +82,93 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		setSize(new Dimension(_mapPanel.getWidth(), _mapPanel.getHeight()));
 		setOpaque(false);
 
-		_internalPanel = new PopUpPanel();
-		_internalPanel.setSize(DIMENSION_PANEL);
-		add(_internalPanel);
+		JPanel internalPanel = new PopUpPanel();
+		internalPanel.setBorder(new EmptyBorder(5,5,5,5));
+		internalPanel.setSize(DIMENSION_PANEL);
+		internalPanel.setLayout(new BoxLayout(internalPanel,BoxLayout.PAGE_AXIS));
+		add(internalPanel);
 
-		JLabel title = new JLabel("Ajouter une entité");
-		_internalPanel.add(title, BorderLayout.NORTH);
+		JLabel title = new JLabel("Éditer entité "+_entityController.getName(), JLabel.CENTER);
+		internalPanel.add(title);
 
-		JPanel formPanel = new JPanel();
-		formPanel.setPreferredSize(new Dimension(380, 600));
-		_internalPanel.add(formPanel, BorderLayout.CENTER);
-
-		formPanel.setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("100px:grow"),
-				FormFactory.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
-				ColumnSpec.decode("270px:grow"),
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("100px:grow"),},
-			new RowSpec[] {
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("27px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				RowSpec.decode("25px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				RowSpec.decode("27px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("27px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+		JPanel nameLocPanel = new JPanel();
+		nameLocPanel.setLayout(new GridLayout(2,1));
+		
+		internalPanel.add(nameLocPanel);
 
 		/**************************************************************\
 		 * 							Nom
 		\**************************************************************/
-		_nomLabel = new JLabel("Nom:");
-		formPanel.add(_nomLabel, "1, 2, left, default");
+		JPanel namePanel = new JPanel();
+		namePanel.setLayout(new BorderLayout());
+		namePanel.setBorder(new EmptyBorder(5,0,5,0));
+		
+		JLabel nameLabel = new JLabel("Nom:");
+		namePanel.add(nameLabel, BorderLayout.WEST);
+		nameLabel.setPreferredSize(new Dimension(50,50));
 
 		_nomTextField = new JTextField(_entityController.getName());
-		formPanel.add(_nomTextField, "4, 2");
+		namePanel.add(_nomTextField, BorderLayout.CENTER);
+		_nomTextField.setPreferredSize(new Dimension(290,50));
+		
+		CustomButton editNameEntityButton = new CustomButton("Ok");
+		editNameEntityButton.addActionListener(new EditEntityNameButtonListener(_mapPanel, _entityController, this));
+		namePanel.add(editNameEntityButton, BorderLayout.EAST);
+		editNameEntityButton.setPreferredSize(new Dimension(50,50));
+		
+		nameLocPanel.add(namePanel);
+		
 		/**************************************************************/
 
 
 		/**************************************************************\
 		 * 						Localisation
 		\**************************************************************/
+		JPanel locPanel = new JPanel();
+		locPanel.setLayout(new BorderLayout());
+		locPanel.setBorder(new EmptyBorder(5,0,5,0));
+		
 		JLabel typeLabel = new JLabel("Localisation:");
-		formPanel.add(typeLabel, "1, 4, left, default");
+		locPanel.add(typeLabel, BorderLayout.WEST);
 
 		Vector<String> comboBoxItems = new Vector<String>();
 		
 		// On récupère la list des map
 		List<MapController> locatMap;
 		locatMap = _operationController.getMapList();
-		List<LocationController> locatMaplocat;
-		comboBoxItems.add(_operationController.getLocation(_operationController.getIdPcm()).getName());
-		for (MapController mapController : locatMap) 
-		{	
-			locatMaplocat =  mapController.getLocationList();
-			for (LocationController locat : locatMaplocat)
-			{	
-				String temp = mapController.getName()+" => "+locat.getName();
-				comboBoxItems.add(temp);
+		List<LocationController> oneMapLocations;
+		listLocations = new ArrayList<LocationController>();
+		listLocations.add(_operationController.getPcmLocation());
+		String tmp = _operationController.getLocation(_operationController.getIdPcm()).getName();
+		comboBoxItems.add(tmp);
+		String selectedLocation = new String(tmp);
+		int entityCurrentPosId = _entityController.getIdPosCurrent();
+		for (MapController oneMap : locatMap) 
+		{
+			oneMapLocations =  oneMap.getLocationList();
+			for (LocationController oneLocation : oneMapLocations)
+			{
+				listLocations.add(oneLocation);
+				tmp = oneMap.getName()+" => "+oneLocation.getName();
+				comboBoxItems.add(tmp);
+				if(entityCurrentPosId == oneLocation.getId()) {
+					selectedLocation = new String(tmp);
+				}
 			}
 		}		
 
 		final DefaultComboBoxModel model = new DefaultComboBoxModel(comboBoxItems);
 
-		String maploca;
-		// mise par défaut du nom de la localisation
-		LocationController localisationEntite = _operationController.getLocation(_entityController.getIdPosCurrent());
-		if(localisationEntite.getId() == _operationController.getIdPcm()){
-			maploca= "";
-		}
-		else{
-			maploca = _operationController.getMap(localisationEntite.getIdMap()).getName()+" -> ";
-		}
-		String tempLocaMap = maploca+localisationEntite.getName();
-		model.setSelectedItem(tempLocaMap);
+		model.setSelectedItem(selectedLocation);
 
 		_typeComboBox = new JComboBox<String>(model);
-		formPanel.add(_typeComboBox, "4, 4, fill, default");
-
-		CustomButton editNameEntityButton = new CustomButton("Ok");
-		editNameEntityButton.setAlignmentX(0.5f);
-		editNameEntityButton.addActionListener(new EditEntityNameButtonListener(_mapPanel, _entityController, this));
-		formPanel.add(editNameEntityButton, "4, 5");
+		locPanel.add(_typeComboBox, BorderLayout.CENTER);
 
 		CustomButton editLocationEntityButton = new CustomButton("Ok");
-		editLocationEntityButton.setAlignmentX(0.5f);
-		editLocationEntityButton.addActionListener(new EditEntityLocationButtonListener(_mapPanel, _operationController, _entityController, this));
-		formPanel.add(editLocationEntityButton, "4, 6");
+		editLocationEntityButton.addActionListener(new EditEntityLocationButtonListener(_entityController, this));
+		locPanel.add(editLocationEntityButton, BorderLayout.EAST);
+		
+		nameLocPanel.add(locPanel);
 		/**************************************************************/
 
 
@@ -212,21 +178,18 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		\**************************************************************/
 
 		JSeparator separator = new JSeparator();
-		formPanel.add(separator, "1, 8, 4, 1");
+		internalPanel.add(separator, "1, 8, 4, 1");
 		JLabel listeEquipierLabel = new JLabel("Liste Equipiers:");
-		formPanel.add(listeEquipierLabel, "1, 10, left, top");
+		internalPanel.add(listeEquipierLabel, "1, 10, left, top");
 		
 		_listeEquipierPanel = new JPanel();
-//		_listeEquipierPanel.setPreferredSize(new Dimension(270, 160));
-//		_listeEquipierPanel.setMinimumSize(new Dimension(210, 160));
-//		_listeEquipierPanel.setSize(new Dimension(200, 140));
 		
 		JScrollPane scrollPane = new JScrollPane(_listeEquipierPanel);
 		scrollPane.setPreferredSize(new Dimension(270, 160));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		formPanel.add(scrollPane, "4, 10, center, center");
+		internalPanel.add(scrollPane);
 
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
 
@@ -235,26 +198,25 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
 		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_mapPanel,_operationController, _entityController));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		formPanel.add(AjoutEquipierButton, "4, 12, fill, fill");
-
-		JSeparator separator_1 = new JSeparator();
-		formPanel.add(separator_1, "1, 13, 4, 1");
-
-		JLabel _statutLabel = new JLabel("Statut :");
-		formPanel.add(_statutLabel, "1, 15");
+		internalPanel.add(AjoutEquipierButton);
 
 		/**************************************************************\
 		 * 					Buttons radio Dispo/Indispo
 		\**************************************************************/
 
-		System.out.println("récupération de l'entity : "+_entityController.getStatut());
+		JSeparator separator_1 = new JSeparator();
+		internalPanel.add(separator_1);
+
+		JLabel _statutLabel = new JLabel("Statut :");
+		internalPanel.add(_statutLabel);
+		
 		if (_entityController.getStatut()) {_disponibleStatutRadioButton.setSelected(true);
 		_indisponibleStatutRadioButton.setSelected(false);}
 		else {_disponibleStatutRadioButton.setSelected(false);
 		_indisponibleStatutRadioButton.setSelected(true);}
 		
 		JPanel panel = new JPanel();
-		formPanel.add(panel, "4, 15, fill, fill");
+		internalPanel.add(panel);
 		panel.add(_disponibleStatutRadioButton);
 		_disponibleStatutRadioButton.setPreferredSize(new Dimension(103, 14));
 		
@@ -267,27 +229,27 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		JradioBoutonGroup.add(_indisponibleStatutRadioButton);
 
 		JLabel lblInformations = new JLabel("Informations :");
-		formPanel.add(lblInformations, "1, 17, left, top");
+		internalPanel.add(lblInformations);
 
 		JScrollPane textAreaScrollPane = new JScrollPane();
-		formPanel.add(textAreaScrollPane, "4, 17, 1, 6, fill, fill");
+		internalPanel.add(textAreaScrollPane);
 
 		_informationsTextArea = new JTextArea(_entityController.getInformationsStatut());
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 
-		CustomButton modifStatusButton = new CustomButton("Valider Modifier status");
+		CustomButton modifStatusButton = new CustomButton("Valider");
 		modifStatusButton.addActionListener(new EditStatusEntityButtonListener(_entityController, this));
-		formPanel.add(modifStatusButton, "4, 24");
+		internalPanel.add(modifStatusButton);
 
 		JSeparator separator_2 = new JSeparator();
-		formPanel.add(separator_2, "1, 26, 4, 1");
+		internalPanel.add(separator_2);
 
 		/**************************************************************\
 		 * 						Couleur
 		\**************************************************************/
 
 		JLabel lblCouleur = new JLabel("Couleur :");
-		formPanel.add(lblCouleur, "1, 28");
+		internalPanel.add(lblCouleur, "1, 28");
 
 		_colorChooserPanel = new JPanel();
 		_colorChooserPanel.setMinimumSize(new Dimension(10, 1));
@@ -296,25 +258,25 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 		String stringColor = _entityController.getColor();
 
-		colorEntity = stringToColor(stringColor);
+		_colorEntity = stringToColor(stringColor);
 
-		_colorChooserPanel.setBackground(colorEntity);
+		_colorChooserPanel.setBackground(_colorEntity);
 
-		formPanel.add(_colorChooserPanel, "4, 28, fill, fill");
+		internalPanel.add(_colorChooserPanel, "4, 28, fill, fill");
 
-		CustomButton ModifColorButton = new CustomButton("Valider Modifier couleur");
+		CustomButton ModifColorButton = new CustomButton("Valider");
 		ModifColorButton.addActionListener(new EditEntityColorListener(_mapPanel,this, _entityController));
-		formPanel.add(ModifColorButton, "4, 30");
+		internalPanel.add(ModifColorButton, "4, 30");
 
 		JSeparator separator_3 = new JSeparator();
-		formPanel.add(separator_3, "1, 31, 4, 1");
+		internalPanel.add(separator_3, "1, 31, 4, 1");
 
 		/**************************************************************\
 		 * 						Button retour
 		\**************************************************************/
 
 		JPanel buttonPanel = new JPanel();
-		_internalPanel.add(buttonPanel, BorderLayout.SOUTH);
+		internalPanel.add(buttonPanel);
 
 		CustomButton retourEquipierEntiteButton = new CustomButton("Retour");
 		retourEquipierEntiteButton.addActionListener(new RetourEquipierEntityListener(this));
@@ -322,7 +284,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 		/**************************************************************/
 
-		setPreferredSize(_internalPanel.getSize());
+		setPreferredSize(internalPanel.getSize());
 	}
 
 	public String getNewName()
@@ -350,10 +312,16 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	{
 		return _typeComboBox.getSelectedIndex();
 	}
+	
+	public LocationController getSelectedLocation() {
+		return listLocations.get(getIndexLocation());
+	}
 
 	public Color getColor() {
 		return _colorChooserPanel.getBackground();
 	}
+	
+	public static ArrayList<LocationController> getLocationsList() {return listLocations;}
 	
 	private void setEquipiersList()
 	{
@@ -365,7 +333,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 			_listeEquipierPanel.add(nomEquipierPanel);
 			nomEquipierPanel.setLayout(new BorderLayout(0, 0));
 
-			JLabel _nomEquipierLabel = new JLabel(team.getName());
+			JLabel _nomEquipierLabel = new JLabel(team.getFirstName() + team.getName());
 			_nomEquipierLabel.setBorder(new EmptyBorder(5, 6, 5, 0));
 			nomEquipierPanel.add(_nomEquipierLabel, BorderLayout.WEST);
 

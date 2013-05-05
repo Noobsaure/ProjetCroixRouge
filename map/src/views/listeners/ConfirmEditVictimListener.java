@@ -14,6 +14,7 @@ import views.GlobalPanel;
 import views.MapPanel;
 import views.MessagePanel;
 import controllers.EntityController;
+import controllers.OperationController;
 import controllers.VictimController;
 
 
@@ -24,6 +25,7 @@ public class ConfirmEditVictimListener implements ActionListener
 	private GlobalPanel _globalPanel;
 	private EditVictimPanel _editVictimPanel;
 	private VictimController _victimController;
+	private OperationController _operation;
 	
 	public ConfirmEditVictimListener(MapPanel mapPanel, EditVictimPanel editVictimPanel, VictimController victimController)
 	{
@@ -31,17 +33,19 @@ public class ConfirmEditVictimListener implements ActionListener
 		_globalPanel = _mapPanel.getGlobalPanel();
 		_editVictimPanel = editVictimPanel;
 		_victimController = victimController;
+	
+		_operation = _mapPanel.getGlobalPanel().getLauncher().getOperationController();
 	}
 	
 	
-	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, String soins, EntityController entityAssociated)
+	public boolean checkInput(String motif, String otherMotif, String idAnonymat, String soins, EntityController entityAssociated)
 	{
-		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && !soins.equals("") && (entityAssociated != null));
+		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnonymat != null) && !soins.equals("") && (entityAssociated != null) && ((_operation.anonymatAlreadyExist(idAnonymat) == -1) || (_operation.anonymatAlreadyExist(idAnonymat) == _victimController.getId())));
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e)
-	{
+	{		
 		Object[] objects = _editVictimPanel.getMotifList().getSelectedValuesList().toArray();
 		String[] motifsList = new String[objects.length];
 		for(int i = 0; i < objects.length; i++)
@@ -66,17 +70,23 @@ public class ConfirmEditVictimListener implements ActionListener
 					new CustomDialog(errorPanel, _globalPanel);
 				}
 				else
-					if(soins.equals(""))
+					if((_operation.anonymatAlreadyExist(idAnonymat) != -1) || (_operation.anonymatAlreadyExist(idAnonymat) != _victimController.getId()))
 					{
-						MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
-						new CustomDialog(errorPanel, _globalPanel);
+						MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
+						new CustomDialog(errorPanel, _operation.getGlobalPanel());
 					}
 					else
-						if(entitesAssociees == null)
+						if(soins.equals(""))
 						{
-							MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+							MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
 							new CustomDialog(errorPanel, _globalPanel);
 						}
+						else
+							if(entitesAssociees == null)
+							{
+								MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
+								new CustomDialog(errorPanel, _globalPanel);
+							}
 		}
 		else
 		{

@@ -32,6 +32,7 @@ public class ConfirmAddVictimListener implements ActionListener
 	private OperationController _operationController;
 	private DatabaseManager _databaseManager;
 	private AddVictimPanel _addVictimPanel;
+	private OperationController _operation;
 	
 	
 	public ConfirmAddVictimListener(MapPanel mapPanel, OperationController operationController, DatabaseManager databaseManager, AddVictimPanel addVictimPanel)
@@ -41,12 +42,14 @@ public class ConfirmAddVictimListener implements ActionListener
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		_addVictimPanel = addVictimPanel;
+		
+		_operation = _mapPanel.getGlobalPanel().getLauncher().getOperationController();
 	}
 	
 	
-	public static boolean checkInput(String motif, String otherMotif, String idAnomymat, EntityController entityAssociated)
+	public boolean checkInput(String motif, String otherMotif, String idAnonymat, EntityController entityAssociated)
 	{
-		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnomymat != null) && (entityAssociated != null));
+		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnonymat != null) && (entityAssociated != null) && (_operation.anonymatAlreadyExist(idAnonymat) == -1));
 	}
 	
 	
@@ -77,10 +80,10 @@ public class ConfirmAddVictimListener implements ActionListener
 					new CustomDialog(errorPanel, _globalPanel);
 				}
 				else
-					if(soins.equals(""))
+					if(_operation.anonymatAlreadyExist(idAnonymat) != -1)
 					{
-						MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_SOINS_MESSAGE);
-						new CustomDialog(errorPanel, _globalPanel);
+						MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
+						new CustomDialog(errorPanel, _operation.getGlobalPanel());
 					}
 					else
 						if(entitesAssociees == null)

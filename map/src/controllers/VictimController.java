@@ -51,12 +51,6 @@ public class VictimController {
 
 	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon, EntityController entity) throws ParseException
 	{
-		if(operation.anonymatAlreadyExist(anon) != -1){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
-			new CustomDialog(errorPanel, operation.getGlobalPanel());
-			return;
-		}
-		
 		_operation = operation;
 		_dbm = dbm;
 		_nom = nom;
@@ -166,14 +160,7 @@ public class VictimController {
 		_dateDeNaissance = dateDeNaissance;
 		_atteinteDetails = atteinteDetails;
 		_soin = soin;
-		
-		if( (_operation.anonymatAlreadyExist(anon) != _id) && (_operation.anonymatAlreadyExist(anon) != -1)){
-			System.out.println((_operation.anonymatAlreadyExist(anon)));
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
-			new CustomDialog(errorPanel, _operation.getGlobalPanel());
-		}else{
-			_idAnonymat = anon;
-		}
+		_idAnonymat = anon;
 
 		if(_entity.getId() != entity.getId()){
 			_entity = entity;
