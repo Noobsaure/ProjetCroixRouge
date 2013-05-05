@@ -189,7 +189,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		
-		internalPanel.add(scrollPane, "4, 10, center, center");
+		internalPanel.add(scrollPane);
 
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
 
@@ -198,7 +198,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		CustomButton AjoutEquipierButton = new CustomButton("Ajouter un equipier");
 		AjoutEquipierButton.addActionListener(new AddEquipierButtonListener(_mapPanel,_operationController, _entityController));
 		AjoutEquipierButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-		internalPanel.add(AjoutEquipierButton, "4, 12, fill, fill");
+		internalPanel.add(AjoutEquipierButton);
 
 		/**************************************************************\
 		 * 					Buttons radio Dispo/Indispo
@@ -237,7 +237,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		_informationsTextArea = new JTextArea(_entityController.getInformationsStatut());
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 
-		CustomButton modifStatusButton = new CustomButton("Valider Modifier status");
+		CustomButton modifStatusButton = new CustomButton("Valider");
 		modifStatusButton.addActionListener(new EditStatusEntityButtonListener(_entityController, this));
 		internalPanel.add(modifStatusButton);
 
@@ -264,7 +264,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 		internalPanel.add(_colorChooserPanel, "4, 28, fill, fill");
 
-		CustomButton ModifColorButton = new CustomButton("Valider Modifier couleur");
+		CustomButton ModifColorButton = new CustomButton("Valider");
 		ModifColorButton.addActionListener(new EditEntityColorListener(_mapPanel,this, _entityController));
 		internalPanel.add(ModifColorButton, "4, 30");
 
