@@ -57,11 +57,10 @@ public class RefreshTimerTask extends TimerTask
 	public void run() {
 		java.sql.Timestamp date = _operation.getLastModified();
 		
-		System.out.println("Mon last modified: "+_lastmodified);
-		System.out.println("Last modified serveur: "+date);
+		//System.out.println("Mon last modified: "+_lastmodified);
+		//System.out.println("Last modified serveur: "+date);
 		
 		if(_lastmodified.before(date)){
-			System.out.println("On refresh");
 			refreshTeamMember();
 			refreshEntity();
 			refreshMaps();
