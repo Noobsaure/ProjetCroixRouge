@@ -150,7 +150,7 @@ public class LocationController {
 	}
 
 	private void genererMessageChangementDeNom(String name) {
-		String message =  _name+" a été renommée en "+name+".";
+		String message =  "\""+_name+" a été renommée en \""+name+"\".";
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 

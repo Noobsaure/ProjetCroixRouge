@@ -211,9 +211,7 @@ public class OperationController implements Subject {
 	}
 
 	public void loadEntityIntoLocation(){
-		System.out.println("Entity LIST SIZE : "+_entityList.size());
 		for(EntityController entity : _entityList){
-			System.out.println("Entity name : "+entity.getName());
 			entity.loadLocation();
 		}
 	}
@@ -383,7 +381,6 @@ public class OperationController implements Subject {
 	public synchronized void notifyObservers() {
 		for(Observer oneObserver : _observers) {
 			oneObserver.update();
-			System.out.println("UPDATE");
 		}
 	}
 
