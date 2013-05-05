@@ -25,8 +25,7 @@ public class HideMapListener implements MouseListener {
 	public void mouseClicked(MouseEvent e)
 	{
 		String title = "Confirmation suppression map : " + _map.getName();
-		String message = "Êtes-vous sur de vouloir supprimer la carte '"+_map.getName()+"'. " +
-				"Cette action est irréversible et toutes les entités présentes sur la carte seront ramenées à leur localisation de base.";
+		String message = "Êtes-vous sur de vouloir supprimer la carte '"+_map.getName()+"'. Cette action est irréversible et toutes les entités présentes sur la carte seront ramenées à leur localisation de base (PCM (défaut)).";
 
 		ChoicePanel confirmDelMap = new ChoicePanel(_operation, _subMenu, _map, title, message);
 		new CustomDialog(confirmDelMap, _operation.getGlobalPanel());

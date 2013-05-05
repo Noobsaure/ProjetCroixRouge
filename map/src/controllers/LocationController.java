@@ -145,8 +145,8 @@ public class LocationController {
 		}
 
 		genererMessageChangementDeNom(name);
-		_operation.setLastModified();
 		_name = name;
+		_operation.setLastModified();
 	}
 
 	private void genererMessageChangementDeNom(String name) {
@@ -214,7 +214,7 @@ public class LocationController {
 		try {
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "`desc`='"+_dbm.addSlashes(informations)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
-			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description de la localisation '"+_name+"'. Veuillez rééssayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la description de la localisation \""+_name+"\". Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
