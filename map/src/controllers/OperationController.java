@@ -211,7 +211,9 @@ public class OperationController implements Subject {
 	}
 
 	public void loadEntityIntoLocation(){
+		System.out.println("Entity LIST SIZE : "+_entityList.size());
 		for(EntityController entity : _entityList){
+			System.out.println("Entity name : "+entity.getName());
 			entity.loadLocation();
 		}
 	}
@@ -250,7 +252,6 @@ public class OperationController implements Subject {
 
 	public void setCurrentMap(MapController map){
 		_currentMap = map;
-		notifyObservers();
 	}
 
 	public int getId() {
@@ -281,7 +282,6 @@ public class OperationController implements Subject {
 
 	public void addEntite(EntityController entity) {
 		_entityList.add(entity);
-		notifyObservers();
 	}
 
 	public void addTeamMember(TeamMemberController equipier) {
@@ -295,12 +295,10 @@ public class OperationController implements Subject {
 	public void addCurrentMap(MapController map){
 		_mapList.add(map);
 		_currentMap = map;
-		notifyObservers();
 	}
 
 	public void addLocation(LocationController location){
 		_locationList.add(location);
-		notifyObservers();
 	}
 
 	public GlobalPanel getGlobalPanel(){
@@ -385,17 +383,16 @@ public class OperationController implements Subject {
 	public synchronized void notifyObservers() {
 		for(Observer oneObserver : _observers) {
 			oneObserver.update();
+			System.out.println("UPDATE");
 		}
 	}
 
 	public void addVictim(VictimController victim) {
 		_victimList.add(victim);
-		notifyObservers();
 	}
 
 	public void delVictim(VictimController victim) {
 		_victimList.remove(victim);
-		notifyObservers();
 	}
 
 	public List<VictimController> getVictimList(){
@@ -629,6 +626,7 @@ public class OperationController implements Subject {
 	}
 	
 	public void setLastModified() {
+		notifyObservers();
 		java.sql.Timestamp timestamp = _dbm.getCurrentTime();
 		_timerTask.set_lastmodified(timestamp);
 		try{

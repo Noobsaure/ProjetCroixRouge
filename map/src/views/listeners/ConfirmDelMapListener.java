@@ -29,6 +29,7 @@ public class ConfirmDelMapListener implements ActionListener {
 		for(EntityController entity : _entityList){
 			entity.setLocation(_operation.getLocation(_operation.getIdPcm()));
 		}
+		
 		_map.hideMap();
 	}
 

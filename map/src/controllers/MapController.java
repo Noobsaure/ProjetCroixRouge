@@ -37,28 +37,17 @@ public class MapController {
 	 * @param visibility
 	 */
 	public MapController(OperationController operation, DatabaseManager dbm, String name, String path){
-		_dbm = dbm;
-		_idOperation = operation.getId();
 		_operation = operation;
+		_dbm = dbm;
+		_name = name;
+		_visibility = true;
+		_idOperation = operation.getId();
 		_id = _dbm.storeImage(_dbm.stripSlashes(name), path, _idOperation);
-		
-		if(_id == -1)
-		{
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Insertion carte '"+name+"'", "Le fichier '"+name+"' n'est pas une image. Veuillez recommencer avec un autre fichier s'il vous plait.");
-	    	new CustomDialog(errorPanel, _operation.getGlobalPanel());
-		}
-		else
-		{
-			_dbm = dbm;
-			_name = name;
-			_visibility = true;
-			_idOperation = operation.getId();
-	
-			_datas = _dbm.getImage(_id + "", name);
-	
-			_operation.addCurrentMap(this);
-			_operation.setLastModified();
-		}
+
+		_datas = _dbm.getImage(_id + "", name);
+
+		_operation.addCurrentMap(this);
+		_operation.setLastModified();
 	}
 
 	public MapController(OperationController operation, DatabaseManager dbm, int id, String name, boolean visibility, boolean display){
@@ -117,7 +106,7 @@ public class MapController {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 
-		String message = "La carte '"+_name+"' a été supprimée.";
+		String message = "La carte \""+_name+"\" a été supprimée.";
 		try {			
 			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
@@ -157,12 +146,13 @@ public class MapController {
 		try{
 			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte","visibilite = 0","id="+_id));
 		}catch(MalformedQueryException e){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Supression carte", "Erreur lors de la supression de la carte '"+_name+"'. Veuillez rééssayer.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Supression carte", "Erreur lors de la supression de la carte \""+_name+"\". Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 
 		_visibility = false;
 		_operation.removeMap(this);
+		
 		if(_operation.getMapList().size() != 0)
 			_operation.setCurrentMap(_operation.getMapList().get(_operation.getMapList().size()-1));
 		else
@@ -199,10 +189,10 @@ public class MapController {
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte \""+_name+"\"", "Une erreur interne est survenue lors du rechargement de la carte \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}catch(MalformedQueryException e){
-			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte '"+_name+"'", "Une erreur interne est survenue lors du rechargement de la carte'"+_name+"'.");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Chargement carte \""+_name+"\"", "Une erreur interne est survenue lors du rechargement de la carte \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 

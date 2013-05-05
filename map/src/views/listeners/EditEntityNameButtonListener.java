@@ -36,9 +36,7 @@ public class EditEntityNameButtonListener implements ActionListener
 			MessagePanel errorPanel = new MessagePanel("Saisie incomplète", EMPTY_NAME_MESSAGE);
 			new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 		} else {
-			if(_entity.getName().compareTo(nomEntity) != 0) {
-				_entity.setName(nomEntity);
-			}			
-		}
+			_entity.setName(nomEntity);
+		}			
 	}
 }
