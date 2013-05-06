@@ -32,15 +32,6 @@ public class RefreshTimerTask extends TimerTask
 	private DatabaseManager _dbm;
 	
 	private java.sql.Timestamp _lastmodified;
-	
-	public java.sql.Timestamp get_lastmodified() {
-		return _lastmodified;
-	}
-
-	public void set_lastmodified(Timestamp timestamp) {
-		_lastmodified = timestamp;
-	}
-
 	private int _lastVictimId;
 	private int _lastEntityId;
 	private int _lastTeamMemberId;
@@ -149,7 +140,7 @@ public class RefreshTimerTask extends TimerTask
 		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`,`prenom`,`entite_id`","Equipier", "enActivite=1 AND (operation_id='"+_operation.getId()+"' OR operation_id is NULL) AND id>"+_lastTeamMemberId));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`,`prenom`,`entite_id`","Equipier", "enActivite=1 AND operation_id='"+_operation.getId()+"'"));
 			while(result.next()){
 				int id = result.getInt("id");
 
@@ -298,6 +289,14 @@ public class RefreshTimerTask extends TimerTask
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout localisation" ,"Une erreur est survenue lors de l'ajout d'une nouvelle localisation.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
+	}
+	
+	public java.sql.Timestamp get_lastmodified() {
+		return _lastmodified;
+	}
+
+	public void set_lastmodified(Timestamp timestamp) {
+		_lastmodified = timestamp;
 	}
 
 	public int get_lastVictimId() {
