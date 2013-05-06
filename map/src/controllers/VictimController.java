@@ -54,18 +54,18 @@ public class VictimController {
 		_operation = operation;
 		_dbm = dbm;
 		_nom = nom;
-		_prenom = prenom;
+		_prenom = prenom;		
 
 		for(int i=0 ; i < motif.length ; i++){
-			if (motif[i] == "Arrêt cardiaque")
+			if (motif[i].equals("Arrêt cardiaque"))
 				_arretCardiaque = true;
-			else if (motif[i] == "Inconscience")
+			else if (motif[i].equals("Inconscience"))
 				_inconscience = true;
-			else if (motif[i] == "Malaise")
+			else if (motif[i].equals("Malaise"))
 				_malaise = true;
-			else if (motif[i] == "Petit soin")
+			else if (motif[i].equals("Petit soin"))
 				_petitSoin = true;
-			else if (motif[i] == "Traumatisme")
+			else if (motif[i].equals("Traumatisme"))
 				_traumatisme = true;
 		}
 
@@ -141,16 +141,22 @@ public class VictimController {
 	}
 
 	public void updateVictim(String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon, EntityController entity) throws ParseException{
+		_arretCardiaque = false;
+		_inconscience = false;
+		_malaise = false;
+		_petitSoin = false;
+		_traumatisme = false;
+		
 		for(int i=0 ; i < motif.length ; i++){
-			if (motif[i] == "Arrêt cardiaque")
+			if (motif[i].equals("Arrêt cardiaque"))
 				_arretCardiaque = true;
-			else if (motif[i] == "Inconscience")
+			else if (motif[i].equals("Inconscience"))
 				_inconscience = true;
-			else if (motif[i] == "Malaise")
+			else if (motif[i].equals("Malaise"))
 				_malaise = true;
-			else if (motif[i] == "Petit soin")
+			else if (motif[i].equals("Petit soin"))
 				_petitSoin = true;
-			else if (motif[i] == "Traumatisme")
+			else if (motif[i].equals("Traumatisme"))
 				_traumatisme = true;
 		}
 

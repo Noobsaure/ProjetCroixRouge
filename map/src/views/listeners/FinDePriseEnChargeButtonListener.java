@@ -37,7 +37,7 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 	
 	public boolean checkInput(String motif, String otherMotif, String idAnonymat, String soins, EntityController entityAssociated)
 	{
-		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnonymat != null) && !soins.equals("") && (entityAssociated != null) && ((_operation.anonymatAlreadyExist(idAnonymat) == -1) || (_operation.anonymatAlreadyExist(idAnonymat) == _victimController.getId())));
+		return ((!motif.equals("") || (!otherMotif.equals(""))) && (!idAnonymat.equals("")) && !soins.equals("") && (entityAssociated != null) && ((_operation.anonymatAlreadyExist(idAnonymat) == -1) || (_operation.anonymatAlreadyExist(idAnonymat) == _victimController.getId())));
 	}
 
 	@Override
