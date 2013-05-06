@@ -58,6 +58,11 @@ public class EntityController {
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 			return;
 		}
+				
+		if(name.equals("APAGOS")){
+			MessagePanel errorPanel = new MessagePanel("APAGOS","Toute l'équipe de développement d'APAGOS vous remercie de l'interêt que vous lui portez ;-) ");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
 		
 		int idOperation = operation.getId();
 		java.util.Date date = new java.util.Date();
