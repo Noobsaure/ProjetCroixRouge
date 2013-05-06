@@ -209,6 +209,7 @@ public class EntityController {
 	public void addTeamMember(TeamMemberController teamMember){
 		if(teamMember.joinEntity(this)){
 			_teamMemberList.add(teamMember);
+			_operation.setLastModified();
 		}
 	}
 

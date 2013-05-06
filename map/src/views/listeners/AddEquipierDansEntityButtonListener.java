@@ -40,6 +40,7 @@ public class AddEquipierDansEntityButtonListener implements ActionListener {
 		if (indexEquipier>=0) {
 			_team=listEquipiers.get(indexEquipier);
 			_entityController.addTeamMember(_team);
+			
 		}
 		
 		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addEquipierPanel);

@@ -426,9 +426,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	@Override
 	public void updatePanel() {
 		_listeEquipierPanel.removeAll();
-
-		listEquipiers= _entityController.getTeamMemberList();	
-
+		
 		setEquipiersList();
 
 		revalidate();
