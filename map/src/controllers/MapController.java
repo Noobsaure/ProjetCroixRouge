@@ -3,7 +3,6 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -42,7 +41,7 @@ public class MapController {
 		_name = name;
 		_visibility = true;
 		_idOperation = operation.getId();
-		_id = _dbm.storeImage(_dbm.stripSlashes(name), path, _idOperation);
+		_id = _dbm.storeImage(DatabaseManager.stripSlashes(name), path, _idOperation);
 
 		_datas = _dbm.getImage(_id + "", name);
 
@@ -54,7 +53,7 @@ public class MapController {
 		_operation = operation;
 		_dbm = dbm;
 		_id = id;
-		_name = _dbm.stripSlashes(name);
+		_name = DatabaseManager.stripSlashes(name);
 		_visibility = visibility;
 		_datas = _dbm.getImage(_id + "", name);
 
@@ -76,7 +75,7 @@ public class MapController {
 		
 		String lastName = _name;
 		try {
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte", "nom='"+_dbm.addSlashes(name)+"'","id="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Carte", "nom='"+DatabaseManager.addSlashes(name)+"'","id="+_id));
 		} catch (MalformedQueryException e) { 
 			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour du nom de la carte \""+_name+"\". Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -92,7 +91,7 @@ public class MapController {
 
 		String message = "La carte \""+lastName+"\" a été renommée en \""+_name+"\".";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message de changement nom de la carte. "+
 					"Message : "+message);
@@ -108,7 +107,7 @@ public class MapController {
 
 		String message = "La carte \""+_name+"\" a été supprimée.";
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la suppression de la carte. "+
 					"Message : "+message);

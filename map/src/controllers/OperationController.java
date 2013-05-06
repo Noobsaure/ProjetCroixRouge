@@ -157,7 +157,7 @@ public class OperationController implements Subject {
 				String name = result.getString("nom");
 				Boolean visibility = result.getBoolean("visibilite");
 
-				MapController map = new MapController(this, _dbm , id, name, visibility, true);
+				new MapController(this, _dbm , id, name, visibility, true);
 				_timerTask.set_lastMapControllerId(id);
 			}
 

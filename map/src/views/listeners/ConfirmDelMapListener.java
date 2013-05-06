@@ -4,10 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
-import views.CustomDialog;
-
 import controllers.EntityController;
 import controllers.MapController;
 import controllers.OperationController;
@@ -27,7 +23,7 @@ public class ConfirmDelMapListener implements ActionListener {
 		List<EntityController> _entityList = _map.getEntityListInThisMap();
 		
 		for(EntityController entity : _entityList){
-			entity.setLocation(_operation.getPcmLocation());//_operation.getIdPcm()));
+			entity.setLocation(_operation.getPcmLocation());
 		}
 		
 		_map.hideMap();
