@@ -5,6 +5,7 @@ import java.awt.Insets;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -65,22 +66,37 @@ public class EditVictimPanel extends AddVictimPanel
 	}
 	
 	private void initFields()
-	{		
+	{
+		_motifsList.setSelectionModel(new DefaultListSelectionModel()
+		{
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public void setSelectionInterval(int index0, int index1)
+		    {
+		        if(super.isSelectedIndex(index0))
+		            super.removeSelectionInterval(index0, index1);
+		        else
+		            super.addSelectionInterval(index0, index1);
+		    }
+		});
+		
 		if(_victimController.getArretCardiaque())
 			_motifsList.setSelectedIndex(0);
-		else
+		
 		if(_victimController.getInconscience())
 			_motifsList.setSelectedIndex(1);
-		else
+		
 		if(_victimController.getMalaise())
 			_motifsList.setSelectedIndex(2);
-		else
+		
 		if(_victimController.getPetitSoin())
 			_motifsList.setSelectedIndex(3);
-		else
+		
 		if(_victimController.getTraumatisme())
 			_motifsList.setSelectedIndex(4);
-		else
+		
+		if(!_victimController.getArretCardiaque() && !_victimController.getInconscience() && !_victimController.getMalaise() && !_victimController.getPetitSoin() && !_victimController.getTraumatisme())
 			_motifsList.setSelectedIndex(5);
 		
 		_detailsTextArea.setText(_victimController.getAtteinteDetails());
