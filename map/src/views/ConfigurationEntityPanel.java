@@ -56,10 +56,10 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	private JPanel _colorChooserPanel;
 	private Color _colorEntity;
 	private JPanel _listeEquipierPanel;
-	
+
 	private static List<TeamMemberController> listEquipiers;
 	private static ArrayList<LocationController> listLocations;
-	
+
 	JRadioButton _disponibleStatutRadioButton = new JRadioButton("Disponible");
 	JRadioButton _indisponibleStatutRadioButton = new JRadioButton("Indisponible");
 
@@ -82,11 +82,12 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 		JPanel internalPanel = new PopUpPanel();
 		internalPanel.setLayout(new BoxLayout(internalPanel,BoxLayout.PAGE_AXIS));
+		internalPanel.setBorder(new EmptyBorder(5,5,5,5));
 		add(internalPanel);
 
 		JLabel title = new JLabel("Éditer l'entité '"+_entityController.getName()+"'", JLabel.CENTER);
 		title.setAlignmentX(CENTER_ALIGNMENT);
-		title.setBorder(new EmptyBorder(5,0,10,0));
+		title.setBorder(new EmptyBorder(0,0,10,0));
 		internalPanel.add(title);
 
 		/**************************************************************\
@@ -98,7 +99,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		Dimension labelSize = new Dimension(100,25);
 		Dimension fieldSize = new Dimension(240,25);
 		Dimension buttonSize = new Dimension(40,25);
-		
+
 		JLabel nameLabel = new JLabel("Nom:");
 		nameLabel.setBorder(new EmptyBorder(0,5,0,5));
 		nameLabel.setMinimumSize(labelSize);
@@ -113,7 +114,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		_nameTextField.setMaximumSize(fieldSize);
 		_nameTextField.setPreferredSize(fieldSize);
 		namePanel.add(_nameTextField);
-		
+
 		CustomButton editNameEntityButton = new CustomButton("Ok");
 		editNameEntityButton.setBorder(new EmptyBorder(0,5,0,5));
 		editNameEntityButton.setMinimumSize(buttonSize);
@@ -121,9 +122,9 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		editNameEntityButton.setPreferredSize(buttonSize);
 		editNameEntityButton.addActionListener(new EditEntityNameButtonListener(_mapPanel, _entityController, this));
 		namePanel.add(editNameEntityButton);
-		
+
 		internalPanel.add(namePanel);
-		
+
 		/**************************************************************/
 
 
@@ -133,7 +134,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		JPanel locPanel = new JPanel();
 		locPanel.setLayout(new BoxLayout(locPanel,BoxLayout.LINE_AXIS));
 		locPanel.setBorder(new EmptyBorder(0,0,5,0));
-		
+
 		JLabel locLabel = new JLabel("Localisation:");
 		locLabel.setBorder(new EmptyBorder(0,5,0,5));
 		locLabel.setMinimumSize(labelSize);
@@ -142,7 +143,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		locPanel.add(locLabel);
 
 		Vector<String> comboBoxItems = new Vector<String>();
-		
+
 		// On récupère la list des map
 		List<MapController> locatMap;
 		locatMap = _operationController.getMapList();
@@ -184,7 +185,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		editLocationEntityButton.setMaximumSize(buttonSize);
 		editLocationEntityButton.setPreferredSize(buttonSize);
 		locPanel.add(editLocationEntityButton);
-		
+
 		internalPanel.add(locPanel);
 		/**************************************************************/
 
@@ -196,16 +197,19 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 		JSeparator separator = new JSeparator();
 		internalPanel.add(separator);
-		JLabel listeEquipierLabel = new JLabel("Liste Equipiers:", JLabel.CENTER);
+		JLabel listeEquipierLabel = new JLabel("Liste Equipiers:", JLabel.LEFT);
+		listeEquipierLabel.setAlignmentX(LEFT_ALIGNMENT);
 		internalPanel.add(listeEquipierLabel);
-		
+
 		_listeEquipierPanel = new JPanel();
-		
+
 		JScrollPane scrollPane = new JScrollPane(_listeEquipierPanel);
-		scrollPane.setPreferredSize(new Dimension(270, 160));
+		scrollPane.setMaximumSize(new Dimension(250, 200));
+		scrollPane.setMinimumSize(new Dimension(250, 200));
+		scrollPane.setPreferredSize(new Dimension(250, 200));
 		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		
+
 		internalPanel.add(scrollPane);
 
 		_listeEquipierPanel.setLayout(new BoxLayout(_listeEquipierPanel, BoxLayout.Y_AXIS));
@@ -224,27 +228,53 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		separator = new JSeparator();
 		internalPanel.add(separator);
 
-		JLabel _statutLabel = new JLabel("Statut :", JLabel.CENTER);
-		internalPanel.add(_statutLabel);
+		Dimension dispoPanelDimension = new Dimension(125,50);
+		Dimension scrollPanelDimension = new Dimension(250,100);
+		Dimension infoLabelDimension = new Dimension(250,25);
+
+		JPanel dispoPanel = new JPanel();
+		dispoPanel.setLayout(new BoxLayout(dispoPanel, BoxLayout.LINE_AXIS));
 		
-		if (_entityController.getStatut()) {_disponibleStatutRadioButton.setSelected(true);
-		_indisponibleStatutRadioButton.setSelected(false);}
-		else {_disponibleStatutRadioButton.setSelected(false);
-		_indisponibleStatutRadioButton.setSelected(true);}
-		
+		JLabel statutLabel = new JLabel("Statut :");
+		statutLabel.setMaximumSize(dispoPanelDimension);
+		statutLabel.setMinimumSize(dispoPanelDimension);
+		statutLabel.setPreferredSize(dispoPanelDimension);
+		dispoPanel.add(statutLabel);
+
+		if (_entityController.getStatut()) {
+			_disponibleStatutRadioButton.setSelected(true);
+			_indisponibleStatutRadioButton.setSelected(false);
+		} else {
+			_disponibleStatutRadioButton.setSelected(false);
+			_indisponibleStatutRadioButton.setSelected(true);
+		}
+
 		JPanel panel = new JPanel();
-		internalPanel.add(panel);
+		panel.setMaximumSize(dispoPanelDimension);
+		panel.setMinimumSize(dispoPanelDimension);
+		panel.setPreferredSize(dispoPanelDimension);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+
+		dispoPanel.add(panel);
 		panel.add(_disponibleStatutRadioButton);
-		
+
 		JradioBoutonGroup.add(_disponibleStatutRadioButton);
 		panel.add(_indisponibleStatutRadioButton);
-		
+
 		JradioBoutonGroup.add(_indisponibleStatutRadioButton);
 
-		JLabel lblInformations = new JLabel("Informations :", JLabel.CENTER);
-		internalPanel.add(lblInformations);
+		internalPanel.add(dispoPanel);
+
+		JLabel infoLabel = new JLabel("Informations :");
+		infoLabel.setMaximumSize(infoLabelDimension);
+		infoLabel.setMinimumSize(infoLabelDimension);
+		infoLabel.setPreferredSize(infoLabelDimension);
+		internalPanel.add(infoLabel);
 
 		JScrollPane textAreaScrollPane = new JScrollPane();
+		textAreaScrollPane.setMaximumSize(scrollPanelDimension);
+		textAreaScrollPane.setMinimumSize(scrollPanelDimension);
+		textAreaScrollPane.setPreferredSize(scrollPanelDimension);
 		internalPanel.add(textAreaScrollPane);
 
 		_informationsTextArea = new JTextArea(_entityController.getInformationsStatut());
@@ -261,7 +291,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		 * 						Couleur
 		\**************************************************************/
 
-		JLabel lblCouleur = new JLabel("Couleur :", JLabel.CENTER);
+		JLabel lblCouleur = new JLabel("Couleur :");
 		internalPanel.add(lblCouleur);
 
 		_colorChooserPanel = new JPanel();
@@ -324,7 +354,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	{
 		return _typeComboBox.getSelectedIndex();
 	}
-	
+
 	public LocationController getSelectedLocation() {
 		return listLocations.get(getIndexLocation());
 	}
@@ -332,9 +362,9 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	public Color getColor() {
 		return _colorChooserPanel.getBackground();
 	}
-	
+
 	public static ArrayList<LocationController> getLocationsList() {return listLocations;}
-	
+
 	private void setEquipiersList()
 	{
 		listEquipiers= _entityController.getTeamMemberList();	
@@ -357,15 +387,15 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 			removeEquipierButton.setPreferredSize(new Dimension(40, 16));
 		}
 	}
-	
+
 	@Override
 	public void updatePanel() {
 		_listeEquipierPanel.removeAll();
-		
+
 		listEquipiers= _entityController.getTeamMemberList();	
-		
+
 		setEquipiersList();
-		
+
 		revalidate();
 		repaint();
 	}
