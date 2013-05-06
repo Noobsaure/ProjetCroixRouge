@@ -69,9 +69,9 @@ public class MenuEntitiesPanel extends JPanel {
 		_panelDropHere = new JPanel();
 		_panelDropHere.setLayout(new BorderLayout());
 		_panelDropHere.setAlignmentX(Component.LEFT_ALIGNMENT);
-		_panelDropHere.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
-		_panelDropHere.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
-		_panelDropHere.setPreferredSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 150));
+		_panelDropHere.setMinimumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 100));
+		_panelDropHere.setMaximumSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 100));
+		_panelDropHere.setPreferredSize(new Dimension(MenuPanel.LEFT_PANEL_WIDTH, 100));
 		Border bevel = BorderFactory.createBevelBorder(BevelBorder.LOWERED,new Color(255,255,255),new Color(128,128,128));
 		Border empty = BorderFactory.createEmptyBorder(2,2,2,2);
 		Border compound = BorderFactory.createCompoundBorder(empty, bevel);

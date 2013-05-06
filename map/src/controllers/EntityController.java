@@ -211,6 +211,8 @@ public class EntityController {
 		if(teamMember.leaveEntity()){
 			_teamMemberList.remove(teamMember);
 		}
+		
+		_operation.setLastModified();
 	}
 
 	public List<TeamMemberController> getTeamMemberList(){

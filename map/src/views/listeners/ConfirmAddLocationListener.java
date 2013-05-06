@@ -31,8 +31,8 @@ public class ConfirmAddLocationListener implements ActionListener
 		_operationController = operationController;
 		_databaseManager = databaseManager;
 		_addLocationPanel = addLocationPanel;
-		_x = x;
-		_y = y;
+		_x = (int)(x * 1 / _mapPanel.getRatio());
+		_y = (int)(y * 1 / _mapPanel.getRatio());
 	}
 	
 	

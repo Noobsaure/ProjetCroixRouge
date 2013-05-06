@@ -55,7 +55,7 @@ public class OperationController implements Subject {
 		ResultSet result;
 
 		try {
-			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`,`prenom`,`entite_id`","Equipier", "enActivite=1 AND (operation_id='"+_idOperation+"' OR operation_id is NULL)"));
+			result = _dbm.executeQuerySelect(new SQLQuerySelect("`id`,`nom`,`prenom`,`entite_id`","Equipier", "enActivite=1 AND operation_id='"+_idOperation+"'"));
 			while(result.next()){
 				int id = result.getInt("id");
 				String name = result.getString("nom");
@@ -157,7 +157,7 @@ public class OperationController implements Subject {
 				String name = result.getString("nom");
 				Boolean visibility = result.getBoolean("visibilite");
 
-				MapController map = new MapController(this, _dbm , id, name, visibility, true);
+				new MapController(this, _dbm , id, name, visibility, true);
 				_timerTask.set_lastMapControllerId(id);
 			}
 
@@ -211,9 +211,7 @@ public class OperationController implements Subject {
 	}
 
 	public void loadEntityIntoLocation(){
-		System.out.println("Entity LIST SIZE : "+_entityList.size());
 		for(EntityController entity : _entityList){
-			System.out.println("Entity name : "+entity.getName());
 			entity.loadLocation();
 		}
 	}
@@ -363,7 +361,6 @@ public class OperationController implements Subject {
 					listLocation.add(location);
 			}
 		}
-
 		return listLocation;
 	}
 
@@ -383,7 +380,6 @@ public class OperationController implements Subject {
 	public synchronized void notifyObservers() {
 		for(Observer oneObserver : _observers) {
 			oneObserver.update();
-			System.out.println("UPDATE");
 		}
 	}
 
@@ -636,7 +632,6 @@ public class OperationController implements Subject {
 			new CustomDialog(errorPanel, _globalPanel);
 		}
 	}
-
 }
 
 

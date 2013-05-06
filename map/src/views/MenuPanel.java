@@ -7,10 +7,8 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
 
 import views.listeners.MenuMouseListener;
 import controllers.OperationController;
@@ -22,7 +20,6 @@ public class MenuPanel extends JPanel {
 
 	private GlobalPanel _globalPanel;
 	private MapPanel _mapPanel;
-	private JLabel[] _labels = new JLabel[10];
 	private JPanel _buttonsPanel;
 	private JPanel _entitiesPanel;
 	private MenuMouseListener _menuListener;

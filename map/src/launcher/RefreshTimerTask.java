@@ -88,14 +88,14 @@ public class RefreshTimerTask extends TimerTask
 	}
 
 	private void refreshVictim() {
-		/* UPDATE TEAMMEMBER ALREADY IN THE LIST */		
+		/* UPDATE VICTIM ALREADY IN THE LIST */		
 		List<VictimController> victimList = _operation.getVictimList();
 
 		for(VictimController victim : victimList){
 			victim.updateFields();
 		}		
 
-		/* ADD NEW TEAMMEMBER WHICH ARE IN THE DATABASE */
+		/* ADD NEW VICTIM WHICH ARE IN THE DATABASE */
 		ResultSet result;
 		try {
 			result = _dbm.executeQuerySelect(new SQLQuerySelect("id","Victime", "operation_id="+_operation.getId()+" AND date_sortie is NULL AND id>"+_lastVictimId));
@@ -128,8 +128,14 @@ public class RefreshTimerTask extends TimerTask
 				_lastVictimId = id;
 			}
 			result.getStatement().close();
-		} catch (SQLException e) {e.printStackTrace();}
-		catch(MalformedQueryException e1) {e1.printStackTrace();}
+		} catch (SQLException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout victime" ,"Une erreur est survenue lors de l'ajout d'une victime à la carte.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+		catch(MalformedQueryException e1) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout victime" ,"Une erreur est survenue lors de l'ajout d'une victime à la carte.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
 	}
 
 	public void refreshTeamMember(){
@@ -159,8 +165,14 @@ public class RefreshTimerTask extends TimerTask
 			}
 
 			result.getStatement().close();
-		} catch (SQLException e) {e.printStackTrace();}
-		catch(MalformedQueryException e1) {e1.printStackTrace();}
+		} catch (SQLException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'ajout d'un équipier à la carte.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+		catch(MalformedQueryException e1) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout équipier" ,"Une erreur est survenue lors de l'ajout d'un équipier à la carte.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
 	}	
 
 	public void refreshEntity(){
@@ -192,16 +204,22 @@ public class RefreshTimerTask extends TimerTask
 							_operation.addEntite(entite);
 						}
 						result2.getStatement().close();
-
-					}catch(SQLException e2){e2.printStackTrace();}
+					}catch(SQLException e2){
+						MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout entité" ,"Une erreur est survenue lors de l'ajout d'une entité à la carte.");
+						new CustomDialog(errorPanel, _operation.getGlobalPanel());
+					}
 				}
 				_lastEntityId = id;
 			}
-
 			result.getStatement().close();
-
-		}catch(SQLException e) {e.printStackTrace();}
-		catch(MalformedQueryException e1) {e1.printStackTrace();}
+		}catch(SQLException e){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout entité" ,"Une erreur est survenue lors de l'ajout d'une entité à la carte.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+		catch(MalformedQueryException e1) {
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout entité" ,"Une erreur est survenue lors de l'ajout d'une entité à la carte.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
 	}
 
 	public void refreshMaps(){
@@ -213,7 +231,6 @@ public class RefreshTimerTask extends TimerTask
 		}
 
 		/* ADD NEW MAPS WHICH ARE IN THE DATABASE */
-
 		try {
 			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("id", "Carte", "operation_id='"+_operation.getId()+"' AND visibilite=1 AND id>"+_lastMapControllerId));
 
@@ -225,18 +242,22 @@ public class RefreshTimerTask extends TimerTask
 					while(result2.next()){
 						String name = result2.getString("nom");
 						Boolean visibility = result2.getBoolean("visibilite");
-						new MapController(_operation, _dbm , id, name, visibility, false);
+						if(_operation.getMapList().size() == 0){
+							new MapController(_operation, _dbm , id, name, visibility, true);
+						}else{
+							new MapController(_operation, _dbm , id, name, visibility, false);
+						}
 					}
 					result2.getStatement().close();
 				}
 			}
 			result.getStatement().close();
-		}catch(MalformedQueryException e1){ 
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+		}catch(MalformedQueryException e1){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout carte" ,"Une erreur est survenue lors de l'ajout d'une nouvelle carte.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 		catch(SQLException e2){
-			MessagePanel errorPanel = new MessagePanel("Erreur lors de la mise à jour des cartes");
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout carte" ,"Une erreur est survenue lors de l'ajout d'une nouvelle carte.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
@@ -269,10 +290,14 @@ public class RefreshTimerTask extends TimerTask
 				}
 				_lastLocationId = id;
 			}
-
 			result.getStatement().close();
-		}catch(MalformedQueryException e1){ e1.printStackTrace(); }
-		catch(SQLException e2){ e2.printStackTrace(); }
+		}catch(MalformedQueryException e1){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout localisation" ,"Une erreur est survenue lors de l'ajout d'une nouvelle localisation.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());}
+		catch(SQLException e2){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Ajout localisation" ,"Une erreur est survenue lors de l'ajout d'une nouvelle localisation.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
 	}
 
 	public int get_lastVictimId() {

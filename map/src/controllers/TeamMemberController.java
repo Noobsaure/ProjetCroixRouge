@@ -99,7 +99,7 @@ public class TeamMemberController {
 
 					//Update a jour 'Entity_id' in Equipier table
 					try{
-						_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id=NULL, operation_id=NULL","id="+_id));	
+						_dbm.executeQueryUpdate(new SQLQueryUpdate("Equipier", "entite_id=NULL","id="+_id));	
 					}catch(MalformedQueryException e){
 						MessagePanel errorPanel = new MessagePanel("Erreur interne - Base de donnees" ,"Une erreur est survenue lors de la désafectation de l'entité à l'équipier \""+_firstName+" "+_name+"\".");
 						new CustomDialog(errorPanel, _operation.getGlobalPanel());
