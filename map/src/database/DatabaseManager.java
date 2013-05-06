@@ -220,7 +220,8 @@ public class DatabaseManager
 	public int executeQueryUpdate(SQLQueryUpdate query)
 	{
 		int lastInserted = -1;
-
+		System.out.println("Execution de la requete : "+query);
+		
 		try
 		{			
 			updateNbExecutiionQueries();

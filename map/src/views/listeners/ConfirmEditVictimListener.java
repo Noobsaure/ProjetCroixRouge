@@ -40,7 +40,7 @@ public class ConfirmEditVictimListener implements ActionListener
 	
 	public boolean checkInput(String motif, String otherMotif, String idAnonymat, String soins, EntityController entityAssociated)
 	{
-		return ((!motif.equals("") || (!otherMotif.equals(""))) && (idAnonymat != null) && !soins.equals("") && (entityAssociated != null) && ((_operation.anonymatAlreadyExist(idAnonymat) == -1) || (_operation.anonymatAlreadyExist(idAnonymat) == _victimController.getId())));
+		return ((!motif.equals("") || (!otherMotif.equals(""))) && (!idAnonymat.equals("")) && !soins.equals("") && (entityAssociated != null) && ((_operation.anonymatAlreadyExist(idAnonymat) == -1) || (_operation.anonymatAlreadyExist(idAnonymat) == _victimController.getId())));
 	}
 	
 	@Override
@@ -70,16 +70,16 @@ public class ConfirmEditVictimListener implements ActionListener
 					new CustomDialog(errorPanel, _globalPanel);
 				}
 				else
-					if((_operation.anonymatAlreadyExist(idAnonymat) != -1) || (_operation.anonymatAlreadyExist(idAnonymat) != _victimController.getId()))
+					if(soins.equals(""))
 					{
-						MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
-						new CustomDialog(errorPanel, _operation.getGlobalPanel());
+						MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
+						new CustomDialog(errorPanel, _globalPanel);
 					}
 					else
-						if(soins.equals(""))
+						if((_operation.anonymatAlreadyExist(idAnonymat) != -1) || (_operation.anonymatAlreadyExist(idAnonymat) != _victimController.getId()))
 						{
-							MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
-							new CustomDialog(errorPanel, _globalPanel);
+							MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
+							new CustomDialog(errorPanel, _operation.getGlobalPanel());
 						}
 						else
 							if(entitesAssociees == null)
