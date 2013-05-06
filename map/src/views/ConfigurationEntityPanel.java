@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -52,7 +51,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 	private EntityController _entityController;
 	private OperationController _operationController;
 
-	private JTextField _nomTextField;
+	private JTextField _nameTextField;
 	public ButtonGroup JradioBoutonGroup = new ButtonGroup();
 	private JPanel _colorChooserPanel;
 	private Color _colorEntity;
@@ -82,11 +81,12 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		setOpaque(false);
 
 		JPanel internalPanel = new PopUpPanel();
-		internalPanel.setBorder(new EmptyBorder(5,5,5,5));
 		internalPanel.setLayout(new BoxLayout(internalPanel,BoxLayout.PAGE_AXIS));
 		add(internalPanel);
 
-		JLabel title = new JLabel("Éditer entité "+_entityController.getName(), JLabel.CENTER);
+		JLabel title = new JLabel("Éditer l'entité '"+_entityController.getName()+"'", JLabel.CENTER);
+		title.setAlignmentX(CENTER_ALIGNMENT);
+		title.setBorder(new EmptyBorder(5,0,10,0));
 		internalPanel.add(title);
 
 		/**************************************************************\
@@ -95,14 +95,30 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		JPanel namePanel = new JPanel();
 		namePanel.setLayout(new BoxLayout(namePanel,BoxLayout.LINE_AXIS));
 		namePanel.setBorder(new EmptyBorder(5,0,5,0));
+		Dimension labelSize = new Dimension(100,25);
+		Dimension fieldSize = new Dimension(240,25);
+		Dimension buttonSize = new Dimension(40,25);
 		
 		JLabel nameLabel = new JLabel("Nom:");
+		nameLabel.setBorder(new EmptyBorder(0,5,0,5));
+		nameLabel.setMinimumSize(labelSize);
+		nameLabel.setMaximumSize(labelSize);
+		nameLabel.setPreferredSize(labelSize);
+		nameLabel.setSize(labelSize);
 		namePanel.add(nameLabel);
 
-		_nomTextField = new JTextField(_entityController.getName());
-		namePanel.add(_nomTextField);
+		_nameTextField = new JTextField(_entityController.getName());
+		_nameTextField.setBorder(new EmptyBorder(0,5,0,5));
+		_nameTextField.setMinimumSize(fieldSize);
+		_nameTextField.setMaximumSize(fieldSize);
+		_nameTextField.setPreferredSize(fieldSize);
+		namePanel.add(_nameTextField);
 		
 		CustomButton editNameEntityButton = new CustomButton("Ok");
+		editNameEntityButton.setBorder(new EmptyBorder(0,5,0,5));
+		editNameEntityButton.setMinimumSize(buttonSize);
+		editNameEntityButton.setMaximumSize(buttonSize);
+		editNameEntityButton.setPreferredSize(buttonSize);
 		editNameEntityButton.addActionListener(new EditEntityNameButtonListener(_mapPanel, _entityController, this));
 		namePanel.add(editNameEntityButton);
 		
@@ -116,10 +132,14 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		\**************************************************************/
 		JPanel locPanel = new JPanel();
 		locPanel.setLayout(new BoxLayout(locPanel,BoxLayout.LINE_AXIS));
-		locPanel.setBorder(new EmptyBorder(5,0,5,0));
+		locPanel.setBorder(new EmptyBorder(0,0,5,0));
 		
-		JLabel typeLabel = new JLabel("Localisation:");
-		locPanel.add(typeLabel);
+		JLabel locLabel = new JLabel("Localisation:");
+		locLabel.setBorder(new EmptyBorder(0,5,0,5));
+		locLabel.setMinimumSize(labelSize);
+		locLabel.setMaximumSize(labelSize);
+		locLabel.setPreferredSize(labelSize);
+		locPanel.add(locLabel);
 
 		Vector<String> comboBoxItems = new Vector<String>();
 		
@@ -152,10 +172,17 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 		model.setSelectedItem(selectedLocation);
 
 		_typeComboBox = new JComboBox<String>(model);
+		_typeComboBox.setMinimumSize(fieldSize);
+		_typeComboBox.setMaximumSize(fieldSize);
+		_typeComboBox.setPreferredSize(fieldSize);
 		locPanel.add(_typeComboBox);
 
 		CustomButton editLocationEntityButton = new CustomButton("Ok");
 		editLocationEntityButton.addActionListener(new EditEntityLocationButtonListener(_entityController, this));
+		editLocationEntityButton.setBorder(new EmptyBorder(0,5,0,5));
+		editLocationEntityButton.setMinimumSize(buttonSize);
+		editLocationEntityButton.setMaximumSize(buttonSize);
+		editLocationEntityButton.setPreferredSize(buttonSize);
 		locPanel.add(editLocationEntityButton);
 		
 		internalPanel.add(locPanel);
@@ -274,7 +301,7 @@ public class ConfigurationEntityPanel extends CustomPanelImpl
 
 	public String getNewName()
 	{
-		return _nomTextField.getText();
+		return _nameTextField.getText();
 	}
 
 

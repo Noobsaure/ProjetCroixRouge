@@ -121,6 +121,7 @@ public class EntityPanel extends JPanel
 	public void update() {
 		_entityName.setText(_entity.getName());
 		if(_entity.getIdPosCurrent() == _operationController.getIdPcm()) {
+		
 			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_off.png")));
 		} else {
 			_iconLocation.setIcon(new ImageIcon(EntityPanel.class.getResource("/ui/carte_on.png")));

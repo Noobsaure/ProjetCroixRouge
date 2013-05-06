@@ -159,7 +159,7 @@ public class MapController {
 			_operation.setCurrentMap(null);
 
 		genererMessageSuppressionMap();
-		_operation.setLastModified();		
+		_operation.setLastModified();
 	}
 
 	public ImageIcon getImage()

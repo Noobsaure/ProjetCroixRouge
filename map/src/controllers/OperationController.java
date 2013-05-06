@@ -632,7 +632,6 @@ public class OperationController implements Subject {
 			new CustomDialog(errorPanel, _globalPanel);
 		}
 	}
-
 }
 
 
