@@ -31,7 +31,7 @@ public class GlobalPanel extends JApplet implements Observer
 	private int _idOperateur;
 	private int _idOperation;
 	private String _databaseName;
-	
+
 	private List<CustomDialog> _dialogs;
 
 	public static void main(String[] args)
@@ -49,25 +49,12 @@ public class GlobalPanel extends JApplet implements Observer
 		_idOperation = Integer.parseInt(getParameter("idOperation"));
 		_idOperateur = Integer.parseInt(getParameter("idOperateur"));
 		_databaseName = getParameter("database");
-		
+
 		try
 		{
-				UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.aero.AeroLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.aluminium.AluminumLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.fast.GraphiteLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.graphite.GraphiteLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.hifi.HifiLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.luna.LunaLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.mcwin.McWinLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.mint.MintLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.noire.NoireLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.smart.SmartLookAndFeel");
-//				UIManager.setLookAndFeel("com.jtattoo.plaf.texture.TextureLookAndFeel");
+			UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 			JDialog.setDefaultLookAndFeelDecorated(false); 
-		}
-		catch(InstantiationException e){}
+		}catch(InstantiationException e){}
 		catch(ClassNotFoundException e){}
 		catch(UnsupportedLookAndFeelException e){}
 		catch(IllegalAccessException e){}
@@ -96,11 +83,11 @@ public class GlobalPanel extends JApplet implements Observer
 		update();
 		_menuPanel.getEntitiesPanel().addDropTarget();
 	}
-	
+
 	public void addDialog(CustomDialog dialog) {
 		_dialogs.add(dialog);
 	}
-	
+
 	public void removeDialog(CustomDialog dialog) {
 		_dialogs.remove(dialog);
 	}
@@ -108,11 +95,11 @@ public class GlobalPanel extends JApplet implements Observer
 	public void setDragOccurring(boolean dragOccurring) {
 		_dragOccurring = dragOccurring;
 	}
-	
+
 	public boolean isDragOccurring() {
 		return _dragOccurring;
 	}
-	
+
 	public void centerMap() {_mapPanel.centerMap();}
 
 	public Launcher getLauncher() {return _launcher;}
@@ -128,7 +115,7 @@ public class GlobalPanel extends JApplet implements Observer
 		revalidate();
 		repaint();
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();
