@@ -75,18 +75,19 @@ public class FinDePriseEnChargeButtonListener implements ActionListener
 						new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 					}
 					else
-						if((_operation.anonymatAlreadyExist(idAnonymat) != -1) || (_operation.anonymatAlreadyExist(idAnonymat) != _victimController.getId()))
+						if(soins.equals(""))
 						{
-							MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
-							new CustomDialog(errorPanel, _operation.getGlobalPanel());
+							MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
+							new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 						}
 						else
-							if(soins.equals(""))
+							if((_operation.anonymatAlreadyExist(idAnonymat) != -1) || (_operation.anonymatAlreadyExist(idAnonymat) != _victimController.getId()))
 							{
-								MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_SOINS_MESSAGE);
-								new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
+								MessagePanel errorPanel = new MessagePanel("Erreur interne - Numéro anonymat" ,"Numéro d'anonymat déjà utilisé pour cette opération.");
+								new CustomDialog(errorPanel, _operation.getGlobalPanel());
 							}
 							else
+							
 								if(entitesAssociees == null)
 								{
 									MessagePanel errorPanel = new MessagePanel("Saisie incomplète", ConfirmAddVictimListener.EMPTY_ENTITY_ASSOCIATED_MESSAGE);
