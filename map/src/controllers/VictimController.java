@@ -21,7 +21,7 @@ public class VictimController {
 
 	private Integer _id;
 	private OperationController _operation;
-	private DatabaseManager _dbm;
+	private DatabaseManager DatabaseManager;
 	private String _nom;
 	private String _prenom;
 	private Timestamp _dateDeNaissance;
@@ -37,6 +37,7 @@ public class VictimController {
 	private String _soin;
 	private String _idAnonymat; // champ d'anonymisation d'une victime
 	private EntityController _entity;
+	private int _idMessageParent;
 	
 	/**
 	 * Constructor for creation of a victim which is not in the database
@@ -52,7 +53,7 @@ public class VictimController {
 	public VictimController(OperationController operation, DatabaseManager dbm, String nom, String prenom, String[] motif, String adresse, Timestamp dateDeNaissance, String atteinteDetails, String soin, String anon, EntityController entity) throws ParseException
 	{
 		_operation = operation;
-		_dbm = dbm;
+		DatabaseManager = dbm;
 		_nom = nom;
 		_prenom = prenom;		
 
@@ -102,7 +103,7 @@ public class VictimController {
 					_atteinteDetails+"', '"+
 					_soin+"')";
 
-			_id = _dbm.executeQueryInsert(new SQLQueryInsert("Victime", query));
+			_id = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Victime", query));
 			operation.addVictim(this);
 	
 			genererDebutPriseEnChargeMessage();		
@@ -123,14 +124,14 @@ public class VictimController {
 			boolean petitSoin, boolean malaise, boolean traumatisme,
 			boolean inconscient, boolean arretCardiaque, int entity) {
 		_operation = operation;
-		_dbm = dbm;
-		_idAnonymat = _dbm.stripSlashes(idAnonymat);
-		_nom = _dbm.stripSlashes(nom);
-		_prenom = _dbm.stripSlashes(prenom);
+		DatabaseManager = dbm;
+		_idAnonymat = DatabaseManager.stripSlashes(idAnonymat);
+		_nom = DatabaseManager.stripSlashes(nom);
+		_prenom = DatabaseManager.stripSlashes(prenom);
 		_dateDeNaissance = dateDeNaissance;
 		_datePriseEnCharge = dateEntree;
-		_atteinteDetails = _dbm.stripSlashes(atteinteDetails);
-		_soin = _dbm.stripSlashes(soin);
+		_atteinteDetails = DatabaseManager.stripSlashes(atteinteDetails);
+		_soin = DatabaseManager.stripSlashes(soin);
 		_petitSoin = petitSoin;
 		_malaise = malaise;
 		_traumatisme = traumatisme;
@@ -173,23 +174,24 @@ public class VictimController {
 			genererChangementEntite();
 		}
 
-		String query = "surnom = '" + _dbm.addSlashes(_idAnonymat) + "'" +
-				((_nom.equals("")) ? (", nom = ''") : (", nom = '" + _dbm.addSlashes(_nom) + "'")) +
-				((_prenom.equals("")) ? (", prenom = ''") : (", prenom = '" + _dbm.addSlashes(_prenom) + "'")) +
+		String query = "surnom = '" + DatabaseManager.addSlashes(_idAnonymat) + "'" +
+				((_nom.equals("")) ? (", nom = ''") : (", nom = '" + DatabaseManager.addSlashes(_nom) + "'")) +
+				((_prenom.equals("")) ? (", prenom = ''") : (", prenom = '" + DatabaseManager.addSlashes(_prenom) + "'")) +
 				((_dateDeNaissance == null) ? (", date_naissance = NULL") : (", date_naissance = '" + _dateDeNaissance.toString()) + "'") +
-				((_adresse.equals("")) ? (", adresse = NULL") : (", adresse = '" + _dbm.addSlashes(_adresse) + "'")) +
+				((_adresse.equals("")) ? (", adresse = NULL") : (", adresse = '" + DatabaseManager.addSlashes(_adresse) + "'")) +
 				", petit_soin = " + _petitSoin +
 				", malaise = " + _malaise +
 				", traumatisme = " + _traumatisme +
 				", inconscient = " + _inconscience +
 				", arret_cardiaque = " + _arretCardiaque +
-				((_atteinteDetails.equals("")) ? (", atteinte_details = NULL") : (", atteinte_details = '" + _dbm.addSlashes(_atteinteDetails) + "'")) +
-				((_soin.equals("")) ? (", soin = NULL") : (", soin = '" + _dbm.addSlashes(_soin) + "'")) +
+				((_atteinteDetails.equals("")) ? (", atteinte_details = NULL") : (", atteinte_details = '" + DatabaseManager.addSlashes(_atteinteDetails) + "'")) +
+				((_soin.equals("")) ? (", soin = NULL") : (", soin = '" + DatabaseManager.addSlashes(_soin) + "'")) +
 				", entite_id = "+_entity.getId()+
 				" WHERE id = " + _id;
-
+		
+		genererUpdateVictimMessage();
 		try {
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
+			DatabaseManager.executeQueryUpdate(new SQLQueryUpdate("Victime", query));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Mise à jour victime \""+_idAnonymat+"\"", "Une erreur est survenue lors de la mise à jour de la victime \""+_idAnonymat+"\". Veuillez réessayez.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -203,7 +205,7 @@ public class VictimController {
 		java.sql.Timestamp datesortie = new java.sql.Timestamp(date.getTime());
 
 		try{
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Victime","date_sortie='"+datesortie+"',motif_sortie='"+_dbm.addSlashes(motifSortie)+"'","id="+_id));
+			DatabaseManager.executeQueryUpdate(new SQLQueryUpdate("Victime","date_sortie='"+datesortie+"',motif_sortie='"+DatabaseManager.addSlashes(motifSortie)+"'","id="+_id));
 		}catch(MalformedQueryException e){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Fin de prise en charge", "La fin de prise en charge de la victime \""+_idAnonymat+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -217,9 +219,9 @@ public class VictimController {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 		int idMessage;
-		String message = "La victime \""+_idAnonymat+"\" est maintenant prise en charge par \""+_dbm.addSlashes(_entity.getName())+"\".";
+		String message = "La victime \""+_idAnonymat+"\" est maintenant prise en charge par \""+DatabaseManager.addSlashes(_entity.getName())+"\".";
 		try {			
-			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
+			idMessage = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
 			genererVictimeMessage(idMessage);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message du changement d'entité pour la victime. Message : "+message);
@@ -234,7 +236,7 @@ public class VictimController {
 		
 		String message = "La victime \""+_idAnonymat+"\" n'est plus prise en charge.";
 		try {			
-			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));
+			idMessage = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));
 			genererVictimeMessage(idMessage);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message de fin de prise en charge. Message : "+message);
@@ -247,22 +249,58 @@ public class VictimController {
 	public void genererDebutPriseEnChargeMessage() {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
-		int idMessage;
-		
-		String message = "Début de prise en charge de la victime "+_idAnonymat+".";
+				
+		String message = "Début de prise en charge de la victime \""+_idAnonymat+"\". Informations de prise en charge: \n"+getInfosPriseEnCharge();
 		try {			
-			idMessage = _dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+_dbm.addSlashes(message)+"','0')"));	
-			genererVictimeMessage(idMessage);
+			_idMessageParent = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
+			genererVictimeMessage(_idMessageParent);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime. Message : "+message);
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
 	}
 
-
+	private void genererUpdateVictimMessage(){
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+		int idMessage;
+		
+		String message = "Mise à jour des informations concernant la victime \""+_idAnonymat+"\". \n";
+		message += getInfosPriseEnCharge();
+		
+		try {			
+			idMessage = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',"+_idMessageParent+",NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
+			genererVictimeMessage(idMessage);
+		} catch (MalformedQueryException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime. Message : "+message);
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+	}
+	
+	private String getInfosPriseEnCharge(){
+		String infos = "Motif prise en charge : \n";
+		if(_petitSoin)
+			infos += "- Petits soins \n";
+		if(_malaise)
+			infos += "- Malaise \n";
+		if(_traumatisme)
+			infos += "- Traumatisme \n";
+		if(_inconscience)
+			infos += "- Inconscience \n";
+		if(_arretCardiaque)
+			infos += "- Arrêt cardiaque \n";
+		if(!_atteinteDetails.equals(""))
+			infos += "- Autre: "+_atteinteDetails+" \n";
+		
+		if(!_soin.equals(""))
+			infos += "Soins prodigués : \n - "+_soin;
+		
+		return infos;		
+	}
+	
 	private void genererVictimeMessage(int idMessage) {
 		try {			
-			_dbm.executeQueryInsert(new SQLQueryInsert("victimes_messages" ,"('"+idMessage+"','"+_id+"')"));
+			DatabaseManager.executeQueryInsert(new SQLQueryInsert("victimes_messages" ,"('"+idMessage+"','"+_id+"')"));
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de l'insertion du message pour la victime \""+_nom+"\" dans la table d'association.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
@@ -340,22 +378,22 @@ public class VictimController {
 
 	public void updateFields() {
 		try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*","Victime","id = "+_id));
+			ResultSet result = DatabaseManager.executeQuerySelect(new SQLQuerySelect("*","Victime","id = "+_id));
 
 			while(result.next()){
-				_idAnonymat = _dbm.stripSlashes(result.getString("surnom"));
-				_nom = _dbm.stripSlashes(result.getString("nom"));
-				_prenom = _dbm.stripSlashes(result.getString("prenom"));
+				_idAnonymat = DatabaseManager.stripSlashes(result.getString("surnom"));
+				_nom = DatabaseManager.stripSlashes(result.getString("nom"));
+				_prenom = DatabaseManager.stripSlashes(result.getString("prenom"));
 				_dateDeNaissance = result.getTimestamp("date_naissance");
-				_adresse = _dbm.stripSlashes(result.getString("adresse"));
+				_adresse = DatabaseManager.stripSlashes(result.getString("adresse"));
 				_datePriseEnCharge = result.getTimestamp("date_entree");
 				_petitSoin = result.getBoolean("petit_soin");
 				_malaise = result.getBoolean("malaise");
 				_traumatisme = result.getBoolean("traumatisme");
 				_arretCardiaque = result.getBoolean("arret_cardiaque");
 				_inconscience = result.getBoolean("inconscient");
-				_atteinteDetails = _dbm.stripSlashes(result.getString("atteinte_details"));
-				_soin = _dbm.stripSlashes(result.getString("soin"));
+				_atteinteDetails = DatabaseManager.stripSlashes(result.getString("atteinte_details"));
+				_soin = DatabaseManager.stripSlashes(result.getString("soin"));
 				_dateSortie = result.getTimestamp("date_sortie");
 				if(_dateSortie != null){
 					_operation.delVictim(this);
