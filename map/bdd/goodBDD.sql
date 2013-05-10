@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client: 127.0.0.1
--- Généré le: Lun 29 Avril 2013 à 14:17
+-- Généré le: Ven 03 Mai 2013 à 07:38
 -- Version du serveur: 5.5.29-log
 -- Version de PHP: 5.3.21
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `Carte` (
   `image` longblob,
   PRIMARY KEY (`id`),
   KEY `IDX_7B15D0F944AC3583` (`operation_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -45,8 +45,20 @@ CREATE TABLE IF NOT EXISTS `Carte` (
 CREATE TABLE IF NOT EXISTS `Categorie` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_CB8C54976C6E55B5` (`nom`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Contenu de la table `Categorie`
+--
+
+INSERT INTO `Categorie` (`id`, `nom`) VALUES
+(-1, 'Déplacement'),
+(-4, 'Equipier/Entité'),
+(-3, 'Localisation'),
+(-5, 'Statut'),
+(-2, 'Victime');
 
 -- --------------------------------------------------------
 
@@ -60,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `DemandeSuppression` (
   `message_id` int(11) DEFAULT NULL,
   `operation_id` int(11) DEFAULT NULL,
   `date_demande` datetime NOT NULL,
+  `raison` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_E5D655A7FB88E14F` (`utilisateur_id`),
   KEY `IDX_E5D655A7537A1329` (`message_id`),
@@ -126,7 +139,17 @@ CREATE TABLE IF NOT EXISTS `Equipier` (
   PRIMARY KEY (`id`),
   KEY `IDX_B359EF044AC3583` (`operation_id`),
   KEY `IDX_B359EF09BEA957A` (`entite_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=5 ;
+
+--
+-- Contenu de la table `Equipier`
+--
+
+INSERT INTO `Equipier` (`id`, `operation_id`, `entite_id`, `nom`, `prenom`, `tel`, `enActivite`, `motifRupture`, `autres`) VALUES
+(1, NULL, NULL, 'Sidhoum', 'Fouad', NULL, 1, NULL, NULL),
+(2, NULL, NULL, 'Lelouet', 'Arnaud', NULL, 1, NULL, NULL),
+(3, NULL, NULL, 'Leroy', 'Dorian', NULL, 0, NULL, NULL),
+(4, NULL, NULL, 'Leloup', 'Florian', NULL, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -145,14 +168,7 @@ CREATE TABLE IF NOT EXISTS `Localisation` (
   PRIMARY KEY (`id`),
   KEY `IDX_A7E2157744AC3583` (`operation_id`),
   KEY `IDX_A7E21577C9C7CEB6` (`carte_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
-
---
--- Contenu de la table `Localisation`
---
-
-INSERT INTO `Localisation` (`id`, `operation_id`, `carte_id`, `nom`, `desc`, `x`, `y`) VALUES
-(1, 1, NULL, 'LocalisationBaseDesEntites', 'Poste de commandement mobile. Par dfaut toutes les entits se trouvent  cette endroit.', 0, 0);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -216,22 +232,24 @@ CREATE TABLE IF NOT EXISTS `Operation` (
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `etat` tinyint(1) NOT NULL,
   `entreeUtilisateurs` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `nature` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `lieu` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `nature` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lieu` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date_debut` datetime NOT NULL,
   `date_fin` datetime DEFAULT NULL,
   `date_debut_prevue` datetime NOT NULL,
   `date_fin_prevue` datetime NOT NULL,
   `commentaire` longtext COLLATE utf8_unicode_ci,
+  `last_modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `Operation`
 --
 
-INSERT INTO `Operation` (`id`, `nom`, `etat`, `entreeUtilisateurs`, `nature`, `lieu`, `date_debut`, `date_fin`, `date_debut_prevue`, `date_fin_prevue`, `commentaire`) VALUES
-(1, 'Test1', 1, 'Lololo', 'lolo', 'lolo', '2013-04-16 00:00:00', NULL, '2013-04-30 00:00:00', '2013-04-30 00:00:00', 'fdsfsq');
+INSERT INTO `Operation` (`id`, `nom`, `etat`, `entreeUtilisateurs`, `nature`, `lieu`, `date_debut`, `date_fin`, `date_debut_prevue`, `date_fin_prevue`, `commentaire`, `last_modified`) VALUES
+(1, 'Fête du poney', 1, 'Elouan Rolland', '...', 'Rennes', NULL, NULL, '2013-05-01 10:00:00', '2013-05-04 18:00:00', 'Youpi ! Vive les Poney !', NULL),
+(2, 'Fête de la musique', 1, 'Elouan Rolland', '...', 'Rennes', NULL, NULL, '2013-05-01 10:00:00', '2013-06-21 18:00:00', 'Vive lalcool !!', NULL);
 
 -- --------------------------------------------------------
 
@@ -284,15 +302,24 @@ CREATE TABLE IF NOT EXISTS `Utilisateur` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_9B80EC64F85E0677` (`username`),
   KEY `IDX_9B80EC6444AC3583` (`operation_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `Utilisateur`
 --
 
 INSERT INTO `Utilisateur` (`id`, `operation_id`, `username`, `nom`, `prenom`, `tel`, `couleur`, `password`, `salt`, `roles`, `enActivite`) VALUES
-(-2, NULL, 'Tous', 'Tous', 'Tous', NULL, NULL, 'nopass', 'nopass', '1', 1),
-(-1, NULL, 'JApplet', 'Carte', 'JApplet', NULL, NULL, 'nopass', 'nopass', 'Nothing to say...', 0);
+(-2, NULL, 'monde', 'le monde', 'Tout', NULL, NULL, 'nopass', 'nopass', 'a:1:{i:0;s:9:"ROLE_SPEC";};}', 1),
+(-1, NULL, 'JApplet', '', 'Carte', NULL, 'gray', 'nopass', 'nopass', 'a:1:{i:0;s:9:"ROLE_SPEC";};}', 1),
+(1, NULL, 'admin', 'Rolland', 'Elouan', NULL, 'red', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(2, NULL, 'fouad', 'Sidhoum', 'Fouad', NULL, 'pink', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(3, NULL, 'florian', 'Leloup', 'Florian', NULL, 'orange', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(4, NULL, 'dorian', 'Leroy', 'Dorian', NULL, 'purple', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(5, NULL, 'anthony', 'Deret', 'Anthony', NULL, 'green', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(6, NULL, 'guenael', 'Noirtin', 'Guenael', NULL, 'black', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(7, NULL, 'leyton', 'Edginton-King', 'Leyton', NULL, 'yellow', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(8, NULL, 'mathieu', 'Pasquet', 'Mathieu', NULL, 'brown', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:10:"ROLE_ADMIN";}', 1),
+(9, NULL, 'operateur', 'operateur', 'operateur', NULL, 'blue', 'P9j/pcXK17USqAIpVKP3suGSLf+jzEqF55oOYmqtb76XT1Ng8CrXFauip4n7154Ktnru64eYIH1+/P0BMBYQ9Q==', '9da3f27b18a9dfb8accaaf813c455aa8', 'a:1:{i:0;s:9:"ROLE_USER";}', 1);
 
 -- --------------------------------------------------------
 
@@ -304,13 +331,13 @@ CREATE TABLE IF NOT EXISTS `Victime` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `categorie_id` int(11) DEFAULT NULL,
   `operation_id` int(11) DEFAULT NULL,
+  `entite_id` int(11) DEFAULT NULL,
   `surnom` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `nom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `prenom` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `date_naissance` datetime DEFAULT NULL,
   `adresse` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `statut` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `motif_sortie` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `motif_sortie` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `date_entree` datetime DEFAULT NULL,
   `date_sortie` datetime DEFAULT NULL,
   `petit_soin` tinyint(1) DEFAULT NULL,
@@ -321,8 +348,10 @@ CREATE TABLE IF NOT EXISTS `Victime` (
   `atteinte_details` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `soin` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `surnom` (`surnom`,`operation_id`),
   KEY `IDX_62D017A5BCF5E72D` (`categorie_id`),
-  KEY `IDX_62D017A544AC3583` (`operation_id`)
+  KEY `IDX_62D017A544AC3583` (`operation_id`),
+  KEY `IDX_62D017A59BEA957A` (`entite_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -444,6 +473,7 @@ ALTER TABLE `Utilisateur`
 -- Contraintes pour la table `Victime`
 --
 ALTER TABLE `Victime`
+  ADD CONSTRAINT `FK_62D017A59BEA957A` FOREIGN KEY (`entite_id`) REFERENCES `Entite` (`id`),
   ADD CONSTRAINT `FK_62D017A544AC3583` FOREIGN KEY (`operation_id`) REFERENCES `Operation` (`id`),
   ADD CONSTRAINT `FK_62D017A5BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `VictimeCat` (`id`);
 
