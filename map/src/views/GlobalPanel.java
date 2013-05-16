@@ -54,7 +54,8 @@ public class GlobalPanel extends JApplet implements Observer
 		{
 			UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 			JDialog.setDefaultLookAndFeelDecorated(false); 
-		}catch(InstantiationException e){}
+		}
+		catch(InstantiationException e){}
 		catch(ClassNotFoundException e){}
 		catch(UnsupportedLookAndFeelException e){}
 		catch(IllegalAccessException e){}
