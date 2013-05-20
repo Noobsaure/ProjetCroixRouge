@@ -123,7 +123,7 @@ public class EditVictimPanel extends AddVictimPanel
 				_entiteAssociee.setSelectedItem(stringEntiteAssociee);
 		}
 		
-		JLabel finDePriseEnChargeLabel = new JLabel("Motif fin de prise ne charge :");
+		JLabel finDePriseEnChargeLabel = new JLabel("Motif fin de prise en charge :");
 		GridBagConstraints gbc_finDePriseEnChargeLabel = new GridBagConstraints();
 		gbc_finDePriseEnChargeLabel.insets = new Insets(0, 0, 0, 5);
 		gbc_finDePriseEnChargeLabel.gridx = 0;

@@ -10,8 +10,6 @@ import javax.swing.JDialog;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel;
-
 import launcher.Launcher;
 import observer.Observer;
 import controllers.OperationController;
@@ -52,13 +50,16 @@ public class GlobalPanel extends JApplet implements Observer
 		_idOperateur = Integer.parseInt(getParameter("idOperateur"));
 		_databaseName = getParameter("database");
 
-		
-		try{
-			UIManager.setLookAndFeel(new NimbusLookAndFeel());
+		try
+		{
+			UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 			JDialog.setDefaultLookAndFeelDecorated(false); 
 		}
+		catch(InstantiationException e){}
+		catch(ClassNotFoundException e){}
 		catch(UnsupportedLookAndFeelException e){}
-		
+		catch(IllegalAccessException e){}
+
 		getContentPane().setPreferredSize(new Dimension(getMaximumSize()));
 		setLayout(new BorderLayout(0, 0));
 

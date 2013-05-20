@@ -8,11 +8,11 @@ import javax.swing.SwingUtilities;
 import views.ConfigurationEntityPanel;
 import views.CustomDialog;
 
-public class RetourEquipierEntityListener implements ActionListener
+public class CancelEquipierEntityListener implements ActionListener
 {
 	private ConfigurationEntityPanel _configEntityPanel;
 	
-	public RetourEquipierEntityListener(ConfigurationEntityPanel configurationEntityPanel)
+	public CancelEquipierEntityListener(ConfigurationEntityPanel configurationEntityPanel)
 	{
 		_configEntityPanel = configurationEntityPanel;
 	}
