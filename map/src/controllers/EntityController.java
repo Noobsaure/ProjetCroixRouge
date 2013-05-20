@@ -173,6 +173,10 @@ public class EntityController {
 		}
 	}
 
+	private void updateEntity(){
+		
+	}
+	
 	public void setAvailable(boolean state, String infos){
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());

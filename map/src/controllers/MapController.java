@@ -215,4 +215,8 @@ public class MapController {
 	public void simpleAddLocation(LocationController locationController) {
 		_locationList.add(locationController);
 	}
+
+	public void removeLocation(LocationController location) {
+		_locationList.remove(location);
+	}
 }

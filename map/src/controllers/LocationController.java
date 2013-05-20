@@ -26,8 +26,11 @@ public class LocationController {
 	private float  _coordY;
 	private String _name;
 	private String _description;
+	private boolean _visibility;
+	private String _couleur;
 
 	private List<EntityController> _entityList = new ArrayList<EntityController>();
+	
 
 	/**
 	 * Constructs a new Location with its coordinates, name and description and which is not in the database.
@@ -38,7 +41,7 @@ public class LocationController {
 	 * @param y
 	 * @param name
 	 */
-	public LocationController(OperationController operation, DatabaseManager dbm, float x, float y, String name, String description){
+	public LocationController(OperationController operation, DatabaseManager dbm, float x, float y, String name, String description, String couleur){
 		int result;
 		_operation = operation;
 		_idOperation = operation.getId();
@@ -57,7 +60,7 @@ public class LocationController {
 		}
 
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+")"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+",NULL)"));
 			_coordX = x;
 			_coordY = y;
 			_name = name;
@@ -83,7 +86,7 @@ public class LocationController {
 	 * @param name
 	 * @param description
 	 */
-	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description){
+	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description, boolean visibility, String couleur){
 		_operation = operation;
 		_dbm = dbm;
 		_coordX = x;
@@ -194,11 +197,12 @@ public class LocationController {
 
 	public void updateFields() {
 		try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`","Localisation","id = "+_id));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`,`visibilite`","Localisation","id = "+_id));
 
 			while(result.next()){
 				_name = _dbm.stripSlashes(result.getString("nom"));
 				_description = _dbm.stripSlashes(result.getString("desc"));
+				_visibility = result.getBoolean("visibility");
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
@@ -208,6 +212,13 @@ public class LocationController {
 			MessagePanel errorPanel = new MessagePanel( "Erreur interne - Mise à jour localisation \""+_name+"\"", "Une erreur est survenue lors de la mise à jour des attributs de la localisation \""+_name+"\".");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
 		}
+		
+		if(!_visibility){
+			_visibility = false;
+			_operation.getMap(_idMap).removeLocation(this);
+			_operation.removeLocation(this);
+		}
+		
 	}
 
 	public void setDescription(String informations) {
@@ -239,5 +250,39 @@ public class LocationController {
 			return true;
 		}
 		return false;
+	}
+	
+	private String getCouleur(){
+		return _couleur;
+	}
+	
+	public void hideLocation(){
+		try{
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation","visibilite = 0","id="+_id));
+		}catch(MalformedQueryException e){
+			MessagePanel errorPanel = new MessagePanel("Erreur interne - Supression localisation", "Erreur lors de la supression de la localisation \""+_name+"\". Veuillez rééssayer.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+
+		_visibility = false;
+		_operation.getMap(_idMap).removeLocation(this);
+		_operation.removeLocation(this);
+
+		genererMessageSuppressionLocalisation();
+		_operation.setLastModified();
+	}
+
+	private void genererMessageSuppressionLocalisation() {
+		java.util.Date date = new java.util.Date();
+		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
+
+		String message = "La localisation \""+_name+"\" a été supprimée.";
+		try {			
+			_dbm.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', -3, '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
+		} catch (MalformedQueryException e) {
+			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la suppression de la localisation. "+
+					"Message : "+message);
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
 	}
 }		
