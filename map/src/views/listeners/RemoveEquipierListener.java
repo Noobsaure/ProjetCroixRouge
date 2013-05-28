@@ -46,14 +46,14 @@ public class RemoveEquipierListener implements ActionListener{
 		
 		ConfigurationEntityPanel configurationEntityPanel = new ConfigurationEntityPanel(_mapPanel, _operationController, _entityController);
 		
-		_parent.remove(_configEntityPanel);
-		_parent.repaint();
-		_parent.revalidate();
+		_mapPanel.remove(_configEntityPanel);
+		_mapPanel.repaint();
+		_mapPanel.revalidate();
 		
 		System.out.println("fermeture de la fenetre puis ouverture");
 		
-		_parent.add(configurationEntityPanel);
-		_parent.setComponentZOrder(configurationEntityPanel, 0);
+		_mapPanel.add(configurationEntityPanel);
+		_mapPanel.setComponentZOrder(configurationEntityPanel, 0);
 	}
 	
 }
