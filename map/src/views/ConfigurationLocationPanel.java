@@ -5,8 +5,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -112,7 +116,21 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 		/**************************************************************/
 
+		/**************************************************************\
+		 * 						Couleur
+		\**************************************************************/
+		ImageIcon iconRed = new ImageIcon(EntityPanel.class.getResource("/ui/rouge.png"));
+		ImageIcon iconOrange = new ImageIcon(EntityPanel.class.getResource("/ui/orange.png"));
+		ImageIcon iconYellow = new ImageIcon(EntityPanel.class.getResource("/ui/yellow.png"));
+		ImageIcon iconLightGreen = new ImageIcon(EntityPanel.class.getResource("/ui/lightGreen.png"));
+		ImageIcon iconGreen = new ImageIcon(EntityPanel.class.getResource("/ui/green.png"));
 		
+		ButtonGroup button_group = new ButtonGroup();
+		JRadioButton colorRed = new JRadioButton(iconRed);
+		JRadioButton colorOrange = new JRadioButton(iconRed);
+		JRadioButton colorYellow = new JRadioButton(iconRed);
+		JRadioButton colorLightGreen = new JRadioButton(iconRed);
+		JRadioButton colorGreen = new JRadioButton(iconRed);
 		
 		/**************************************************************\
 		 * 							Boutons
@@ -147,5 +165,9 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 	public void updatePanel() {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public int getColor() {
+		return _colorRadioButton.getSelected();
 	}
 }

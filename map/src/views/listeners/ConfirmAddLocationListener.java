@@ -46,7 +46,7 @@ public class ConfirmAddLocationListener implements ActionListener
 	{
 		String name = _addLocationPanel.getFieldName();
 		String informations = _addLocationPanel.getInformations();
-		String couleur =  "#000";
+		int couleur =  1;
 		
 		if(!checkInput(name, informations))
 		{

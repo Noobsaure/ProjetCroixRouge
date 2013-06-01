@@ -41,7 +41,7 @@ public class LocationController {
 	 * @param y
 	 * @param name
 	 */
-	public LocationController(OperationController operation, DatabaseManager dbm, float x, float y, String name, String description, String couleur){
+	public LocationController(OperationController operation, DatabaseManager dbm, float x, float y, String name, String description, int couleur){
 		int result;
 		_operation = operation;
 		_idOperation = operation.getId();
@@ -60,7 +60,7 @@ public class LocationController {
 		}
 
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+",NULL,1)"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+","+couleur+",1)"));
 			_coordX = x;
 			_coordY = y;
 			_name = name;
@@ -86,7 +86,7 @@ public class LocationController {
 	 * @param name
 	 * @param description
 	 */
-	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description, boolean visibility, String couleur){
+	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description, int couleur, boolean visibility){
 		_operation = operation;
 		_dbm = dbm;
 		_coordX = x;

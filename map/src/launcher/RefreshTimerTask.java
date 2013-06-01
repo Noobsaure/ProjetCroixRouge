@@ -273,11 +273,11 @@ public class RefreshTimerTask extends TimerTask
 					String description = result.getString("desc");
 					float x = result.getFloat("x");
 					float y = result.getFloat("y");
-					boolean visibility = result.getBoolean("visibilite");
-					String couleur = result.getString("couleur");
+					boolean visibility = result.getBoolean("visibility");
+					int couleur = result.getInt("color");
 					
 					if(_operation.getMap(id_carte) != null){
-						LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description, visibility, couleur);
+						LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description, couleur, visibility);
 						_operation.addLocation(location);
 					}
 				}
