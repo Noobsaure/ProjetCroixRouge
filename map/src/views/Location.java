@@ -44,7 +44,7 @@ public class Location extends JPanel {
 		setLayout(new BorderLayout());
 		_locationController = locationController;
 		_name = _locationController.getName();
-		_locColor = _locationController.getColor() - 1;
+		_locColor = Math.max(0,_locationController.getColor() - 1);
 		_mapX = globalPanel.getMapPanel().get_x();
 		_mapY = globalPanel.getMapPanel().get_y();
 		_x = x;
