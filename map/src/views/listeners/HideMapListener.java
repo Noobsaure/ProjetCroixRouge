@@ -6,18 +6,15 @@ import java.awt.event.MouseListener;
 import views.ChoicePanel;
 import views.CustomDialog;
 import views.SubMenuMapPanel;
-import views.buttons.SubMenuMapButton;
 import controllers.MapController;
 import controllers.OperationController;
 
 public class HideMapListener implements MouseListener {
 	private OperationController _operation;
 	private MapController _map;
-	private SubMenuMapPanel _subMenu;
 
 	public HideMapListener(OperationController operation, SubMenuMapPanel subMenu, MapController map){
 		_operation = operation;
-		_subMenu = subMenu;
 		_map = map;
 	}
 
@@ -27,7 +24,7 @@ public class HideMapListener implements MouseListener {
 		String title = "Confirmation suppression map : " + _map.getName();
 		String message = "Êtes-vous sur de vouloir supprimer la carte '"+_map.getName()+"'. Cette action est irréversible et toutes les entités présentes sur la carte seront ramenées à leur localisation de base (PCM (défaut)).";
 
-		ChoicePanel confirmDelMap = new ChoicePanel(_operation, _subMenu, _map, title, message);
+		ChoicePanel confirmDelMap = new ChoicePanel(title, message, new ConfirmDelMapListener(_operation, _map));
 		new CustomDialog(confirmDelMap, _operation.getGlobalPanel());
 	}
 

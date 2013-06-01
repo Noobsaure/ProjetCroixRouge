@@ -4,14 +4,11 @@ import java.awt.Cursor;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-
-import observer.Observer;
-import observer.Subject;
 
 import views.CustomDialog;
 import views.GlobalPanel;
@@ -20,7 +17,7 @@ import views.MapPanel;
 import views.MessagePanel;
 import views.buttons.AddLocationButton;
 
-public class MapPanelMouseListener implements MouseListener, MouseMotionListener {
+public class MapPanelMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	private static final Cursor addableCursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
 	private static final Cursor notAddableCursor = Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
@@ -72,7 +69,6 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 			_moving = true;
 		}
 	}
-
 
 	public void mouseReleased(MouseEvent e) {
 		_moving = false;
@@ -157,5 +153,11 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 	@Override
 	public void mouseExited(MouseEvent e) {
 		_mapPanel.disableLocationHighlight();
+	}
+
+	@Override
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		int notches = e.getWheelRotation();
+		_mapPanel.setRatio(_mapPanel.getRatio()+notches * -0.15);
 	}
 }

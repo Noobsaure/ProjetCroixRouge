@@ -27,7 +27,7 @@ public class LocationController {
 	private String _name;
 	private String _description;
 	private boolean _visibility;
-	private String _couleur;
+	private int _couleur;
 
 	private List<EntityController> _entityList = new ArrayList<EntityController>();
 	
@@ -41,12 +41,13 @@ public class LocationController {
 	 * @param y
 	 * @param name
 	 */
-	public LocationController(OperationController operation, DatabaseManager dbm, float x, float y, String name, String description, String couleur){
+	public LocationController(OperationController operation, DatabaseManager dbm, float x, float y, String name, String description, int couleur){
 		int result;
 		_operation = operation;
 		_idOperation = operation.getId();
 		_dbm = dbm;
 		_idMap = operation.getCurrentMap().getId();
+		_couleur = couleur;
 
 		if(name.compareTo("PCM (défaut)") == 0){
 			MessagePanel errorPanel = new MessagePanel("Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation " +
@@ -60,7 +61,7 @@ public class LocationController {
 		}
 
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+",NULL,1)"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+","+couleur+",1)"));
 			_coordX = x;
 			_coordY = y;
 			_name = name;
@@ -86,7 +87,7 @@ public class LocationController {
 	 * @param name
 	 * @param description
 	 */
-	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description, boolean visibility, String couleur){
+	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description, int couleur){
 		_operation = operation;
 		_dbm = dbm;
 		_coordX = x;
@@ -95,7 +96,9 @@ public class LocationController {
 		_description = _dbm.stripSlashes(description);
 		_id = id;
 		_idMap = idMap;
+		System.out.println("ID MAP : "+_idMap);
 		_idOperation = _operation.getId();
+		_couleur = couleur;
 
 		if(_name.compareTo("PCM (défaut)") != 0 )
 			operation.getMap(_idMap).addLocation(this);
@@ -197,12 +200,13 @@ public class LocationController {
 
 	public void updateFields() {
 		try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`,`visibilite`","Localisation","id = "+_id));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`,`color`,`visibility`","Localisation","id = "+_id));
 
 			while(result.next()){
 				_name = _dbm.stripSlashes(result.getString("nom"));
 				_description = _dbm.stripSlashes(result.getString("desc"));
 				_visibility = result.getBoolean("visibility");
+				_couleur = result.getInt("color");
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
@@ -215,7 +219,9 @@ public class LocationController {
 		
 		if(!_visibility){
 			_visibility = false;
-			_operation.getMap(_idMap).removeLocation(this);
+			System.out.println("ID MAP: "+_idMap);
+			_operation.getMap(_idMap)
+			.removeLocation(this);
 			_operation.removeLocation(this);
 		}
 		
@@ -252,13 +258,17 @@ public class LocationController {
 		return false;
 	}
 	
-	private String getCouleur(){
+	public int getColor(){
 		return _couleur;
+	}
+	
+	public void setColor(int newColor){
+		_couleur = newColor;
 	}
 	
 	public void hideLocation(){
 		try{
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation","visibilite = 0","id="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation","visibility = 0","id="+_id));
 		}catch(MalformedQueryException e){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Supression localisation", "Erreur lors de la supression de la localisation \""+_name+"\". Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
