@@ -1,9 +1,7 @@
 package views;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Toolkit;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.image.BufferedImage;
@@ -15,6 +13,7 @@ import javax.swing.JPanel;
 
 import launcher.Launcher;
 import observer.Observer;
+import views.listeners.DeleteLocationButtonListener;
 import views.listeners.EditLocationButtonListener;
 import views.listeners.MapPanelMouseListener;
 import controllers.LocationController;
@@ -46,6 +45,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 	public MapPanel(GlobalPanel globalPanel)
 	{
 		super(true);
+		_ratio = 1;
 		setLayout(null);
 		_globalPanel = globalPanel;
 		setBackground(Color.BLACK);
@@ -56,6 +56,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		_mapListener = new MapPanelMouseListener(_globalPanel);
 		addMouseListener(_mapListener);
 		addMouseMotionListener(_mapListener);
+		addMouseWheelListener(_mapListener);
 	}
 
 	public List<Location> getLocations() {return _locations;}
@@ -121,7 +122,9 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			int y = (int) (oneLoc.getY() * getRatio());
 			Location location = new Location(_globalPanel, oneLoc, x, y);
 			LocationPanel locPanel = new LocationPanel(location, this, x, y);
-			locPanel.addIconMouseListener(new EditLocationButtonListener(_operation,locPanel,_globalPanel.getMapPanel(),oneLoc));
+			locPanel.addIconMouseListeners(
+					new EditLocationButtonListener(_operation,locPanel,_globalPanel.getMapPanel(),oneLoc),
+					new DeleteLocationButtonListener());
 			location.setLocPanel(locPanel);
 			_locations.add(location);
 			add(locPanel);
@@ -141,8 +144,8 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	public void setLocationsMapXY(int x, int y) {
 		for(Location oneLoc : _locations) {
-			oneLoc.setMapXY(x,y);
-			oneLoc.getLocPanel().setMapXY(x,y);
+			oneLoc.setMapXY(x,y, _ratio);
+			oneLoc.getLocPanel().setMapXY(x,y,_ratio);
 		}
 	}
 
@@ -184,8 +187,6 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 				_y = Math.min(_y, 0);
 			}
 			setLocationsMapXY(_x, _y);
-			repaint();
-			revalidate();
 		}
 	}
 
@@ -195,24 +196,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		OperationController controller = launcher.getOperationController();
 		MapController mapController = controller.getCurrentMap();
 		if(mapController != null) {
-			Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-			double width = screenSize.getWidth();
-			double height = screenSize.getHeight();
-			_ratio = 1;
 			ImageIcon image = mapController.getImage();
-
-			if(image.getIconHeight() > height && image.getIconWidth() > width) {
-				if(image.getIconHeight() > image.getIconWidth()) {
-					_ratio = width/image.getIconWidth();
-				} else {
-					_ratio = height/image.getIconHeight();
-				}
-			} else if(image.getIconHeight() > height) {
-				_ratio = height/image.getIconHeight();
-			} else if(image.getIconWidth() > width) {
-				_ratio = width/image.getIconWidth();
-			}
-
 			_map = new BufferedImage((int)(image.getIconWidth() * _ratio), (int)(image.getIconHeight()*_ratio), BufferedImage.TYPE_INT_RGB);
 			_map.getGraphics().drawImage(image.getImage(), 0, 0, (int)(image.getIconWidth()*_ratio), (int)(image.getIconHeight()*_ratio), null);
 		} else {
@@ -228,6 +212,10 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 	}
 	
 	public double getRatio() {return _ratio;}
+	public void setRatio(double ratio) {
+		_ratio = Math.min(1, Math.max(0.25,ratio));
+		update();
+	}
 
 	@Override
 	public void componentHidden(ComponentEvent e) {

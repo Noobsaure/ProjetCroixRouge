@@ -54,10 +54,10 @@ public class Location extends JPanel {
 		setDropTarget(new DropTarget(this, new LocationDropTargetListener(this, globalPanel)));		
 	}
 	
-	public void setMapXY(int x, int y) {
+	public void setMapXY(int x, int y, double ratio) {
 		_mapX = x;
 		_mapY = y;
-		setBounds(_mapX + _x - _iconLoc.getIconWidth() / 2, _mapY + _y - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
+		setBounds(_mapX + (int)(_x * ratio) - _iconLoc.getIconWidth() / 2, _mapY + (int)(_y * ratio) - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
 	}
 	
 	@Override
