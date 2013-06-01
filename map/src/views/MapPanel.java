@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import launcher.Launcher;
 import observer.Observer;
-import views.listeners.DeleteLocationButtonListener;
+import views.listeners.HideLocationButtonListener;
 import views.listeners.EditLocationButtonListener;
 import views.listeners.MapPanelMouseListener;
 import controllers.LocationController;
@@ -96,7 +96,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 
 	public void showAddLocationPanel(int x, int y) {
 		Launcher launcher = getGlobalPanel().getLauncher();
-		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);		
+		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);
 		new CustomDialog(addLocationPanel, _globalPanel);
 	}
 
@@ -124,7 +124,7 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 			LocationPanel locPanel = new LocationPanel(location, this, x, y);
 			locPanel.addIconMouseListeners(
 					new EditLocationButtonListener(_operation,locPanel,_globalPanel.getMapPanel(),oneLoc),
-					new DeleteLocationButtonListener());
+					new HideLocationButtonListener(_operation,oneLoc));
 			location.setLocPanel(locPanel);
 			_locations.add(location);
 			add(locPanel);

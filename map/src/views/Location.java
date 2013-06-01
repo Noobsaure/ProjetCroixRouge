@@ -24,20 +24,27 @@ public class Location extends JPanel {
 	private boolean _dragOver = false;
 	private String _name;
 	private boolean _highlighted = false;
-	public static final ImageIcon _iconLoc = new ImageIcon(EntityPanel.class.getResource("/ui/rouge.png"));
-	public static final ImageIcon _iconLocDragOver = new ImageIcon(EntityPanel.class.getResource("/ui/vert.png"));
-	public static final int _iconLocWidth = _iconLoc.getIconWidth();
-	public static final int _iconLocHeight = _iconLoc.getIconHeight();
+	public static final ImageIcon[] _iconLoc = new ImageIcon[] {
+		new ImageIcon(EntityPanel.class.getResource("/ui/rouge.png")),
+		new ImageIcon(EntityPanel.class.getResource("/ui/orange.png")),
+		new ImageIcon(EntityPanel.class.getResource("/ui/jaune.png")),
+		new ImageIcon(EntityPanel.class.getResource("/ui/lightGreen.png")),
+		new ImageIcon(EntityPanel.class.getResource("/ui/vert.png"))};
+	public static final ImageIcon _iconLocDragOver = new ImageIcon(EntityPanel.class.getResource("/ui/violet.png"));
+	public static final int _iconLocWidth = _iconLocDragOver.getIconWidth();
+	public static final int _iconLocHeight = _iconLocDragOver.getIconHeight();
 	private LocationPanel _locPanel;
 	private LocationController _locationController;
 	private LocationMouseListener _mouseListener;
 	private JLabel _entitiesCount;
+	private int _locColor;
 	
 	public Location(GlobalPanel globalPanel, LocationController locationController, int x, int y) {
 		super();
 		setLayout(new BorderLayout());
 		_locationController = locationController;
 		_name = _locationController.getName();
+		_locColor = _locationController.getColor() - 1;
 		_mapX = globalPanel.getMapPanel().get_x();
 		_mapY = globalPanel.getMapPanel().get_y();
 		_x = x;
@@ -46,7 +53,7 @@ public class Location extends JPanel {
 		_entitiesCount.setForeground(Color.WHITE);
 		_entitiesCount.setFont(new Font(Font.SANS_SERIF,Font.BOLD,20));
 		add(_entitiesCount, BorderLayout.CENTER);
-		setBounds(_x + _mapX - _iconLoc.getIconWidth() / 2, _y + _mapY - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
+		setBounds(_x + _mapX - _iconLocWidth / 2, _y + _mapY - _iconLocHeight / 2, _iconLocWidth, _iconLocHeight);
 		setOpaque(false);
 		_mouseListener = new LocationMouseListener(this, globalPanel);
 		addMouseListener(_mouseListener);
@@ -57,7 +64,7 @@ public class Location extends JPanel {
 	public void setMapXY(int x, int y, double ratio) {
 		_mapX = x;
 		_mapY = y;
-		setBounds(_mapX + (int)(_x * ratio) - _iconLoc.getIconWidth() / 2, _mapY + (int)(_y * ratio) - _iconLoc.getIconHeight() / 2, _iconLoc.getIconWidth(), _iconLoc.getIconHeight());
+		setBounds(_mapX + (int)(_x * ratio) - _iconLocWidth / 2, _mapY + (int)(_y * ratio) - _iconLocHeight / 2, _iconLocWidth, _iconLocHeight);
 	}
 	
 	@Override
@@ -66,9 +73,9 @@ public class Location extends JPanel {
 		Graphics2D g2d = (Graphics2D)g;
 		
 		if(_dragOver) {
-			g2d.drawImage(_iconLocDragOver.getImage(), 0, 0, _iconLoc.getIconWidth(), _iconLoc.getIconHeight(), null, null);
+			g2d.drawImage(_iconLocDragOver.getImage(), 0, 0, _iconLocWidth, _iconLocHeight, null, null);
 		} else {
-			g2d.drawImage(_iconLoc.getImage(), 0, 0, _iconLoc.getIconWidth(), _iconLoc.getIconHeight(), null, null);
+			g2d.drawImage(_iconLoc[_locColor].getImage(), 0, 0, _iconLocWidth, _iconLocHeight, null, null);
 		}
 	}
 
@@ -98,6 +105,6 @@ public class Location extends JPanel {
 	public boolean isHighlighted() {return _highlighted;}
 	public void setHighlight(boolean highlighted) {_highlighted = highlighted;}
 	public boolean isLocationPanelDisplayed() {return _locPanel.is_displayed();}
-	public int getRadius() {return _iconLoc.getIconWidth() / 2;}
+	public int getRadius() {return _iconLocWidth / 2;}
 	public LocationController getLocationController() {return _locationController;}
 }
