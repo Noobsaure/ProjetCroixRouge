@@ -120,10 +120,10 @@ public class OperationController implements Subject {
 				int couleur = result.getInt("color");
 
 				if(getMap(id_carte) != null){
-					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description, couleur, visibility);
+					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description, couleur);
 					_locationList.add(location);
 				}else if(nom.compareTo("PCM (défaut)") == 0){
-					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description, couleur, visibility);
+					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description, couleur);
 					_locationList.add(location);
 				}
 
@@ -142,7 +142,7 @@ public class OperationController implements Subject {
 
 		try {
 			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'PCM (défaut)','Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.',0,0,1,1)"));
-			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "PCM (défaut)", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.", 1, true);
+			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "PCM (défaut)", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.", 1);
 			_locationList.add(location);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur lors de la génération de la localisation de base des entitées.");

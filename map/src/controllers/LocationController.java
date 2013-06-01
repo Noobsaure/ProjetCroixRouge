@@ -86,7 +86,7 @@ public class LocationController {
 	 * @param name
 	 * @param description
 	 */
-	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description, int couleur, boolean visibility){
+	public LocationController(OperationController operation, DatabaseManager dbm, int id, int idMap, float x, float y, String name, String description, int couleur){
 		_operation = operation;
 		_dbm = dbm;
 		_coordX = x;
@@ -95,6 +95,7 @@ public class LocationController {
 		_description = _dbm.stripSlashes(description);
 		_id = id;
 		_idMap = idMap;
+		System.out.println("ID MAP : "+_idMap);
 		_idOperation = _operation.getId();
 
 		if(_name.compareTo("PCM (défaut)") != 0 )
@@ -197,12 +198,13 @@ public class LocationController {
 
 	public void updateFields() {
 		try{
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`,`visibilite`","Localisation","id = "+_id));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`,`color`,`visibility`","Localisation","id = "+_id));
 
 			while(result.next()){
 				_name = _dbm.stripSlashes(result.getString("nom"));
 				_description = _dbm.stripSlashes(result.getString("desc"));
 				_visibility = result.getBoolean("visibility");
+				_couleur = result.getInt("color");
 			}
 			result.getStatement().close();
 		}catch(SQLException e){
@@ -215,7 +217,9 @@ public class LocationController {
 		
 		if(!_visibility){
 			_visibility = false;
-			_operation.getMap(_idMap).removeLocation(this);
+			System.out.println("ID MAP: "+_idMap);
+			_operation.getMap(_idMap)
+			.removeLocation(this);
 			_operation.removeLocation(this);
 		}
 		
@@ -262,7 +266,7 @@ public class LocationController {
 	
 	public void hideLocation(){
 		try{
-			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation","visibilite = 0","id="+_id));
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation","visibility = 0","id="+_id));
 		}catch(MalformedQueryException e){
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Supression localisation", "Erreur lors de la supression de la localisation \""+_name+"\". Veuillez rééssayer.");
 			new CustomDialog(errorPanel, _operation.getGlobalPanel());
