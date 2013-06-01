@@ -116,8 +116,8 @@ public class OperationController implements Subject {
 				String description = result.getString("desc");
 				float x = result.getFloat("x");
 				float y = result.getFloat("y");
-				boolean visibility = result.getBoolean("visibilite");
-				String couleur = result.getString("couleur");
+				boolean visibility = result.getBoolean("visibility");
+				String couleur = result.getString("color");
 
 				if(getMap(id_carte) != null){
 					LocationController location = new LocationController(this,_dbm, id, id_carte, x, y, nom, description, visibility, couleur);
@@ -141,7 +141,7 @@ public class OperationController implements Subject {
 		}
 
 		try {
-			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'PCM (défaut)','Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.',0,0,'#000')"));
+			_idPcm = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+",NULL,'PCM (défaut)','Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.',0,0,1,1)"));
 			LocationController location = new LocationController(this, _dbm, _idPcm, new Integer(0), new Float(0.0), new Float (0.0), "PCM (défaut)", "Poste de commandement mobile. Par défaut toutes les entitées se trouvent à cette endroit.", true, "#000");
 			_locationList.add(location);
 		} catch (MalformedQueryException e) {

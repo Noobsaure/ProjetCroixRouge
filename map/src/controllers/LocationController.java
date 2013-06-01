@@ -60,7 +60,7 @@ public class LocationController {
 		}
 
 		try {
-			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+",NULL)"));
+			result = _dbm.executeQueryInsert(new SQLQueryInsert("Localisation", "(NULL,"+_idOperation+","+_idMap+",'"+_dbm.addSlashes(name)+"','"+_dbm.addSlashes(description)+"',"+x+","+y+",NULL,1)"));
 			_coordX = x;
 			_coordY = y;
 			_name = name;
