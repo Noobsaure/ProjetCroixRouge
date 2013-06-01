@@ -53,7 +53,6 @@ public class ConfirmConfigureLocationListener implements ActionListener
 				_locationController.setDescription(informations);
 			}
 			if(color != _locationController.getColor()){
-				System.out.println("ON MET UNE NOUVELLE COULEUR :"+color);
 				_locationController.setColor(color);
 			}
 			_mapPanel.getGlobalPanel().getLauncher().getOperationController().notifyObservers();

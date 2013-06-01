@@ -47,7 +47,7 @@ public class ConfigurationLocationPanel extends AddOrEditLocationPanel {
 	protected static final int MIDDLE = ConfigurationLocationPanel.WIDTH / 2;
 
 
-	protected static final int RED = 5;
+	protected static final int RED = 1;
 	protected static final int ORANGE = 2;
 	protected static final int YELLOW = 3;
 	protected static final int LIGHTGREEN = 4;

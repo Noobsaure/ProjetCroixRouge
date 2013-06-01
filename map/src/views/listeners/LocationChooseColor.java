@@ -15,8 +15,10 @@ public class LocationChooseColor implements ActionListener {
 		_configurationLocationPanel = panel;
 		_color = color;
 	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		System.out.println("ON CHOISIT LA COULEUR :"+_color);
 		_configurationLocationPanel.setColor(_color);
 	}
 
