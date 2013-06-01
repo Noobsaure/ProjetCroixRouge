@@ -66,6 +66,7 @@ public class LocationController {
 			_name = name;
 			_description = description;
 			_id = result;
+			_couleur = couleur;
 		}catch(MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur interne - Création localisation" ,"La localisation \""+_name+"\" n'a pas pu être ajouté dans la base de données." +
 					"Veuillez réessayer.");
@@ -95,7 +96,8 @@ public class LocationController {
 		_description = _dbm.stripSlashes(description);
 		_id = id;
 		_idMap = idMap;
-		System.out.println("ID MAP : "+_idMap);
+		_couleur = couleur;
+		
 		_idOperation = _operation.getId();
 
 		if(_name.compareTo("PCM (défaut)") != 0 )
@@ -197,6 +199,7 @@ public class LocationController {
 	}
 
 	public void updateFields() {
+		System.out.println("UPDATE FIELDS");
 		try{
 			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("`nom`,`desc`,`color`,`visibility`","Localisation","id = "+_id));
 
@@ -216,10 +219,13 @@ public class LocationController {
 		}
 		
 		if(!_visibility){
+			for(EntityController entity : _entityList){
+				entity.setLocation(_operation.getPcmLocation());
+				entity.setLastPoint(-1);
+			}
+			
 			_visibility = false;
-			System.out.println("ID MAP: "+_idMap);
-			_operation.getMap(_idMap)
-			.removeLocation(this);
+			_operation.getMap(_idMap).removeLocation(this);
 			_operation.removeLocation(this);
 		}
 		
@@ -261,7 +267,15 @@ public class LocationController {
 	}
 	
 	public void setColor(int newColor){
+		try {
+			_dbm.executeQueryUpdate(new SQLQueryUpdate("Localisation", "`color`="+newColor,"id="+_id));
+		} catch (MalformedQueryException e) { 
+			MessagePanel errorPanel = new MessagePanel("Erreur interne" ,"Une erreur est survenue lors de la mise à jour de la couleur de la localisation \""+_name+"\". Veuillez rééssayer.");
+			new CustomDialog(errorPanel, _operation.getGlobalPanel());
+		}
+
 		_couleur = newColor;
+		_operation.setLastModified();		
 	}
 	
 	public void hideLocation(){

@@ -107,7 +107,7 @@ public class OperationController implements Subject {
 
 	public void loadLocation(){
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation", "operation_id="+this.getId()));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation", "visibility=1 AND operation_id="+this.getId()));
 
 			while(result.next()){
 				int id = result.getInt("id");

@@ -186,6 +186,7 @@ public class RefreshTimerTask extends TimerTask
 						while(result2.next()){					
 							int statut_id = result2.getInt("statut_id");
 							int position_id = result2.getInt("pos_courante_id");
+							System.out.println("POSITION COURANTE ID:"+position_id);
 							String nom = result2.getString("nom");
 							String type = result2.getString("type");
 							String infos = result2.getString("infos");
@@ -262,7 +263,7 @@ public class RefreshTimerTask extends TimerTask
 		}
 
 		try {
-			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation","operation_id="+_operation.getId()+" AND id>"+_lastLocationId));
+			ResultSet result = _dbm.executeQuerySelect(new SQLQuerySelect("*", "Localisation","visibility=1 AND operation_id="+_operation.getId()+" AND id>"+_lastLocationId));
 
 			while(result.next()){
 				int id = result.getInt("id");
@@ -277,7 +278,7 @@ public class RefreshTimerTask extends TimerTask
 					int couleur = result.getInt("color");
 					
 					if(_operation.getMap(id_carte) != null){
-						LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description, couleur, visibility);
+						LocationController location = new LocationController(_operation,_dbm, id, id_carte, x, y, nom, description, couleur);
 						_operation.addLocation(location);
 					}
 				}

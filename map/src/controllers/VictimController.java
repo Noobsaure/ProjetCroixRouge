@@ -219,7 +219,7 @@ public class VictimController {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 		int idMessage;
-		String message = "La victime \""+_nom+"#"+_idAnonymat+"\" est maintenant prise en charge par \""+DatabaseManager.addSlashes(_entity.getName())+"\".";
+		String message = "La victime \"#"+_idAnonymat+"\" est maintenant prise en charge par \""+DatabaseManager.addSlashes(_entity.getName())+"\".";
 		try {			
 			idMessage = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
 			genererVictimeMessage(idMessage);
@@ -234,7 +234,7 @@ public class VictimController {
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 		int idMessage;
 		
-		String message = "La victime \""+_nom+"#"+_idAnonymat+"\" n'est plus prise en charge.";
+		String message = "La victime \"#"+_idAnonymat+"\" n'est plus prise en charge.";
 		try {			
 			idMessage = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));
 			genererVictimeMessage(idMessage);
@@ -250,7 +250,7 @@ public class VictimController {
 		java.util.Date date = new java.util.Date();
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 				
-		String message = "Début de prise en charge de la victime \""+_nom+"#"+_idAnonymat+"\". Informations de prise en charge: \n"+getInfosPriseEnCharge();
+		String message = "Début de prise en charge de la victime \"#"+_idAnonymat+"\". Informations de prise en charge: \n"+getInfosPriseEnCharge();
 		try {			
 			_idMessageParent = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
 			genererVictimeMessage(_idMessageParent);
@@ -265,7 +265,7 @@ public class VictimController {
 		java.sql.Timestamp datetime = new java.sql.Timestamp(date.getTime());
 		int idMessage;
 		
-		String message = "Mise à jour des informations concernant la victime \""+_nom+"#"+ _idAnonymat+"\". \n";
+		String message = "Mise à jour des informations concernant la victime \"#"+ _idAnonymat+"\". \n";
 		message += getInfosPriseEnCharge();
 		
 		try {			

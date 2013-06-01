@@ -290,7 +290,7 @@ public class EntityController {
 		_operation.setLastModified();
 	}
 
-	public void setLocation(LocationController location) {	
+	public void setLocation(LocationController location) {
 		if(_operation.getLocation(_posCurrentId).equals(location)){
 			return;
 		}
@@ -328,6 +328,7 @@ public class EntityController {
 
 		genererMessageDeplacement(idDeplacement);
 		
+		System.out.println("ON EST DE NOUVEAU AU PCM");
 		_operation.setLastModified();
 	}
 
@@ -533,6 +534,10 @@ public class EntityController {
 	
 	public String getInformationsStatut(){
 		return _state;
+	}
+	
+	public void setLastPoint(int value){
+		_removeFromThisPoint = value;
 	}
 }
 
