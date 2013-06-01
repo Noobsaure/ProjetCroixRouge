@@ -46,7 +46,7 @@ public class ConfirmAddLocationListener implements ActionListener
 	{
 		String name = _addLocationPanel.getFieldName();
 		String informations = _addLocationPanel.getInformations();
-		int couleur =  1;
+		int color = _addLocationPanel.getColor();
 		
 		if(!checkInput(name, informations))
 		{
@@ -55,7 +55,7 @@ public class ConfirmAddLocationListener implements ActionListener
 				new CustomDialog(errorPanel, _mapPanel.getGlobalPanel());
 			}
 		} else {
-			new LocationController(_operationController, _databaseManager,_x,_y,name,informations, couleur);
+			new LocationController(_operationController, _databaseManager,_x,_y,name,informations, color);
 			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addLocationPanel);
 			dialog.dispose();
 		}

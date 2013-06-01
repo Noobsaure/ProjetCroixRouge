@@ -3,16 +3,22 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Image;
 
+import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.JToggleButton;
 
 import views.buttons.CustomButton;
 import views.listeners.CancelAddLocationListener;
 import views.listeners.ConfirmAddLocationListener;
+import views.listeners.LocationChooseColor;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
@@ -24,15 +30,22 @@ import database.DatabaseManager;
 
 public class AddLocationPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
-
+	
 	protected static final int WIDTH = 400;
-	protected static final int HEIGHT = 280;
+	protected static final int HEIGHT = 320;
 	public static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
-	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 200);
+	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 250);
 	protected static final int ARC_WIDTH = 30;
 	protected static final Color COLOR_BACKGROUND = Color.BLACK;
 	public static final String TITLE = "Ajouter une localisation";
 	protected static final int MIDDLE = AddLocationPanel.WIDTH / 2;
+
+
+	protected static final int RED = 5;
+	protected static final int ORANGE = 2;
+	protected static final int YELLOW = 3;
+	protected static final int LIGHTGREEN = 4;
+	protected static final int GREEN = 5;
 
 	private MapPanel _parent;
 	private OperationController _operationController;
@@ -42,7 +55,10 @@ public class AddLocationPanel extends CustomPanelImpl {
 	private PopUpPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
-	private JTextArea _informationsTextArea;
+	private JTextArea _informationsTextArea;	
+	private JLabel _couleurTextField;
+	private ButtonGroup _couleurRadioButton;
+	private int _color;
 	
 	
 	public AddLocationPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, int x, int y)
@@ -126,6 +142,70 @@ public class AddLocationPanel extends CustomPanelImpl {
 		textAreaScrollPane.setViewportView(_informationsTextArea);
 		/**************************************************************/
 
+		/**************************************************************\
+		 * 						Couleur
+		\**************************************************************/
+		_couleurRadioButton = new ButtonGroup();
+		final int ICON_WIDTH = 30;
+		final int ICON_HEIGHT = 30;
+		
+		ImageIcon iconRed = new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/rouge.png"));
+		Image img = iconRed.getImage().getScaledInstance(ICON_WIDTH, ICON_HEIGHT, Image.SCALE_DEFAULT);
+		iconRed = new ImageIcon(img);
+		
+		ImageIcon iconOrange = new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/orange.png"));
+		Image img2 = iconOrange.getImage().getScaledInstance(ICON_WIDTH, ICON_HEIGHT, Image.SCALE_DEFAULT);
+		iconOrange = new ImageIcon(img2);
+		
+		ImageIcon iconYellow = new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/jaune.png"));
+		Image img3 = iconYellow.getImage().getScaledInstance(ICON_WIDTH, ICON_HEIGHT, Image.SCALE_DEFAULT);
+		iconYellow = new ImageIcon(img3);
+		
+		ImageIcon iconLightGreen = new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/lightGreen.png"));
+		Image img4 = iconLightGreen.getImage().getScaledInstance(ICON_WIDTH, ICON_HEIGHT, Image.SCALE_DEFAULT);
+		iconLightGreen = new ImageIcon(img4);
+		
+		ImageIcon iconGreen = new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/vert.png"));
+		Image img5 = iconGreen.getImage().getScaledInstance(ICON_WIDTH, ICON_HEIGHT, Image.SCALE_DEFAULT);
+		iconGreen = new ImageIcon(img5);
+		
+		_couleurTextField = new JLabel("Couleur:");
+		formPanel.add(_couleurTextField, "1, 7");
+		
+		JPanel panel = new JPanel();
+		formPanel.add(panel, "2, 7, default, default");
+		panel.setLayout(new GridLayout(2, 0, 0, 0));
+		
+		JToggleButton rdbtnNewRadioButton = new JToggleButton(iconRed);
+		rdbtnNewRadioButton.setSize(new Dimension(30,30));
+		rdbtnNewRadioButton.addActionListener(new LocationChooseColor(this,RED));
+		_couleurRadioButton.add(rdbtnNewRadioButton);
+		panel.add(rdbtnNewRadioButton);
+		
+		JToggleButton rdbtnNewRadioButton_1 = new JToggleButton(iconOrange);
+		rdbtnNewRadioButton_1.setSize(new Dimension(30,30));
+		rdbtnNewRadioButton_1.addActionListener(new LocationChooseColor(this,ORANGE));
+		_couleurRadioButton.add(rdbtnNewRadioButton_1);
+		panel.add(rdbtnNewRadioButton_1);
+		
+		JToggleButton rdbtnNewRadioButton_4 = new JToggleButton(iconYellow);
+		rdbtnNewRadioButton_4.setSize(new Dimension(30,30));
+		rdbtnNewRadioButton_4.addActionListener(new LocationChooseColor(this,YELLOW));
+		rdbtnNewRadioButton_4.setSelected(true);
+		_couleurRadioButton.add(rdbtnNewRadioButton_4);
+		panel.add(rdbtnNewRadioButton_4);
+		
+		JToggleButton rdbtnNewRadioButton_2 = new JToggleButton(iconLightGreen);
+		rdbtnNewRadioButton_2.setSize(new Dimension(30,30));
+		rdbtnNewRadioButton_2.addActionListener(new LocationChooseColor(this,LIGHTGREEN));
+		_couleurRadioButton.add(rdbtnNewRadioButton_2);
+		panel.add(rdbtnNewRadioButton_2);
+		
+		JToggleButton rdbtnNewRadioButton_3 = new JToggleButton(iconGreen);
+		rdbtnNewRadioButton_3.setSize(new Dimension(30,30));
+		rdbtnNewRadioButton_3.addActionListener(new LocationChooseColor(this,GREEN));
+		_couleurRadioButton.add(rdbtnNewRadioButton_3);
+		panel.add(rdbtnNewRadioButton_3);
 		
 		
 		/**************************************************************\
@@ -160,5 +240,14 @@ public class AddLocationPanel extends CustomPanelImpl {
 	@Override
 	public void updatePanel() {
 		//Pas d'update � faire ici.
+	}
+	
+	public int getColor() {
+		return _color;
+	}
+	
+	@Override
+	public void setColor(int numColor) {
+		_color = numColor;
 	}
 }

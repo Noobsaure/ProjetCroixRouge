@@ -62,7 +62,7 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 	private JTextArea _informationsTextArea;	
 	private JLabel _couleurTextField;
 	private ButtonGroup _couleurRadioButton;
-	private int _color = 3;
+	private int _color;
 	
 	public ConfigurationLocationPanel(MapPanel mapPanel, OperationController operation, DatabaseManager dbm, String nom, String informations, LocationController locationController)
 	{
@@ -243,4 +243,6 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 	public void setColor(int i) {
 		_color =  i;
 	}
+
+
 }
