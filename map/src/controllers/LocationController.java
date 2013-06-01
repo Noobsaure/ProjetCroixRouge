@@ -27,7 +27,7 @@ public class LocationController {
 	private String _name;
 	private String _description;
 	private boolean _visibility;
-	private String _couleur;
+	private int _couleur;
 
 	private List<EntityController> _entityList = new ArrayList<EntityController>();
 	
@@ -252,8 +252,12 @@ public class LocationController {
 		return false;
 	}
 	
-	private String getCouleur(){
+	public int getColor(){
 		return _couleur;
+	}
+	
+	public void setColor(int newColor){
+		_couleur = newColor;
 	}
 	
 	public void hideLocation(){
