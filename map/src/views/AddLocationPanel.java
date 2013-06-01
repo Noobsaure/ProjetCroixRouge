@@ -32,7 +32,7 @@ public class AddLocationPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
 	
 	protected static final int WIDTH = 400;
-	protected static final int HEIGHT = 320;
+	protected static final int HEIGHT = 330;
 	public static final Dimension DIMENSION_PANEL = new Dimension(WIDTH, HEIGHT);
 	protected static final Dimension DIMENSION_FORM_PANEL = new Dimension(380, 250);
 	protected static final int ARC_WIDTH = 30;
@@ -115,7 +115,8 @@ public class AddLocationPanel extends CustomPanelImpl {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),}));
+				RowSpec.decode("default:grow"),
+				RowSpec.decode("default:none"),}));
 
 		/**************************************************************\
 		 * 							Nom
