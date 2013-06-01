@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 
 import launcher.Launcher;
 import observer.Observer;
+import views.buttons.AddLocationButton;
 import views.listeners.HideLocationButtonListener;
 import views.listeners.EditLocationButtonListener;
 import views.listeners.MapPanelMouseListener;
@@ -94,9 +95,10 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 	}
 
-	public void showAddLocationPanel(int x, int y) {
+	public void showAddLocationPanel(int x, int y, AddLocationButton addButton) {
 		Launcher launcher = getGlobalPanel().getLauncher();
-		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);
+		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);		
+		addLocationPanel.addObserver(addButton);
 		new CustomDialog(addLocationPanel, _globalPanel);
 	}
 
@@ -118,8 +120,8 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 		_locations.removeAll(listLocationsToDelete);
 		for(LocationController oneLoc : listLocations) {
-			int x = (int) (oneLoc.getX() * getRatio());
-			int y = (int) (oneLoc.getY() * getRatio());
+			int x = (int)oneLoc.getX();
+			int y = (int)oneLoc.getY();
 			Location location = new Location(_globalPanel, oneLoc, x, y);
 			LocationPanel locPanel = new LocationPanel(location, this, x, y);
 			locPanel.addIconMouseListeners(

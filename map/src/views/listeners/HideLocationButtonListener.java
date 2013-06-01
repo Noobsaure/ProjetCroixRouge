@@ -24,7 +24,6 @@ public class HideLocationButtonListener implements MouseListener {
 		
 		ChoicePanel confirmDelMap = new ChoicePanel(title, message, new ConfirmDelLocationListener(_operation,_location));
 		new CustomDialog(confirmDelMap, _operation.getGlobalPanel());
-		_location.hideLocation();
 	}
 
 	@Override

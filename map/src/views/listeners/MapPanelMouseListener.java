@@ -15,6 +15,7 @@ import views.GlobalPanel;
 import views.Location;
 import views.MapPanel;
 import views.MessagePanel;
+import views.buttons.AddLocationButton;
 
 public class MapPanelMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener {
 
@@ -28,6 +29,8 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 	private int _y = 0;
 	private boolean _addingLocation = false;
 	private boolean _moving = false;
+
+	private AddLocationButton _addLocationButton;
 
 	public MapPanelMouseListener(GlobalPanel globalPanel) {
 		_globalPanel = globalPanel;
@@ -77,11 +80,11 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 					MessagePanel errorPanel = new MessagePanel("Erreur" ,"Point en dehors de la carte.");
 					new CustomDialog(errorPanel, _globalPanel);
 				} else {
-					_mapPanel.showAddLocationPanel(x - _mapPanel.get_x(), y - _mapPanel.get_y());
-					setAddingLocation(false);
+					_mapPanel.showAddLocationPanel(x - _mapPanel.get_x(), y - _mapPanel.get_y(), _addLocationButton);
+					setAddingLocation(false, _addLocationButton);
 				}
 			} else {
-				setAddingLocation(false);
+				setAddingLocation(false, _addLocationButton);
 			}
 		} else if(e.getButton() == MouseEvent.BUTTON3) {
 			if(!isCoordWithinMap(x, y)) {
@@ -93,8 +96,9 @@ public class MapPanelMouseListener implements MouseListener, MouseMotionListener
 		}
 	}
 
-	public void setAddingLocation(boolean addingLocation) {
+	public void setAddingLocation(boolean addingLocation, AddLocationButton addButton) {
 		_addingLocation = addingLocation;
+		_addLocationButton = addButton;
 		if(_addingLocation){
 			_mapPanel.setCursor(addableCursor);
 		} else {

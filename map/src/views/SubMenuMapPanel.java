@@ -12,12 +12,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.ScrollPaneConstants;
 
+import observer.Observer;
+import observer.Subject;
+
 import views.listeners.AddMapButtonListener;
 import views.listeners.SwitchMapButtonListener;
 import controllers.MapController;
 import controllers.OperationController;
 
-public class SubMenuMapPanel extends SubMenuPanelImpl {
+public class SubMenuMapPanel extends SubMenuPanelImpl implements Subject{
 	private static final long serialVersionUID = 1L;
 
 	private Map<JToggleButton, MapController> _map;
@@ -26,6 +29,7 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 	private MapPanel _mapPanel;
 	private OperationController _operationController;
 	private List<MapController> _listMapsName;
+	private List<Observer> _listObserver;
 	private ButtonGroup _group = new ButtonGroup();
 
 	private List<ThumbnailMapPanel> _thumbnailsList;
@@ -47,6 +51,8 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 
 		addAddButtonListener(new AddMapButtonListener(mapPanel,this));
 		addOkButtonListener(new SwitchMapButtonListener(mapPanel, this, operationController));
+		
+		_listObserver = new ArrayList<Observer>();
 	}
 
 	@Override
@@ -108,5 +114,25 @@ public class SubMenuMapPanel extends SubMenuPanelImpl {
 		setListMapsContent();
 		repaint();
 		revalidate();
+	}
+
+	@Override
+	public void addObserver(Observer observer)
+	{
+		_listObserver.add(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer observer)
+	{
+		_listObserver.remove(_listObserver.lastIndexOf(observer));
+		
+	}
+
+	@Override
+	public void notifyObservers()
+	{
+		for(Observer observer : _listObserver)
+			observer.update();
 	}
 }

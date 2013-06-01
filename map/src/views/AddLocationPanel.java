@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -15,6 +17,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
+import observer.Observer;
+import observer.Subject;
 import views.buttons.CustomButton;
 import views.listeners.CancelAddLocationListener;
 import views.listeners.ConfirmAddLocationListener;
@@ -28,7 +32,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddLocationPanel extends AddOrEditLocationPanel {
+public class AddLocationPanel extends AddOrEditLocationPanel implements Subject  {
 	private static final long serialVersionUID = 1L;
 	
 	protected static final int WIDTH = 400;
@@ -41,7 +45,7 @@ public class AddLocationPanel extends AddOrEditLocationPanel {
 	protected static final int MIDDLE = AddLocationPanel.WIDTH / 2;
 
 
-	protected static final int RED = 5;
+	protected static final int RED = 1;
 	protected static final int ORANGE = 2;
 	protected static final int YELLOW = 3;
 	protected static final int LIGHTGREEN = 4;
@@ -55,10 +59,13 @@ public class AddLocationPanel extends AddOrEditLocationPanel {
 	private PopUpPanel _internalPanel;
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
+	
 	private JTextArea _informationsTextArea;	
+	
 	private JLabel _couleurTextField;
 	private ButtonGroup _couleurRadioButton;
 	private int _color;
+	private List<Observer> _listObserver;
 	
 	
 	public AddLocationPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, int x, int y)
@@ -68,6 +75,8 @@ public class AddLocationPanel extends AddOrEditLocationPanel {
 		_dbm = dbm;
 		_x = x;
 		_y = y;
+		
+		_listObserver = new ArrayList<Observer>();
 		
 		initGui();
 	}
@@ -241,6 +250,27 @@ public class AddLocationPanel extends AddOrEditLocationPanel {
 	@Override
 	public void updatePanel() {
 		//Pas d'update � faire ici.
+	}
+
+
+	@Override
+	public void addObserver(Observer observer)
+	{
+		_listObserver.add(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer observer)
+	{
+		_listObserver.remove(_listObserver.lastIndexOf(observer));
+		
+	}
+
+	@Override
+	public void notifyObservers()
+	{
+		for(Observer observer : _listObserver)
+			observer.update();
 	}
 	
 	public int getColor() {

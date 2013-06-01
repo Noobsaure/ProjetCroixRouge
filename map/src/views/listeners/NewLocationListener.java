@@ -22,7 +22,7 @@ public class NewLocationListener implements ActionListener {
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		_map.showAddLocationPanel(_x, _y);
+		_map.showAddLocationPanel(_x, _y, null);
 		_map.repaint();
 	}
 }

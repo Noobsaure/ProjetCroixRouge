@@ -47,6 +47,7 @@ public class LocationController {
 		_idOperation = operation.getId();
 		_dbm = dbm;
 		_idMap = operation.getCurrentMap().getId();
+		_couleur = couleur;
 
 		if(name.compareTo("PCM (défaut)") == 0){
 			MessagePanel errorPanel = new MessagePanel("Ajout localisation impossible" ,"Le nom de cette localisation est déjà utilisée comme localisation " +
@@ -99,6 +100,7 @@ public class LocationController {
 		_couleur = couleur;
 		
 		_idOperation = _operation.getId();
+		_couleur = couleur;
 
 		if(_name.compareTo("PCM (défaut)") != 0 )
 			operation.getMap(_idMap).addLocation(this);

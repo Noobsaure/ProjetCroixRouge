@@ -1,22 +1,20 @@
 package views;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
+import javax.swing.JToggleButton;
 import javax.swing.border.EmptyBorder;
 
-import observer.Observer;
 import views.buttons.AddLocationButton;
+import views.buttons.CustomButton;
 import views.buttons.SubMenuMapButton;
 import views.buttons.SubMenuVictimButton;
 import controllers.MapController;
-import controllers.OperationController;
 
 public class MenuButtonsPanel extends JPanel {
 
@@ -25,12 +23,11 @@ public class MenuButtonsPanel extends JPanel {
 	private JComboBox<String> _listMaps;
 	private Map<String, MapController> _map;
 
-	private JButton _victimButton;
-	private JButton _addLocationButton;
-	private JButton _mapButton;
+	private SubMenuVictimButton _victimButton;
+	private AddLocationButton _addLocationButton;
+	private SubMenuMapButton _mapButton;
 	private boolean _areButtonsEnabled = true;
 	
-	@SuppressWarnings("unchecked")
 	public MenuButtonsPanel(MapPanel mapPanel) {
 		_mapPanel = mapPanel;
 		_map = new HashMap<String, MapController>();
@@ -38,7 +35,7 @@ public class MenuButtonsPanel extends JPanel {
 		setBorder(new EmptyBorder(10, 0, 10, 0));
 		setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
 
-		_victimButton =new SubMenuVictimButton(mapPanel, "Victime");
+		_victimButton = new SubMenuVictimButton(mapPanel, "Victime");
 		_addLocationButton = new AddLocationButton(mapPanel, "Localisation");
 		_mapButton = new SubMenuMapButton(mapPanel, "Carte");
 		

@@ -9,12 +9,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import observer.Observer;
+import observer.Subject;
+
 import views.listeners.AddVictimButtonListener;
 import views.listeners.OkVictimButtonListener;
 import controllers.OperationController;
 import controllers.VictimController;
 
-public class SubMenuVictimPanel extends SubMenuPanelImpl {
+public class SubMenuVictimPanel extends SubMenuPanelImpl implements Subject
+{
 	private static final long serialVersionUID = 1L;
 	
 	private JPanel _thumbnailsPanel;
@@ -23,6 +27,7 @@ public class SubMenuVictimPanel extends SubMenuPanelImpl {
 	private OperationController _operationController;
 	private List<VictimController> _listVictimsName;
 	private List<ThumbnailVictimPanel> _thumbnailsList;
+	private List<Observer> _listObserver;
 	
 	public SubMenuVictimPanel(MapPanel mapPanel, OperationController operationController)
 	{
@@ -44,6 +49,8 @@ public class SubMenuVictimPanel extends SubMenuPanelImpl {
 
 		addAddButtonListener(new AddVictimButtonListener(mapPanel));
 		addOkButtonListener(new OkVictimButtonListener(mapPanel, this));
+		
+		_listObserver = new ArrayList<Observer>();
 	}
 
 	@Override
@@ -93,5 +100,25 @@ public class SubMenuVictimPanel extends SubMenuPanelImpl {
 		setListVictimsContent();
 		revalidate();
 		repaint();
+	}
+
+	@Override
+	public void addObserver(Observer observer)
+	{
+		_listObserver.add(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer observer)
+	{
+		_listObserver.remove(_listObserver.lastIndexOf(observer));
+		
+	}
+
+	@Override
+	public void notifyObservers()
+	{
+		for(Observer observer : _listObserver)
+			observer.update();
 	}
 }
