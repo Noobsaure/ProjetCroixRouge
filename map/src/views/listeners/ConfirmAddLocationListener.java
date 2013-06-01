@@ -58,6 +58,8 @@ public class ConfirmAddLocationListener implements ActionListener
 			new LocationController(_operationController, _databaseManager,_x,_y,name,informations, couleur);
 			CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addLocationPanel);
 			dialog.dispose();
+			
+			_addLocationPanel.notifyObservers();
 		}
 	}
 }

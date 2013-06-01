@@ -6,8 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
 import javax.swing.JButton;
+import javax.swing.JToggleButton;
 
-public class CustomButton extends JButton
+public class CustomButton extends JToggleButton
 {
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +39,7 @@ public class CustomButton extends JButton
 		
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-	    if(getModel().isArmed())
+	    if(isSelected())
 	      g2d.setColor(FOREGROUND);
 	    else
 	      g2d.setColor(BACKGROUND);
@@ -55,7 +56,7 @@ public class CustomButton extends JButton
 		
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		
-		if(getModel().isArmed())
+		if(isSelected())
 		{
 			setForeground(BACKGROUND);
 			g2d.setColor(BACKGROUND);

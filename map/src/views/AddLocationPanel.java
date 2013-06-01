@@ -3,12 +3,17 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import observer.Observer;
+import observer.Subject;
 
 import views.buttons.CustomButton;
 import views.listeners.CancelAddLocationListener;
@@ -22,7 +27,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddLocationPanel extends CustomPanelImpl {
+public class AddLocationPanel extends CustomPanelImpl implements Subject {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;
@@ -43,6 +48,8 @@ public class AddLocationPanel extends CustomPanelImpl {
 	private JLabel _nomLabel;
 	private JTextField _nomTextField;
 	private JTextArea _informationsTextArea;
+
+	private List<Observer> _listObserver;
 	
 	
 	public AddLocationPanel(MapPanel parent, OperationController operation, DatabaseManager dbm, int x, int y)
@@ -52,6 +59,8 @@ public class AddLocationPanel extends CustomPanelImpl {
 		_dbm = dbm;
 		_x = x;
 		_y = y;
+		
+		_listObserver = new ArrayList<Observer>();
 		
 		initGui();
 	}
@@ -160,5 +169,26 @@ public class AddLocationPanel extends CustomPanelImpl {
 	@Override
 	public void updatePanel() {
 		//Pas d'update � faire ici.
+	}
+
+
+	@Override
+	public void addObserver(Observer observer)
+	{
+		_listObserver.add(observer);
+	}
+
+	@Override
+	public void removeObserver(Observer observer)
+	{
+		_listObserver.remove(_listObserver.lastIndexOf(observer));
+		
+	}
+
+	@Override
+	public void notifyObservers()
+	{
+		for(Observer observer : _listObserver)
+			observer.update();
 	}
 }

@@ -32,6 +32,6 @@ public class ThumbnailVictimPanel extends JPanel {
 	public VictimController getVictimController() {return _victim;}
 
 	public void update(){
-		_nameLabel.setText("(" + _victim.getIdAnonymat() + ") " + _victim.getPrenom() + " " + _victim.getNom());
+		_nameLabel.setText("(" + _victim.getIdAnonymat() + " -> " + _victim.getEntiteAssociee().getName() + ") " + _victim.getPrenom() + " " + _victim.getNom());
 	}
 }

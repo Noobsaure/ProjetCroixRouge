@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 
 import views.MapPanel;
+import views.SubMenuMapPanel;
 import views.SubMenuPanelImpl;
 import views.ThumbnailMapPanel;
 import controllers.MapController;
@@ -47,6 +48,7 @@ public class SwitchMapButtonListener implements ActionListener
 			_operationController.setCurrentMap(mapController);
 		}
 		
+		((SubMenuMapPanel)_subMenuPanel).notifyObservers();
 		_mapPanel.closePanel();
 		_mapPanel.repaint();
 		_mapPanel.revalidate();

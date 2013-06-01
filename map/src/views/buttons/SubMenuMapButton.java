@@ -4,10 +4,12 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import observer.Observer;
+
 import views.MapPanel;
 import views.listeners.SubMenuMapListener;
 
-public class SubMenuMapButton extends CustomButton
+public class SubMenuMapButton extends CustomButton implements Observer
 {
 	private static final long serialVersionUID = 1L;
 
@@ -18,12 +20,18 @@ public class SubMenuMapButton extends CustomButton
 		setMaximumSize(new Dimension(150,25));
 		setPreferredSize(new Dimension(150,25));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
-		addActionListener(new SubMenuMapListener(mapPanel));
+		addActionListener(new SubMenuMapListener(mapPanel, this));
 	}
 	
 	@Override
 	public void paintComponent(Graphics g)
 	{
 		super.paintComponent(g);
+	}
+
+	@Override
+	public void update()
+	{
+		setSelected(false);
 	}
 }

@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 
 import launcher.Launcher;
 import observer.Observer;
+import views.buttons.AddLocationButton;
 import views.listeners.EditLocationButtonListener;
 import views.listeners.MapPanelMouseListener;
 import controllers.LocationController;
@@ -93,9 +94,10 @@ public class MapPanel extends JPanel implements Observer, ComponentListener {
 		}
 	}
 
-	public void showAddLocationPanel(int x, int y) {
+	public void showAddLocationPanel(int x, int y, AddLocationButton addButton) {
 		Launcher launcher = getGlobalPanel().getLauncher();
 		AddLocationPanel addLocationPanel = new AddLocationPanel(this, launcher.getOperationController(), launcher.getDatabaseManager(), x, y);		
+		addLocationPanel.addObserver(addButton);
 		new CustomDialog(addLocationPanel, _globalPanel);
 	}
 
