@@ -34,7 +34,7 @@ import java.awt.GridLayout;
 import javax.swing.JRadioButton;
 import javax.swing.ImageIcon;
 
-public class ConfigurationLocationPanel extends CustomPanelImpl {
+public class ConfigurationLocationPanel extends AddOrEditLocationPanel {
 	private static final long serialVersionUID = 1L;
 
 	protected static final int WIDTH = 400;

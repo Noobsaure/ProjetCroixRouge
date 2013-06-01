@@ -124,6 +124,6 @@ public class MessagePanel extends CustomPanelImpl
 
 	@Override
 	public void updatePanel() {
-		//Rien à update ici.
+		//Rien ï¿½ update ici.
 	}
 }

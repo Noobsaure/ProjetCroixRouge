@@ -28,7 +28,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import controllers.OperationController;
 import database.DatabaseManager;
 
-public class AddLocationPanel extends CustomPanelImpl {
+public class AddLocationPanel extends AddOrEditLocationPanel {
 	private static final long serialVersionUID = 1L;
 	
 	protected static final int WIDTH = 400;
