@@ -10,7 +10,7 @@ import controllers.EntityController;
 public class DatabaseTest
 {
 	private static final String _user = "root";
-	private static final String _password = "apagos35";
+	private static final String _password = "apagos";
 	private static final String _urlBase = "jdbc:mysql://localhost/";
 	
 	

@@ -23,6 +23,9 @@ import com.jgoodies.forms.layout.RowSpec;
 import controllers.LocationController;
 import controllers.OperationController;
 import database.DatabaseManager;
+import java.awt.GridLayout;
+import javax.swing.JRadioButton;
+import javax.swing.ImageIcon;
 
 public class ConfigurationLocationPanel extends CustomPanelImpl {
 	private static final long serialVersionUID = 1L;
@@ -85,6 +88,7 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 				FormFactory.RELATED_GAP_ROWSPEC,
 				FormFactory.DEFAULT_ROWSPEC,
 				FormFactory.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("default:grow"),
 				RowSpec.decode("default:grow"),}));
 
 		/**************************************************************\
@@ -110,6 +114,34 @@ public class ConfigurationLocationPanel extends CustomPanelImpl {
 		
 		_informationsTextArea = new JTextArea();
 		textAreaScrollPane.setViewportView(_informationsTextArea);
+		
+		JLabel lblCouleur = new JLabel("Couleur:");
+		formPanel.add(lblCouleur, "1, 7");
+		
+		JPanel panel = new JPanel();
+		formPanel.add(panel, "2, 7, fill, fill");
+		panel.setLayout(new GridLayout(2, 0, 0, 0));
+		
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("");
+		rdbtnNewRadioButton.setIcon(new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/rouge.png")));
+		panel.add(rdbtnNewRadioButton);
+		
+		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("");
+		rdbtnNewRadioButton_1.setIgnoreRepaint(true);
+		rdbtnNewRadioButton_1.setIcon(new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/rouge.png")));
+		panel.add(rdbtnNewRadioButton_1);
+		
+		JRadioButton rdbtnNewRadioButton_4 = new JRadioButton("");
+		rdbtnNewRadioButton_4.setIcon(new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/rouge.png")));
+		panel.add(rdbtnNewRadioButton_4);
+		
+		JRadioButton rdbtnNewRadioButton_2 = new JRadioButton("");
+		rdbtnNewRadioButton_2.setIcon(new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/rouge.png")));
+		panel.add(rdbtnNewRadioButton_2);
+		
+		JRadioButton rdbtnNewRadioButton_3 = new JRadioButton("");
+		rdbtnNewRadioButton_3.setIcon(new ImageIcon(ConfigurationLocationPanel.class.getResource("/ui/rouge.png")));
+		panel.add(rdbtnNewRadioButton_3);
 		/**************************************************************/
 
 		
