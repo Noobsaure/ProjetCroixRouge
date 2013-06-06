@@ -248,9 +248,7 @@ public class AddLocationPanel extends AddOrEditLocationPanel implements Subject 
 
 
 	@Override
-	public void updatePanel() {
-		//Pas d'update � faire ici.
-	}
+	public void updatePanel() {	}
 
 
 	@Override
@@ -269,8 +267,10 @@ public class AddLocationPanel extends AddOrEditLocationPanel implements Subject 
 	@Override
 	public void notifyObservers()
 	{
-		for(Observer observer : _listObserver)
-			observer.update();
+		for(Observer observer : _listObserver) {
+			if(observer != null)
+				observer.update();
+		}
 	}
 	
 	public int getColor() {

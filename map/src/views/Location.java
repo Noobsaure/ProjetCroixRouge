@@ -89,6 +89,7 @@ public class Location extends JPanel {
 	
 	public void update() {
 		_name = _locationController.getName();
+		_locColor = Math.max(0,_locationController.getColor() - 1);
 		_locPanel.update();
 		_entitiesCount.setText(_locationController.getEntityList().size()+"");
 		repaint();
