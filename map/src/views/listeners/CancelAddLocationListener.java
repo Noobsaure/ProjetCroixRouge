@@ -19,5 +19,6 @@ public class CancelAddLocationListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		CustomDialog dialog = (CustomDialog) SwingUtilities.getAncestorOfClass(CustomDialog.class,_addLocationPanel);
 		dialog.dispose();
+		_addLocationPanel.notifyObservers();
 	}
 }
