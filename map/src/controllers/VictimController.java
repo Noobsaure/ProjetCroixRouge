@@ -269,7 +269,7 @@ public class VictimController {
 		message += getInfosPriseEnCharge();
 		
 		try {			
-			idMessage = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',"+_idMessageParent+",NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
+			idMessage = DatabaseManager.executeQueryInsert(new SQLQueryInsert("Message" ,"(NULL,NULL,NULL,'-1','-2','"+_operation.getIdOperateur()+"', '-2', '"+_operation.getId()+"',NULL,NULL,'"+datetime+"','"+DatabaseManager.addSlashes(message)+"','0')"));	
 			genererVictimeMessage(idMessage);
 		} catch (MalformedQueryException e) {
 			MessagePanel errorPanel = new MessagePanel("Erreur génération message" ,"Une erreur est survenue lors de la génération du message pour la création d'une victime. Message : "+message);
